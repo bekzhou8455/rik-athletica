@@ -1,6 +1,6 @@
 import { join } from "path";
 
-const PORT = 3456;
+const PORT = parseInt(process.env.PORT || "3456", 10);
 const DIR = import.meta.dir;
 const LEADS_FILE = join(DIR, "leads.csv");
 
