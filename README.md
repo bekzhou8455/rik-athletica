@@ -79,6 +79,10 @@ The intake must be completed before the protocol can be built.
 
 Design audit: `.gstack/design-reports/design-audit-localhost-2026-03-23.md` — Design Score A−, AI Slop B.
 
+## For contributors / Claude
+
+See `CLAUDE.md` for project conventions, design tokens, and things not to do.
+
 ## Science references
 
 - Pfeiffer et al. 2012 — carbohydrate oxidation and GI distress in Ironman
