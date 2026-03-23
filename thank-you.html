@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>You're In — RIK Athletica</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300..800&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 16px; }
+body { font-family: 'Plus Jakarta Sans', sans-serif; background: #fff; color: #0a0a0a; -webkit-font-smoothing: antialiased; min-height: 100vh; display: flex; flex-direction: column; }
+
+:root {
+  --sand: #f6f5f4;
+  --off-black: #0a0a0a;
+  --border: rgba(0,0,0,0.08);
+  --green: #2D5A3D;
+  --green-light: #4ade80;
+  --r-card: 20px;
+  --r-btn: 36px;
+}
+
+nav {
+  background: rgba(255,255,255,0.96);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 40px; height: 56px;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.logo { display: flex; align-items: center; text-decoration: none; }
+
+.btn { display: inline-block; padding: 13px 28px; font-size: 14px; font-weight: 500; border-radius: var(--r-btn); cursor: pointer; border: none; font-family: inherit; letter-spacing: -0.01em; transition: opacity .15s; text-decoration: none; }
+.btn:hover { opacity: 0.82; }
+.btn-primary { background: var(--off-black); color: #fff; }
+.btn-secondary { background: transparent; color: var(--off-black); border: 1px solid var(--border); }
+.btn-green { background: var(--green); color: #fff; }
+
+main { flex: 1; display: flex; align-items: center; justify-content: center; padding: 80px 40px; }
+
+.ty-card {
+  max-width: 620px; width: 100%;
+  text-align: center;
+}
+
+.ty-icon {
+  width: 64px; height: 64px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 28px;
+  margin: 0 auto 32px;
+}
+.ty-icon.sprint { background: #0d1810; }
+.ty-icon.bundle { background: var(--sand); }
+
+.ty-eyebrow {
+  font-size: 11px; font-weight: 500; letter-spacing: 2.5px;
+  text-transform: uppercase; color: #aaa; margin-bottom: 16px;
+}
+
+.ty-heading {
+  font-size: clamp(32px, 5vw, 52px);
+  font-weight: 400; letter-spacing: -0.04em;
+  line-height: 1.05; margin-bottom: 16px;
+}
+.ty-heading em { font-style: normal; font-weight: 300; color: #bbb; }
+
+.ty-sub {
+  font-size: 16px; color: #888; line-height: 1.65;
+  max-width: 480px; margin: 0 auto 48px;
+  letter-spacing: -0.01em;
+}
+
+.timeline {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 2px; margin-bottom: 48px;
+  background: var(--border);
+  border-radius: var(--r-card);
+  overflow: hidden;
+}
+.tl-step {
+  background: #fff; padding: 24px 16px; text-align: center;
+}
+.tl-step:first-child { border-radius: var(--r-card) 0 0 var(--r-card); }
+.tl-step:last-child { border-radius: 0 var(--r-card) var(--r-card) 0; }
+.tl-num { font-size: 10px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: #ccc; margin-bottom: 8px; }
+.tl-label { font-size: 14px; font-weight: 600; color: var(--off-black); margin-bottom: 4px; letter-spacing: -0.01em; }
+.tl-desc { font-size: 12px; color: #aaa; line-height: 1.5; }
+
+.tl-step.active { background: var(--off-black); }
+.tl-step.active .tl-num { color: rgba(255,255,255,0.25); }
+.tl-step.active .tl-label { color: #fff; }
+.tl-step.active .tl-desc { color: rgba(255,255,255,0.35); }
+
+.ty-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+
+.ty-note {
+  margin-top: 32px; font-size: 12px; color: #bbb; line-height: 1.6;
+}
+
+footer {
+  background: var(--off-black); padding: 28px 40px;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.footer-logo-img { height: 60px; width: auto; display: block; filter: invert(1); opacity: 0.6; margin: -8px 0; }
+.footer-links { font-size: 12px; color: rgba(255,255,255,0.22); }
+
+@media (max-width: 600px) {
+  .timeline { grid-template-columns: 1fr; }
+  .tl-step:first-child { border-radius: var(--r-card) var(--r-card) 0 0; }
+  .tl-step:last-child { border-radius: 0 0 var(--r-card) var(--r-card); }
+  main { padding: 48px 24px; }
+  footer { padding: 24px 20px; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="logo"><img src="/assets/media/rik-logo.png" alt="RIK Athletica" style="height:68px;width:auto;display:block;margin:-8px -10px;"></a>
+</nav>
+
+<main>
+  <div class="ty-card" id="ty-sprint" style="display:none">
+    <div class="ty-icon sprint">🎯</div>
+    <div class="ty-eyebrow">Payment confirmed</div>
+    <h1 class="ty-heading">You're in the<br><em>Sprint.</em></h1>
+    <p class="ty-sub">Payment received. Your spot is locked. Next step: complete your 10-minute intake so we can build your protocol and pack your box.</p>
+
+    <div class="timeline">
+      <div class="tl-step active">
+        <div class="tl-num">Now</div>
+        <div class="tl-label">Complete Intake</div>
+        <div class="tl-desc">10 min · race data + fueling history</div>
+      </div>
+      <div class="tl-step">
+        <div class="tl-num">Within 48 hrs</div>
+        <div class="tl-label">Protocol Built</div>
+        <div class="tl-desc">We review + build your 2-layer plan</div>
+      </div>
+      <div class="tl-step">
+        <div class="tl-num">Within 5 days</div>
+        <div class="tl-label">Box Ships</div>
+        <div class="tl-desc">Packed to your protocol · tracked</div>
+      </div>
+    </div>
+
+    <div class="ty-actions">
+      <a href="https://form.typeform.com/to/XT5Qo0HD" class="btn btn-primary" style="padding:15px 36px;font-size:15px;">Complete My Intake →</a>
+    </div>
+    <p class="ty-note">Takes 10 minutes · We can't build your protocol without it<br>Check your email for your confirmation + intake link</p>
+  </div>
+
+  <div class="ty-card" id="ty-bundle" style="display:none">
+    <div class="ty-icon bundle">📦</div>
+    <div class="ty-eyebrow">Order confirmed</div>
+    <h1 class="ty-heading">Your box<br><em>ships in 5 days.</em></h1>
+    <p class="ty-sub">Your RIK Bundle is confirmed. 10 Euphoria + 20 Refuel — the functional layer most athletes are missing. We'll email your tracking number once it ships.</p>
+
+    <div class="timeline">
+      <div class="tl-step active">
+        <div class="tl-num">Confirmed</div>
+        <div class="tl-label">Order Received</div>
+        <div class="tl-desc">10 Euphoria + 20 Refuel packed</div>
+      </div>
+      <div class="tl-step">
+        <div class="tl-num">1–2 days</div>
+        <div class="tl-label">Packed + Labelled</div>
+        <div class="tl-desc">Your box is prepped for dispatch</div>
+      </div>
+      <div class="tl-step">
+        <div class="tl-num">Within 5 days</div>
+        <div class="tl-label">Ships to You</div>
+        <div class="tl-desc">Tracking number sent by email</div>
+      </div>
+    </div>
+
+    <div class="ty-actions">
+      <a href="/sprint" class="btn btn-primary">Upgrade to the Sprint →</a>
+      <a href="/" class="btn btn-secondary">Back to Home</a>
+    </div>
+    <p class="ty-note">The $119 you paid counts toward your Sprint if you upgrade anytime.<br>Questions? WhatsApp us.</p>
+  </div>
+
+  <!-- Fallback if no type param -->
+  <div class="ty-card" id="ty-default" style="display:none">
+    <div class="ty-icon sprint">✓</div>
+    <div class="ty-eyebrow">Thank you</div>
+    <h1 class="ty-heading">You're all set.</h1>
+    <p class="ty-sub">We've received your order. Check your email for confirmation and next steps.</p>
+    <div class="ty-actions">
+      <a href="/" class="btn btn-secondary">Back to Home</a>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <img src="/assets/media/rik-logo.png" alt="RIK Athletica" class="footer-logo-img">
+  <span class="footer-links">Copyright © 2026 Rik Athletic Nutrition Inc.</span>
+</footer>
+
+<script>
+(function() {
+  var params = new URLSearchParams(window.location.search);
+  var type = params.get('type');
+  if (type === 'sprint') {
+    document.getElementById('ty-sprint').style.display = 'block';
+  } else if (type === 'bundle') {
+    document.getElementById('ty-bundle').style.display = 'block';
+  } else {
+    document.getElementById('ty-default').style.display = 'block';
+  }
+})();
+</script>
+
+<script async src="https://r.wdfl.co/rw.js" data-rewardful="REWARDFUL_KEY_PLACEHOLDER"></script>
+</body>
+</html>

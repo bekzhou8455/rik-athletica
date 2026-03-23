@@ -1,0 +1,22 @@
+# Backup files
+*.backup-*.html
+
+# gstack reports and sessions (generated, not source)
+.gstack/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Claude Code local settings (permissions, secrets)
+.claude/settings.local.json
+
+# Bun
+node_modules/
+bun.lockb

@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "wireframe",
+      "runtimeExecutable": "/Users/bekzhou/.bun/bin/bun",
+      "runtimeArgs": ["run", "serve.ts"],
+      "port": 3456
+    }
+  ]
+}

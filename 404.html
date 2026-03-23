@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Page Not Found — RIK Athletica</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300..800&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 16px; }
+body { font-family: 'Plus Jakarta Sans', sans-serif; background: #0a0a0a; color: #fff; -webkit-font-smoothing: antialiased; min-height: 100vh; display: flex; flex-direction: column; }
+
+:root {
+  --off-black: #0a0a0a;
+  --green: #2D5A3D;
+  --green-light: #4ade80;
+  --border: rgba(255,255,255,0.07);
+  --r-btn: 36px;
+  --r-card: 20px;
+}
+
+nav {
+  background: rgba(10,10,10,0.9);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 40px; height: 56px;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.logo { display: flex; align-items: center; text-decoration: none; }
+
+main {
+  flex: 1; display: flex; align-items: center; justify-content: center;
+  padding: 80px 40px;
+  background: radial-gradient(ellipse at 50% 0%, rgba(45,90,61,0.15) 0%, transparent 70%);
+}
+
+.not-found {
+  max-width: 560px; width: 100%; text-align: center;
+}
+
+.nf-code {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px; letter-spacing: 2px;
+  color: rgba(255,255,255,0.18); margin-bottom: 28px;
+}
+
+.nf-heading {
+  font-size: clamp(28px, 4vw, 48px);
+  font-weight: 400; letter-spacing: -0.04em;
+  line-height: 1.05; margin-bottom: 16px; color: #fff;
+}
+.nf-heading em { font-style: normal; font-weight: 300; color: rgba(255,255,255,0.3); }
+
+.nf-sub {
+  font-size: 16px; color: rgba(255,255,255,0.38);
+  line-height: 1.65; margin-bottom: 48px; letter-spacing: -0.01em;
+}
+
+.nf-actions {
+  display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;
+  margin-bottom: 48px;
+}
+
+.btn { display: inline-block; padding: 13px 28px; font-size: 14px; font-weight: 500; border-radius: var(--r-btn); cursor: pointer; border: none; font-family: inherit; letter-spacing: -0.01em; transition: opacity .15s; text-decoration: none; }
+.btn:hover { opacity: 0.82; }
+.btn-white { background: #fff; color: var(--off-black); }
+.btn-outline-white { background: transparent; color: #fff; border: 1px solid rgba(255,255,255,0.18); }
+
+.nf-stats {
+  display: flex; gap: 32px; justify-content: center;
+  border-top: 1px solid var(--border); padding-top: 36px;
+  flex-wrap: wrap;
+}
+.nf-stat { text-align: center; }
+.nf-stat-num { font-size: 22px; font-weight: 500; color: var(--green-light); letter-spacing: -0.04em; display: block; margin-bottom: 4px; }
+.nf-stat-label { font-size: 11px; color: rgba(255,255,255,0.28); letter-spacing: 0.3px; }
+
+footer {
+  background: rgba(255,255,255,0.02);
+  border-top: 1px solid var(--border);
+  padding: 24px 40px;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.footer-logo-img { height: 60px; width: auto; display: block; filter: invert(1); opacity: 0.5; margin: -8px 0; }
+.footer-links { font-size: 12px; color: rgba(255,255,255,0.18); }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="logo"><img src="/assets/media/rik-logo.png" alt="RIK Athletica" style="height:68px;width:auto;display:block;margin:-8px -10px;filter:invert(1);opacity:0.9;"></a>
+</nav>
+
+<main>
+  <div class="not-found">
+    <div class="nf-code">404 · PAGE NOT FOUND</div>
+    <h1 class="nf-heading">Wrong turn.<br><em>But you're in the right place.</em></h1>
+    <p class="nf-sub">This page doesn't exist — but your fueling protocol probably doesn't either. We can fix that.</p>
+
+    <div class="nf-actions">
+      <a href="/sprint" class="btn btn-white">See the 4-Week Sprint →</a>
+      <a href="/calculator" class="btn btn-outline-white">Try the Calculator →</a>
+    </div>
+
+    <div class="nf-stats">
+      <div class="nf-stat">
+        <span class="nf-stat-num">73%</span>
+        <span class="nf-stat-label">of Ironman DNFs are nutrition-related</span>
+      </div>
+      <div class="nf-stat">
+        <span class="nf-stat-num">22–45</span>
+        <span class="nf-stat-label">minutes left on course for most athletes</span>
+      </div>
+      <div class="nf-stat">
+        <span class="nf-stat-num">$499</span>
+        <span class="nf-stat-label">all-in · one training block · ships in 5 days</span>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <img src="/assets/media/rik-logo.png" alt="RIK Athletica" class="footer-logo-img">
+  <span class="footer-links">Copyright © 2026 Rik Athletic Nutrition Inc.</span>
+</footer>
+
+<script async src="https://r.wdfl.co/rw.js" data-rewardful="REWARDFUL_KEY_PLACEHOLDER"></script>
+</body>
+</html>
