@@ -657,7 +657,103 @@ const css = `
   .s-nav { margin-bottom: 48px; }
   .s-header { margin-bottom: 40px; }
 }
+
+/* ─ Email gate (shown before results) */
+.s-gate {
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 48px 40px 40px;
+  background: ${T.surface};
+  border-radius: 20px;
+  box-shadow: ${T.shadowLg};
+  animation: fadeUp .45s ease both;
+  text-align: center;
+}
+.s-gate-badge {
+  display: inline-block;
+  font-family: 'Inter', sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: ${T.accent};
+  background: ${T.accentSoft};
+  padding: 5px 14px;
+  border-radius: 20px;
+  margin-bottom: 20px;
+}
+.s-gate-title {
+  font-size: 24px;
+  font-weight: 600;
+  color: ${T.text};
+  letter-spacing: -0.04em;
+  line-height: 1.2;
+  margin-bottom: 10px;
+}
+.s-gate-sub {
+  font-size: 14px;
+  color: ${T.muted};
+  line-height: 1.6;
+  margin-bottom: 28px;
+}
+.s-gate-sub strong { color: ${T.text}; font-weight: 600; }
+.s-gate-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+.s-gate-input {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1.5px solid ${T.border};
+  border-radius: 10px;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  color: ${T.text};
+  background: ${T.bg};
+  outline: none;
+  transition: border-color .18s;
+}
+.s-gate-input::placeholder { color: ${T.subtle}; }
+.s-gate-input:focus { border-color: ${T.borderFocus}; background: #fff; }
+.s-gate-btn {
+  width: 100%;
+  padding: 13px;
+  background: ${T.accent};
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background .18s;
+}
+.s-gate-btn:hover { background: ${T.accentMid}; }
+.s-gate-btn:disabled { opacity: 0.6; cursor: default; }
+.s-gate-skip {
+  font-size: 12px;
+  color: ${T.subtle};
+  cursor: pointer;
+  background: none;
+  border: none;
+  font-family: 'Inter', sans-serif;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  padding: 4px;
+  transition: color .18s;
+}
+.s-gate-skip:hover { color: ${T.muted}; }
+.s-gate-fine {
+  margin-top: 16px;
+  font-size: 11px;
+  color: ${T.subtle};
+  line-height: 1.5;
+}
 `;
+
 
 /* ── Scoring Engine ─────────────────────────────────────────────── */
 function toKmPace(paceM, paceS, unit) {
@@ -1007,6 +1103,63 @@ function Results({ data, onRestart }) {
   );
 }
 
+/* ── Email Gate ──────────────────────────────────────────────────── */
+function EmailGate({ minuteLo, minuteHi, onDone }) {
+  const [email, setEmail] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  const submit = async (e) => {
+    e.preventDefault();
+    if (!email.trim()) return;
+    setLoading(true);
+    try {
+      await fetch('/api/leads', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: email.trim(), source: 'calculator' }),
+      });
+    } catch {}
+    localStorage.setItem('rik_lead_captured', '1');
+    setLoading(false);
+    onDone();
+  };
+
+  const skip = () => {
+    localStorage.setItem('rik_lead_captured', '1');
+    onDone();
+  };
+
+  return (
+    <div className="s-gate">
+      <div className="s-gate-badge">Results ready</div>
+      <div className="s-gate-title">
+        You're leaving {minuteLo}–{minuteHi} minutes on course.
+      </div>
+      <div className="s-gate-sub">
+        Enter your email to see <strong>exactly where you're losing time</strong> — and what to do about it.
+      </div>
+      <form className="s-gate-form" onSubmit={submit}>
+        <input
+          className="s-gate-input"
+          type="email"
+          placeholder="Your email address"
+          value={email}
+          onChange={e => setEmail(e.target.value)}
+          autoFocus
+          required
+        />
+        <button className="s-gate-btn" type="submit" disabled={loading}>
+          {loading ? 'One moment…' : 'Show my results →'}
+        </button>
+      </form>
+      <button className="s-gate-skip" onClick={skip} type="button">
+        Skip, just show me the numbers
+      </button>
+      <div className="s-gate-fine">No spam. Unsubscribe anytime.</div>
+    </div>
+  );
+}
+
 /* ── App ─────────────────────────────────────────────────────────── */
 const BLANK = { distance:'', splitH:'', splitM:'', paceM:'', paceS:'', paceUnit:'km',
                 gi:'', secondHalf:'', carbs:'', practiced:'', motivation:'' };
@@ -1022,6 +1175,7 @@ const isValid = (step, d) => {
 function App() {
   const [step, setStep] = useState(1);
   const [done, setDone] = useState(false);
+  const [emailDone, setEmailDone] = useState(() => !!localStorage.getItem('rik_lead_captured'));
   const [data, setData] = useState(BLANK);
   const topRef = useRef(null);
   const scroll = () => topRef.current?.scrollIntoView({ behavior:'smooth' });
@@ -1076,7 +1230,13 @@ function App() {
             </button>
           </div>
         </div>
-      </> : (
+      </> : !emailDone ? (() => {
+          const r = calcResults({ ...data,
+            raceSplitMin: (data.splitH !== '' && data.splitM !== '') ? parseInt(data.splitH||0)*60 + parseInt(data.splitM||0) : null,
+            trainingPaceKmMin: data.paceM !== '' ? toKmPace(data.paceM, data.paceS, data.paceUnit||'km') : null,
+          });
+          return <EmailGate minuteLo={r.totalLo} minuteHi={r.totalHi} onDone={() => { setEmailDone(true); scroll(); }} />;
+        })() : (
         <Results data={data} onRestart={restart}/>
       )}
     </div>

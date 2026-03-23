@@ -1,6 +1,9 @@
 # Backup files
 *.backup-*.html
 
+# Lead capture data (PII — never commit)
+leads.csv
+
 # gstack reports and sessions (generated, not source)
 .gstack/
 

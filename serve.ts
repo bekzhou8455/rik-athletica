@@ -2,6 +2,7 @@ import { join } from "path";
 
 const PORT = 3456;
 const DIR = import.meta.dir;
+const LEADS_FILE = join(DIR, "leads.csv");
 
 // Set via: REWARDFUL_KEY=xxx bun serve.ts
 const REWARDFUL_KEY = process.env.REWARDFUL_KEY || "";
@@ -12,6 +13,8 @@ const ROUTES: Record<string, string> = {
   "/sprint": "/sprint.html",
   "/calculator": "/calculator.html",
   "/thank-you": "/thank-you.html",
+  "/privacy": "/privacy.html",
+  "/terms": "/terms.html",
 };
 
 // Serves a tiny redirect page that sets the Rewardful attribution cookie
@@ -53,11 +56,48 @@ function rewardfulRedirectPage(): string {
 </html>`;
 }
 
+// Ensure leads CSV has a header row on first run
+async function ensureLeadsFile() {
+  const file = Bun.file(LEADS_FILE);
+  if (!(await file.exists())) {
+    await Bun.write(LEADS_FILE, "email,source,ts\n");
+  }
+}
+ensureLeadsFile();
+
 Bun.serve({
   port: PORT,
   async fetch(req) {
     const url = new URL(req.url);
     const pathname = url.pathname;
+
+    // Lead capture — POST /api/leads
+    // Body: { email: string, source?: string }
+    if (pathname === "/api/leads" && req.method === "POST") {
+      try {
+        const body = await req.json() as { email?: string; source?: string };
+        const email = (body.email || "").trim().toLowerCase();
+        if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+          return new Response(JSON.stringify({ error: "Invalid email" }), {
+            status: 400,
+            headers: { "Content-Type": "application/json" },
+          });
+        }
+        const source = (body.source || "calculator").replace(/[,\n\r]/g, "");
+        const ts = new Date().toISOString();
+        // Append to CSV; check for duplicates is intentionally omitted for simplicity
+        await Bun.write(LEADS_FILE, await Bun.file(LEADS_FILE).text() + `${email},${source},${ts}\n`);
+        console.log(`[leads] ${email} via ${source}`);
+        return new Response(JSON.stringify({ ok: true }), {
+          headers: { "Content-Type": "application/json" },
+        });
+      } catch {
+        return new Response(JSON.stringify({ error: "Bad request" }), {
+          status: 400,
+          headers: { "Content-Type": "application/json" },
+        });
+      }
+    }
 
     // Affiliate referral route — dynamic slug, always redirects to /sprint
     // Invalid slugs are handled gracefully: Rewardful sets no cookie, /sprint loads normally.
