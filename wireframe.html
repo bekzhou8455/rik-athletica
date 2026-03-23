@@ -624,7 +624,15 @@ footer { background: var(--off-black); padding: 36px 40px; display: flex; justif
   .athlete-band img:last-child { display: none; }
   .fc-img { min-height: 260px; }
   .dtc-hero h1 { font-size: 38px; }
+  .dtc-hero { padding-top: 48px; }
   nav { height: 52px; }
+  footer { padding: 24px 20px; }
+}
+@media (max-width: 480px) {
+  .stats-row { flex-direction: column; }
+  .stats-row-item { flex: 1 1 100%; border-right: none; border-bottom: 1px solid var(--border); padding: 16px 20px; }
+  .stats-row-item:last-child { border-bottom: none; }
+  .service-hero-content { padding: 0 20px 48px; }
 }
 </style>
 </head>
