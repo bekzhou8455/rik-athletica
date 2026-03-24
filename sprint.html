@@ -169,6 +169,9 @@ nav ul a:hover, nav ul a.active { color: var(--off-black); }
 .science-stats { background: var(--off-black); padding: 72px 40px; }
 .science-stats-inner { max-width: 1100px; margin: 0 auto; }
 .science-stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px; margin-top: 40px; }
+.cal-sync-wrap { background: var(--off-black); padding: 96px 40px; }
+.intake-wrap { background: var(--sand); padding: 96px 40px; }
+.intake-steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 48px; }
 .science-stat-card { background: #1a1a1a; padding: 32px 28px; border-radius: 4px; }
 .science-stat-card:first-child { border-radius: var(--r-card) 4px 4px var(--r-card); }
 .science-stat-card:last-child { border-radius: 4px var(--r-card) var(--r-card) 4px; }
@@ -262,6 +265,13 @@ footer { background: var(--off-black); padding: 36px 40px; display: flex; justif
   .service-hero-content { padding: 0 32px 64px; }
   .cal-sync-grid { grid-template-columns: 1fr !important; gap: 48px !important; }
   .cal-sync-grid .iph-frame { display: none; }
+  /* Section padding: reduce 40px sides to 20px on tablet/mobile */
+  .how-it-works, .box-section, .calc-section, .pricing-section,
+  .science-stats, .case-study, .cal-sync-wrap, .intake-wrap { padding-left: 20px; padding-right: 20px; }
+  /* Science stats: 2×2 on tablet */
+  .science-stats-grid { grid-template-columns: repeat(2, 1fr); }
+  .science-stat-card:first-child { border-radius: var(--r-card) 4px 4px var(--r-card); }
+  .science-stat-card:last-child { border-radius: 4px 4px 4px 4px; }
 }
 @media (max-width: 600px) {
   .athlete-band { grid-template-columns: 1fr 1fr; height: 200px; }
@@ -270,6 +280,12 @@ footer { background: var(--off-black); padding: 36px 40px; display: flex; justif
   footer { padding: 24px 20px; }
   .hero-proof { gap: 20px; }
   .hero-proof-item strong { font-size: 20px; }
+  /* Intake steps: 1-column on mobile */
+  .intake-steps { grid-template-columns: 1fr; }
+  /* Science stats: single column */
+  .science-stats-grid { grid-template-columns: 1fr; }
+  .science-stat-card:first-child { border-radius: var(--r-card) var(--r-card) 4px 4px; }
+  .science-stat-card:last-child { border-radius: 4px 4px var(--r-card) var(--r-card); }
 }
 @media (max-width: 480px) {
   .service-hero-content { padding: 0 20px 48px; }
@@ -418,7 +434,7 @@ footer { background: var(--off-black); padding: 36px 40px; display: flex; justif
 </div>
 
 <!-- ═══ CALENDAR SYNC ═══ -->
-<div style="background:var(--off-black);padding:96px 40px;">
+<div class="cal-sync-wrap">
   <div class="cal-sync-grid" style="max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 420px;gap:80px;align-items:center;">
     <div>
       <div class="eyebrow light">Step 3 · Calendar Sync</div>
@@ -630,12 +646,12 @@ footer { background: var(--off-black); padding: 36px 40px; display: flex; justif
 </div>
 
 <!-- ═══ POST-PURCHASE INTAKE — TYPEFORM ═══ -->
-<div style="background:var(--sand);padding:96px 40px;">
+<div class="intake-wrap">
   <div style="max-width:640px;margin:0 auto;text-align:center;">
     <div class="eyebrow">After You Pay</div>
     <h2 style="font-size:clamp(28px,3vw,40px);font-weight:400;letter-spacing:-0.03em;margin-bottom:12px;">You'll complete a 10-minute intake.</h2>
     <p style="font-size:15px;color:#888;line-height:1.65;margin-bottom:40px;letter-spacing:-0.01em;">After payment, you'll be directed to our intake form. Race date, body stats, current fueling, biggest challenge. Takes 10 minutes. We review within 48 hours, build your protocol, and ship your box within 5 days.</p>
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:48px;">
+    <div class="intake-steps">
       <div style="background:#fff;border:1px solid var(--border);border-radius:var(--r-card);padding:28px 20px;text-align:center;">
         <div style="font-size:28px;font-weight:500;color:var(--off-black);letter-spacing:-0.04em;margin-bottom:6px;">10 min</div>
         <div style="font-size:12px;color:#aaa;">Intake form</div>
