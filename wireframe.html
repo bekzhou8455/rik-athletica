@@ -807,8 +807,8 @@ footer { background: var(--off-black); padding: 36px 40px; display: flex; flex-w
           <div class="pg-price">$119</div>
           <div class="pg-price-meta">/ bundle (10 Euphoria + 20 Refuel) · free shipping</div>
         </div>
-        <button class="btn btn-primary btn-full" style="padding:15px">Add to Cart — $119 →</button>
-        <button class="btn btn-secondary btn-full" style="margin-top:8px;padding:14px" onclick="showPage('service',null);return false;">See the 4-Week Sprint</button>
+        <a href="https://buy.stripe.com/4gM7sN6Wq3cc7T0fZ67Re00" class="btn btn-primary btn-full" style="padding:15px;display:block;text-align:center;">Add to Cart — $119 →</a>
+        <a href="/sprint" class="btn btn-secondary btn-full" style="margin-top:8px;padding:14px;display:block;text-align:center;">See the 4-Week Sprint</a>
         <div class="pg-guarantee">✓ Full refund on products returned in resellable condition (packaging intact, sachets unopened) within 14 days of delivery. Products with torn packaging or opened sachets are not eligible for return.</div>
         <p style="font-size:10px;color:#bbb;margin-top:10px;line-height:1.55;">† These statements have not been evaluated by the Food and Drug Administration. This product is not intended to diagnose, treat, cure, or prevent any disease. RIK Athletica products are dietary supplements.</p>
       </div>
@@ -847,8 +847,8 @@ footer { background: var(--off-black); padding: 36px 40px; display: flex; flex-w
           <div class="pg-price">$119</div>
           <div class="pg-price-meta">/ bundle (10 Euphoria + 20 Refuel) · free shipping</div>
         </div>
-        <button class="btn btn-primary btn-full" style="padding:15px">Add to Cart — $119 →</button>
-        <button class="btn btn-secondary btn-full" style="margin-top:8px;padding:14px" onclick="showPage('service',null);return false;">See the 4-Week Sprint</button>
+        <a href="https://buy.stripe.com/4gM7sN6Wq3cc7T0fZ67Re00" class="btn btn-primary btn-full" style="padding:15px;display:block;text-align:center;">Add to Cart — $119 →</a>
+        <a href="/sprint" class="btn btn-secondary btn-full" style="margin-top:8px;padding:14px;display:block;text-align:center;">See the 4-Week Sprint</a>
         <div class="pg-guarantee">✓ Full refund on products returned in resellable condition (packaging intact, sachets unopened) within 14 days of delivery. Products with torn packaging or opened sachets are not eligible for return.</div>
         <p style="font-size:10px;color:#bbb;margin-top:10px;line-height:1.55;">† These statements have not been evaluated by the Food and Drug Administration. This product is not intended to diagnose, treat, cure, or prevent any disease. RIK Athletica products are dietary supplements.</p>
       </div>
@@ -975,7 +975,7 @@ footer { background: var(--off-black); padding: 36px 40px; display: flex; flex-w
       <li data-n="4">3 iterations from session feedback</li>
       <li data-n="5">Race-day plan locked in. Nothing left to guess.</li>
     </ul>
-    <button class="btn btn-white" onclick="showPage('service',null);return false;">See the 4-Week Sprint — $499 →</button>
+    <a href="/sprint" class="btn btn-white">See the 4-Week Sprint — $499 →</a>
   </div>
   <div class="service-upsell-photo">
     <img src="/assets/media/AL-DSC00885.png" alt="Athlete with Refuel gel — warm lifestyle" style="object-position: center 15%;">
@@ -993,6 +993,12 @@ footer { background: var(--off-black); padding: 36px 40px; display: flex; flex-w
 </div><!-- /page-dtc -->
 
 <script>
+function switchTab(tab) {
+  document.querySelectorAll('.gel-tab').forEach(t => t.classList.toggle('active', t.id === 'tab-' + tab));
+  document.getElementById('panel-euphoria').style.display = tab === 'euphoria' ? '' : 'none';
+  document.getElementById('panel-refuel').style.display = tab === 'refuel' ? '' : 'none';
+}
+
 function switchGallery(product) {
   document.querySelectorAll('.pg-switch').forEach(b => b.classList.toggle('active', b.dataset.product === product));
   document.querySelectorAll('.pg-detail-tab').forEach(b => b.classList.toggle('active', b.dataset.tab === product));
