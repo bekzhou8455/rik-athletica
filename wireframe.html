@@ -271,7 +271,7 @@ nav ul a:hover, nav ul a.active { color: var(--off-black); }
 .service-upsell-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
 /* ── FOOTER ── */
-footer { background: var(--off-black); padding: 36px 40px; display: flex; justify-content: space-between; align-items: center; }
+footer { background: var(--off-black); padding: 36px 40px; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 16px; }
 .footer-logo { font-size: 12px; font-weight: 700; letter-spacing: 2px; color: rgba(255,255,255,0.38); }
 .footer-links { font-size: 12px; color: rgba(255,255,255,0.22); letter-spacing: -0.01em; }
 .footer-links a { display: inline-flex; align-items: center; min-height: 44px; padding: 0 4px; }
@@ -490,7 +490,7 @@ footer { background: var(--off-black); padding: 36px 40px; display: flex; justif
 /* ── SCIENCE STATS (service page) ── */
 .science-stats { background: var(--off-black); padding: 72px 40px; }
 .science-stats-inner { max-width: 1100px; margin: 0 auto; }
-.science-stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px; margin-top: 40px; }
+.science-stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; margin-top: 40px; }
 .science-stat-card { background: #1a1a1a; padding: 32px 28px; border-radius: 4px; }
 .science-stat-card:first-child { border-radius: var(--r-card) 4px 4px var(--r-card); }
 .science-stat-card:last-child { border-radius: 4px var(--r-card) var(--r-card) 4px; }
@@ -615,7 +615,15 @@ footer { background: var(--off-black); padding: 36px 40px; display: flex; justif
   .stats-row { flex-wrap: wrap; }
   .stats-row-item { flex: 1 1 50%; }
   .service-hero-content { padding: 0 32px 64px; }
-  .dtc-hero, .feature-cards, .product-card-wrap { padding-left: 20px; padding-right: 20px; }
+  .dtc-hero, .feature-cards, .product-card-wrap, .lglut-feature,
+  .methodology, .ingredients-section, .calc-teaser, .science-stats,
+  .case-study { padding-left: 20px; padding-right: 20px; }
+  /* Ingredient panel: un-stick image, let it flow naturally */
+  .ingredient-product-img { position: relative; top: auto; width: 100%; max-width: 200px; }
+  /* Science stats: 2-column at tablet */
+  .science-stats-grid { grid-template-columns: repeat(2, 1fr); }
+  .science-stat-card:first-child { border-radius: var(--r-card) 4px 4px var(--r-card); }
+  .science-stat-card:last-child { border-radius: 4px 4px 4px 4px; }
 }
 @media (max-width: 600px) {
   .photo-strip { grid-template-columns: 1fr 1fr; height: 180px; }
@@ -627,6 +635,15 @@ footer { background: var(--off-black); padding: 36px 40px; display: flex; justif
   .dtc-hero { padding-top: 48px; }
   nav { height: 52px; }
   footer { padding: 24px 20px; }
+  /* Ingredient table: remove fixed column widths, hide description on small screens */
+  .ingredient-table td:first-child { width: auto; }
+  .ingredient-table td.dose { width: auto; white-space: nowrap; }
+  .ingredient-table th:nth-child(3),
+  .ingredient-table td:nth-child(3) { display: none; }
+  /* Science stats: single column */
+  .science-stats-grid { grid-template-columns: 1fr; }
+  .science-stat-card:first-child { border-radius: var(--r-card) var(--r-card) 4px 4px; }
+  .science-stat-card:last-child { border-radius: 4px 4px var(--r-card) var(--r-card); }
 }
 @media (max-width: 480px) {
   .stats-row { flex-direction: column; }
