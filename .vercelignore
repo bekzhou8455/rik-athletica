@@ -1,9 +1,9 @@
 serve.ts
-*.test.ts
+calculator.test.ts
 leads.csv
-assets/media/originals
 .gstack
 .claude
 README.md
 CHANGELOG.md
 TODOS.md
+assets/
