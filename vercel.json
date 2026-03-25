@@ -1,13 +1,17 @@
 {
   "version": 2,
+  "buildCommand": null,
+  "outputDirectory": ".",
+  "installCommand": null,
   "routes": [
+    { "src": "/",           "dest": "/index.html" },
     { "src": "/sprint",     "dest": "/sprint.html" },
     { "src": "/calculator", "dest": "/calculator.html" },
     { "src": "/thank-you",  "dest": "/thank-you.html" },
     { "src": "/privacy",    "dest": "/privacy.html" },
     { "src": "/terms",      "dest": "/terms.html" },
     { "src": "/ref/(.*)",   "dest": "/ref-redirect.html" },
-    { "handle": "filesystem" },
+    { "src": "/assets/(.*)", "dest": "/assets/$1" },
     { "src": "/(.*)",       "dest": "/404.html", "status": 404 }
   ]
 }
