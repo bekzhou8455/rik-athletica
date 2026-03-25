@@ -1,11 +1,7 @@
 {
+  "cleanUrls": true,
+  "trailingSlash": false,
   "rewrites": [
-    { "source": "/",            "destination": "/wireframe.html" },
-    { "source": "/sprint",      "destination": "/sprint.html" },
-    { "source": "/calculator",  "destination": "/calculator.html" },
-    { "source": "/thank-you",   "destination": "/thank-you.html" },
-    { "source": "/privacy",     "destination": "/privacy.html" },
-    { "source": "/terms",       "destination": "/terms.html" },
-    { "source": "/ref/:path*",  "destination": "/ref-redirect.html" }
+    { "source": "/", "destination": "/wireframe.html" }
   ]
 }
