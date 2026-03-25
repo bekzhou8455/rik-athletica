@@ -23,3 +23,5 @@ Thumbs.db
 # Bun
 node_modules/
 bun.lockb
+.vercel
+.env*.local
