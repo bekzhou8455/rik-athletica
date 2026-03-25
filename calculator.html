@@ -1086,7 +1086,14 @@ function Results({ data, onRestart }) {
           {motiveCopy[data.motivation] || motiveCopy.time}{' '}
           RIK ATHLETICA® builds your personalized 12-week fueling protocol — then delivers everything to your door.
         </div>
-        <button className="s-cta-btn" onClick={() => window.location.href = 'https://buy.stripe.com/00waEZ6Wq1441uC6ow7Re01'}>
+        <button className="s-cta-btn" onClick={() => {
+              const url = 'https://buy.stripe.com/00waEZ6Wq1441uC6ow7Re01';
+              if (window.rewardful) {
+                rewardful('referral', function(r) {
+                  window.location.href = r ? url + '?client_reference_id=' + r.id : url;
+                });
+              } else { window.location.href = url; }
+            }}>
           Get my personalized protocol →
         </button>
         <div className="s-cta-fine">
@@ -1249,6 +1256,6 @@ function App() {
 ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
 </script>
 
-<script async src="https://r.wdfl.co/rw.js" data-rewardful="REWARDFUL_KEY_PLACEHOLDER"></script>
+<script async src="https://r.wdfl.co/rw.js" data-rewardful="73b07c"></script>
 </body>
 </html>
