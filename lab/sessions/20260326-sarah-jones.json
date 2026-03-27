@@ -1,0 +1,139 @@
+{
+  "athleteId": "20260326-sarah-jones",
+  "step": "review",
+  "currentIteration": 0,
+  "intake": {
+    "athleteId": "sarah-jones",
+    "name": "Sarah Jones",
+    "eventType": "ironman_140",
+    "raceDate": "2026-06-15",
+    "historicalFinishTime": "11:45:00",
+    "goalFinishTime": "10:30:00",
+    "weeklyVolume": {
+      "swim": 4,
+      "bike": 10,
+      "run": 5
+    },
+    "longSessionDurations": {
+      "swim": 60,
+      "bike": 240,
+      "run": 120
+    },
+    "trainingPhase": "build",
+    "currentProducts": [
+      "Maurten Gel 100",
+      "SiS Beta Fuel"
+    ],
+    "currentCarbTarget": 50,
+    "giHistory": "mild",
+    "hasGutTrained": false,
+    "bodyWeight": 62,
+    "sweatRate": 800,
+    "heatContext": "Temperate",
+    "hasCGMData": false,
+    "occupation": "Physiotherapist",
+    "coachRelationship": "Self-coached",
+    "qualityScores": {
+      "eventType": "high",
+      "raceDate": "high",
+      "bodyWeight": "high",
+      "weeklyVolume.swim": "high",
+      "weeklyVolume.bike": "high",
+      "weeklyVolume.run": "high",
+      "trainingPhase": "high",
+      "giHistory": "high",
+      "hasGutTrained": "high",
+      "hasCGMData": "high",
+      "historicalFinishTime": "high",
+      "goalFinishTime": "high",
+      "longSessionDurations.swim": "high",
+      "longSessionDurations.bike": "high",
+      "longSessionDurations.run": "high",
+      "currentCarbTarget": "high",
+      "sweatRate": "high",
+      "heatContext": "high",
+      "dietaryRestrictions": "low",
+      "occupation": "high",
+      "travelFrequency": "low",
+      "coachRelationship": "high",
+      "trainingPlan": "high"
+    }
+  },
+  "sessions": [
+    {
+      "date": "2026-03-30",
+      "type": "swim",
+      "duration": 60,
+      "intensity": "easy",
+      "description": "Aerobic base swim — drills + endurance sets"
+    },
+    {
+      "date": "2026-03-31",
+      "type": "bike",
+      "duration": 180,
+      "intensity": "moderate",
+      "description": "Long ride — Zone 2 with 2x20min threshold"
+    },
+    {
+      "date": "2026-04-01",
+      "type": "run",
+      "duration": 90,
+      "intensity": "easy",
+      "description": "Easy long run — conversational pace"
+    },
+    {
+      "date": "2026-04-02",
+      "type": "rest",
+      "duration": 60,
+      "intensity": "easy",
+      "description": "Recovery day"
+    },
+    {
+      "date": "2026-04-03",
+      "type": "bike",
+      "duration": 90,
+      "intensity": "moderate",
+      "description": "Mid-week bike — tempo intervals"
+    },
+    {
+      "date": "2026-04-04",
+      "type": "run",
+      "duration": 60,
+      "intensity": "moderate",
+      "description": "Tempo run — 4x10min at threshold"
+    },
+    {
+      "date": "2026-04-05",
+      "type": "swim",
+      "duration": 70,
+      "intensity": "moderate",
+      "description": "Threshold swim set"
+    }
+  ],
+  "redFlags": [],
+  "iterations": [],
+  "currentDraft": {
+    "athleteId": "20260326-sarah-jones",
+    "generatedAt": "2026-03-26T11:58:15.243Z",
+    "weeksGenerated": 4,
+    "carbTargets": [],
+    "weeklySchedule": [],
+    "raceDayPlan": [],
+    "assumptionFlags": [],
+    "thirdPartyRecommendations": [],
+    "rawMarkdown": "## Week 1 Protocol — Sarah Jones\n### IRONMAN 140.6 · Race: 2026-06-15\n\n> ⚠ **DEMO MODE** — This protocol was generated without a live Claude API key. It uses a rule-based placeholder. Real AI-generated protocols will be significantly more detailed and personalised. Set `ANTHROPIC_API_KEY` to enable full generation.\n\n---\n\n## Athlete Summary\n\n| Field | Value |\n|-------|-------|\n| Event | IRONMAN 140.6 |\n| Race date | 2026-06-15 |\n| Training phase | build |\n| Body weight | 62kg |\n| GI history | mild |\n| Gut trained | No |\n| Weekly volume | Swim 4hr · Bike 10hr · Run 5hr |\n\n---\n\n## Carb Targets (Calculated)\n\n| Session type | Duration | Carb target |\n|-------------|----------|-------------|\n| Swim | Any | No intra-session carbs |\n| Bike/Run | 60–90min | 35g/hr |\n| Bike/Run | >90min | **40g/hr** |\n| Race — Bike | Full distance | **50g/hr** |\n| Race — Run | Full distance | **35g/hr** |\n\n**Rationale:** Base target reduced from maximum for mild GI history and no gut training history.\n\n---\n\n## Session Protocols — Week 1\n\n**2026-03-30 — Swim (60min, easy)**\n- **Euphoria:** 20–30 min pre-session (CNS priming, 100mg caffeine)\n- **Refuel (post):** within 30min of finish\n\n---\n\n**2026-03-31 — Bike (180min, moderate)**\n- **Euphoria:** 20–30 min pre-session (CNS priming, 100mg caffeine)\n- **Carb target:** 40g/hr → Maurten Gel 100 × 2 per hour\n- **Refuel (intra):** at 108min\n- **Refuel (post):** within 30min of finish\n\n---\n\n**2026-04-01 — Run (90min, easy)**\n- **Euphoria:** 20–30 min pre-session (CNS priming, 100mg caffeine)\n- **Carb target:** 40g/hr → Maurten Gel 100 × 2 per hour\n- **Refuel (intra):** at 54min\n- **Refuel (post):** within 30min of finish\n\n---\n\n**2026-04-03 — Bike (90min, moderate)**\n- **Euphoria:** 20–30 min pre-session (CNS priming, 100mg caffeine)\n- **Carb target:** 40g/hr → Maurten Gel 100 × 2 per hour\n- **Refuel (intra):** at 54min\n- **Refuel (post):** within 30min of finish\n\n---\n\n**2026-04-04 — Run (60min, moderate)**\n- **Euphoria:** 20–30 min pre-session (CNS priming, 100mg caffeine)\n- **Carb target:** 35g/hr → Maurten Gel 100 × 2 per hour\n- **Refuel (post):** within 30min of finish\n\n\n---\n\n## Race-Day Plan — IRONMAN 140.6\n\n### Pre-Race\n- **T−30min:** Euphoria × 1 (CNS priming, 100mg caffeine from Yerba Mate)\n- **T−15min:** 500mL electrolyte drink (sodium 600–800mg)\n\n### Swim (no intra-swim fuelling)\n\n### Bike — Target: 50g/hr\n| Time | Action |\n|------|--------|\n| T+30min | Maurten Gel 100 × 1 + 250mL water |\n| T+1hr | Refuel × 1 (23g carb, BCAA recovery matrix) |\n| T+1hr30 | Maurten Gel 100 × 1 + 250mL water |\n| T+2hr | Maurten Gel 100 × 1 |\n| T+2hr30 | Refuel × 1 |\n| Every 45min | Repeat pattern |\n\n### Run — Target: 35g/hr\n- Maurten Gel 100 at km 5, 15, 25 (if 42km run)\n- Refuel × 1 at mid-run\n- Electrolyte drink at every aid station\n\n---\n\n## Assumption Flags\n\n- ⚠ **Demo mode:** Replace with real AI-generated protocol once `ANTHROPIC_API_KEY` is configured"
+  },
+  "currentVerdict": {
+    "outcome": "PASS",
+    "dimensionScores": {
+      "scientificAccuracy": "PASS",
+      "catastrophicOutcomeCheck": "PASS",
+      "productSpecCompliance": "PASS",
+      "coherenceAndCompleteness": "PASS"
+    },
+    "issues": [],
+    "revisionBrief": null
+  },
+  "revisionCount": 0,
+  "humanDecision": null
+}

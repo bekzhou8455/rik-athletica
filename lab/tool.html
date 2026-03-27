@@ -1,0 +1,1821 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Protocol Builder — RIK Athletica</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<style>
+/* ── Tokens ─────────────────────────────────────────────────────── */
+:root {
+  --sand: #f6f5f4;
+  --off-black: #0a0a0a;
+  --green: #2D5A3D;
+  --green-light: #4ade80;
+  --border: rgba(0,0,0,0.08);
+  --muted: #888;
+  --r-card: 20px;
+  --r-btn: 36px;
+  --tool-card: #fff;
+  --tool-card-border: rgba(0,0,0,0.08);
+  --tool-label: #aaa;
+  --tool-input-bg: #fafafa;
+  --audit-pass: #2D5A3D;
+  --audit-flag: #b7791f;
+  --audit-fail: #e53e3e;
+  --red-flag-bg: #fff5f5;
+  --red-flag-border: #e53e3e;
+  --error: #e53e3e;
+  --transition-fast: 140ms ease;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  background: var(--sand);
+  color: var(--off-black);
+  min-height: 100vh;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+/* ── Header ─────────────────────────────────────────────────────── */
+.header {
+  height: 48px;
+  background: var(--sand);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  padding: 0 40px;
+  gap: 8px;
+}
+.header-brand {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: var(--off-black);
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.header-sep {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+/* ── Step bar ───────────────────────────────────────────────────── */
+.step-bar {
+  height: 56px;
+  background: var(--sand);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  padding: 0 40px;
+}
+.step-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.step-circle {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 1.5px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--muted);
+  flex-shrink: 0;
+  transition: background var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast);
+}
+.step-circle.done {
+  background: var(--green);
+  border-color: var(--green);
+  color: #fff;
+}
+.step-circle.active {
+  background: var(--off-black);
+  border-color: var(--off-black);
+  color: #fff;
+  animation: step-pulse 2s ease infinite;
+}
+@keyframes step-pulse {
+  0%, 100% { opacity: 0.75; }
+  50% { opacity: 1; }
+}
+.step-label {
+  font-size: 12px;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  color: var(--muted);
+  white-space: nowrap;
+}
+.step-item.active .step-label { color: var(--off-black); font-weight: 500; }
+.step-item.done .step-label { color: var(--off-black); }
+.step-connector {
+  width: 40px;
+  height: 1px;
+  background: var(--border);
+  margin: 0 4px;
+}
+
+/* ── Iteration strip ────────────────────────────────────────────── */
+.iteration-strip {
+  background: var(--tool-card);
+  border-bottom: 1px solid var(--tool-card-border);
+  padding: 10px 40px;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+.iter-strip-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.iter-strip-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--tool-label);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.iter-strip-value {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: var(--off-black);
+}
+.iter-strip-blacklist {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--audit-fail);
+}
+
+/* ── Content area ───────────────────────────────────────────────── */
+.content {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 40px 40px 80px;
+}
+
+/* ── Cards ──────────────────────────────────────────────────────── */
+.card {
+  background: var(--tool-card);
+  border: 1px solid var(--tool-card-border);
+  border-radius: var(--r-card);
+  padding: 32px;
+}
+.card + .card { margin-top: 16px; }
+
+/* ── Typography ─────────────────────────────────────────────────── */
+h1 { font-size: 24px; font-weight: 600; margin-bottom: 8px; }
+h2 { font-size: 20px; font-weight: 600; margin-bottom: 6px; }
+.label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--tool-label);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 8px;
+}
+.muted { color: var(--muted); font-size: 13px; }
+.mono { font-family: 'JetBrains Mono', monospace; }
+
+/* ── Upload zones ───────────────────────────────────────────────── */
+.upload-zone {
+  border: 1.5px dashed rgba(0,0,0,0.15);
+  border-radius: var(--r-card);
+  min-height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 8px;
+  cursor: pointer;
+  transition: border-color var(--transition-fast), background var(--transition-fast);
+  padding: 20px;
+  margin-bottom: 20px;
+  position: relative;
+}
+.upload-zone:hover,
+.upload-zone.drag-over {
+  border-color: var(--green);
+  border-style: solid;
+  background: rgba(45,90,61,0.04);
+}
+.upload-zone.filled {
+  border-style: solid;
+  border-color: var(--border);
+  background: var(--tool-card);
+  cursor: default;
+}
+.upload-zone.error {
+  border-color: var(--error);
+  border-style: solid;
+  background: #fff5f5;
+}
+.upload-zone input[type=file] {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+  width: 100%;
+  height: 100%;
+}
+.upload-zone.filled input[type=file] { pointer-events: none; }
+.upload-placeholder {
+  font-size: 14px;
+  color: var(--muted);
+  text-align: center;
+  pointer-events: none;
+}
+.upload-format {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--tool-label);
+}
+.upload-filled {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  pointer-events: none;
+}
+.upload-filled-name {
+  font-size: 14px;
+  font-weight: 500;
+}
+.upload-filled-size {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--tool-label);
+}
+.upload-check { color: var(--green); font-size: 18px; }
+.upload-error-msg {
+  font-size: 13px;
+  color: var(--error);
+  margin-top: -12px;
+  margin-bottom: 12px;
+}
+
+/* ── SSE step cards ─────────────────────────────────────────────── */
+.step-list {
+  background: var(--tool-card);
+  border: 1px solid var(--tool-card-border);
+  border-radius: var(--r-card);
+  padding: 8px 0;
+  margin: 20px 0;
+}
+.step-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 24px;
+  min-height: 40px;
+  animation: step-enter 250ms ease forwards;
+}
+@keyframes step-enter {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.step-icon { width: 18px; text-align: center; flex-shrink: 0; font-size: 14px; }
+.step-row-label {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 15px;
+  font-weight: 400;
+}
+.step-row.completed .step-icon { color: var(--green); }
+.step-row.completed .step-row-label { color: var(--off-black); }
+.step-row.active .step-row-label { color: var(--off-black); }
+.step-row.pending .step-row-label { color: var(--muted); }
+.step-row-elapsed {
+  margin-left: auto;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--tool-label);
+}
+.pulse-dot {
+  display: inline-block;
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--off-black);
+  animation: dot-pulse 1.2s ease infinite;
+}
+@keyframes dot-pulse {
+  0%, 100% { opacity: 0.4; transform: scale(0.8); }
+  50% { opacity: 1; transform: scale(1); }
+}
+
+/* ── Quality summary ────────────────────────────────────────────── */
+.quality-summary {
+  background: var(--tool-card);
+  border: 1px solid var(--tool-card-border);
+  border-radius: var(--r-card);
+  padding: 24px 28px;
+  margin: 20px 0;
+}
+.quality-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--tool-card-border);
+}
+.quality-row:last-child { border-bottom: none; }
+.quality-field {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: var(--tool-label);
+  text-transform: uppercase;
+}
+.quality-badge {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 400;
+  padding: 3px 10px;
+  border-radius: 20px;
+  text-transform: uppercase;
+}
+.quality-badge.high { background: rgba(45,90,61,0.12); color: var(--green); }
+.quality-badge.medium { background: rgba(183,121,31,0.12); color: var(--audit-flag); }
+.quality-badge.low { background: rgba(229,62,62,0.12); color: var(--error); }
+.assumption-flags {
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px solid var(--tool-card-border);
+}
+.assumption-flag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: var(--muted);
+  padding: 3px 0;
+}
+
+/* ── Red flag block ─────────────────────────────────────────────── */
+.red-flag-block {
+  background: var(--red-flag-bg);
+  border-left: 4px solid var(--red-flag-border);
+  border-radius: 0 var(--r-card) var(--r-card) 0;
+  padding: 28px 32px;
+  margin: 20px 0;
+}
+.red-flag-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--error);
+  margin-bottom: 12px;
+}
+.red-flag-body {
+  font-size: 15px;
+  color: var(--off-black);
+  line-height: 1.6;
+  margin-bottom: 8px;
+}
+.red-flag-ref {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--tool-label);
+  margin-top: 12px;
+}
+
+/* ── Audit panel ────────────────────────────────────────────────── */
+.review-layout {
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  gap: 16px;
+  align-items: start;
+}
+.protocol-panel {
+  background: var(--tool-card);
+  border: 1px solid var(--tool-card-border);
+  border-radius: var(--r-card);
+  padding: 32px;
+  overflow-y: auto;
+  max-height: calc(100vh - 200px);
+}
+.audit-panel {
+  background: var(--tool-card);
+  border: 1px solid var(--tool-card-border);
+  border-radius: var(--r-card);
+  padding: 24px;
+  position: sticky;
+  top: 16px;
+  max-height: calc(100vh - 200px);
+  overflow-y: auto;
+}
+.audit-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border-radius: 10px;
+  margin-bottom: 16px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  font-weight: 400;
+}
+.audit-badge.PASS { background: rgba(45,90,61,0.12); color: var(--audit-pass); }
+.audit-badge.FLAG { background: rgba(183,121,31,0.12); color: var(--audit-flag); }
+.audit-badge.FAIL { background: rgba(229,62,62,0.12); color: var(--audit-fail); }
+.dim-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 0;
+  border-bottom: 1px solid var(--tool-card-border);
+}
+.dim-row:last-child { border-bottom: none; }
+.dim-name {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--tool-label);
+  text-transform: uppercase;
+}
+.dim-badge {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 20px;
+}
+.dim-badge.PASS { color: var(--audit-pass); }
+.dim-badge.FLAG { color: var(--audit-flag); }
+.dim-badge.FAIL { color: var(--audit-fail); }
+.revision-count {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--tool-label);
+  text-align: center;
+  padding: 8px 0;
+  margin-top: 8px;
+}
+.issues-section { margin-top: 12px; }
+.issue-item {
+  font-size: 13px;
+  color: var(--off-black);
+  padding: 8px 0;
+  border-bottom: 1px solid var(--tool-card-border);
+  line-height: 1.5;
+}
+.issue-item:last-child { border-bottom: none; }
+.revision-brief {
+  margin-top: 12px;
+  background: var(--tool-input-bg);
+  border-radius: 10px;
+  padding: 12px;
+  font-size: 13px;
+  color: var(--off-black);
+  line-height: 1.6;
+}
+
+/* ── Adjustment summary ─────────────────────────────────────────── */
+.adjustment-summary {
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px solid var(--tool-card-border);
+}
+.adj-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 4px 0;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+}
+.adj-delta-pos { color: var(--audit-pass); min-width: 60px; }
+.adj-delta-neg { color: var(--audit-flag); min-width: 60px; }
+.adj-blacklist { color: var(--audit-fail); min-width: 60px; }
+.adj-desc { color: var(--off-black); }
+
+/* ── Prior iterations panel ─────────────────────────────────────── */
+.prior-iterations {
+  margin-top: 16px;
+  border: 1px solid var(--tool-card-border);
+  border-radius: var(--r-card);
+  overflow: hidden;
+}
+.prior-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 20px;
+  background: var(--tool-card);
+  cursor: pointer;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--tool-label);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  border: none;
+  width: 100%;
+  text-align: left;
+}
+.prior-body { display: none; }
+.prior-body.open { display: block; }
+.prior-iter-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 20px;
+  border-top: 1px solid var(--tool-card-border);
+  background: var(--tool-card);
+}
+.prior-date {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--tool-label);
+  min-width: 70px;
+}
+.prior-meta {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: var(--off-black);
+  flex: 1;
+}
+.prior-view {
+  font-size: 13px;
+  color: var(--green);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+}
+
+/* ── Protocol markdown render ───────────────────────────────────── */
+.protocol-render h1 { font-size: 20px; font-weight: 600; margin: 20px 0 10px; }
+.protocol-render h2 { font-size: 18px; font-weight: 600; margin: 18px 0 8px; }
+.protocol-render h3 {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin: 14px 0 6px;
+}
+.protocol-render p { font-size: 15px; line-height: 1.8; margin-bottom: 10px; }
+.protocol-render ul, .protocol-render ol { padding-left: 20px; margin-bottom: 10px; }
+.protocol-render li { font-size: 15px; line-height: 1.8; margin-bottom: 4px; }
+.protocol-render strong { font-weight: 600; }
+.protocol-render code {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  background: var(--tool-input-bg);
+  padding: 1px 5px;
+  border-radius: 4px;
+}
+
+/* ── Buttons ────────────────────────────────────────────────────── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 44px;
+  padding: 0 24px;
+  border-radius: var(--r-btn);
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+  transition: opacity var(--transition-fast);
+  text-decoration: none;
+}
+.btn:hover { opacity: 0.82; }
+.btn:disabled { opacity: 0.3; cursor: not-allowed; pointer-events: none; }
+.btn-primary { background: var(--off-black); color: #fff; }
+.btn-green { background: var(--green); color: #fff; }
+.btn-secondary {
+  background: transparent;
+  color: var(--off-black);
+  border: 1px solid rgba(0,0,0,0.15);
+}
+.btn-ghost {
+  background: none;
+  border: none;
+  color: var(--muted);
+  font-size: 13px;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  padding: 0;
+  height: auto;
+}
+.btn-full { width: 100%; }
+.btn-actions { display: flex; flex-direction: column; gap: 8px; margin-top: 16px; }
+
+/* ── Export cards ───────────────────────────────────────────────── */
+.export-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin: 24px 0;
+}
+.export-card {
+  background: var(--tool-card);
+  border: 1px solid var(--tool-card-border);
+  border-radius: var(--r-card);
+  padding: 24px;
+  text-align: center;
+}
+.export-icon { font-size: 28px; margin-bottom: 8px; }
+.export-title { font-weight: 600; font-size: 15px; margin-bottom: 4px; }
+.export-sub { font-size: 13px; color: var(--muted); margin-bottom: 16px; }
+
+/* ── Session list (home) ────────────────────────────────────────── */
+.session-home {
+  max-width: 640px;
+}
+.sessions-list {
+  background: var(--tool-card);
+  border: 1px solid var(--tool-card-border);
+  border-radius: var(--r-card);
+  overflow: hidden;
+}
+.session-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 24px;
+  border-bottom: 1px solid var(--tool-card-border);
+  cursor: pointer;
+  transition: background var(--transition-fast);
+}
+.session-row:last-child { border-bottom: none; }
+.session-row:hover { background: rgba(0,0,0,0.02); }
+.session-name { font-weight: 500; font-size: 15px; }
+.session-meta {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--tool-label);
+  margin-top: 2px;
+}
+.session-status {
+  margin-left: auto;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  padding: 3px 10px;
+  border-radius: 20px;
+}
+.status-active { background: rgba(45,90,61,0.1); color: var(--green); }
+.status-done { background: rgba(0,0,0,0.06); color: var(--muted); }
+.status-waiting { background: rgba(183,121,31,0.1); color: var(--audit-flag); }
+
+/* ── Iteration progress (within a session) ──────────────────────── */
+.iter-progress {
+  background: var(--tool-card);
+  border: 1px solid var(--tool-card-border);
+  border-radius: var(--r-card);
+  overflow: hidden;
+  margin: 20px 0;
+}
+.iter-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 24px;
+  border-bottom: 1px solid var(--tool-card-border);
+  min-height: 52px;
+}
+.iter-row:last-child { border-bottom: none; }
+.iter-icon { width: 20px; text-align: center; font-size: 14px; }
+.iter-label { font-size: 14px; font-weight: 500; flex: 1; }
+.iter-meta-date {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--tool-label);
+}
+.iter-delta-neg {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--audit-flag);
+}
+.iter-delta-pos {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--audit-pass);
+}
+.iter-row.pending .iter-label,
+.iter-row.pending .iter-meta-date { color: var(--muted); }
+.iter-row.active .iter-label { color: var(--green); }
+
+/* ── Success state ──────────────────────────────────────────────── */
+.success-check {
+  font-size: 48px;
+  margin-bottom: 16px;
+  display: block;
+}
+.next-step-box {
+  background: var(--tool-card);
+  border: 1px solid var(--tool-card-border);
+  border-radius: var(--r-card);
+  padding: 20px 24px;
+  margin-top: 20px;
+}
+
+/* ── Error state ────────────────────────────────────────────────── */
+.error-box {
+  background: var(--red-flag-bg);
+  border: 1px solid var(--red-flag-border);
+  border-radius: var(--r-card);
+  padding: 24px;
+  margin: 20px 0;
+}
+.error-title { font-size: 18px; font-weight: 600; color: var(--error); margin-bottom: 8px; }
+.error-body { font-size: 14px; color: var(--off-black); line-height: 1.6; }
+.error-preserved {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--tool-label);
+  margin-top: 12px;
+}
+
+/* ── Divider ────────────────────────────────────────────────────── */
+.divider {
+  height: 1px;
+  background: var(--border);
+  margin: 24px 0;
+}
+
+/* ── Spacer ─────────────────────────────────────────────────────── */
+.mt8 { margin-top: 8px; }
+.mt16 { margin-top: 16px; }
+.mt24 { margin-top: 24px; }
+.mb8 { margin-bottom: 8px; }
+.mb16 { margin-bottom: 16px; }
+</style>
+</head>
+<body>
+
+<!-- ── Header ─────────────────────────────────────────────────────────── -->
+<div class="header">
+  <span class="header-brand">RIK Athletica</span>
+  <span class="header-sep">▸</span>
+  <span class="header-brand" style="color:var(--muted)">Protocol Builder</span>
+</div>
+
+<!-- ── Step bar (hidden on home screen) ───────────────────────────────── -->
+<div class="step-bar" id="stepBar" style="display:none">
+  <div class="step-item" id="sb-1">
+    <div class="step-circle" id="sc-1">1</div>
+    <span class="step-label">Upload</span>
+  </div>
+  <div class="step-connector"></div>
+  <div class="step-item" id="sb-2">
+    <div class="step-circle" id="sc-2">2</div>
+    <span class="step-label">Parse & Gate</span>
+  </div>
+  <div class="step-connector"></div>
+  <div class="step-item" id="sb-3">
+    <div class="step-circle" id="sc-3">3</div>
+    <span class="step-label">Generate</span>
+  </div>
+  <div class="step-connector"></div>
+  <div class="step-item" id="sb-4">
+    <div class="step-circle" id="sc-4">4</div>
+    <span class="step-label">Review</span>
+  </div>
+  <div class="step-connector"></div>
+  <div class="step-item" id="sb-5">
+    <div class="step-circle" id="sc-5">5</div>
+    <span class="step-label">Export</span>
+  </div>
+</div>
+
+<!-- ── Iteration strip (iterations 1-3 only) ──────────────────────────── -->
+<div class="iteration-strip" id="iterationStrip" style="display:none">
+  <div class="iter-strip-item">
+    <span class="iter-strip-label">Iteration</span>
+    <span class="iter-strip-value" id="stripIteration">—</span>
+  </div>
+  <div class="iter-strip-item">
+    <span class="iter-strip-label">Target entering</span>
+    <span class="iter-strip-value" id="stripTarget">—</span>
+  </div>
+  <div class="iter-strip-item" id="stripBlacklistItem" style="display:none">
+    <span class="iter-strip-label">Blacklisted</span>
+    <span class="iter-strip-blacklist" id="stripBlacklist">—</span>
+  </div>
+</div>
+
+<!-- ── Main content ───────────────────────────────────────────────────── -->
+<div class="content" id="mainContent">
+  <!-- dynamically rendered by JS -->
+</div>
+
+<script>
+// ── App state ──────────────────────────────────────────────────────────────
+const app = {
+  screen: 'home',   // 'home' | 'upload' | 'parsing' | 'generating' | 'review' | 'export' | 'session-home'
+  currentStep: 0,   // 1-5 for wizard steps
+  sessionId: null,
+  sessionState: null,
+  uploadedFiles: { intake: null, trainingPlan: null, feedback: null },
+  elapsedTimer: null,
+  elapsedSeconds: 0,
+};
+
+// ── Helpers ────────────────────────────────────────────────────────────────
+const $ = id => document.getElementById(id);
+const content = () => $('mainContent');
+
+function slugify(name) {
+  return name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+}
+
+function formatDate(isoStr) {
+  if (!isoStr) return '—';
+  return new Date(isoStr).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
+}
+
+function sessionLabel(state) {
+  if (!state) return '';
+  const iter = state.currentIteration || 0;
+  const labels = ['Week 1 Protocol', 'Week 2 Adjustment', 'Week 3 Adjustment', 'Race-Week Final'];
+  return `Iteration ${iter + 1} — ${labels[iter] || '—'}`;
+}
+
+function stepStatus(state) {
+  const step = state.step;
+  if (step === 'exported' && state.currentIteration === 3) return { label: 'Complete', cls: 'status-done' };
+  if (step === 'awaiting_feedback') return { label: 'Awaiting Feedback', cls: 'status-waiting' };
+  if (['generating','auditing','review'].includes(step)) return { label: 'In Progress', cls: 'status-active' };
+  return { label: 'Active', cls: 'status-active' };
+}
+
+// ── Step bar helpers ───────────────────────────────────────────────────────
+function showStepBar(activeStep) {
+  $('stepBar').style.display = 'flex';
+  for (let i = 1; i <= 5; i++) {
+    const item = $(`sb-${i}`);
+    const circle = $(`sc-${i}`);
+    item.classList.remove('active', 'done');
+    circle.classList.remove('active', 'done');
+    if (i < activeStep) {
+      item.classList.add('done');
+      circle.classList.add('done');
+      circle.textContent = '✓';
+    } else if (i === activeStep) {
+      item.classList.add('active');
+      circle.classList.add('active');
+      circle.textContent = i;
+    } else {
+      circle.textContent = i;
+    }
+  }
+}
+
+function hideStepBar() {
+  $('stepBar').style.display = 'none';
+}
+
+function showIterationStrip(state) {
+  if (!state || state.currentIteration === 0) {
+    $('iterationStrip').style.display = 'none';
+    return;
+  }
+  const iter = state.currentIteration;
+  const iterLabels = ['', 'Iteration 1 of 3 · Adjusting for Week 2', 'Iteration 2 of 3 · Adjusting for Week 3', 'Iteration 3 of 3 · Race-Week Finalisation'];
+  $('stripIteration').textContent = iterLabels[iter] || `Iteration ${iter}`;
+  const target = state.cumulativeCarbTarget || 60;
+  $('stripTarget').textContent = `${target}g/hr`;
+  const blacklisted = state.blacklistedProducts || [];
+  if (blacklisted.length > 0) {
+    $('stripBlacklistItem').style.display = 'flex';
+    $('stripBlacklist').textContent = blacklisted.join(', ');
+  } else {
+    $('stripBlacklistItem').style.display = 'none';
+  }
+  $('iterationStrip').style.display = 'flex';
+}
+
+// ── Screen: Home ───────────────────────────────────────────────────────────
+async function renderHome() {
+  app.screen = 'home';
+  app.sessionId = null;
+  app.sessionState = null;
+  hideStepBar();
+  $('iterationStrip').style.display = 'none';
+
+  content().innerHTML = `<div style="margin-bottom:32px;display:flex;align-items:flex-end;justify-content:space-between;">
+    <div>
+      <h1>Protocol Builder</h1>
+      <div class="muted mt8">Build and iterate athlete nutrition protocols.</div>
+    </div>
+    <button class="btn btn-primary" onclick="renderUpload(null)">+ New protocol</button>
+  </div>
+  <div class="label mb8">Recent sessions</div>
+  <div id="sessionsContainer"><div class="muted">Loading…</div></div>`;
+
+  try {
+    const res = await fetch('/api/sessions');
+    const { sessions } = await res.json();
+    const container = $('sessionsContainer');
+
+    if (sessions.length === 0) {
+      container.innerHTML = `<div class="card" style="text-align:center;padding:48px;">
+        <div style="font-size:13px;color:var(--muted)">No protocols yet. Start a new one above.</div>
+      </div>`;
+      return;
+    }
+
+    let html = '<div class="sessions-list">';
+    for (const sid of sessions) {
+      try {
+        const sres = await fetch(`/api/session/${sid}`);
+        const state = await sres.json();
+        const { label: statusLabel, cls: statusCls } = stepStatus(state);
+        const athleteName = state.intake?.name || sid;
+        const event = state.intake?.eventType === 'ironman_140' ? 'IRONMAN 140.6' : state.intake?.eventType === 'ironman_70' ? 'IRONMAN 70.3' : '—';
+        const raceDate = state.intake?.raceDate ? formatDate(state.intake.raceDate) : '';
+        html += `<div class="session-row" onclick="openSession('${sid}')">
+          <div>
+            <div class="session-name">${athleteName}</div>
+            <div class="session-meta">${event}${raceDate ? ' · Race: ' + raceDate : ''} · ${sessionLabel(state)}</div>
+          </div>
+          <span class="session-status ${statusCls}">${statusLabel}</span>
+        </div>`;
+      } catch {}
+    }
+    html += '</div>';
+    container.innerHTML = html;
+  } catch (e) {
+    $('sessionsContainer').innerHTML = `<div class="muted">Error loading sessions.</div>`;
+  }
+}
+
+// ── Open existing session ──────────────────────────────────────────────────
+async function openSession(sessionId) {
+  try {
+    const res = await fetch(`/api/session/${sessionId}`);
+    const state = await res.json();
+    app.sessionId = sessionId;
+    app.sessionState = state;
+
+    const step = state.step;
+
+    if (step === 'awaiting_feedback' || step === 'exported') {
+      renderSessionHome(state);
+    } else if (step === 'review') {
+      showStepBar(4);
+      showIterationStrip(state);
+      renderReview(state.currentDraft, state.currentVerdict, state);
+    } else if (step === 'generating' || step === 'auditing') {
+      // Resume generate from session
+      showStepBar(3);
+      showIterationStrip(state);
+      renderGenerate(sessionId, state);
+    } else {
+      renderSessionHome(state);
+    }
+  } catch {
+    renderHome();
+  }
+}
+
+// ── Screen: Session home (iteration progress) ──────────────────────────────
+function renderSessionHome(state) {
+  app.screen = 'session-home';
+  app.sessionState = state;
+  hideStepBar();
+  $('iterationStrip').style.display = 'none';
+
+  const name = state.intake?.name || state.athleteId;
+  const event = state.intake?.eventType === 'ironman_140' ? 'IRONMAN 140.6' : 'IRONMAN 70.3';
+  const raceDate = state.intake?.raceDate ? formatDate(state.intake.raceDate) : '';
+
+  const iterConfigs = [
+    { label: 'Week 1 Protocol', week: 1 },
+    { label: 'Week 2 Adjustment', week: 2 },
+    { label: 'Week 3 Adjustment', week: 3 },
+    { label: 'Race-Week Finalisation', week: 'race' },
+  ];
+
+  let iterRows = '';
+  for (let i = 0; i < 4; i++) {
+    const cfg = iterConfigs[i];
+    const iter = state.iterations.find(it => it.iterationNumber === i);
+    const current = state.currentIteration;
+
+    let icon, rowCls, delta = '';
+    if (iter) {
+      icon = `<span style="color:var(--green)">✓</span>`;
+      rowCls = '';
+      const exportDate = iter.exportedAt ? formatDate(iter.exportedAt) : '';
+      const adj = iter.adjustmentsApplied || [];
+      const totalDelta = adj.reduce((acc, a) => acc + (a.delta || 0), 0);
+      if (totalDelta < 0) delta = `<span class="iter-delta-neg">${totalDelta}g/hr</span>`;
+      else if (totalDelta > 0) delta = `<span class="iter-delta-pos">+${totalDelta}g/hr</span>`;
+      const dateStr = exportDate ? `<span class="iter-meta-date">${exportDate}</span>` : '';
+      iterRows += `<div class="iter-row ${rowCls}">
+        <div class="iter-icon">${icon}</div>
+        <div class="iter-label">${cfg.label}</div>
+        ${dateStr}${delta}
+      </div>`;
+    } else if (i === current && state.step !== 'awaiting_feedback' && state.step !== 'exported') {
+      icon = `<span class="pulse-dot"></span>`;
+      rowCls = 'active';
+      iterRows += `<div class="iter-row ${rowCls}">
+        <div class="iter-icon">${icon}</div>
+        <div class="iter-label">${cfg.label}</div>
+        <span class="iter-meta-date" style="color:var(--green);font-weight:500">In Progress</span>
+      </div>`;
+    } else if (i === current && (state.step === 'awaiting_feedback')) {
+      icon = `<span style="color:var(--audit-flag)">○</span>`;
+      rowCls = 'active';
+      iterRows += `<div class="iter-row ${rowCls}">
+        <div class="iter-icon">${icon}</div>
+        <div class="iter-label">${cfg.label}</div>
+        <span class="iter-meta-date" style="color:var(--audit-flag)">Upload Feedback</span>
+      </div>`;
+    } else {
+      icon = `<span style="color:var(--tool-label)">○</span>`;
+      rowCls = 'pending';
+      iterRows += `<div class="iter-row ${rowCls}">
+        <div class="iter-icon">${icon}</div>
+        <div class="iter-label">${cfg.label}</div>
+        <span class="iter-meta-date">Pending</span>
+      </div>`;
+    }
+  }
+
+  const isComplete = state.step === 'exported' && state.currentIteration === 3;
+  const actionBtn = isComplete
+    ? `<button class="btn btn-secondary mt24" onclick="renderHome()">← Back to all protocols</button>`
+    : `<button class="btn btn-primary mt24" onclick="renderUpload('${app.sessionId}')">Continue → Iteration ${state.currentIteration + 1}</button>`;
+
+  content().innerHTML = `
+    <div style="margin-bottom:8px">
+      <button class="btn-ghost" onclick="renderHome()" style="margin-bottom:16px">← All protocols</button>
+    </div>
+    <div style="margin-bottom:24px">
+      <h1>${name}</h1>
+      <div class="label mt8">${event}${raceDate ? ' · Race: ' + raceDate : ''}</div>
+    </div>
+    <div class="label mb8">Protocol progress</div>
+    <div class="iter-progress">${iterRows}</div>
+    ${actionBtn}
+  `;
+}
+
+// ── Screen: Upload ─────────────────────────────────────────────────────────
+function renderUpload(existingSessionId) {
+  app.screen = 'upload';
+  app.uploadedFiles = { intake: null, trainingPlan: null, feedback: null };
+
+  // Determine iteration context
+  const state = app.sessionState;
+  const iteration = state ? state.currentIteration : 0;
+  app.currentStep = 1;
+
+  showStepBar(1);
+  showIterationStrip(state);
+
+  const isIteration0 = iteration === 0;
+  const isIteration3 = iteration === 3;
+
+  const iterTitle = isIteration0 ? 'Upload athlete files'
+    : iteration === 1 ? 'Upload Week 2 files'
+    : iteration === 2 ? 'Upload Week 3 files'
+    : 'Upload race-week feedback';
+
+  const feedbackZoneHtml = !isIteration0 ? `
+    <div class="label mb8">WEEKLY FEEDBACK CSV <span style="color:var(--muted);font-weight:400">(required)</span></div>
+    <div class="upload-zone" id="feedbackZone" role="button" tabindex="0">
+      <input type="file" id="feedbackInput" accept=".csv" aria-label="Upload feedback CSV">
+      <div class="upload-placeholder">
+        <div>Drop Week ${iteration} feedback CSV here, or click to browse</div>
+        <div class="upload-format">CSV only · Typeform weekly feedback export</div>
+      </div>
+    </div>
+    <div class="upload-error-msg" id="feedbackError" style="display:none"></div>
+  ` : '';
+
+  const trainingPlanZoneHtml = !isIteration3 ? `
+    <div class="label mb8">TRAINING PLAN <span style="color:var(--muted);font-weight:400">(required)</span></div>
+    <div class="upload-zone" id="trainingZone" role="button" tabindex="0">
+      <input type="file" id="trainingInput" accept=".pdf,.png,.jpg,.jpeg,.csv,.txt" aria-label="Upload training plan">
+      <div class="upload-placeholder">
+        <div>Drop training plan here, or click to browse</div>
+        <div class="upload-format">PDF · image · CSV · text file · max 10MB</div>
+      </div>
+    </div>
+    <div class="upload-error-msg" id="trainingError" style="display:none"></div>
+  ` : '';
+
+  content().innerHTML = `
+    <h1>${iterTitle}</h1>
+    <div class="muted mt8 mb24">${isIteration0 ? 'Upload the Typeform intake CSV and training plan to begin.' : isIteration3 ? 'Upload the Week 3 feedback CSV to generate the race-week protocol.' : `Upload the Week ${iteration} feedback CSV and next week's training plan.`}</div>
+
+    ${isIteration0 ? `
+    <div class="label mb8">TYPEFORM INTAKE CSV <span style="color:var(--muted);font-weight:400">(required)</span></div>
+    <div class="upload-zone" id="intakeZone" role="button" tabindex="0">
+      <input type="file" id="intakeInput" accept=".csv" aria-label="Upload intake CSV">
+      <div class="upload-placeholder">
+        <div>Drop intake CSV here, or click to browse</div>
+        <div class="upload-format">CSV only · max 5MB</div>
+      </div>
+    </div>
+    <div class="upload-error-msg" id="intakeError" style="display:none"></div>
+    ` : ''}
+
+    ${feedbackZoneHtml}
+    ${trainingPlanZoneHtml}
+
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-top:8px">
+      <button class="btn-ghost" onclick="existingSessionId ? renderSessionHome(app.sessionState) : renderHome()">← ${existingSessionId ? 'Back to session' : 'All protocols'}</button>
+      <button class="btn btn-primary" id="continueBtn" disabled onclick="submitUpload('${existingSessionId || ''}', ${iteration})">Continue →</button>
+    </div>
+  `;
+
+  // Wire up file inputs
+  function wireUpload(zoneId, inputId, errorId, fileKey, validator) {
+    const zone = $(zoneId);
+    const input = $(inputId);
+    if (!zone || !input) return;
+
+    input.addEventListener('change', () => {
+      const file = input.files?.[0];
+      if (!file) return;
+      const err = validator(file);
+      if (err) {
+        zone.classList.add('error');
+        $(errorId).textContent = err;
+        $(errorId).style.display = 'block';
+        app.uploadedFiles[fileKey] = null;
+      } else {
+        zone.classList.remove('error');
+        zone.classList.add('filled');
+        if (errorId) { $(errorId).style.display = 'none'; }
+        zone.innerHTML = `<input type="file" style="display:none">
+          <div class="upload-filled">
+            <span class="upload-check">✓</span>
+            <div>
+              <div class="upload-filled-name">${file.name}</div>
+              <div class="upload-filled-size">${(file.size / 1024).toFixed(0)} KB</div>
+            </div>
+          </div>`;
+        app.uploadedFiles[fileKey] = file;
+      }
+      updateContinueBtn(iteration, isIteration0, isIteration3);
+    });
+
+    zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('drag-over'); });
+    zone.addEventListener('dragleave', () => zone.classList.remove('drag-over'));
+    zone.addEventListener('drop', e => {
+      e.preventDefault();
+      zone.classList.remove('drag-over');
+      const file = e.dataTransfer?.files?.[0];
+      if (file) {
+        const dt = new DataTransfer();
+        dt.items.add(file);
+        input.files = dt.files;
+        input.dispatchEvent(new Event('change'));
+      }
+    });
+    zone.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') input.click(); });
+  }
+
+  const csvValidator = f => {
+    if (!f.name.endsWith('.csv')) return 'Not a CSV file';
+    if (f.size > 5 * 1024 * 1024) return 'File too large (max 5MB)';
+    return null;
+  };
+  const planValidator = f => {
+    const allowed = ['.pdf','.png','.jpg','.jpeg','.csv','.txt'];
+    const ok = allowed.some(ext => f.name.toLowerCase().endsWith(ext));
+    if (!ok) return 'Unsupported format. Use PDF, image, CSV, or text file.';
+    if (f.size > 10 * 1024 * 1024) return 'File too large (max 10MB)';
+    return null;
+  };
+
+  if (isIteration0) wireUpload('intakeZone', 'intakeInput', 'intakeError', 'intake', csvValidator);
+  if (!isIteration0) wireUpload('feedbackZone', 'feedbackInput', 'feedbackError', 'feedback', csvValidator);
+  if (!isIteration3) wireUpload('trainingZone', 'trainingInput', 'trainingError', 'trainingPlan', planValidator);
+
+  // Pre-check button state for iteration 3 (only feedback needed)
+  updateContinueBtn(iteration, isIteration0, isIteration3);
+}
+
+function updateContinueBtn(iteration, isIteration0, isIteration3) {
+  const btn = $('continueBtn');
+  if (!btn) return;
+  let ready = false;
+  if (isIteration0) {
+    ready = !!app.uploadedFiles.intake && !!app.uploadedFiles.trainingPlan;
+  } else if (isIteration3) {
+    ready = !!app.uploadedFiles.feedback;
+  } else {
+    ready = !!app.uploadedFiles.feedback && !!app.uploadedFiles.trainingPlan;
+  }
+  btn.disabled = !ready;
+}
+
+// ── Submit upload → parse ──────────────────────────────────────────────────
+async function submitUpload(existingSessionId, iteration) {
+  const state = app.sessionState;
+  const isIteration0 = iteration === 0;
+
+  // Build session ID
+  let sessionId = existingSessionId;
+  if (!sessionId || sessionId === 'null' || sessionId === '') {
+    sessionId = null; // will be assigned after parsing name
+  }
+
+  app.currentStep = 2;
+  showStepBar(2);
+
+  content().innerHTML = `
+    <h1>Parsing…</h1>
+    <div class="step-list" id="parseSteps"></div>
+    <div id="qualitySection" style="display:none"></div>
+    <div id="errorSection" style="display:none"></div>
+  `;
+
+  function addStep(label, status = 'pending') {
+    const steps = $('parseSteps');
+    const row = document.createElement('div');
+    row.className = `step-row ${status}`;
+    row.id = `parse-step-${label.replace(/\s/g,'-').toLowerCase()}`;
+    let icon;
+    if (status === 'completed') icon = `<span class="step-icon" style="color:var(--green)">✓</span>`;
+    else if (status === 'active') icon = `<span class="step-icon"><span class="pulse-dot"></span></span>`;
+    else icon = `<span class="step-icon" style="color:var(--muted)">○</span>`;
+    row.innerHTML = `${icon}<span class="step-row-label">${label}</span>`;
+    steps.appendChild(row);
+    return row.id;
+  }
+
+  function updateStep(id, status, label) {
+    const row = $(id);
+    if (!row) return;
+    row.className = `step-row ${status}`;
+    let icon;
+    if (status === 'completed') icon = `<span class="step-icon" style="color:var(--green)">✓</span>`;
+    else if (status === 'active') icon = `<span class="step-icon"><span class="pulse-dot"></span></span>`;
+    else if (status === 'error') icon = `<span class="step-icon" style="color:var(--error)">✗</span>`;
+    else icon = `<span class="step-icon" style="color:var(--muted)">○</span>`;
+    if (label) row.querySelector('.step-row-label').textContent = label;
+    row.querySelector('.step-icon').outerHTML = icon;
+    // Re-select after replacement
+    const newIcon = row.children[0];
+  }
+
+  const intakeStepId = addStep('Parsing intake CSV', 'active');
+  const trainingStepId = addStep('Parsing training plan');
+  const qualityStepId = addStep('Running quality check');
+  const flagStepId = addStep('Running red flag check');
+
+  const formData = new FormData();
+  if (isIteration0 && app.uploadedFiles.intake) formData.append('intake', app.uploadedFiles.intake);
+  if (app.uploadedFiles.feedback) formData.append('feedback', app.uploadedFiles.feedback);
+  if (app.uploadedFiles.trainingPlan) formData.append('trainingPlan', app.uploadedFiles.trainingPlan);
+  if (sessionId) formData.append('sessionId', sessionId);
+  formData.append('iteration', String(iteration));
+
+  const url = `/api/parse-intake?sessionId=${sessionId || 'new'}`;
+
+  try {
+    const response = await fetch(url, { method: 'POST', body: formData });
+    const reader = response.body.getReader();
+    const decoder = new TextDecoder();
+    let buffer = '';
+
+    while (true) {
+      const { value, done } = await reader.read();
+      if (done) break;
+      buffer += decoder.decode(value, { stream: true });
+      const lines = buffer.split('\n');
+      buffer = lines.pop() || '';
+
+      for (const line of lines) {
+        if (!line.startsWith('data: ')) continue;
+        let evt;
+        try { evt = JSON.parse(line.slice(6)); } catch { continue; }
+
+        if (evt.type === 'step') {
+          // Server step names: parsing_intake, parsing_training, parsing_feedback, quality_check, red_flag_check
+          if (evt.step === 'parsing_intake' && evt.status === 'completed') {
+            updateStep(intakeStepId, 'completed');
+            updateStep(trainingStepId, 'active');
+          }
+          if (evt.step === 'parsing_training' && evt.status === 'completed') {
+            updateStep(trainingStepId, 'completed');
+            updateStep(qualityStepId, 'active');
+          }
+          if (evt.step === 'quality_check' && evt.status === 'active') {
+            updateStep(trainingStepId, 'completed');
+            updateStep(qualityStepId, 'active');
+          }
+          if (evt.step === 'quality_check' && evt.status === 'completed') {
+            updateStep(qualityStepId, 'completed');
+            updateStep(flagStepId, 'active');
+          }
+          if (evt.step === 'red_flag_check' && evt.status === 'completed') {
+            updateStep(flagStepId, 'completed');
+          }
+        }
+
+        if (evt.type === 'session_created') {
+          app.sessionId = evt.sessionId;
+          sessionId = evt.sessionId;
+        }
+
+        if (evt.type === 'red_flag') {
+          updateStep(flagStepId, 'error', 'Red flag detected');
+          $('qualitySection').style.display = 'none';
+          $('errorSection').style.display = 'block';
+          $('errorSection').innerHTML = `
+            <div class="red-flag-block" role="alert">
+              <div class="red-flag-title">⚠ Pipeline Blocked</div>
+              <div class="red-flag-body">${(evt.flags || []).map(f => `<div>${f}</div>`).join('')}</div>
+              <div class="red-flag-body" style="margin-top:12px">This athlete has disclosed a condition that falls outside RIK Athletica's service scope. This protocol cannot be built. Refer athlete to a registered sports dietitian.</div>
+              <div class="red-flag-ref">Reference: Terms of Service §3 — Medical Contraindications</div>
+            </div>
+            <button class="btn btn-secondary mt16" onclick="renderHome()">← Return to home</button>
+          `;
+        }
+
+        if (evt.type === 'parsed') {
+          $('qualitySection').style.display = 'block';
+          const athleteName = evt.athleteName || 'Athlete';
+          const eventLabel = evt.eventType === 'ironman_140' ? 'IRONMAN 140.6' : 'IRONMAN 70.3';
+          const raceDate = evt.raceDate ? formatDate(evt.raceDate) : '';
+          const overall = evt.intakeQuality || 'Medium';
+          const lowFields = evt.lowConfidenceFields || [];
+          const currentSessionId = app.sessionId || sessionId;
+
+          $('qualitySection').innerHTML = `
+            <div class="quality-summary">
+              <div style="font-weight:600;font-size:16px;margin-bottom:12px">${athleteName}</div>
+              <div class="quality-row">
+                <span class="quality-field">Event</span>
+                <span class="mono" style="font-size:12px">${eventLabel}${raceDate ? ' · Race: ' + raceDate : ''}</span>
+              </div>
+              <div class="quality-row">
+                <span class="quality-field">Intake Quality</span>
+                <span class="quality-badge ${overall.toLowerCase()}">${overall}</span>
+              </div>
+              ${lowFields.length > 0 ? `
+                <div class="assumption-flags">
+                  <div class="label mb8">Low confidence fields</div>
+                  ${lowFields.map(f => `<div class="assumption-flag">${f}</div>`).join('')}
+                </div>
+              ` : ''}
+            </div>
+            <div style="text-align:right;margin-top:16px">
+              <button class="btn btn-primary" onclick="startGenerate('${currentSessionId}')">Generate Protocol →</button>
+            </div>
+          `;
+        }
+
+        if (evt.type === 'error') {
+          $('errorSection').style.display = 'block';
+          $('errorSection').innerHTML = `
+            <div class="error-box">
+              <div class="error-title">Parse failed</div>
+              <div class="error-body">${evt.message || 'An error occurred during parsing.'}</div>
+            </div>
+            <button class="btn btn-secondary mt16" onclick="renderUpload(null)">← Try again</button>
+          `;
+        }
+      }
+    }
+  } catch (e) {
+    $('errorSection').style.display = 'block';
+    $('errorSection').innerHTML = `
+      <div class="error-box">
+        <div class="error-title">Connection error</div>
+        <div class="error-body">${e.message}</div>
+      </div>
+      <button class="btn btn-secondary mt16" onclick="renderUpload(null)">← Try again</button>
+    `;
+  }
+}
+
+// ── Screen: Generate ───────────────────────────────────────────────────────
+async function startGenerate(sessionId) {
+  app.sessionId = sessionId;
+  app.currentStep = 3;
+  showStepBar(3);
+
+  try {
+    const res = await fetch(`/api/session/${sessionId}`);
+    const state = await res.json();
+    showIterationStrip(state);
+    renderGenerate(sessionId, state);
+  } catch {
+    renderGenerate(sessionId, null);
+  }
+}
+
+async function renderGenerate(sessionId, state) {
+  const name = state?.intake?.name || 'Athlete';
+  const event = state?.intake?.eventType === 'ironman_140' ? 'IRONMAN 140.6' : 'IRONMAN 70.3';
+  const raceDate = state?.intake?.raceDate ? formatDate(state.intake.raceDate) : '';
+  const iter = state?.currentIteration || 0;
+  const iterLabel = ['Building Week 1 Protocol', 'Adjusting for Week 2', 'Adjusting for Week 3', 'Finalising Race Week'][iter];
+
+  content().innerHTML = `
+    <h1>${iterLabel}</h1>
+    <div class="label mt8 mb24">${name} · ${event}${raceDate ? ' · Race: ' + raceDate : ''}</div>
+    <div class="step-list" id="genSteps"></div>
+    <div id="genElapsed" style="display:none;font-family:JetBrains Mono,monospace;font-size:12px;color:var(--muted);margin-top:8px"></div>
+    <div id="genError" style="display:none"></div>
+  `;
+
+  function addStep(label, status = 'pending') {
+    const steps = $('genSteps');
+    const row = document.createElement('div');
+    row.className = `step-row ${status}`;
+    row.dataset.id = label;
+    let icon;
+    if (status === 'completed') icon = `<span class="step-icon" style="color:var(--green)">✓</span>`;
+    else if (status === 'active') icon = `<span class="step-icon"><span class="pulse-dot"></span></span>`;
+    else icon = `<span class="step-icon" style="color:var(--muted)">○</span>`;
+    row.innerHTML = `${icon}<span class="step-row-label">${label}</span><span class="step-row-elapsed"></span>`;
+    steps.appendChild(row);
+    return row;
+  }
+
+  function updateStep(label, status) {
+    const row = [...$('genSteps').children].find(r => r.dataset.id === label);
+    if (!row) return;
+    row.className = `step-row ${status}`;
+    let icon;
+    if (status === 'completed') icon = `✓`;
+    else if (status === 'active') icon = `<span class="pulse-dot"></span>`;
+    else if (status === 'error') icon = `✗`;
+    else icon = `○`;
+    const iconEl = row.querySelector('.step-icon');
+    if (iconEl) iconEl.innerHTML = icon;
+    if (status === 'completed' && iconEl) iconEl.style.color = 'var(--green)';
+    if (status === 'error' && iconEl) iconEl.style.color = 'var(--error)';
+    if (status === 'active' && iconEl) iconEl.style.color = 'var(--off-black)';
+    if (status === 'pending' && iconEl) iconEl.style.color = 'var(--muted)';
+  }
+
+  const r1 = addStep('Quality check passed', 'completed');
+  const r2 = addStep('Generating protocol (Architect AI)', 'active');
+  const r3 = addStep('Auditing protocol');
+
+  // Elapsed timer
+  app.elapsedSeconds = 0;
+  app.elapsedTimer = setInterval(() => {
+    app.elapsedSeconds++;
+    const el = $('genElapsed');
+    if (el) el.textContent = `${app.elapsedSeconds}s elapsed — building your protocol…`;
+    if (el) el.style.display = 'block';
+  }, 1000);
+
+  try {
+    const response = await fetch('/api/generate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ sessionId }),
+    });
+    const reader = response.body.getReader();
+    const decoder = new TextDecoder();
+    let buffer = '';
+
+    while (true) {
+      const { value, done } = await reader.read();
+      if (done) break;
+      buffer += decoder.decode(value, { stream: true });
+      const lines = buffer.split('\n');
+      buffer = lines.pop() || '';
+
+      for (const line of lines) {
+        if (!line.startsWith('data: ')) continue;
+        let evt;
+        try { evt = JSON.parse(line.slice(6)); } catch { continue; }
+
+        if (evt.type === 'step') {
+          if (evt.step === 'generating' && evt.status === 'active') {
+            updateStep('Generating protocol (Architect AI)', 'active');
+          }
+          if (evt.step === 'auditing' && evt.status === 'active') {
+            clearInterval(app.elapsedTimer);
+            $('genElapsed').style.display = 'none';
+            updateStep('Generating protocol (Architect AI)', 'completed');
+            updateStep('Auditing protocol', 'active');
+          }
+          if (evt.step === 'auditing' && evt.status === 'completed') {
+            clearInterval(app.elapsedTimer);
+            $('genElapsed').style.display = 'none';
+            updateStep('Auditing protocol', 'completed');
+          }
+        }
+
+        if (evt.type === 'ready') {
+          clearInterval(app.elapsedTimer);
+          const res = await fetch(`/api/session/${sessionId}`);
+          const updatedState = await res.json();
+          app.sessionState = updatedState;
+          showStepBar(4);
+          renderReview(updatedState.currentDraft, updatedState.currentVerdict, updatedState);
+        }
+
+        if (evt.type === 'error') {
+          clearInterval(app.elapsedTimer);
+          $('genElapsed').style.display = 'none';
+          updateStep('Generating protocol (Architect AI)', 'error');
+          $('genError').style.display = 'block';
+          $('genError').innerHTML = `
+            <div class="error-box">
+              <div class="error-title">⚠ Generation failed</div>
+              <div class="error-body">${evt.message || 'The Claude API returned an error after 1 retry.'}</div>
+              <div class="error-body mt8">You've been notified at bek.zhou@rik-sports.com.</div>
+              <div class="error-preserved">SESSION PRESERVED — your intake data is saved.</div>
+            </div>
+            <div style="display:flex;gap:12px;margin-top:16px">
+              <button class="btn btn-secondary" onclick="renderGenerate('${sessionId}', null)">Try again</button>
+              <button class="btn-ghost" onclick="renderHome()">← Back to home</button>
+            </div>
+          `;
+        }
+      }
+    }
+  } catch (e) {
+    clearInterval(app.elapsedTimer);
+    $('genError').style.display = 'block';
+    $('genError').innerHTML = `
+      <div class="error-box">
+        <div class="error-title">Connection error</div>
+        <div class="error-body">${e.message}</div>
+      </div>
+      <button class="btn btn-secondary mt16" onclick="startGenerate('${sessionId}')">Try again</button>
+    `;
+  }
+}
+
+// ── Screen: Review ─────────────────────────────────────────────────────────
+function renderReview(draft, verdict, state) {
+  app.screen = 'review';
+  app.currentStep = 4;
+  const sessionId = app.sessionId;
+
+  const name = state?.intake?.name || 'Athlete';
+  const event = state?.intake?.eventType === 'ironman_140' ? 'IRONMAN 140.6' : 'IRONMAN 70.3';
+  const revCount = state?.revisionCount || 0;
+  const iter = state?.currentIteration || 0;
+  const adjustments = state?.iterations?.length > 0
+    ? (state.iterations[state.iterations.length - 1]?.adjustmentsApplied || [])
+    : [];
+
+  // Prior iterations panel
+  const priorIters = (state?.iterations || []).filter(it => it.iterationNumber < iter);
+  let priorHtml = '';
+  if (priorIters.length > 0) {
+    const rows = priorIters.map(it => {
+      const label = ['Week 1 Protocol', 'Week 2 Adjustment', 'Week 3 Adjustment'][it.iterationNumber] || `Iteration ${it.iterationNumber}`;
+      const delta = (it.adjustmentsApplied || []).reduce((acc, a) => acc + (a.delta || 0), 0);
+      const deltaStr = delta < 0 ? `${delta}g/hr` : delta > 0 ? `+${delta}g/hr` : '';
+      return `<div class="prior-iter-row">
+        <span class="prior-date">${formatDate(it.exportedAt)}</span>
+        <span class="prior-meta">${label} · ${it.cumulativeCarbTarget}g/hr${deltaStr ? ' · ' + deltaStr : ''} · ${it.verdict?.outcome || ''}</span>
+        <button class="prior-view" onclick="viewPriorDraft(${it.iterationNumber})">View</button>
+      </div>`;
+    }).join('');
+    priorHtml = `<div class="prior-iterations">
+      <button class="prior-toggle" onclick="togglePrior(this)">▸ Prior iterations (${priorIters.length})</button>
+      <div class="prior-body">${rows}</div>
+    </div>`;
+  }
+
+  // Adjustments panel
+  let adjHtml = '';
+  if (adjustments.length > 0) {
+    adjHtml = `<div class="adjustment-summary">
+      <div class="label mb8">Adjustments applied</div>
+      ${adjustments.map(a => {
+        const cls = a.delta < 0 ? 'adj-delta-neg' : a.delta > 0 ? 'adj-delta-pos' : 'adj-blacklist';
+        const deltaStr = a.delta === 0 ? 'BLACKLISTED' : (a.delta > 0 ? `+${a.delta}g/hr` : `${a.delta}g/hr`);
+        return `<div class="adj-row"><span class="${cls}">${deltaStr}</span><span class="adj-desc">${a.description}</span></div>`;
+      }).join('')}
+    </div>`;
+  }
+
+  // Verdict
+  const outcome = verdict?.outcome || 'PASS';
+  const issues = verdict?.issues || [];
+  const dims = verdict?.dimensionScores || {};
+  const dimLabels = {
+    scientificAccuracy: 'Scientific Accuracy',
+    catastrophicOutcomeCheck: 'Safety Check',
+    productSpecCompliance: 'Product Spec',
+    coherenceAndCompleteness: 'Coherence',
+  };
+
+  const rawMarkdown = draft?.rawMarkdown || '*Protocol content not available. Please regenerate.*';
+  const renderedProtocol = typeof marked !== 'undefined' ? marked.parse(rawMarkdown) : rawMarkdown;
+
+  content().innerHTML = `
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:20px">
+      <div>
+        <h1>Review Protocol</h1>
+        <div class="label mt8">${name} · ${event}</div>
+      </div>
+    </div>
+    <div class="review-layout">
+      <div class="protocol-panel">
+        <div class="label mb16">PROTOCOL DRAFT</div>
+        <div class="protocol-render">${renderedProtocol}</div>
+      </div>
+      <div class="audit-panel">
+        <div class="label mb12">AUDIT RESULT</div>
+        <div class="audit-badge ${outcome}">
+          ${outcome === 'PASS' ? '✅' : outcome === 'FLAG' ? '⚠' : '✗'} ${outcome}
+        </div>
+        <div style="margin-top:4px">
+          ${Object.entries(dimLabels).map(([key, label]) => `
+            <div class="dim-row">
+              <span class="dim-name">${label}</span>
+              <span class="dim-badge ${dims[key] || 'PASS'}">${dims[key] === 'PASS' ? '✓' : dims[key] === 'FLAG' ? '⚠' : dims[key] === 'FAIL' ? '✗' : '✓'} ${dims[key] || 'PASS'}</span>
+            </div>
+          `).join('')}
+        </div>
+
+        ${issues.length > 0 ? `
+          <div class="issues-section">
+            <div class="label mt12 mb8">Issues</div>
+            ${issues.map(i => `<div class="issue-item">• ${i.description}</div>`).join('')}
+          </div>
+        ` : ''}
+
+        ${verdict?.revisionBrief ? `
+          <div class="revision-brief">
+            <div class="label mb8">Revision brief</div>
+            ${verdict.revisionBrief}
+          </div>
+        ` : ''}
+
+        ${adjHtml}
+
+        <div class="revision-count">REVISION ${revCount}/${3}</div>
+
+        <div class="btn-actions">
+          <button class="btn btn-green btn-full" onclick="submitDecision('approved', '${sessionId}')">✓ Approve</button>
+          ${outcome !== 'PASS' ? `<button class="btn btn-secondary btn-full" onclick="submitDecision('return', '${sessionId}')">↺ Return to AI</button>` : ''}
+          <button class="btn-ghost" style="text-align:center;margin-top:4px" onclick="submitDecision('escalated', '${sessionId}')">⚠ Escalate</button>
+        </div>
+      </div>
+    </div>
+    ${priorHtml}
+  `;
+}
+
+function togglePrior(btn) {
+  const body = btn.nextElementSibling;
+  const open = body.classList.toggle('open');
+  btn.textContent = `${open ? '▾' : '▸'} Prior iterations`;
+}
+
+function viewPriorDraft(iterNum) {
+  const state = app.sessionState;
+  const iter = state?.iterations?.find(it => it.iterationNumber === iterNum);
+  if (!iter?.draft?.rawMarkdown) { alert('Protocol not available'); return; }
+  const win = window.open('', '_blank');
+  win.document.write(`<!DOCTYPE html><html><head><title>Iteration ${iterNum} Protocol</title><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet"><script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"><\/script></head><body style="font-family:Plus Jakarta Sans,sans-serif;max-width:800px;margin:40px auto;padding:0 24px;color:#0a0a0a">
+    <div id="c"></div><script>document.getElementById('c').innerHTML=marked.parse(${JSON.stringify(iter.draft.rawMarkdown)})<\/script>
+    </body></html>`);
+}
+
+// ── Submit decision ────────────────────────────────────────────────────────
+async function submitDecision(decision, sessionId) {
+  const verdict = app.sessionState?.currentVerdict;
+  const body = { decision };
+  if (decision === 'return' && verdict?.revisionBrief) {
+    body.revisionBrief = verdict.revisionBrief;
+  }
+
+  try {
+    const res = await fetch(`/api/session/${sessionId}/decision`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+    });
+    const data = await res.json();
+
+    if (decision === 'approved') {
+      if (data.step === 'awaiting_feedback' || data.step === 'exported') {
+        // Reload state then show export/session-home
+        const sres = await fetch(`/api/session/${sessionId}`);
+        const state = await sres.json();
+        app.sessionState = state;
+
+        const iter = state.currentIteration - 1; // just completed
+        showStepBar(5);
+        $('iterationStrip').style.display = 'none';
+        renderExport(state, iter);
+      }
+    } else if (decision === 'return') {
+      if (data.autoEscalated) {
+        renderEscalated(sessionId);
+        return;
+      }
+      // Re-generate
+      showStepBar(3);
+      renderGenerate(sessionId, app.sessionState);
+    } else if (decision === 'escalated') {
+      renderEscalated(sessionId);
+    }
+  } catch (e) {
+    alert('Error: ' + e.message);
+  }
+}
+
+// ── Screen: Export ─────────────────────────────────────────────────────────
+function renderExport(state, completedIter) {
+  app.screen = 'export';
+  const name = state?.intake?.name || 'Athlete';
+  const event = state?.intake?.eventType === 'ironman_140' ? 'IRONMAN 140.6' : 'IRONMAN 70.3';
+  const raceDate = state?.intake?.raceDate ? state.intake.raceDate.toUpperCase() : '';
+  const iterLabels = ['Week 1 Protocol', 'Week 2 Adjustment', 'Week 3 Adjustment', 'Race-Week Final'];
+  const iterLabel = iterLabels[completedIter] || `Iteration ${completedIter}`;
+  const isFinal = completedIter === 3;
+  const sessionId = app.sessionId;
+
+  content().innerHTML = `
+    <div style="text-align:center;padding:20px 0 32px">
+      <span class="success-check">✓</span>
+      <h1>Protocol approved</h1>
+      <div class="label mt8">${name.toUpperCase()} — ${event} — ${iterLabel.toUpperCase()}</div>
+    </div>
+    <div class="export-cards">
+      <div class="export-card">
+        <div class="export-icon">📅</div>
+        <div class="export-title">.ics file</div>
+        <div class="export-sub">iPhone Calendar · session reminders</div>
+        <button class="btn btn-primary btn-full" onclick="downloadICS('${sessionId}')">Download</button>
+      </div>
+      <div class="export-card">
+        <div class="export-icon">🖨</div>
+        <div class="export-title">Print protocol (PDF)</div>
+        <div class="export-sub">Opens in browser tab · Cmd+P</div>
+        <button class="btn btn-secondary btn-full" onclick="openPrint('${sessionId}')">Open</button>
+      </div>
+    </div>
+    <div class="divider"></div>
+    <div class="label mb8">BEK HAS BEEN NOTIFIED</div>
+    <div class="muted">Email sent to bek.zhou@rik-sports.com</div>
+    ${!isFinal ? `
+      <div class="next-step-box mt24">
+        <div class="label mb8">NEXT STEP</div>
+        <div style="font-size:14px;color:var(--off-black)">Return here after Week ${completedIter + 1} to upload the feedback CSV and generate the adjusted protocol.</div>
+      </div>
+      <button class="btn btn-secondary mt16" onclick="renderSessionHome(app.sessionState)">← Back to session</button>
+    ` : `
+      <button class="btn btn-secondary mt24" onclick="renderHome()">← Back to all protocols</button>
+    `}
+  `;
+}
+
+async function downloadICS(sessionId) {
+  try {
+    const res = await fetch(`/api/export`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ sessionId, format: 'ics' }),
+    });
+    if (!res.ok) throw new Error('Export failed');
+    const blob = await res.blob();
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${sessionId}-protocol.ics`;
+    a.click();
+    URL.revokeObjectURL(url);
+  } catch (e) {
+    alert('Export failed: ' + e.message);
+  }
+}
+
+async function openPrint(sessionId) {
+  window.open(`/api/export?sessionId=${sessionId}&format=html`, '_blank');
+}
+
+// ── Screen: Escalated ──────────────────────────────────────────────────────
+function renderEscalated(sessionId) {
+  content().innerHTML = `
+    <div class="card" style="text-align:center;padding:48px 32px">
+      <div style="font-size:32px;margin-bottom:16px">⚠</div>
+      <h1>Protocol escalated</h1>
+      <div class="muted mt8" style="max-width:400px;margin:8px auto 0">This protocol has been marked for manual build. Bek has been notified at bek.zhou@rik-sports.com.</div>
+    </div>
+    <button class="btn btn-secondary mt24" onclick="renderHome()">← Back to all protocols</button>
+  `;
+}
+
+// ── Init ───────────────────────────────────────────────────────────────────
+renderHome();
+</script>
+</body>
+</html>

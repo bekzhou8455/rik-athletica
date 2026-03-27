@@ -33,7 +33,71 @@ function getMinutesRange(
   return [carbMin + giMin, carbMax + giMax];
 }
 
+// ── Race date validation logic (mirrors /api/create-sign-request.js) ─────────
+// Returns days between today (UTC) and the given YYYY-MM-DD race date.
+// Valid range: 28–56 days (4–8 weeks out).
+
+function validateRaceDays(raceDateStr: string, todayStr: string): number {
+  const raceDate = new Date(raceDateStr + 'T00:00:00Z');
+  const todayDate = new Date(todayStr + 'T00:00:00Z');
+  const diffMs = raceDate.getTime() - todayDate.getTime();
+  return Math.round(diffMs / (1000 * 60 * 60 * 24));
+}
+
 // ── Tests ────────────────────────────────────────────────────────────────────
+
+describe("validateRaceDays — race gate boundary conditions", () => {
+  test("exactly 28 days out: valid (lower boundary)", () => {
+    const days = validateRaceDays("2026-04-24", "2026-03-27");
+    expect(days).toBe(28);
+    expect(days).toBeGreaterThanOrEqual(28);
+    expect(days).toBeLessThanOrEqual(56);
+  });
+
+  test("exactly 56 days out: valid (upper boundary)", () => {
+    const days = validateRaceDays("2026-05-22", "2026-03-27");
+    expect(days).toBe(56);
+    expect(days).toBeGreaterThanOrEqual(28);
+    expect(days).toBeLessThanOrEqual(56);
+  });
+
+  test("27 days out: too soon (below lower boundary)", () => {
+    const days = validateRaceDays("2026-04-23", "2026-03-27");
+    expect(days).toBe(27);
+    expect(days).toBeLessThan(28);
+  });
+
+  test("57 days out: too far (above upper boundary)", () => {
+    const days = validateRaceDays("2026-05-23", "2026-03-27");
+    expect(days).toBe(57);
+    expect(days).toBeGreaterThan(56);
+  });
+
+  test("race date is today: 0 days, rejected", () => {
+    const days = validateRaceDays("2026-03-27", "2026-03-27");
+    expect(days).toBe(0);
+    expect(days).toBeLessThan(28);
+  });
+
+  test("race date in the past: negative, rejected", () => {
+    const days = validateRaceDays("2026-03-20", "2026-03-27");
+    expect(days).toBeLessThan(0);
+  });
+
+  test("29 days out: valid (inside window)", () => {
+    const days = validateRaceDays("2026-04-25", "2026-03-27");
+    expect(days).toBe(29);
+    expect(days).toBeGreaterThanOrEqual(28);
+    expect(days).toBeLessThanOrEqual(56);
+  });
+
+  test("55 days out: valid (inside window)", () => {
+    const days = validateRaceDays("2026-05-21", "2026-03-27");
+    expect(days).toBe(55);
+    expect(days).toBeGreaterThanOrEqual(28);
+    expect(days).toBeLessThanOrEqual(56);
+  });
+});
 
 describe("getMinutesRange — calculator output logic", () => {
   test("70.3 with GI issues: range is 10–22 min", () => {

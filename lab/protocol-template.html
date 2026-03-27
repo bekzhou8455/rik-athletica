@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ATHLETE_NAME}} — Nutrition Protocol</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --off-black: #0a0a0a;
+      --muted: #888;
+      --tool-label: #aaa;
+      --border: rgba(0,0,0,0.08);
+      --green: #2D5A3D;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 15px;
+      line-height: 1.8;
+      color: var(--off-black);
+      background: #fff;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 48px 40px;
+    }
+
+    /* ─── Header ─────────────────────────────────────────── */
+    .print-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 32px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .print-brand {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--tool-label);
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      line-height: 1.6;
+    }
+
+    .print-meta { text-align: right; }
+
+    .print-meta .athlete-name {
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--off-black);
+    }
+
+    .print-meta .race-info {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    /* ─── Iteration Header ───────────────────────────────── */
+    .iteration-header {
+      display: {{ITERATION_HEADER_DISPLAY}};
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: #b7791f;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-bottom: 24px;
+      padding: 8px 12px;
+      border: 1px solid rgba(183,121,31,0.3);
+      border-radius: 8px;
+      width: fit-content;
+    }
+
+    /* ─── Protocol Body ──────────────────────────────────── */
+    #protocol-content {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 15px;
+      line-height: 1.8;
+      color: var(--off-black);
+    }
+
+    #protocol-content h1 { display: none; } /* Title is in header */
+
+    #protocol-content h2 {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--off-black);
+      margin: 32px 0 8px;
+    }
+
+    #protocol-content h3 {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 400;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--tool-label);
+      margin: 24px 0 8px;
+    }
+
+    #protocol-content p { margin: 8px 0; }
+
+    #protocol-content ul,
+    #protocol-content ol {
+      padding-left: 20px;
+      margin: 8px 0;
+    }
+
+    #protocol-content li { margin: 4px 0; }
+
+    #protocol-content strong { font-weight: 600; }
+
+    #protocol-content em {
+      font-style: italic;
+      color: var(--muted);
+    }
+
+    /* Numeric values in JetBrains Mono */
+    #protocol-content code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      background: rgba(0,0,0,0.04);
+      padding: 1px 4px;
+      border-radius: 4px;
+    }
+
+    #protocol-content blockquote {
+      border-left: 3px solid var(--border);
+      padding-left: 16px;
+      color: #666;
+      margin: 16px 0;
+    }
+
+    #protocol-content hr {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 24px 0;
+    }
+
+    /* ─── Assumption Flags ───────────────────────────────── */
+    .assumption-flags {
+      margin-top: 32px;
+      padding: 16px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+    }
+
+    .assumption-flags-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--tool-label);
+      margin-bottom: 8px;
+    }
+
+    .assumption-flags ul {
+      padding-left: 16px;
+    }
+
+    .assumption-flags li {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--muted);
+      margin: 4px 0;
+    }
+
+    /* ─── Race Day Section ───────────────────────────────── */
+    .race-day-start { page-break-before: always; }
+
+    /* ─── Print Styles ───────────────────────────────────── */
+    @media print {
+      body {
+        padding: 24px;
+        font-size: 13px;
+      }
+
+      .print-header {
+        padding-bottom: 16px;
+        margin-bottom: 24px;
+      }
+
+      a {
+        text-decoration: none;
+        color: inherit;
+      }
+
+      #protocol-content h2 { font-size: 16px; }
+      #protocol-content h3 { font-size: 10px; }
+
+      /* Keep assumption flags together */
+      .assumption-flags { page-break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <div class="print-header">
+    <div class="print-brand">
+      RIK Athletica<br>
+      Nutrition Protocol
+    </div>
+    <div class="print-meta">
+      <div class="athlete-name">{{ATHLETE_NAME}}</div>
+      <div class="race-info">{{RACE_INFO}}</div>
+    </div>
+  </div>
+
+  <!-- Iteration Header (hidden on iteration 0) -->
+  <div class="iteration-header">{{ITERATION_HEADER}}</div>
+
+  <!-- Protocol Content -->
+  <div id="protocol-content">
+    {{PROTOCOL_CONTENT}}
+  </div>
+
+  <!-- Assumption Flags (separate section for clarity) -->
+  <div class="assumption-flags" id="assumption-flags" style="display: {{ASSUMPTION_FLAGS_DISPLAY}}">
+    <div class="assumption-flags-label">Assumption Flags</div>
+    <ul id="assumption-flags-list">
+      {{ASSUMPTION_FLAGS_LIST}}
+    </ul>
+  </div>
+
+  <!-- Render markdown if raw content is provided -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script>
+    (function() {
+      const contentEl = document.getElementById('protocol-content');
+      const text = contentEl.textContent || contentEl.innerText || '';
+
+      if (window.marked && text.includes('#')) {
+        // Content appears to be markdown — render it
+        try {
+          contentEl.innerHTML = window.marked.parse(text);
+
+          // Apply race-day section class for page break
+          const headers = Array.from(contentEl.querySelectorAll('h2'));
+          headers.forEach(h => {
+            if (h.textContent && (h.textContent.includes('RACE DAY') || h.textContent.includes('Race Day'))) {
+              h.classList.add('race-day-start');
+            }
+          });
+        } catch (e) {
+          console.error('Failed to render markdown:', e);
+        }
+      }
+    })();
+  </script>
+
+</body>
+</html>

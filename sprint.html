@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>4-Week Sprint — RIK Athletica</title>
-<meta name="description" content="Done-for-you Ironman fueling. Custom 2-layer protocol, all products sourced and packed, iPhone Calendar sync, 3 iterations. Ships in 5 days. $499 all-in.">
+<meta name="description" content="Race-gated fueling service for Ironman athletes. Custom 2-layer protocol, Training Box + Race Pack, iPhone Calendar sync, 3 iterations. Full Ironman $649 · 70.3 $549. Built for your race.">
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300..800&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -131,11 +131,36 @@ nav ul a:hover, nav ul a.active { color: var(--off-black); }
 .calc-preview-cta { margin-top: 20px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.06); }
 .calc-preview-cta a { display: block; background: var(--green); color: #fff; text-decoration: none; text-align: center; padding: 13px; font-size: 14px; font-weight: 500; border-radius: var(--r-btn); }
 
+/* ── AUTO-SIGN OVERLAY ── */
+.sign-overlay { display: none; position: fixed; inset: 0; background: rgba(10,10,10,0.97); z-index: 9999; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+.sign-overlay.visible { display: flex; }
+.sign-overlay-logo { height: 52px; width: auto; filter: invert(1); opacity: 0.6; margin-bottom: 36px; }
+.sign-overlay-title { font-size: 22px; font-weight: 400; color: #fff; letter-spacing: -0.03em; margin-bottom: 10px; }
+.sign-overlay-sub { font-size: 15px; color: rgba(255,255,255,0.36); margin-bottom: 32px; }
+.sign-overlay-spinner { width: 24px; height: 24px; border: 2px solid rgba(255,255,255,0.12); border-top-color: var(--green-light); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.sign-overlay-error { display: none; background: rgba(192,25,74,0.1); border: 1px solid rgba(192,25,74,0.3); border-radius: 12px; padding: 16px 24px; max-width: 440px; margin-top: 24px; font-size: 13px; color: rgba(255,255,255,0.7); line-height: 1.6; }
+.sign-overlay-error.visible { display: block; }
+
+/* ── TWO-BOX TIMELINE ── */
+.two-box-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.box-card { background: var(--sand); border: 1px solid var(--border); border-radius: var(--r-card); padding: 32px; }
+.box-card-label { font-size: 9px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: #aaa; margin-bottom: 14px; }
+.box-card-title { font-size: 18px; font-weight: 500; color: var(--off-black); letter-spacing: -0.02em; margin-bottom: 6px; }
+.box-card-timing { font-size: 12px; color: var(--green); font-weight: 600; margin-bottom: 20px; letter-spacing: -0.01em; }
+.box-card-race .box-card-label { color: rgba(74,222,128,0.6); }
+.box-card-race { background: #0d1a12; border-color: rgba(45,90,61,0.4); }
+.box-card-race .box-card-title { color: #fff; }
+.box-card-race .box-card-timing { color: var(--green-light); }
+.box-card-race .box-item { border-bottom-color: rgba(255,255,255,0.05); color: rgba(255,255,255,0.55); }
+.box-card-race .box-item-note { color: rgba(255,255,255,0.2); }
+.box-connector { display: flex; align-items: center; justify-content: center; color: rgba(0,0,0,0.18); font-size: 13px; font-weight: 500; letter-spacing: 0.5px; }
+
 /* ── PRICING ── */
 .pricing-section { padding: 96px 40px; background: #fff; }
 .pricing-inner { max-width: 1000px; margin: 0 auto; }
 .pricing-section h2 { font-size: clamp(32px, 4vw, 48px); font-weight: 400; letter-spacing: -0.03em; margin-bottom: 48px; }
-.pricing-grid { display: grid; grid-template-columns: 1.4fr 1fr; gap: 16px; }
+.pricing-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
 .price-card { border: 1px solid var(--border); padding: 44px; border-radius: var(--r-card); }
 .price-card.featured { background: var(--off-black); border-color: var(--off-black); }
 .price-eyebrow { font-size: 10px; letter-spacing: 2.5px; text-transform: uppercase; color: #bbb; margin-bottom: 16px; }
@@ -258,7 +283,8 @@ footer { background: var(--off-black); padding: 36px 40px; display: flex; justif
 
 /* ── RESPONSIVE ── */
 @media (max-width: 900px) {
-  .steps-grid, .pricing-grid, .box-inner, .calc-section-inner { grid-template-columns: 1fr; }
+  .steps-grid, .pricing-grid, .box-inner, .calc-section-inner, .two-box-grid { grid-template-columns: 1fr; }
+  .box-connector { padding: 4px 0; }
   nav { padding: 0 20px; }
   nav ul { display: none; }
   .athlete-band { grid-template-columns: repeat(3, 1fr); height: 220px; }
@@ -302,7 +328,7 @@ footer { background: var(--off-black); padding: 36px 40px; display: flex; justif
     <li><a href="/sprint" class="active">4-Week Sprint</a></li>
     <li><a href="/calculator">Race Calculator</a></li>
   </ul>
-  <a href="https://buy.stripe.com/00waEZ6Wq1441uC6ow7Re01" data-rewardful class="nav-cta">Start My Sprint →</a>
+  <a href="#" id="nav-cta-screen" class="nav-cta">Check My Eligibility →</a>
 </nav>
 
 <!-- ═══ HERO ═══ -->
@@ -312,16 +338,16 @@ footer { background: var(--off-black); padding: 36px 40px; display: flex; justif
   </video>
   <div class="service-hero-overlay"></div>
   <div class="service-hero-content">
-    <div class="service-hero-eyebrow">Done-for-you fueling · Ironman athletes</div>
-    <h1>Stop leaving<br><em>minutes on the course.</em></h1>
-    <p class="service-hero-sub">Most fueling problems aren't about effort — they're about the wrong protocol, the wrong products, or the missing functional layer. We fix both. One box. Everything inside. Synced to your calendar before you open it.</p>
+    <div class="service-hero-eyebrow">Race-gated fueling service · Full Ironman &amp; 70.3</div>
+    <h1>Built for one race.<br><em>Your race.</em></h1>
+    <p class="service-hero-sub">Better training takes months to gain minutes. Getting your fueling right this week can recover 30+ on race day.† We screen your fit, build your complete fueling protocol, and ship everything — Training Box now, Race Pack ten days before your race.</p>
     <div class="service-hero-ctas">
-      <a href="https://buy.stripe.com/00waEZ6Wq1441uC6ow7Re01" data-rewardful class="btn btn-white">Start My 4-Week Sprint — $499 →</a>
+      <a href="#" class="btn btn-white screen-cta">Check My Eligibility — Free →</a>
       <a href="#how-it-works" class="btn btn-outline-white">See how it works ↓</a>
     </div>
     <div class="hero-proof">
-      <div class="hero-proof-item"><strong>$499</strong>All-in one-time</div>
-      <div class="hero-proof-item"><strong>5 days</strong>Ship turnaround</div>
+      <div class="hero-proof-item"><strong>from $549</strong>All-in one-time</div>
+      <div class="hero-proof-item"><strong>2 boxes</strong>Training + Race Pack</div>
       <div class="hero-proof-item"><strong>3×</strong>Protocol iterations</div>
       <div class="hero-proof-item"><strong>0</strong>Products to source yourself</div>
     </div>
@@ -331,33 +357,39 @@ footer { background: var(--off-black); padding: 36px 40px; display: flex; justif
 <!-- ═══ HOW IT WORKS ═══ -->
 <div class="how-it-works" id="how-it-works">
   <div class="how-it-works-inner">
-    <div class="eyebrow">The Sprint</div>
-    <h2>We fix both layers. Not just one.</h2>
-    <p class="sub">Every training block has two fueling problems. Most programs only address the first.</p>
-    <div class="steps-grid">
+    <div class="eyebrow">How It Works</div>
+    <h2>Your fueling, completely handled.</h2>
+    <p class="sub">Screening → contract → Training Box → 3 iterations → Race Pack. We manage every step so you focus on training.</p>
+    <div class="steps-grid" style="grid-template-columns: repeat(5, 1fr);">
       <div class="step-card">
         <div class="step-num">01</div>
-        <div class="step-title">Intake</div>
-        <div class="step-desc">Race date, body stats, training schedule, current fueling strategy, biggest problem. 10 minutes. We review within 48 hours.</div>
-        <span class="step-tag l1">Layer 1 Input</span>
+        <div class="step-title">2-Minute Screen</div>
+        <div class="step-desc">Race date, distance, red flags. Takes 2 minutes. We confirm you're the right fit before you pay a penny.</div>
+        <span class="step-tag l1">Free · No card needed</span>
       </div>
       <div class="step-card">
         <div class="step-num">02</div>
-        <div class="step-title">Protocol + Box</div>
-        <div class="step-desc">We build your 2-layer fueling protocol. We select and source your Layer 1 products and pack them with your RIK Bundle into one branded carton. Ships in 5 days.</div>
-        <span class="step-tag l1">Layer 1</span>&nbsp;<span class="step-tag l2">+ Layer 2</span>
+        <div class="step-title">Sign &amp; Pay</div>
+        <div class="step-desc">Review and sign your service agreement. Then pay — Full Ironman $649, 70.3 $549. Complete your 10-minute intake form.</div>
+        <span class="step-tag l1">Contract first</span>
       </div>
       <div class="step-card">
         <div class="step-num">03</div>
-        <div class="step-title">Calendar Sync</div>
-        <div class="step-desc">Your protocol syncs to your iPhone Calendar. Every training session has its fuel plan already attached. No guesswork on the day.</div>
-        <span class="step-tag l12">Both Layers</span>
+        <div class="step-title">Training Box Ships</div>
+        <div class="step-desc">We build your 2-layer protocol and pack everything — RIK Bundle + Layer 1 products + Calendar sync. Ships within 5 days.</div>
+        <span class="step-tag l1">Layer 1</span>&nbsp;<span class="step-tag l2">+ Layer 2</span>
       </div>
       <div class="step-card">
         <div class="step-num">04</div>
         <div class="step-title">Iterate × 3</div>
-        <div class="step-desc">Log session feedback. We refine. By Week 4, your race-day plan is tested, iterated, and locked in — not a guess made the night before.</div>
-        <span class="step-tag l12">Finalized Protocol</span>
+        <div class="step-desc">Log session feedback each week. We refine your protocol in 3 rounds. By Week 4, race-day fueling is locked in — not guessed.</div>
+        <span class="step-tag l12">Both Layers</span>
+      </div>
+      <div class="step-card">
+        <div class="step-num">05</div>
+        <div class="step-title">Race Pack Ships</div>
+        <div class="step-desc">10 days before your race, your Race Pack ships — race-day products selected to your final protocol. Nothing left to source.</div>
+        <span class="step-tag l12" style="background:var(--green);color:#fff;">Race Day Ready</span>
       </div>
     </div>
   </div>
@@ -401,34 +433,59 @@ footer { background: var(--off-black); padding: 36px 40px; display: flex; justif
   <img src="https://cdn.jsdelivr.net/gh/bekzhou8455/rik-athletica@main/assets/media/AL-DSC00815.jpg" loading="lazy" decoding="async" alt="Cyclist — dappled shadow, cinematic" style="object-position: center 48%;">
 </div>
 
-<!-- ═══ BOX SECTION ═══ -->
+<!-- ═══ TWO-BOX SECTION ═══ -->
 <div class="box-section">
-  <div class="box-inner">
-    <div class="box-visual">
-      <img src="https://cdn.jsdelivr.net/gh/bekzhou8455/rik-athletica@main/assets/media/Bundle_pack_open.jpg" loading="lazy" decoding="async" alt="RIK Bundle — box open">
-    </div>
-    <div class="box-info">
-      <div class="eyebrow">What's in your box</div>
-      <h2>Everything you need.<br>Nothing you have to source.</h2>
-      <p class="sub">Every box is assembled to your protocol. Layer 1 products vary per athlete. The RIK Bundle is in every box.</p>
-      <div class="box-layer">
-        <div class="box-layer-head">
-          <div class="box-layer-title">Layer 1 — Foundation</div>
-          <div class="box-layer-tag">Protocol-selected</div>
+  <div style="max-width:1000px;margin:0 auto;">
+    <div class="eyebrow">What You Receive</div>
+    <h2 style="font-size:clamp(28px,3vw,40px);font-weight:400;letter-spacing:-0.03em;margin-bottom:10px;">Two boxes. One race.</h2>
+    <p style="font-size:15px;color:#888;line-height:1.65;margin-bottom:40px;max-width:520px;letter-spacing:-0.01em;">The Training Box ships at the start. The Race Pack ships 10 days before your race — contents locked in after 3 weeks of real-session iteration.</p>
+    <div class="two-box-grid">
+
+      <div class="box-card">
+        <div class="box-card-label">Box 1 · Week 0</div>
+        <div class="box-card-title">Training Box</div>
+        <div class="box-card-timing">Ships within 5 days of intake</div>
+        <div class="box-layer" style="margin-bottom:20px;padding-bottom:20px;">
+          <div class="box-layer-head">
+            <div class="box-layer-title">Layer 1 — Foundation</div>
+            <div class="box-layer-tag">Protocol-selected</div>
+          </div>
+          <div class="box-item">Carb gels / chews <span class="box-item-note">Maurten / GU / PF&amp;H</span></div>
+          <div class="box-item">Drink mix packets <span class="box-item-note">bike-leg carb target</span></div>
+          <div class="box-item">Electrolyte tabs <span class="box-item-note">4-week training supply</span></div>
         </div>
-        <div class="box-item">Carb gels / chews <span class="box-item-note">SIS / Maurten / PF&H</span></div>
-        <div class="box-item">Electrolyte tabs / drink mix <span class="box-item-note">protocol-dependent</span></div>
-        <div class="box-item">4-week supply quantity <span class="box-item-note">per intake data</span></div>
-      </div>
-      <div class="box-layer">
-        <div class="box-layer-head">
-          <div class="box-layer-title">Layer 2 — RIK Bundle</div>
-          <div class="box-layer-tag">Every box · every sprint</div>
+        <div class="box-layer" style="margin-bottom:0;padding-bottom:0;border-bottom:none;">
+          <div class="box-layer-head">
+            <div class="box-layer-title">Layer 2 — RIK Bundle</div>
+            <div class="box-layer-tag">Every sprint</div>
+          </div>
+          <div class="box-item">Euphoria ×10 <span class="box-item-note">pre-session activation</span></div>
+          <div class="box-item">Refuel ×20 <span class="box-item-note">intra + post-session recovery</span></div>
+          <div class="box-item">Protocol card + iPhone Calendar QR <span class="box-item-note">printed insert</span></div>
         </div>
-        <div class="box-item">Euphoria ×10 <span class="box-item-note">pre-session activation</span></div>
-        <div class="box-item">Refuel ×20 <span class="box-item-note">intra + post-session</span></div>
-        <div class="box-item">Protocol card + iPhone Calendar QR <span class="box-item-note">printed insert</span></div>
       </div>
+
+      <div class="box-card box-card-race">
+        <div class="box-card-label">Box 2 · Race Day −10</div>
+        <div class="box-card-title">Race Pack</div>
+        <div class="box-card-timing">Ships 10 days before your race</div>
+        <div style="margin-bottom:16px;">
+          <div class="box-layer-title" style="color:rgba(255,255,255,0.7);margin-bottom:12px;font-size:12px;">Full Ironman</div>
+          <div class="box-item">Maurten Gel 100 ×12 <span class="box-item-note">bike + run</span></div>
+          <div class="box-item">Maurten Drink Mix 320 ×4 <span class="box-item-note">bike leg</span></div>
+          <div class="box-item">PH 1000 Electrolyte ×2 tubes <span class="box-item-note">full race hydration</span></div>
+        </div>
+        <div style="border-top:1px solid rgba(255,255,255,0.07);padding-top:16px;">
+          <div class="box-layer-title" style="color:rgba(255,255,255,0.7);margin-bottom:12px;font-size:12px;">70.3</div>
+          <div class="box-item">Maurten Gel 100 ×6 <span class="box-item-note">bike + run</span></div>
+          <div class="box-item">Maurten Drink Mix 320 ×2 <span class="box-item-note">bike leg</span></div>
+          <div class="box-item">PH 1000 Electrolyte ×1 tube <span class="box-item-note">race hydration</span></div>
+        </div>
+        <div style="margin-top:20px;padding-top:16px;border-top:1px solid rgba(255,255,255,0.07);font-size:12px;color:rgba(255,255,255,0.28);line-height:1.6;">
+          Contents finalised to your protocol after 3 weeks of session data.
+        </div>
+      </div>
+
     </div>
   </div>
 </div>
@@ -597,76 +654,87 @@ footer { background: var(--off-black); padding: 36px 40px; display: flex; justif
 <div class="pricing-section">
   <div class="pricing-inner">
     <div class="eyebrow">Pricing</div>
-    <h2>Simple, all-inclusive.</h2>
+    <h2>Two distances. One protocol.</h2>
+    <p style="font-size:15px;color:rgba(255,255,255,0.5);text-align:center;margin:-8px 0 40px;letter-spacing:-0.01em;">Race-gated — requires a signed-up race 4–8 weeks out.</p>
     <div class="pricing-grid">
       <div class="price-card featured">
-        <div class="price-eyebrow">4-Week Sprint · Full Program</div>
-        <div class="price-big">$499</div>
+        <div class="price-eyebrow">4-Week Sprint · Full Ironman</div>
+        <div class="price-big">$649</div>
         <div class="price-period">one-time · all-inclusive</div>
-        <div class="price-desc">Everything for one training block — custom protocol, Layer 1 products sourced and packed, RIK Bundle, calendar sync, 3 refinement iterations.</div>
+        <div class="price-desc">Complete fueling system for a full-distance race. Training Box at Week 0. Race Pack 10 days out. Everything in between handled.</div>
         <ul class="price-includes">
-          <li><span class="check">✓</span>Personalised 2-layer fueling protocol</li>
-          <li><span class="check">✓</span>Layer 1 products sourced + packed (SIS / Maurten / PF&H)</li>
-          <li><span class="check">✓</span>RIK Bundle — 10 Euphoria + 20 Refuel</li>
-          <li><span class="check">✓</span>iPhone Calendar sync — every session pre-loaded</li>
-          <li><span class="check">✓</span>3 protocol iterations from session feedback</li>
-          <li><span class="check">✓</span>Race-day plan finalized + locked in</li>
+          <li><span class="check">✓</span>Personalised 2-layer fueling plan</li>
+          <li><span class="check">✓</span>Training Box — Layer 1 products + RIK Bundle, ships Week 0</li>
+          <li><span class="check">✓</span>Race Pack — race-day products, ships 10 days before race</li>
+          <li><span class="check">✓</span>Full Ironman volumes: 180km bike + marathon nutrition</li>
+          <li><span class="check">✓</span>3 protocol refinement rounds from session data</li>
+          <li><span class="check">✓</span>Race-day plan locked in by Week 4</li>
           <li><span class="check">✓</span>WhatsApp support throughout</li>
         </ul>
         <div class="rd-badge">
           <div class="rd-badge-icon">🎓</div>
           <div class="rd-badge-text">
-            <strong>Reviewed by a Registered Dietitian</strong>
-            Every protocol is reviewed by a credentialled RD before it ships. We don't send guesses.
+            <strong>Science-backed fueling plans</strong>
+            Every plan is built on peer-reviewed endurance nutrition research — not guesswork or generic templates.
           </div>
         </div>
-        <a href="https://buy.stripe.com/00waEZ6Wq1441uC6ow7Re01" data-rewardful class="btn btn-white btn-full" style="padding:15px">Start My Sprint — $499 →</a>
+        <a href="#" class="screen-cta btn btn-white btn-full" style="padding:15px">Check My Eligibility — Full Ironman →</a>
         <div class="guarantee-policy">
           <p>✓ <strong style="color:rgba(255,255,255,0.6)">Satisfaction guarantee:</strong> If after completing Week 1 you find our protocol isn't materially different from what you're already doing, contact us for a full refund.</p>
-          <p>Once you are active in the program, no refunds are issued — our team's time and resources have already been deployed to build your personalised protocol and ship your box.</p>
+          <p>Once active, no refunds are issued — your protocol is built and both boxes are committed to ship.</p>
         </div>
       </div>
       <div class="price-card">
-        <div class="price-eyebrow">The Bundle · Gels Only</div>
-        <div class="price-big">$119</div>
-        <div class="price-period">one-time · free shipping</div>
-        <div class="price-desc">The enhancement layer on its own. For athletes who already have their fueling dialled in and want to add the functional edge.</div>
+        <div class="price-eyebrow">4-Week Sprint · 70.3</div>
+        <div class="price-big">$549</div>
+        <div class="price-period">one-time · all-inclusive</div>
+        <div class="price-desc">Full protocol for a half-distance race. Same two-box system, calibrated to 70.3 volumes and your specific race conditions.</div>
         <ul class="price-includes">
-          <li><span class="check">✓</span>10 Euphoria gels — pre-session activation</li>
-          <li><span class="check">✓</span>20 Refuel gels — intra + post-session recovery</li>
-          <li><span class="check">✓</span>1g L-Glutamine per Refuel gel</li>
-          <li><span class="check">✓</span>Tart Cherry + BCAA recovery stack</li>
-          <li><span class="check">✓</span>Free shipping</li>
+          <li><span class="check" style="color:var(--green)">✓</span>Personalised 2-layer fueling plan</li>
+          <li><span class="check" style="color:var(--green)">✓</span>Training Box — Layer 1 products + RIK Bundle, ships Week 0</li>
+          <li><span class="check" style="color:var(--green)">✓</span>Race Pack — race-day products, ships 10 days before race</li>
+          <li><span class="check" style="color:var(--green)">✓</span>70.3 volumes: 90km bike + half marathon nutrition</li>
+          <li><span class="check" style="color:var(--green)">✓</span>3 protocol refinement rounds from session data</li>
+          <li><span class="check" style="color:var(--green)">✓</span>Race-day plan locked in by Week 4</li>
+          <li><span class="check" style="color:var(--green)">✓</span>WhatsApp support throughout</li>
         </ul>
-        <a href="https://buy.stripe.com/4gM7sN6Wq3cc7T0fZ67Re00" data-rewardful class="btn btn-primary btn-full" style="padding:15px">Buy the Bundle — $119 →</a>
-        <p class="price-guarantee" style="color:#aaa">The $119 counts toward your Sprint if you upgrade.</p>
+        <a href="#" class="screen-cta btn btn-primary btn-full" style="padding:15px">Check My Eligibility — 70.3 →</a>
+        <p class="price-guarantee" style="color:#aaa;font-size:13px;margin-top:16px;">Same satisfaction guarantee applies.</p>
       </div>
     </div>
   </div>
 </div>
 
-<!-- ═══ POST-PURCHASE INTAKE — TYPEFORM ═══ -->
+<!-- ═══ HOW IT WORKS DETAIL ═══ -->
 <div class="intake-wrap">
   <div style="max-width:640px;margin:0 auto;text-align:center;">
-    <div class="eyebrow">After You Pay</div>
-    <h2 style="font-size:clamp(28px,3vw,40px);font-weight:400;letter-spacing:-0.03em;margin-bottom:12px;">You'll complete a 10-minute intake.</h2>
-    <p style="font-size:15px;color:#888;line-height:1.65;margin-bottom:40px;letter-spacing:-0.01em;">After payment, you'll be directed to our intake form. Race date, body stats, current fueling, biggest challenge. Takes 10 minutes. We review within 48 hours, build your protocol, and ship your box within 5 days.</p>
-    <div class="intake-steps">
-      <div style="background:#fff;border:1px solid var(--border);border-radius:var(--r-card);padding:28px 20px;text-align:center;">
-        <div style="font-size:28px;font-weight:500;color:var(--off-black);letter-spacing:-0.04em;margin-bottom:6px;">10 min</div>
-        <div style="font-size:12px;color:#aaa;">Intake form</div>
+    <div class="eyebrow">How It Works</div>
+    <h2 style="font-size:clamp(28px,3vw,40px);font-weight:400;letter-spacing:-0.03em;margin-bottom:12px;">From eligibility to race day.</h2>
+    <p style="font-size:15px;color:#888;line-height:1.65;margin-bottom:40px;letter-spacing:-0.01em;">A 2-minute screening confirms you're the right fit. Then sign, pay, and complete your intake — your Training Box ships within 5 days. Your Race Pack ships 10 days before your race.</p>
+    <div class="intake-steps" style="grid-template-columns:repeat(5,1fr);gap:12px;">
+      <div style="background:#fff;border:1px solid var(--border);border-radius:var(--r-card);padding:20px 12px;text-align:center;">
+        <div style="font-size:18px;font-weight:600;color:var(--green);letter-spacing:-0.03em;margin-bottom:4px;">Screen</div>
+        <div style="font-size:11px;color:#aaa;line-height:1.4;">2 min eligibility check</div>
       </div>
-      <div style="background:#fff;border:1px solid var(--border);border-radius:var(--r-card);padding:28px 20px;text-align:center;">
-        <div style="font-size:28px;font-weight:500;color:var(--off-black);letter-spacing:-0.04em;margin-bottom:6px;">48 hrs</div>
-        <div style="font-size:12px;color:#aaa;">Protocol review</div>
+      <div style="background:#fff;border:1px solid var(--border);border-radius:var(--r-card);padding:20px 12px;text-align:center;">
+        <div style="font-size:18px;font-weight:600;color:var(--off-black);letter-spacing:-0.03em;margin-bottom:4px;">Sign</div>
+        <div style="font-size:11px;color:#aaa;line-height:1.4;">Service contract</div>
       </div>
-      <div style="background:#fff;border:1px solid var(--border);border-radius:var(--r-card);padding:28px 20px;text-align:center;">
-        <div style="font-size:28px;font-weight:500;color:var(--off-black);letter-spacing:-0.04em;margin-bottom:6px;">5 days</div>
-        <div style="font-size:12px;color:#aaa;">Box ships</div>
+      <div style="background:#fff;border:1px solid var(--border);border-radius:var(--r-card);padding:20px 12px;text-align:center;">
+        <div style="font-size:18px;font-weight:600;color:var(--off-black);letter-spacing:-0.03em;margin-bottom:4px;">Pay</div>
+        <div style="font-size:11px;color:#aaa;line-height:1.4;">Secure checkout</div>
+      </div>
+      <div style="background:#fff;border:1px solid var(--border);border-radius:var(--r-card);padding:20px 12px;text-align:center;">
+        <div style="font-size:18px;font-weight:600;color:var(--off-black);letter-spacing:-0.03em;margin-bottom:4px;">Intake</div>
+        <div style="font-size:11px;color:#aaa;line-height:1.4;">10-min form</div>
+      </div>
+      <div style="background:#fff;border:1px solid var(--border);border-radius:var(--r-card);padding:20px 12px;text-align:center;">
+        <div style="font-size:18px;font-weight:600;color:var(--off-black);letter-spacing:-0.03em;margin-bottom:4px;">Ships</div>
+        <div style="font-size:11px;color:#aaa;line-height:1.4;">Box within 5 days</div>
       </div>
     </div>
-    <a href="https://buy.stripe.com/00waEZ6Wq1441uC6ow7Re01" data-rewardful class="btn btn-primary" style="padding:15px 40px;font-size:15px;">Start My Sprint — $499 →</a>
-    <p style="font-size:11px;color:#bbb;margin-top:16px;">Secure checkout · Intake form sent immediately after payment</p>
+    <a href="#" class="screen-cta btn btn-primary" style="padding:15px 40px;font-size:15px;margin-top:36px;display:inline-block;">Check My Eligibility →</a>
+    <p style="font-size:11px;color:#bbb;margin-top:16px;">2-minute screening · No payment until you've signed</p>
   </div>
 </div>
 
@@ -674,8 +742,9 @@ footer { background: var(--off-black); padding: 36px 40px; display: flex; justif
 <footer>
   <img src="https://cdn.jsdelivr.net/gh/bekzhou8455/rik-athletica@main/assets/media/rik-logo.png" alt="RIK Athletica" class="footer-logo-img">
   <span class="footer-links">Copyright © 2026 Rik Athletic Nutrition Inc. All rights reserved. &nbsp;·&nbsp; <a href="/privacy" style="color:rgba(255,255,255,0.38);text-decoration:none;">Privacy</a> &nbsp;·&nbsp; <a href="/terms" style="color:rgba(255,255,255,0.38);text-decoration:none;">Terms</a></span>
-  <div class="footer-disclaimer">
-    The 4-Week Sprint is a personalised nutrition coaching service. It does not constitute medical advice, diagnosis, or treatment. Protocols are reviewed by a Registered Dietitian before delivery; individual plans are based on the intake information you provide and are not a substitute for personalised medical or clinical dietary advice. RIK Athletica products are dietary supplements. † These statements have not been evaluated by the Food and Drug Administration. Products are not intended to diagnose, treat, cure, or prevent any disease. Case study outcomes represent documented individual results; individual results may vary. Higher carbohydrate intake is correlated with faster Ironman finish times in peer-reviewed data (Pfeiffer et al. 2012, r=−0.55, p&lt;0.001); correlation does not imply isolated causation. Always consult a qualified healthcare professional before starting any supplement or nutrition programme.
+  <div class="footer-disclaimer" style="font-size:12px;color:rgba(255,255,255,0.45);border-top:1px solid rgba(255,255,255,0.08);padding-top:20px;margin-top:8px;line-height:1.7;">
+    <strong style="color:rgba(255,255,255,0.6);display:block;margin-bottom:6px;">† Supplement &amp; Service Disclaimer</strong>
+    The 4-Week Sprint is a race-gated nutrition planning service available to athletes with a confirmed Ironman or 70.3 race 4–8 weeks from sign-up. It does not constitute medical advice, diagnosis, or treatment. Individual plans are based on the intake information you provide and are not a substitute for personalised medical or clinical dietary advice. The Sprint includes two physical shipments: a Training Box (ships within 5 days of intake) and a Race Pack (ships approximately 10 days before your race date). Delivery timelines are estimates and may vary. A signed service agreement is required before payment. RIK Athletica products are dietary supplements. These statements have not been evaluated by the Food and Drug Administration. Products are not intended to diagnose, treat, cure, or prevent any disease. Individual results may vary based on training load, baseline nutrition, race conditions, and other factors. Race time improvement claims reflect potential outcomes based on fueling optimisation research and are not a guarantee of specific results. Higher carbohydrate intake is correlated with faster Ironman finish times in peer-reviewed data (Pfeiffer et al. 2012, r=−0.55, p&lt;0.001); correlation does not imply isolated causation. Always consult a qualified healthcare professional before starting any supplement or nutrition programme.
   </div>
 </footer>
 
@@ -691,6 +760,101 @@ function setupVideoTrim(videoEl) {
   });
 }
 setupVideoTrim(document.getElementById('service-video'));
+</script>
+
+<!-- ═══ AUTO-SIGN OVERLAY ═══ -->
+<div class="sign-overlay" id="sign-overlay" role="dialog" aria-modal="true" aria-label="Setting up your contract">
+  <div style="text-align:center;padding:40px 24px;max-width:400px;">
+    <svg class="sign-overlay-spinner" width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="24" cy="24" r="20" stroke="rgba(255,255,255,0.15)" stroke-width="4"/>
+      <path d="M24 4a20 20 0 0 1 20 20" stroke="#4ade80" stroke-width="4" stroke-linecap="round"/>
+    </svg>
+    <div id="sign-overlay-title" style="font-size:20px;font-weight:500;color:#fff;margin-top:24px;letter-spacing:-0.02em;">Setting up your contract…</div>
+    <div id="sign-overlay-sub" style="font-size:14px;color:rgba(255,255,255,0.45);margin-top:10px;line-height:1.6;">This takes a few seconds. You'll be redirected to sign, then to payment.</div>
+    <div id="sign-overlay-error" style="display:none;margin-top:24px;background:rgba(192,57,43,0.15);border:1px solid rgba(192,57,43,0.4);border-radius:12px;padding:16px 20px;">
+      <div id="sign-overlay-error-msg" style="font-size:14px;color:#e88;line-height:1.6;"></div>
+      <a href="#" class="screen-cta btn btn-white btn-full" style="padding:12px;margin-top:16px;font-size:14px;" id="sign-overlay-retry">Try Again →</a>
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {
+  // ─── Typeform screening URL (replace with actual form URL before going live) ───
+  var TYPEFORM_SCREENING_URL = 'https://form.typeform.com/to/XdU5A5FQ';
+
+  // ─── Screen CTA click handler: redirect to Typeform with Rewardful referral ───
+  function attachScreenCtas() {
+    var ctaEls = document.querySelectorAll('.screen-cta');
+    ctaEls.forEach(function(el) {
+      el.addEventListener('click', function(e) {
+        e.preventDefault();
+        var referral = (window.Rewardful && window.Rewardful.referral) ? window.Rewardful.referral : '';
+        var url = TYPEFORM_SCREENING_URL;
+        if (referral) url += (url.indexOf('?') === -1 ? '?' : '&') + 'via=' + encodeURIComponent(referral);
+        window.location.href = url;
+      });
+    });
+  }
+  attachScreenCtas();
+
+  // ─── Auto-sign: detect ?screen=pass params and create Dropbox Sign request ───
+  var params = new URLSearchParams(window.location.search);
+  if (params.get('screen') === 'pass') {
+    var name      = params.get('name')      || '';
+    var email     = params.get('email')     || '';
+    var distance  = params.get('distance')  || '';
+    var race_date = params.get('race_date') || '';
+    var referral  = params.get('via')       || '';
+
+    var overlay   = document.getElementById('sign-overlay');
+    var titleEl   = document.getElementById('sign-overlay-title');
+    var subEl     = document.getElementById('sign-overlay-sub');
+    var errorDiv  = document.getElementById('sign-overlay-error');
+    var errorMsg  = document.getElementById('sign-overlay-error-msg');
+    var retryBtn  = document.getElementById('sign-overlay-retry');
+
+    // Show overlay immediately
+    overlay.classList.add('visible');
+    document.body.style.overflow = 'hidden';
+
+    function showError(msg) {
+      titleEl.textContent = 'Something went wrong';
+      subEl.style.display = 'none';
+      errorMsg.textContent = msg || 'We could not set up your contract. Please try again or email hello@rikathletica.com.';
+      errorDiv.style.display = 'block';
+      // Replace spinner with nothing
+      var spinner = overlay.querySelector('.sign-overlay-spinner');
+      if (spinner) spinner.style.display = 'none';
+    }
+
+    // Remove sign-related params from browser history (clean URL)
+    try {
+      var clean = new URL(window.location.href);
+      ['screen','name','email','distance','race_date','via'].forEach(function(k){ clean.searchParams.delete(k); });
+      window.history.replaceState({}, '', clean.toString());
+    } catch(e) {}
+
+    fetch('/api/create-sign-request', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name: name, email: email, distance: distance, race_date: race_date, referral: referral })
+    })
+    .then(function(res) { return res.json().then(function(body) { return { ok: res.ok, body: body }; }); })
+    .then(function(r) {
+      if (!r.ok || !r.body.signingUrl) {
+        showError(r.body.error || null);
+        return;
+      }
+      titleEl.textContent = 'Redirecting to your contract…';
+      subEl.textContent = 'Almost there. Sign once — then complete your payment.';
+      window.location.href = r.body.signingUrl;
+    })
+    .catch(function() {
+      showError('Network error. Please check your connection and try again.');
+    });
+  }
+})();
 </script>
 
 <script>(function(w,r){w._rwq=r;w[r]=w[r]||function(){(w[r].q=w[r].q||[]).push(arguments)}})(window,'rewardful');</script>

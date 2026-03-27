@@ -1,6 +1,6 @@
 # TODOS — RIK Athletica
 
-Last updated by /plan-ceo-review on 2026-03-26
+Last updated by /plan-ceo-review on 2026-03-27
 
 ---
 
@@ -12,6 +12,7 @@ Last updated by /plan-ceo-review on 2026-03-26
 - **Privacy Policy + Terms of Service** — Full content pages live at /privacy and /terms. Done 2026-03-26.
 - **Typeform intake link** — Wired on /thank-you?type=sprint. Done 2026-03-26.
 - **Resend /api/leads endpoint** — Serverless function built and deployed. Needs API key to activate.
+- **thefeed.com product scrape** — 60 SKUs (Maurten, GU, SiS, PF&H, UCAN, Clif, Näak) written to lab/products.csv. Done 2026-03-26.
 
 ---
 
@@ -232,6 +233,93 @@ Last updated by /plan-ceo-review on 2026-03-26
 **How:** Resend Dashboard → Audiences → Create "Calculator Leads". Update /api/leads.js to also call Resend Contacts API to add email to audience.
 **Effort:** XS (human: 30 min / CC: 15 min)
 **Depends on:** Resend domain verified (TODO above).
+
+---
+
+---
+
+## SPRINT v2 — Race Pack Model (from /plan-ceo-review 2026-03-27)
+
+---
+
+### P1 — Sprint v2 full implementation
+**What:** Implement the Sprint v2 Race Pack model (updated scope from /plan-eng-review 2026-03-27). Full scope:
+
+**MANUAL PRE-WORK (you do these in dashboards first):**
+1. Create 2 Dropbox Sign templates (Full Ironman, 70.3). Do NOT set signing_redirect_url in the template — the API passes it per-request from env vars.
+2. Create 2 new Stripe Payment Links ($649 Full Ironman, $549 70.3). Note both URLs.
+3. Build Typeform Screening Form (see separate TODO below for full spec).
+4. Update Typeform Full Intake: add race_date (date), race_distance (Full/70.3), brand_preference (Maurten/GU/PF&H) fields. Note each field's `ref` value from Typeform dashboard. Add 28-56 day Logic Jump validation (branch to fail endings). Configure webhook → `https://prod-domain/api/intake`.
+5. Add env vars (Vercel dashboard + .env.local): DROPBOX_SIGN_API_KEY, DROPBOX_SIGN_TEMPLATE_FULL, DROPBOX_SIGN_TEMPLATE_703, STRIPE_LINK_FULL, STRIPE_LINK_703, INTERNAL_ALERT_EMAIL, TYPEFORM_WEBHOOK_SECRET, RESEND_API_KEY (verify).
+6. Pre-order Race Pack standing stock to ShipWizard before first customer.
+
+**CODE (CC+gstack builds after manual pre-work):**
+7. Build `/api/create-sign-request.js` — POST: {name, email, distance, race_date, referral?} → Dropbox Sign API → returns {signingUrl}. Constructs signing_redirect_url from STRIPE_LINK_FULL/STRIPE_LINK_703 env vars, appends ?via= if Rewardful referral present.
+8. Build `/api/screen.js` — Typeform screening webhook: FAIL submission → Resend email to INTERNAL_ALERT_EMAIL ("Blocked: [name], reason: [reason]").
+9. Build `/api/intake.js` — Typeform full intake webhook: immediate Resend emails (internal Race Pack alert + athlete confirmation).
+10. Rewrite sprint.html: two tiers ($649/$549), CTA → Typeform screening form link (replaces old Stripe link), URL-param-triggered auto-sign section (activated when ?screen=pass params present), two-box "What's in your box" section, updated hero copy.
+11. Update wireframe.html: service upsell CTA price ($499 → from $549) and copy.
+12. Deactivate old $499 Stripe link after first v2 customer confirms full flow.
+
+**Why:** Current Sprint = training products only, no race gate, no contract, no Race Pack. Promise/delivery gap. v2 closes it with screening → contract → payment → Race Pack fulfillment.
+**Plan doc:** `~/.gstack/projects/bekzhou8455-rik-athletica/ceo-plans/2026-03-27-sprint-race-pack.md`
+**Eng review:** `~/.gstack/projects/bekzhou8455-rik-athletica/bekzhou-main-eng-review-test-plan-20260327-122951.md`
+**Effort:** M (human: 1-2 days setup / CC+gstack: 2-3 hours code)
+**Priority:** P1
+**Depends on:** Items 1-6 above must be done manually first before any code is written.
+
+---
+
+### P1 — Typeform Screening Form setup
+**What:** Build the Typeform screening form that gates Sprint enrollment before Dropbox Sign + payment. This is the first touch in the new v2 checkout flow.
+**Fields to build:**
+- Name (short text, required)
+- Email (email, required)
+- Race date (date, required)
+- Race distance (radio: Full Ironman / 70.3, required)
+- Training plan confirmation: "I currently have a structured training plan (from a coach or self-coached)" — must be YES to proceed. This service adds nutrition only; no training plan = not the right fit.
+- Red flags checklist (multiple-select: athlete selects all that apply):
+  - Uncontrolled diabetes or insulin therapy
+  - Diagnosed heart condition (last 12 months)
+  - Kidney disease or renal impairment
+  - Severe food allergy (nuts, dairy, soy, gluten)
+  - Currently pregnant or breastfeeding
+  - Other: (free text)
+**Logic Jump rules:**
+- If race_date < 28 days from today → FAIL ending "Too close" ("We need at least 4 weeks. Email hello@rikathletica.com.")
+- If race_date > 56 days from today → FAIL ending "Too far" ("We build programs for races 4-8 weeks out. Come back when you're closer!")
+- If training_plan = NO → FAIL ending "No training plan" ("Our service adds a nutrition layer on top of your training plan. Get one set first.")
+- If any red flag selected → FAIL ending "Medical flag" ("Please consult your doctor before enrolling. Email hello@rikathletica.com if you have questions.")
+- All pass → PASS ending → redirect to: `https://www.rikathletica.com/sprint?screen=pass&name={{name}}&email={{email}}&distance={{distance}}&race_date={{race_date}}`
+**Webhook:** All submissions → `https://www.rikathletica.com/api/screen` (FAIL submissions trigger operator notification email)
+**Why:** Without screening, any athlete can pay regardless of fit. The screening catches: too early/late for the service window, athletes without a training plan (service won't help them), and medical red flags that require clinical nutrition (not our service).
+**Effort:** S (human: 1-2 hours in Typeform / CC: not needed — this is Typeform config only)
+**Depends on:** Typeform Pro plan (user is on Pro — confirmed). Sprint v2 code must be deployed before the PASS redirect URL works end-to-end.
+
+---
+
+### P2 — Race Pack fulfillment backup channel via protocol gen tool
+**What:** When the Typeform intake CSV is uploaded to the internal protocol generation tool (Phase 1), the tool should also extract race_date and display a "Race Pack ship by" date prominently on the protocol review screen. This gives a second visual channel for Race Pack reminders beyond the /api/intake email.
+**Why:** The Typeform webhook → Resend email is a single point of failure. If the webhook silently fails (Typeform retries 3x and drops), no internal alert fires and the Race Pack ships late. The protocol gen tool upload step is always done manually by the operator, making it a reliable second channel.
+**How:** When operator uploads intake CSV to protocol gen tool, the tool parses race_date, computes ship_by_date = race_date - 10 days, and shows a yellow banner: "Race Pack due to ShipWizard by [date] (ships [date] → arrives [race_date - 3 to -5])."
+**Effort:** XS — add to protocol gen tool design when that tool is built. No separate implementation needed.
+**Depends on:** Internal Protocol Generation Tool (Phase 1 P1).
+
+---
+
+### P3 — Race Pack standalone product
+**What:** A $199 standalone Race Pack sold to athletes who already have their own training protocol but want done-for-you race-day product sourcing. New Stripe link, simple product page (or section on sprint.html). Ships ~10 days before athlete's race.
+**Why:** Opens the Race Pack as a standalone revenue stream. Serves repeat Sprint customers on future races and referrals from Sprint alumni.
+**Effort:** S (CC+gstack: 20 min)
+**Priority:** P3 — launch after Sprint v2 has 10+ customers.
+**Depends on:** Sprint v2 live and standing inventory established.
+
+---
+
+### P3 — Race Pack inventory reorder SOP
+**What:** Document par levels and reorder triggers for Race Pack standing stock at ShipWizard: Maurten Gel 100, Maurten Drink Mix 320, PH 1000 Tubes. When to reorder, where to order (thefeed.com), how to submit to ShipWizard receiving.
+**Effort:** XS (human: 30 min)
+**Priority:** P3 — before volume makes manual tracking unreliable.
 
 ---
 
