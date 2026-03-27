@@ -300,6 +300,38 @@ h2 { font-size: 20px; font-weight: 600; margin-bottom: 6px; }
   font-size: 11px;
   color: var(--tool-label);
 }
+.gen-progress-wrap {
+  margin-top: 20px;
+  display: none;
+}
+.gen-progress-bar-track {
+  height: 3px;
+  background: #e8e6e3;
+  border-radius: 2px;
+  overflow: hidden;
+}
+.gen-progress-bar-fill {
+  height: 100%;
+  background: var(--green);
+  border-radius: 2px;
+  width: 0%;
+  transition: width 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+.gen-progress-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 8px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--tool-label);
+}
+.gen-progress-msg {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 13px;
+  color: var(--muted);
+  transition: opacity 0.4s;
+}
 .pulse-dot {
   display: inline-block;
   width: 8px; height: 8px;
@@ -1427,7 +1459,15 @@ async function renderGenerate(sessionId, state) {
     <h1>${iterLabel}</h1>
     <div class="label mt8 mb24">${name} · ${event}${raceDate ? ' · Race: ' + raceDate : ''}</div>
     <div class="step-list" id="genSteps"></div>
-    <div id="genElapsed" style="display:none;font-family:JetBrains Mono,monospace;font-size:12px;color:var(--muted);margin-top:8px"></div>
+    <div id="genProgress" class="gen-progress-wrap">
+      <div class="gen-progress-bar-track">
+        <div id="genProgressFill" class="gen-progress-bar-fill"></div>
+      </div>
+      <div class="gen-progress-meta">
+        <span id="genProgressMsg" class="gen-progress-msg">Reading your training load...</span>
+        <span id="genProgressPct">0%</span>
+      </div>
+    </div>
     <div id="genError" style="display:none"></div>
   `;
 
@@ -1466,13 +1506,48 @@ async function renderGenerate(sessionId, state) {
   const r2 = addStep('Generating protocol (Architect AI)', 'active');
   const r3 = addStep('Auditing protocol');
 
-  // Elapsed timer
+  // Progress animation
+  const GEN_MESSAGES = [
+    'Reading your training load...',
+    'Calculating carbohydrate targets...',
+    'Building Week 1 protocol...',
+    'Personalising for your race distance...',
+    'Checking product compatibility...',
+    'Mapping fueling windows to your sessions...',
+    'Writing your race day plan...',
+    'Still working — complex protocol takes time...',
+    'Finalising electrolyte and hydration targets...',
+    'Cross-checking against GI history...',
+  ];
+  const GEN_EXPECTED_S = 200; // ~200s for a full Ironman protocol
+  let genMsgIdx = 0;
+
+  function setGenProgress(pct, msg) {
+    const fill = $('genProgressFill');
+    const pctEl = $('genProgressPct');
+    const msgEl = $('genProgressMsg');
+    if (fill) fill.style.width = pct + '%';
+    if (pctEl) pctEl.textContent = Math.round(pct) + '%';
+    if (msg && msgEl) {
+      msgEl.style.opacity = '0';
+      setTimeout(() => { msgEl.textContent = msg; msgEl.style.opacity = '1'; }, 200);
+    }
+    const wrap = $('genProgress');
+    if (wrap) wrap.style.display = 'block';
+  }
+
   app.elapsedSeconds = 0;
+  setGenProgress(2, GEN_MESSAGES[0]);
   app.elapsedTimer = setInterval(() => {
     app.elapsedSeconds++;
-    const el = $('genElapsed');
-    if (el) el.textContent = `${app.elapsedSeconds}s elapsed — building your protocol…`;
-    if (el) el.style.display = 'block';
+    // Ease-out curve: fast early, slows approaching 90%
+    const raw = app.elapsedSeconds / GEN_EXPECTED_S;
+    const pct = Math.min(90, 100 * (1 - Math.pow(1 - raw, 2.2)));
+    // Rotate message every 18s
+    if (app.elapsedSeconds % 18 === 0) {
+      genMsgIdx = (genMsgIdx + 1) % GEN_MESSAGES.length;
+    }
+    setGenProgress(pct, app.elapsedSeconds % 18 === 0 ? GEN_MESSAGES[genMsgIdx] : null);
   }, 1000);
 
   try {
@@ -1503,19 +1578,20 @@ async function renderGenerate(sessionId, state) {
           }
           if (evt.step === 'auditing' && evt.status === 'active') {
             clearInterval(app.elapsedTimer);
-            $('genElapsed').style.display = 'none';
+            setGenProgress(92, 'Auditing protocol...');
             updateStep('Generating protocol (Architect AI)', 'completed');
             updateStep('Auditing protocol', 'active');
           }
           if (evt.step === 'auditing' && evt.status === 'completed') {
             clearInterval(app.elapsedTimer);
-            $('genElapsed').style.display = 'none';
+            setGenProgress(98, 'Almost done...');
             updateStep('Auditing protocol', 'completed');
           }
         }
 
         if (evt.type === 'ready') {
           clearInterval(app.elapsedTimer);
+          setGenProgress(100, 'Protocol ready.');
           const res = await fetch(`/api/session/${sessionId}`);
           const updatedState = await res.json();
           app.sessionState = updatedState;
@@ -1525,7 +1601,7 @@ async function renderGenerate(sessionId, state) {
 
         if (evt.type === 'error') {
           clearInterval(app.elapsedTimer);
-          $('genElapsed').style.display = 'none';
+          if ($('genProgress')) $('genProgress').style.display = 'none';
           updateStep('Generating protocol (Architect AI)', 'error');
           $('genError').style.display = 'block';
           $('genError').innerHTML = `
@@ -1545,6 +1621,7 @@ async function renderGenerate(sessionId, state) {
     }
   } catch (e) {
     clearInterval(app.elapsedTimer);
+    if ($('genProgress')) $('genProgress').style.display = 'none';
     $('genError').style.display = 'block';
     $('genError').innerHTML = `
       <div class="error-box">
