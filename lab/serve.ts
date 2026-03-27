@@ -852,6 +852,7 @@ async function serveStatic(pathname: string): Promise<Response> {
 
 const server = Bun.serve({
   port: PORT,
+  idleTimeout: 0, // disable timeout — Claude API calls can take >10s
   async fetch(req) {
     const url = new URL(req.url);
     const pathname = url.pathname;
