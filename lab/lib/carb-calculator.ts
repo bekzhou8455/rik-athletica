@@ -62,8 +62,10 @@ export function calculateBaseTarget(
   }
 
   // Apply gut training modifier (stacks with GI history)
-  if (!profile.hasGutTrained) {
+  if (profile.gutTrainingStatus === 'none') {
     baseTarget -= 10;
+  } else if (profile.gutTrainingStatus === 'partial') {
+    baseTarget -= 5;
   }
 
   // Enforce floor

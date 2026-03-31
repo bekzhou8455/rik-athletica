@@ -28,7 +28,7 @@ export interface AthleteProfile {
   currentProducts: string[];
   currentCarbTarget?: number; // g/hr
   giHistory: 'none' | 'mild' | 'significant';
-  hasGutTrained: boolean;
+  gutTrainingStatus: 'none' | 'partial' | 'trained';
 
   // Physiological
   bodyWeight: number; // kg
@@ -43,6 +43,18 @@ export interface AthleteProfile {
   occupation?: string;
   travelFrequency?: string;
   coachRelationship?: string;
+
+  // Race Logistics (affects supply count, bike placement, electrolyte dosing)
+  raceType?: 'im_branded' | 'independent';          // IM events have Maurten at aid stations
+  bikeConfig?: 'standard_cages' | 'aero_bars' | 'integrated_reservoir';
+  raceTemperature?: 'cool' | 'temperate' | 'hot' | 'extreme';
+  maxComfortableCarbsPerHour?: number;               // self-reported ceiling (g/hr)
+
+  // Medical screening fields — populated from Typeform medical columns
+  // These are the primary inputs for red-flag-checker.ts
+  currentConditions?: string;  // cardiac checkboxes + arrhythmia + hyponatremia + GI + pregnancy (concatenated)
+  medications?: string;         // prescription medication list (free text)
+  medicalHistory?: string;      // "anything else about your health" free text
 
   // Data quality per field
   qualityScores: Record<string, 'high' | 'medium' | 'low'>;
@@ -178,6 +190,10 @@ export interface SessionState {
   currentIteration: 0 | 1 | 2 | 3;
   intake: AthleteProfile | null;
   sessions: TrainingSession[] | null; // current week's training sessions
+  splitsData?: {                        // race splits CSV (uploaded once, persists across iterations)
+    swimMins: number; t1Mins: number; bikeMins: number;
+    t2Mins: number; runMins: number; finishMins: number; distanceKm: number;
+  } | null;
   redFlags: string[];
   iterations: ProtocolIteration[]; // completed + approved iterations; grows 0→3
   // Working state for current iteration (cleared on approval, persisted in iterations[])

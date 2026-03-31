@@ -143,11 +143,131 @@ function parseDietaryRestrictions(row: Record<string, string>): string | undefin
   return found.length > 0 ? found.join(', ') : undefined;
 }
 
-// Infer gut-training status from intra-session fueling columns
-function inferGutTrained(row: Record<string, string>): boolean {
+// Infer gut training status from intra-session fueling columns (3-tier)
+// 'trained' requires explicit field — inferred from CSV can only reach 'partial'
+function inferGutTrainingStatus(row: Record<string, string>): 'none' | 'partial' | 'trained' {
   const fueled = ['Gels', 'Chews or bars', 'A combination of the above', 'Electrolyte mix / sports drink',
     'Real food (banana, rice cakes, dates, etc.)'];
-  return fueled.some(col => row[col] && row[col].trim().length > 0);
+  const fuelsAtAll = fueled.some(col => row[col] && row[col].trim().length > 0);
+  return fuelsAtAll ? 'partial' : 'none';
+}
+
+function parseRaceType(value: string): 'im_branded' | 'independent' {
+  const normalized = value.toLowerCase();
+  if (normalized.includes('independent') || normalized.includes('club') || normalized.includes('local') || normalized.includes('no') || normalized.includes('not')) return 'independent';
+  return 'im_branded'; // safe default — IM events most common
+}
+
+function parseBikeConfig(value: string): 'standard_cages' | 'aero_bars' | 'integrated_reservoir' {
+  const normalized = value.toLowerCase();
+  if (normalized.includes('integrated') || normalized.includes('reservoir') || normalized.includes('concept') || normalized.includes('shiv') || normalized.includes('tank')) return 'integrated_reservoir';
+  if (normalized.includes('aero bar') || normalized.includes('profile design') || normalized.includes('storage on aero') || normalized.includes('between the bar')) return 'aero_bars';
+  return 'standard_cages';
+}
+
+function isAffirmativeAnswer(value: string): boolean {
+  const v = value.toLowerCase().trim();
+  return v.startsWith('yes') || v === 'y';
+}
+
+// Cardiac condition checkbox columns — each is a separate Typeform "select all that apply" column.
+// When the option is checked, the column value equals the option text. Empty = not checked.
+const CARDIAC_CHECKBOX_COLUMNS = [
+  'Hypertension (high blood pressure)',
+  'Coronary artery disease',
+  'Heart failure or cardiomyopathy',
+  'Congenital heart defect',
+];
+
+// Parse all Typeform medical columns into currentConditions, medications, medicalHistory.
+// The red-flag-checker scans these fields for term-list matches.
+function parseMedicalData(row: Record<string, string>): {
+  currentConditions: string;
+  medications: string;
+  medicalHistory: string;
+} {
+  const conditionParts: string[] = [];
+
+  // ── Arrhythmia / caffeine sensitivity ────────────────────────────────────────
+  // Raw answer text is fed directly — checker scans for 'arrhythmia', 'atrial fibrillation',
+  // 'heart rhythm', 'palpitation', etc. Negative responses ('No — I tolerate caffeine well,
+  // no cardiac concerns') contain no term-list hits, so no false positives.
+  const arrhythmiaRaw = row[
+    'Do you have caffeine sensitivity, or a diagnosed cardiac arrhythmia, atrial fibrillation, or heart rhythm condition?'
+  ] || '';
+  if (arrhythmiaRaw.trim()) {
+    conditionParts.push(arrhythmiaRaw.trim());
+  }
+
+  // ── Hyponatremia history ──────────────────────────────────────────────────────
+  // Affirmative answer → inject explicit medical term so checker catches it
+  // regardless of how the athlete words "yes". Negative → nothing added.
+  const hyponatremiaRaw = row[
+    'Have you been diagnosed with or treated for exercise-associated hyponatremia (dangerously low blood sodium from over-hydration)?'
+  ] || '';
+  if (isAffirmativeAnswer(hyponatremiaRaw)) {
+    conditionParts.push('exercise-associated hyponatremia (EAH) history confirmed');
+  } else if (hyponatremiaRaw && !hyponatremiaRaw.toLowerCase().startsWith('no')) {
+    // Free-text answer that isn't clearly negative — pass to checker
+    conditionParts.push(hyponatremiaRaw.trim());
+  }
+
+  // ── Cardiac condition checkboxes ──────────────────────────────────────────────
+  // Each column value equals the option text when checked, empty when not.
+  for (const col of CARDIAC_CHECKBOX_COLUMNS) {
+    const val = (row[col] || '').trim();
+    if (val.length > 0) {
+      conditionParts.push(val); // e.g. "Heart failure or cardiomyopathy"
+    }
+  }
+
+  // ── Diagnosed GI condition ────────────────────────────────────────────────────
+  // Pass raw answer + description — checker scans for 'ibs', 'crohn', 'colitis', etc.
+  const giConditionRaw = row['Do you have any diagnosed gastrointestinal condition?'] || '';
+  if (giConditionRaw && !giConditionRaw.toLowerCase().startsWith('no')) {
+    conditionParts.push(giConditionRaw.trim());
+    const giDesc = row['Describe your condition and whether you have discussed endurance fueling with your doctor.'] || '';
+    if (giDesc.trim()) conditionParts.push(giDesc.trim());
+  }
+
+  // ── Pregnancy / breastfeeding ─────────────────────────────────────────────────
+  const pregnancyRaw = row['Are you currently pregnant or breastfeeding?'] || '';
+  if (isAffirmativeAnswer(pregnancyRaw)) {
+    conditionParts.push('pregnant or breastfeeding');
+  }
+
+  // ── Rhabdomyolysis history (medical context, not a hard block) ────────────────
+  const rhabdoRaw = row[
+    'Have you ever been assessed or treated for rhabdomyolysis or severe muscle breakdown after a long event? (Ironman 140.6 only)'
+  ] || '';
+  if (isAffirmativeAnswer(rhabdoRaw)) {
+    conditionParts.push('history of rhabdomyolysis or severe muscle breakdown');
+  }
+
+  // ── Prescription medications ──────────────────────────────────────────────────
+  let medications = '';
+  const medsYesNo = row['Are you currently taking any prescription medications?'] || '';
+  if (isAffirmativeAnswer(medsYesNo)) {
+    const medsList = (row['Please list your current prescription medications and what they are prescribed for.'] || '').trim();
+    medications = medsList.length > 0 ? medsList : 'Prescription medications disclosed (list not provided)';
+  }
+
+  // ── Free-text medical history ─────────────────────────────────────────────────
+  const medicalHistory = (row['Anything else about your health or medical history we should know before building your protocol?'] || '').trim();
+
+  return {
+    currentConditions: conditionParts.join('. '),
+    medications,
+    medicalHistory,
+  };
+}
+
+function parseRaceTemperature(value: string): 'cool' | 'temperate' | 'hot' | 'extreme' {
+  const normalized = value.toLowerCase();
+  if (normalized.includes('extreme') || normalized.includes('35') || normalized.includes('>35')) return 'extreme';
+  if (normalized.includes('hot') || normalized.includes('30') || normalized.includes('warm') || normalized.includes('25')) return 'hot';
+  if (normalized.includes('cool') || normalized.includes('cold') || normalized.includes('20') || normalized.includes('<20') || normalized.includes('under')) return 'cool';
+  return 'temperate';
 }
 
 export function parseIntakeCSV(csvText: string): AthleteProfile {
@@ -307,13 +427,37 @@ export function parseIntakeCSV(csvText: string): AthleteProfile {
     'coach_relationship', 'CoachRelationship', 'Coach Relationship',
   ]);
 
-  // Gut trained — infer from intra-session fueling if no explicit field
-  const hasGutTrainedRaw = optionalField('Gut trained?', [
-    'gut_trained', 'GutTrained', 'Gut Trained?', 'Has gut trained?',
+  // Gut training status — explicit 3-tier field preferred; inferred as fallback
+  const gutTrainingRaw = optionalField('Gut training status', [
+    'gut_training_status', 'GutTrainingStatus', 'Has gut trained at race-level carbs?',
+    'Gut trained?', 'gut_trained', 'GutTrained',
   ]);
-  const hasGutTrained = hasGutTrainedRaw !== undefined
-    ? parseYesNo(hasGutTrainedRaw)
-    : inferGutTrained(row);
+  let gutTrainingStatus: 'none' | 'partial' | 'trained';
+  if (gutTrainingRaw !== undefined) {
+    const g = gutTrainingRaw.toLowerCase();
+    if (g.includes('trained') || (g.includes('yes') && g.includes('race'))) gutTrainingStatus = 'trained';
+    else if (g.includes('partial') || g.includes('sometimes') || g.includes('yes')) gutTrainingStatus = 'partial';
+    else gutTrainingStatus = 'none';
+  } else {
+    gutTrainingStatus = inferGutTrainingStatus(row);
+  }
+
+  // ── Medical screening fields ─────────────────────────────────────────────────
+  const { currentConditions, medications, medicalHistory } = parseMedicalData(row);
+
+  // New logistics fields
+  const raceTypeRaw = optionalField('Race type', [
+    'What type of race is this?', 'Is this an official Ironman event?', 'race_type', 'RaceType',
+  ]);
+  const bikeConfigRaw = optionalField('Bike configuration', [
+    'How is your bike set up for carrying nutrition?', 'bike_config', 'BikeConfig', 'Bike config',
+  ]);
+  const raceTemperatureRaw = optionalField('Expected race temperature', [
+    'What temperature do you expect on race day?', 'race_temperature', 'RaceTemperature', 'Expected temperature',
+  ]);
+  const maxCarbsRaw = optionalField('Max comfortable carbs per hour', [
+    'max_carbs_per_hour', 'MaxComfortableCarbs', 'What is the highest g/hr of carbs you have been comfortable with?',
+  ]);
 
   const profile: AthleteProfile = {
     athleteId,
@@ -336,7 +480,11 @@ export function parseIntakeCSV(csvText: string): AthleteProfile {
     currentProducts,
     currentCarbTarget,
     giHistory: parseGIHistory(giHistoryRaw),
-    hasGutTrained,
+    gutTrainingStatus,
+    raceType: raceTypeRaw ? parseRaceType(raceTypeRaw) : undefined,
+    bikeConfig: bikeConfigRaw ? parseBikeConfig(bikeConfigRaw) : undefined,
+    raceTemperature: raceTemperatureRaw ? parseRaceTemperature(raceTemperatureRaw) : undefined,
+    maxComfortableCarbsPerHour: maxCarbsRaw ? parseCarbRange(maxCarbsRaw) : undefined,
     bodyWeight,
     sweatRate,
     heatContext,
@@ -345,6 +493,10 @@ export function parseIntakeCSV(csvText: string): AthleteProfile {
     occupation,
     travelFrequency,
     coachRelationship,
+    // Medical screening — populated from Typeform medical columns
+    currentConditions: currentConditions || undefined,
+    medications: medications || undefined,
+    medicalHistory: medicalHistory || undefined,
     qualityScores: {}, // will be populated by quality-scorer
   };
 

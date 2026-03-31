@@ -349,3 +349,405 @@ export function formatForPrint(
 </body>
 </html>`;
 }
+
+/**
+ * Generates a carry sheet PDF — one-page race-day pocket guide.
+ * Extracts the Race Pack table and key timing from rawMarkdown.
+ */
+export function formatCarrySheet(draft: ProtocolDraft, profile: AthleteProfile): string {
+  const event = formatEventType(profile.eventType);
+  const raceDate = formatDate(profile.raceDate);
+  const bikeConfig = (profile as any).bikeConfig || 'standard_cages';
+  const raceTemp = (profile as any).raceTemperature || 'temperate';
+
+  const bikeConfigLabel = bikeConfig === 'aero_bars'
+    ? 'TT / Aero bars + cage'
+    : bikeConfig === 'integrated_reservoir'
+    ? 'TT / Integrated reservoir'
+    : 'Road bike / Standard cages';
+
+  const bottlePlacement = bikeConfig === 'aero_bars'
+    ? 'Aero bar bottle = WATER ONLY · Cage bottle = DM320'
+    : bikeConfig === 'integrated_reservoir'
+    ? 'Reservoir = WATER ONLY · External cage = DM320'
+    : 'Bottle A (down tube) = DM320 · Bottle B = WATER';
+
+  const fastChewsFreq = (raceTemp === 'hot' || raceTemp === 'extreme') ? 'Every 20 min' : 'Every 30 min';
+  const tempNote = raceTemp === 'hot'
+    ? '⚠ HOT RACE — increase FastChews to every 20 min. Extra water at every aid station.'
+    : raceTemp === 'extreme'
+    ? '⚠ EXTREME HEAT — FastChews every 15 min. Consider race director guidance on heat protocols.'
+    : '';
+
+  // Extract Race Pack section from rawMarkdown if present
+  let racePackSection = '';
+  if (draft.rawMarkdown) {
+    const match = draft.rawMarkdown.match(/##\s*RACE PACK[\s\S]*?(?=\n##|\n---|\Z)/i);
+    if (match) racePackSection = match[0];
+  }
+
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Race Day Carry Sheet — ${profile.name}</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 13px;
+      line-height: 1.5;
+      color: #0a0a0a;
+      background: #fff;
+      max-width: 740px;
+      margin: 0 auto;
+      padding: 32px 28px;
+    }
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 20px;
+      padding-bottom: 16px;
+      border-bottom: 2px solid #0a0a0a;
+    }
+    .brand {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      color: #aaa;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+    }
+    .athlete-block { text-align: right; }
+    .athlete-name { font-size: 18px; font-weight: 700; }
+    .race-meta {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: #666;
+      margin-top: 2px;
+    }
+    .section {
+      margin: 16px 0;
+      padding: 14px 16px;
+      border: 1px solid rgba(0,0,0,0.1);
+      border-radius: 10px;
+    }
+    .section-title {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: #aaa;
+      margin-bottom: 10px;
+    }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+    .leg-card {
+      background: #f6f5f4;
+      border-radius: 8px;
+      padding: 12px;
+    }
+    .leg-title {
+      font-weight: 600;
+      font-size: 13px;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .leg-item {
+      font-size: 12px;
+      color: #333;
+      padding: 2px 0;
+      border-bottom: 1px solid rgba(0,0,0,0.06);
+    }
+    .leg-item:last-child { border-bottom: none; }
+    .leg-item strong { font-weight: 600; }
+    .timing-pill {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      background: #0a0a0a;
+      color: #fff;
+      padding: 1px 6px;
+      border-radius: 4px;
+      margin-right: 4px;
+    }
+    .alert {
+      background: #fff5e6;
+      border: 1px solid #f6ad55;
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-size: 12px;
+      font-weight: 500;
+      color: #7b341e;
+      margin-bottom: 12px;
+    }
+    .config-row {
+      font-size: 12px;
+      padding: 4px 0;
+      display: flex;
+      gap: 8px;
+    }
+    .config-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      color: #aaa;
+      text-transform: uppercase;
+      min-width: 90px;
+      padding-top: 2px;
+    }
+    .rule-item {
+      font-size: 12px;
+      padding: 3px 0;
+      color: #333;
+    }
+    .rule-item::before { content: '→ '; color: #2D5A3D; font-weight: 600; }
+    table { width: 100%; border-collapse: collapse; font-size: 12px; }
+    th {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #aaa;
+      text-align: left;
+      padding: 4px 8px;
+      border-bottom: 1px solid rgba(0,0,0,0.1);
+    }
+    td { padding: 5px 8px; border-bottom: 1px solid rgba(0,0,0,0.05); }
+    tr:last-child td { border-bottom: none; }
+    .footer {
+      margin-top: 20px;
+      padding-top: 12px;
+      border-top: 1px solid rgba(0,0,0,0.1);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      color: #aaa;
+      display: flex;
+      justify-content: space-between;
+    }
+    @media print {
+      body { padding: 16px; }
+      * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <div>
+    <div class="brand">RIK Athletica</div>
+    <div class="brand" style="margin-top:2px">Race Day Carry Sheet</div>
+  </div>
+  <div class="athlete-block">
+    <div class="athlete-name">${profile.name}</div>
+    <div class="race-meta">${event} · ${raceDate}</div>
+  </div>
+</div>
+
+${tempNote ? `<div class="alert">${tempNote}</div>` : ''}
+
+<div class="section">
+  <div class="section-title">Bike Setup</div>
+  <div class="config-row"><span class="config-label">Bike type</span><span>${bikeConfigLabel}</span></div>
+  <div class="config-row"><span class="config-label">Bottles</span><span>${bottlePlacement}</span></div>
+  <div class="config-row"><span class="config-label">Bento / bag</span><span>Gel 100s · Solid 160 (if using) · FastChews · GEL 100 CAF 100 (move to run belt at T2)</span></div>
+  <div class="config-row"><span class="config-label">Aid stations</span><span>Swap WATER bottle only. Protect DM320 bottle.</span></div>
+</div>
+
+<div class="section">
+  <div class="section-title">Race Day Timeline</div>
+  <div class="grid-3">
+    <div class="leg-card">
+      <div class="leg-title">🕐 Pre-Race</div>
+      <div class="leg-item"><span class="timing-pill">T−25min</span><strong>Euphoria</strong></div>
+      <div class="leg-item"><span class="timing-pill">T−20min</span>500ml water</div>
+      <div class="leg-item"><span class="timing-pill">T2</span>Move CAF gel → run belt</div>
+    </div>
+    <div class="leg-card">
+      <div class="leg-title">🚴 Bike</div>
+      <div class="leg-item"><strong>DM320</strong> — 1 bottle/hr</div>
+      <div class="leg-item"><strong>Gel 100</strong> — see protocol</div>
+      <div class="leg-item"><strong>FastChews</strong> — ${fastChewsFreq}</div>
+      <div class="leg-item"><strong>Solid 160</strong> — first 90min only</div>
+    </div>
+    <div class="leg-card">
+      <div class="leg-title">🏃 Run</div>
+      <div class="leg-item"><strong>SiS BF+E</strong> — every 20–30min</div>
+      <div class="leg-item"><strong>FastChews</strong> — ${fastChewsFreq}</div>
+      <div class="leg-item"><strong>CAF 100</strong> — mid-run (1× only)</div>
+      <div class="leg-item"><strong>Refuel</strong> — post finish &lt;30min</div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-title">Key Rules</div>
+  <div class="rule-item">Euphoria is CNS priming — not a carb gel. Take 25min before gun.</div>
+  <div class="rule-item">DM320 is your bike carb base. Gels supplement on top — don't stack a second drink mix.</div>
+  <div class="rule-item">CAF 100 is for mid-run only. Do not take on bike.</div>
+  <div class="rule-item">Aid stations = water replenishment only. All nutrition is self-carried.</div>
+  <div class="rule-item">FastChews start at gun, not when you feel thirsty or crampy.</div>
+  <div class="rule-item">Solid 160 is early bike only (first 90min). Never solid food on run.</div>
+  <div class="rule-item">Refuel within 30min of crossing the finish line — don't skip it.</div>
+</div>
+
+${racePackSection ? `<div class="section">
+  <div class="section-title">Race Pack — What You're Carrying</div>
+  <div style="font-size:12px;color:#555;white-space:pre-wrap;font-family:'JetBrains Mono',monospace;">${racePackSection.replace(/</g,'&lt;').replace(/>/g,'&gt;').substring(0, 800)}</div>
+</div>` : ''}
+
+<div class="footer">
+  <span>RIK Athletica — Confidential Athlete Document</span>
+  <span>${profile.name} · Generated ${new Date().toLocaleDateString('en-GB')}</span>
+</div>
+
+</body>
+</html>`;
+}
+
+/**
+ * Fueling Sheet — athlete-facing compact training guide.
+ * Extracts per-session data from rawMarkdown and formats it as a clean printable HTML page.
+ * The athlete sees: Day / Session / Carb Target / What to take / Timing / Prep notes.
+ */
+export function formatFuelingSheet(draft: ProtocolDraft, profile: AthleteProfile): string {
+  const name = profile.name;
+  const event = formatEventType(profile.eventType);
+  const raceDate = formatDate(profile.raceDate);
+  const md = draft.rawMarkdown || '';
+
+  // ── Extract session blocks ────────────────────────────────────────────────
+  interface SessionRow {
+    heading: string;
+    carbTarget: string;
+    pre: string;
+    products: string[];
+    refuel: string;
+    prepNote: string;
+  }
+
+  const rows: SessionRow[] = [];
+
+  // Split by ## week headers, then by ### session headers within each week
+  const weekSections = md.split(/\n(?=## )/);
+  for (const weekBlock of weekSections) {
+    if (!/^## (?:WEEK|RACE)/i.test(weekBlock)) continue;
+
+    const sessionBlocks = weekBlock.split(/\n(?=### )/);
+    const weekLabel = sessionBlocks[0].match(/^## (.+)/)?.[1]?.trim() ?? '';
+
+    for (let i = 1; i < sessionBlocks.length; i++) {
+      const block = sessionBlocks[i];
+      const lines = block.split('\n');
+      const heading = lines[0].replace(/^### /, '').trim();
+
+      // Skip assumption flags / supply table sections
+      if (/assumption|supply table|race pack/i.test(heading)) continue;
+
+      const bodyText = lines.slice(1).join('\n');
+
+      // Carb target
+      const carbMatch = bodyText.match(/carb target[:\s]+(\d+)\s*g\/hr/i);
+      const carbTarget = carbMatch ? `${carbMatch[1]} g/hr` : '—';
+
+      // Pre-session (Euphoria timing)
+      const euphoriaMatch = bodyText.match(/euphoria[^:\n]*:\s*([^\n]{5,60})/i);
+      const pre = euphoriaMatch ? euphoriaMatch[1].trim().replace(/\*\*/g, '') : '—';
+
+      // Products — lines containing × quantity or product brand keywords
+      const productLines = lines
+        .filter(l => /×\s*\d+|maurten|sis|saltst|fastchew|dm\d{3}|gel\s*100|solid\s*160|beta\s*fuel|refuel/i.test(l))
+        .map(l => l.replace(/^[-*•\s]+/, '').replace(/\*\*/g, '').trim())
+        .filter(l => l.length > 4 && !/^#+/.test(l))
+        .slice(0, 6);
+
+      // Refuel timing
+      const refuelIntra = bodyText.match(/refuel.*?intra[^:\n]*:\s*([^\n]{4,60})/i)?.[1]?.trim() ?? '';
+      const refuelPost = bodyText.match(/refuel.*?post[^:\n]*:\s*([^\n]{4,60})/i)?.[1]?.trim() ?? '';
+      const refuelStr = [refuelIntra, refuelPost].filter(Boolean).join(' · ') || 'Post-session (within 30 min)';
+
+      // Prep note
+      const hasLongBike = /bike|brick/i.test(heading) && parseInt(bodyText.match(/(\d{2,3})\s*min/)?.[1] ?? '0') >= 90;
+      const prepNote = hasLongBike ? 'Mix DM bottles the night before. Pre-cut Euphoria sachet.' : '';
+
+      rows.push({ heading: `${weekLabel ? weekLabel + ' · ' : ''}${heading}`, carbTarget, pre, products: productLines, refuel: refuelStr, prepNote });
+    }
+  }
+
+  const tableRows = rows.map(r => `
+    <tr>
+      <td class="session-col"><strong>${r.heading}</strong>${r.prepNote ? `<div class="prep-note">⚑ ${r.prepNote}</div>` : ''}</td>
+      <td class="carb-col">${r.carbTarget}</td>
+      <td class="detail-col">${r.pre}</td>
+      <td class="detail-col">${r.products.length ? r.products.join('<br>') : '—'}</td>
+      <td class="detail-col">${r.refuel}</td>
+    </tr>`).join('\n');
+
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>${name} — Fueling Sheet</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 13px; line-height: 1.6; color: #0a0a0a; background: #fff; max-width: 960px; margin: 0 auto; padding: 36px 32px; }
+.header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 28px; padding-bottom: 16px; border-bottom: 2px solid #0a0a0a; }
+.brand { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #aaa; text-transform: uppercase; letter-spacing: 1.5px; }
+.athlete { font-size: 20px; font-weight: 600; }
+.meta { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #666; margin-top: 2px; }
+h2 { font-size: 11px; font-weight: 600; color: #aaa; text-transform: uppercase; letter-spacing: 1px; margin: 24px 0 12px; }
+table { width: 100%; border-collapse: collapse; }
+thead th { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.8px; color: #999; text-align: left; padding: 6px 10px; border-bottom: 1px solid #e0e0e0; }
+tbody tr { border-bottom: 1px solid #f0f0f0; }
+tbody tr:hover { background: #fafafa; }
+td { padding: 10px 10px; vertical-align: top; font-size: 12.5px; }
+.session-col { width: 26%; font-weight: 500; }
+.carb-col { width: 10%; font-family: 'JetBrains Mono', monospace; font-weight: 600; color: #2D5A3D; white-space: nowrap; }
+.detail-col { width: 21%; font-size: 12px; color: #444; }
+.prep-note { font-size: 11px; color: #b7791f; margin-top: 4px; font-weight: 400; }
+.legend { margin-top: 24px; font-size: 11px; color: #888; border-top: 1px solid #e0e0e0; padding-top: 12px; }
+@media print {
+  body { padding: 24px; }
+  .header { page-break-after: avoid; }
+  tr { page-break-inside: avoid; }
+}
+</style>
+</head>
+<body>
+<div class="header">
+  <div>
+    <div class="brand">RIK Athletica · Fueling Sheet</div>
+    <div class="athlete">${name}</div>
+    <div class="meta">${event} · Race: ${raceDate}</div>
+  </div>
+  <div style="text-align:right">
+    <div class="brand">Full protocol: see Protocol PDF</div>
+    <div class="meta">Generated ${formatDate(draft.generatedAt)}</div>
+  </div>
+</div>
+
+<h2>Session-by-Session Fueling Plan</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Session</th>
+      <th>Carb target</th>
+      <th>Pre-session</th>
+      <th>During session</th>
+      <th>Recovery</th>
+    </tr>
+  </thead>
+  <tbody>
+    ${tableRows || '<tr><td colspan="5" style="color:#999;text-align:center;padding:20px">No session data extracted — view full protocol PDF for details.</td></tr>'}
+  </tbody>
+</table>
+
+<div class="legend">
+  <strong>Key:</strong> All carb targets in g/hr. Pre-session = Euphoria sachet 20–30 min before session start. Recovery = Refuel sachet within 30 min of finish. ⚑ = prep action required the night before.
+  <br><br><strong>Products to have on hand:</strong> Euphoria sachets · Refuel sachets · Maurten DM160/DM320 sachets · Maurten Gel 100 · SiS Beta Fuel Gel · SaltStick FastChews · (Race only: Maurten GEL 100 CAF 100)
+</div>
+</body>
+</html>`;
+}

@@ -73,9 +73,9 @@ function scoreIntakeFields(profile: AthleteProfile): FieldScore[] {
       validate: (v) => ['none', 'mild', 'significant'].includes(v as string),
     },
     {
-      field: 'hasGutTrained',
-      value: profile.hasGutTrained,
-      validate: (v) => typeof v === 'boolean',
+      field: 'gutTrainingStatus',
+      value: profile.gutTrainingStatus,
+      validate: (v) => ['none', 'partial', 'trained'].includes(v as string),
     },
     {
       field: 'hasCGMData',
