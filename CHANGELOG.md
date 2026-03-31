@@ -5,6 +5,38 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [1.1.0] — 2026-03-31 — Protocol Engine Prep
+
+### What you can do now
+
+- **Generate protocols with deterministic validation** — a new pre-auditor validator (`lab/lib/validator.ts`) catches hallucinated g/hr numbers and unapproved products before the LLM auditor call. If numbers are physically impossible, the pipeline stops rather than wasting a costly LLM call on broken output.
+- **Specify how many weeks to generate** — a 1/2/3/4 week picker in the tool UI lets the operator control protocol length per athlete.
+- **Upload race splits CSV** — paste in a Garmin/Strava export and the tool extracts swim/T1/bike/T2/run segment times to inform bracket assignment.
+- **Configure bike type and race conditions** — standard cages, aero bars, or integrated reservoir; cool/temperate/hot/extreme temperature. Both affect bottle placement instructions and electrolyte dosing in the generated protocol.
+- **Medical screening fields** — Typeform medical columns (conditions, medications, history) flow through the pipeline. Red flag checker now parses prescription medications and flags unknown medication combinations.
+
+### Added
+
+- `lab/lib/validator.ts` — deterministic pre-auditor validator. Checks: g/hr ceiling (120g/hr absolute max), caffeinated gel on bike (never), run/bike ratio anomaly (>90% of bike), competitor brand detection. Also builds supply list with units-to-order and estimated cost.
+- `lab/lib/analysis.ts` — race fueling analysis module
+- `lab/lib/split-parser.ts` — CSV splits parser for race segment timing
+- `lab/PROTOCOL_SCIENCE.md` — science reference document for internal use and architect AI context
+- `lab/mockup/` — sample intake.csv and training-plan.csv fixtures for local testing
+
+### Changed
+
+- `lab/lib/types.ts`: `hasGutTrained: boolean` → `gutTrainingStatus: 'none' | 'partial' | 'trained'`. Added race logistics fields (`bikeConfig`, `raceType`, `raceTemperature`, `maxComfortableCarbsPerHour`), medical screening fields (`currentConditions`, `medications`, `medicalHistory`), and `splitsData` on `SessionState`.
+- `lab/lib/protocol-formatter.ts`: added `formatCarrySheet()` — one-page race-day pocket guide extracted from rawMarkdown.
+- `lab/lib/red-flag-checker.ts`: major expansion — medical condition detection, prescription medication parsing, unknown medication soft-flag.
+- `lab/lib/intake-parser.ts`: parses new race logistics and medical columns from Typeform intake.
+- `lab/prompts/architect-system.md`: full science foundation rewrite — bracket targets, gut training modifier, GI history modifier, rounding rules, run carb differential (bike × 0.65), MTC requirement, realistic bike nutrition guidance, Layer 2 Refuel substitution logic, race day plan structure, carry sheet format.
+- `lab/prompts/auditor-system.md`: auditing criteria aligned with new architect spec.
+- `lab/serve.ts`: validator wired between architect and auditor; splits upload and race logistics context passed to prompt builder; gutTrainingStatus replaces hasGutTrained.
+- `lab/tool.html`: weeks picker, splits upload, bike config and race temperature selectors.
+- `lab/products.csv`: updated SKU catalogue with correct pricing and unit descriptions.
+
+---
+
 ## [1.0.0] — 2026-03-23 — Initial Launch Build
 
 ### What you can do now
