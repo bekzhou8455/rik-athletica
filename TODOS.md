@@ -129,24 +129,35 @@ Last updated by /plan-ceo-review on 2026-03-27
 
 ---
 
-### P1 — Internal Protocol Generation Tool
-**What:** An internal-only web page (password-protected or localhost only) where:
-1. Upload athlete's Typeform intake CSV + any attachments (training plan, screenshots)
-2. AI pipeline runs RIK methodology:
-   - Layer 1 analysis: carb requirement (g/hr), sodium requirement (mg/hr), caffeine threshold — using intake data + race distance + training load
-   - Layer 1 generation: product selection from products.csv + dosing schedule mapped to race/training timeline
-   - Layer 1 audit: check for GI risk flags, caffeine sensitivity, known allergies
-   - Layer 2 analysis: gut training progression plan (weeks 1-4), current intake vs target
-   - Layer 2 generation: week-by-week gut training schedule + product introduction timeline
-   - Layer 2 audit: check timeline vs race date, no new products in final 7 days rule
-3. Exports two files for Bek to review before sending:
-   - **Protocol PDF**: formatted document with analysis summary, Layer 1 dosing table, Layer 2 gut training calendar, race-week hour-by-hour plan
-   - **Calendar .ics file**: each training session has a calendar event with that session's protocol (what to take, when, dosing)
-4. Bek reviews both files → sends to athlete
+### P1 — Protocol Generation Tool: Deterministic Engine Rebuild
+**What:** Replace the LLM Architect with a TypeScript protocol engine. Keep: pipeline (build→validate→audit→approve), tool.html UI, science docs, products catalogue. Rebuild: the generation core.
 
-**Why this matters:** Reduces protocol build time from 3 hours to 30-45 min. Makes Sprint scalable past 10 customers. Makes the product consistent and auditable.
-**Architecture:** Next.js or plain HTML/JS internal page. Claude API for analysis + generation. puppeteer/playwright for PDF export. ics library for calendar file.
-**Effort:** L (human: 2-3 weeks / CC+gstack: 2-3 sessions)
+**Architecture decision (from /plan-ceo-review 2026-03-31):**
+- Hybrid approach: deterministic engine for all numbers, LLM prose layer for narrative
+- Engine computes: bracket, g/hr targets, products, Euphoria/Refuel placement, gut ramp, race-day plan
+- LLM writes: session notes, assumption flags, carry sheet tips (500 tokens, not 3000+)
+- Validator + Auditor AI unchanged (auditor should now PASS on first try, always)
+
+**New files to build:**
+```
+lab/lib/protocol-engine/
+  bracket.ts           ~80 LOC
+  targets.ts           ~120 LOC
+  product-selector.ts  ~150 LOC
+  placer.ts            ~100 LOC
+  race-day.ts          ~200 LOC
+  session-planner.ts   ~150 LOC
+  gut-ramp.ts          ~40 LOC
+  index.ts             ~80 LOC
+lab/prompts/prose-system.md
+```
+
+**Why:** LLM Architect was executing a formal rule system (276-line prompt) probabilistically. Rules that should be code. Deterministic engine: zero hallucinated numbers, zero revision loops, 10x cheaper generation step.
+
+**Plan doc:** `~/.gstack/projects/bekzhou8455-rik-athletica/ceo-plans/2026-03-31-deterministic-protocol-engine.md`
+**Effort:** M (human: 2-3 days / CC+gstack: 1 session)
+**Depends on:** Run `/plan-eng-review` before coding.
+**Priority:** P1 — block on this before taking any new customers.
 **Depends on:** products.csv from thefeed.com scrape (TODO above). Requires /plan-eng-review before build.
 **Note:** This is the core product IP — design carefully. Plan its own dedicated session.
 
