@@ -1,0 +1,9 @@
+date,type,duration,intensity,description
+2026-03-30,swim,40,easy,Steady aerobic - 2000m - no wetsuit
+2026-03-31,bike,210,moderate,Long aerobic ride - zones 2-3 - 105km target
+2026-04-01,run,90,easy,Recovery jog - keep HR below 140
+2026-04-02,swim,55,hard,Threshold sets - 10x150m with 20s rest
+2026-04-02,bike,60,easy,Evening spin - flush legs
+2026-04-03,rest,0,easy,Full rest day
+2026-04-04,bike,195,hard,Race-specific brick - 90km @ race effort then 20min T2 run
+2026-04-05,run,130,moderate,Medium-long run - build to zone 3 for final 30min
