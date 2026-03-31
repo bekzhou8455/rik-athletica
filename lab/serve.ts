@@ -5,7 +5,10 @@ import { scoreQuality, scoreIntakeQuality, scoreTrainingPlanQuality } from './li
 import { checkRedFlags } from './lib/red-flag-checker.ts';
 import { parseFeedbackCSV, buildAdjustmentBrief } from './lib/feedback-parser.ts';
 import { applyFeedbackModifiers } from './lib/carb-calculator.ts';
-import { formatForAudit, formatForPrint } from './lib/protocol-formatter.ts';
+import { formatForAudit, formatForPrint, formatCarrySheet } from './lib/protocol-formatter.ts';
+import { validateProtocol } from './lib/validator.ts';
+import { analyseRaceFueling } from './lib/analysis.ts';
+import { parseSplitsCsv } from './lib/split-parser.ts';
 import { generateICS } from './lib/ics-generator.ts';
 import {
   notifyGenerationFailed,
@@ -171,7 +174,8 @@ function buildArchitectMessage(
   profile: AthleteProfile,
   sessions: TrainingSession[],
   iterationContext: string,
-  productsCsv: string
+  productsCsv: string,
+  weeksToGenerate: number = 1
 ): string {
   const eventLabel = profile.eventType === 'ironman_140' ? 'IRONMAN 140.6' : 'IRONMAN 70.3';
 
@@ -196,7 +200,7 @@ ${profile.longSessionDurations.run ? `- Longest run: ${profile.longSessionDurati
 - Current products: ${profile.currentProducts.length > 0 ? profile.currentProducts.join(', ') : 'None specified'}
 ${profile.currentCarbTarget ? `- Current carb target: ${profile.currentCarbTarget}g/hr` : '- Current carb target: not specified'}
 - GI history: ${profile.giHistory}
-- Gut trained: ${profile.hasGutTrained ? 'Yes' : 'No'}
+- Gut training status: ${profile.gutTrainingStatus}
 
 ## Physiological
 - Body weight: ${profile.bodyWeight}kg
@@ -204,6 +208,17 @@ ${profile.sweatRate ? `- Sweat rate: ${profile.sweatRate}mL/hr` : '- Sweat rate:
 ${profile.heatContext ? `- Heat context: ${profile.heatContext}` : '- Heat context: not specified — assume temperate'}
 - CGM data available: ${profile.hasCGMData ? 'Yes' : 'No'}
 ${profile.dietaryRestrictions ? `- Dietary restrictions: ${profile.dietaryRestrictions}` : ''}
+
+## Race Logistics
+- Race type: ${profile.raceType === 'im_branded' ? 'Official IRONMAN-branded event (Maurten at aid stations on bike every 25km — compensates for supply gaps)' : profile.raceType === 'independent' ? 'Independent race (NO external nutrition at aid stations — full self-carry required on bike and run)' : 'Not specified — assume IRONMAN-branded for safety'}
+- Bike configuration: ${profile.bikeConfig === 'standard_cages' ? 'Standard cages (Bottle A = DM320, Bottle B = plain water)' : profile.bikeConfig === 'aero_bars' ? 'Aero bars with cage (Aero bars = plain water ONLY — do not put fuel here; Cage = DM320)' : profile.bikeConfig === 'integrated_reservoir' ? 'Integrated reservoir (Reservoir = plain water; Cages = DM320)' : 'Not specified — assume standard cages'}
+${profile.raceTemperature ? `- Expected race temperature: ${profile.raceTemperature} (${profile.raceTemperature === 'hot' ? 'electrolyte dosing UP — SaltStick every 20min not 30min' : profile.raceTemperature === 'extreme' ? 'EXTREME heat — consult race director; electrolytes every 15min; sodium target 1000-1500mg/hr' : profile.raceTemperature === 'cool' ? 'cool conditions — electrolytes standard frequency; hyponatremia risk from overdrinking still applies' : 'standard electrolyte frequency'})` : '- Expected race temperature: not specified — assume temperate'}
+${profile.maxComfortableCarbsPerHour ? `- Self-reported max comfortable carbs: ${profile.maxComfortableCarbsPerHour}g/hr (binding ceiling — do not exceed)` : ''}
+
+## Medical Notes
+${profile.currentConditions ? `- Disclosed conditions: ${profile.currentConditions}` : '- No medical conditions disclosed'}
+${profile.medications ? `- Prescription medications: ${profile.medications}` : '- No prescription medications'}
+${profile.medicalHistory ? `- Additional health notes: ${profile.medicalHistory}` : ''}
 
 ## Lifestyle
 ${profile.occupation ? `- Occupation: ${profile.occupation}` : ''}
@@ -220,12 +235,17 @@ ${sessions.map(s => `- ${s.date}: ${s.type} ${s.duration}min [${s.intensity}]${s
 
 # Available Products (from products.csv)
 
-${productsCsv.split('\n').slice(0, 30).join('\n')}
-...and more in the full database.
+${productsCsv}
 
 ---
 
 ${iterationContext ? `# Iteration Context\n\n${iterationContext}\n\n---\n\n` : ''}
+
+---
+
+# Generation Instructions
+
+Generate **${weeksToGenerate} week${weeksToGenerate > 1 ? 's' : ''}** of protocol. ${weeksToGenerate === 1 ? 'Week 1 only. Do NOT include Week 2, Week 3, or Week 4 sections — they are not requested.' : `Weeks 1–${weeksToGenerate}. Do not generate beyond Week ${weeksToGenerate}.`} Always include the Race Day Plan and Assumption Flags regardless of week count.
 
 Please build the complete nutrition protocol for this athlete following the system prompt instructions exactly.`;
 }
@@ -235,7 +255,7 @@ Please build the complete nutrition protocol for this athlete following the syst
 function buildDemoProtocol(profile: AthleteProfile, sessions: TrainingSession[], iteration: number): string {
   const event = profile.eventType === 'ironman_140' ? 'IRONMAN 140.6' : 'IRONMAN 70.3';
   const weekLabel = iteration === 0 ? 1 : iteration + 1;
-  const carbTarget = Math.max(40, (profile.currentCarbTarget || 60) - (profile.giHistory === 'significant' ? 10 : profile.giHistory === 'mild' ? 5 : 0) - (profile.hasGutTrained ? 0 : 10));
+  const carbTarget = Math.max(40, (profile.currentCarbTarget || 60) - (profile.giHistory === 'significant' ? 10 : profile.giHistory === 'mild' ? 5 : 0) - (profile.gutTrainingStatus === 'none' ? 10 : profile.gutTrainingStatus === 'partial' ? 5 : 0));
   const raceBikeCarbTarget = profile.eventType === 'ironman_140' ? Math.min(80, carbTarget + 10) : Math.min(70, carbTarget + 5);
   const raceRunCarbTarget = profile.eventType === 'ironman_140' ? Math.min(55, carbTarget - 5) : Math.min(50, carbTarget - 5);
   const iterNote = iteration > 0 ? `\n> **Iteration ${iteration} adjustment** — protocol refined based on Week ${iteration} session feedback.\n` : '';
@@ -264,7 +284,7 @@ ${iterNote}
 | Training phase | ${profile.trainingPhase} |
 | Body weight | ${profile.bodyWeight}kg |
 | GI history | ${profile.giHistory} |
-| Gut trained | ${profile.hasGutTrained ? 'Yes' : 'No'} |
+| Gut training status | ${profile.gutTrainingStatus} |
 | Weekly volume | Swim ${profile.weeklyVolume.swim}hr · Bike ${profile.weeklyVolume.bike}hr · Run ${profile.weeklyVolume.run}hr |
 
 ---
@@ -279,7 +299,7 @@ ${iterNote}
 | Race — Bike | Full distance | **${raceBikeCarbTarget}g/hr** |
 | Race — Run | Full distance | **${raceRunCarbTarget}g/hr** |
 
-**Rationale:** Base target reduced from maximum for ${profile.giHistory} GI history${!profile.hasGutTrained ? ' and no gut training history' : ''}.
+**Rationale:** Base target reduced from maximum for ${profile.giHistory} GI history${profile.gutTrainingStatus !== 'trained' ? ` and ${profile.gutTrainingStatus} gut training status` : ''}.
 
 ---
 
@@ -334,6 +354,7 @@ async function handleParseIntake(req: Request): Promise<Response> {
       const intakeFile = formData.get('intake') as File | null;
       const trainingPlanFile = formData.get('trainingPlan') as File | null;
       const feedbackFile = formData.get('feedback') as File | null;
+      const splitsFile = formData.get('splits') as File | null;
       const iterationStr = formData.get('iteration') as string | null;
       const iteration = parseInt(iterationStr || '0', 10) as 0 | 1 | 2 | 3;
 
@@ -407,6 +428,18 @@ async function handleParseIntake(req: Request): Promise<Response> {
         send('step', { step: 'parsing_training', status: 'skipped', label: 'No training plan uploaded' });
       } else if (iteration === 3) {
         send('step', { step: 'parsing_training', status: 'skipped', label: 'Race week — no training plan needed' });
+      }
+
+      // Step 3a: Parse race splits (optional, iteration 0 only, persists in session)
+      if (splitsFile && iteration === 0) {
+        const splitsText = Buffer.from(await splitsFile.arrayBuffer()).toString('utf-8');
+        const parsed = parseSplitsCsv(splitsText);
+        state.splitsData = parsed;
+        if (parsed) {
+          send('step', { step: 'parsing_splits', status: 'completed', label: `Race splits parsed — finish ${Math.round(parsed.finishMins)}min` });
+        } else {
+          send('step', { step: 'parsing_splits', status: 'skipped', label: 'Race splits CSV format not recognised — skipping' });
+        }
       }
 
       // Step 3: Parse feedback (iterations 1-3)
@@ -504,8 +537,8 @@ async function handleParseIntake(req: Request): Promise<Response> {
 async function handleGenerate(req: Request): Promise<Response> {
   const { stream, send, close } = createSSEStream();
 
-  const body = await req.json() as { sessionId: string; revisionBrief?: string };
-  const { sessionId, revisionBrief } = body;
+  const body = await req.json() as { sessionId: string; revisionBrief?: string; weeksToGenerate?: number };
+  const { sessionId, revisionBrief, weeksToGenerate = 1 } = body;
 
   (async () => {
     try {
@@ -542,8 +575,12 @@ async function handleGenerate(req: Request): Promise<Response> {
       }
 
       if (revisionBrief) {
+        // Pass full issues JSON first (richer context than 200-word text alone)
+        if (state.currentVerdict?.issues && state.currentVerdict.issues.length > 0) {
+          iterationContext += `\n**REVISION ISSUES (FULL JSON — each must be explicitly resolved):**\n${JSON.stringify(state.currentVerdict.issues, null, 2)}\n`;
+        }
         iterationContext += `\n**REVISION BRIEF FROM AUDITOR:**\n${revisionBrief}\n`;
-        iterationContext += `This is revision ${state.revisionCount} of ${3}. Address ALL items in the revision brief.\n`;
+        iterationContext += `This is revision ${state.revisionCount} of ${3}. Address ALL items in the revision brief. Every issue in the JSON above must be resolved in the rebuilt protocol.\n`;
       }
 
       // Load system prompts
@@ -552,10 +589,17 @@ async function handleGenerate(req: Request): Promise<Response> {
         Bun.file(join(LAB_DIR, 'products.csv')).text(),
       ]);
 
-      const architectPromptWithContext = architectPrompt.replace(
-        '{{ITERATION_CONTEXT}}',
-        iterationContext || '_No iteration context — this is the initial build (iteration 0)._'
-      );
+      const architectPromptWithContext = architectPrompt;
+
+      // Run fueling analysis (non-blocking — always returns a result)
+      const diagnosis = analyseRaceFueling(state.intake!, state.splitsData ?? null);
+      const diagnosisContext = [
+        `## Fueling Diagnosis (pre-computed)`,
+        `- Confidence: ${diagnosis.confidence}`,
+        `- Estimated minutes lost to fueling: ${diagnosis.minutesLost !== null ? `~${diagnosis.minutesLost} min` : 'insufficient data'}`,
+        `- Deficit bracket: ${diagnosis.deficitBracket}`,
+        `- Analysis: ${diagnosis.explanation}`,
+      ].join('\n');
 
       // Step: Generate with Architect AI
       send('step', { step: 'generating', status: 'active', label: 'Generating protocol (Architect AI)' });
@@ -563,8 +607,9 @@ async function handleGenerate(req: Request): Promise<Response> {
       const userMessage = buildArchitectMessage(
         state.intake,
         state.sessions || [],
-        iterationContext,
-        productsCsv
+        iterationContext ? `${diagnosisContext}\n\n${iterationContext}` : diagnosisContext,
+        productsCsv,
+        weeksToGenerate
       );
 
       let protocolMarkdown: string;
@@ -583,6 +628,30 @@ async function handleGenerate(req: Request): Promise<Response> {
       }
 
       send('step', { step: 'generating', status: 'completed', label: 'Protocol generated' });
+
+      // Step: Deterministic validation (before Auditor AI)
+      send('step', { step: 'validating', status: 'active', label: 'Validating protocol (deterministic checks)' });
+      const validationResult = await validateProtocol(protocolMarkdown, state.intake!, LAB_DIR);
+      send('step', {
+        step: 'validating',
+        status: validationResult.outcome === 'PASS' ? 'completed' : 'failed',
+        label: validationResult.outcome === 'PASS'
+          ? `Validation passed${validationResult.warnings.length ? ` (${validationResult.warnings.length} warnings)` : ''}`
+          : `Validation FAILED — ${validationResult.reasons.length} issue(s)`,
+        warnings: validationResult.warnings,
+        supplyList: validationResult.supplyList,
+      });
+
+      if (validationResult.outcome === 'FAIL') {
+        send('error', {
+          message: `Protocol failed deterministic validation:\n${validationResult.reasons.map(r => `• ${r}`).join('\n')}`,
+          validationFail: true,
+          reasons: validationResult.reasons,
+        });
+        send('done', { success: false });
+        close();
+        return;
+      }
 
       // Build draft object
       const draft: ProtocolDraft = {
@@ -622,7 +691,7 @@ async function handleGenerate(req: Request): Promise<Response> {
         });
       } else {
         try {
-          auditResponseText = await callClaudeWithRetry(auditorPrompt, auditInput, 2048, 1);
+          auditResponseText = await callClaudeWithRetry(auditorPrompt, auditInput, 4096, 1);
         } catch (e) {
           const err = e as Error;
           throw new Error(`Auditor AI failed: ${err.message}`);
@@ -667,6 +736,9 @@ async function handleGenerate(req: Request): Promise<Response> {
       send('ready', {
         verdict: verdict.outcome,
         draft: { rawMarkdown: protocolMarkdown },
+        supplyList: validationResult.supplyList,
+        validationWarnings: validationResult.warnings,
+        diagnosis: { confidence: diagnosis.confidence, minutesLost: diagnosis.minutesLost, explanation: diagnosis.explanation },
         sessionId,
       });
       send('done', { success: true });
@@ -692,12 +764,21 @@ async function handleGenerate(req: Request): Promise<Response> {
 // ── Export endpoint ───────────────────────────────────────────────────────────
 
 async function handleExport(req: Request): Promise<Response> {
-  const body = await req.json() as { sessionId: string; format: 'ics' | 'html' };
+  const body = await req.json() as { sessionId: string; format: 'ics' | 'html' | 'carry-sheet' | 'fueling-sheet' };
   const { sessionId, format } = body;
 
   const state = await loadSession(sessionId);
-  if (!state || !state.currentDraft || !state.intake) {
+  if (!state || !state.intake) {
     return new Response(JSON.stringify({ error: 'Session or draft not found' }), {
+      status: 404,
+      headers: { 'Content-Type': 'application/json' },
+    });
+  }
+  // After approval, currentDraft is cleared — fall back to last approved iteration's draft
+  const draft = state.currentDraft
+    ?? (state.iterations.length > 0 ? state.iterations[state.iterations.length - 1].draft : null);
+  if (!draft) {
+    return new Response(JSON.stringify({ error: 'No protocol draft found' }), {
       status: 404,
       headers: { 'Content-Type': 'application/json' },
     });
@@ -706,7 +787,7 @@ async function handleExport(req: Request): Promise<Response> {
   if (format === 'ics') {
     const { content, filename } = generateICS(
       state.sessions || [],
-      state.currentDraft,
+      draft,
       state.intake,
       state.currentIteration
     );
@@ -720,12 +801,27 @@ async function handleExport(req: Request): Promise<Response> {
   }
 
   if (format === 'html') {
-    const html = formatForPrint(state.currentDraft, state.intake, state.currentIteration);
+    const html = formatForPrint(draft, state.intake, state.currentIteration);
 
     return new Response(html, {
       headers: {
         'Content-Type': 'text/html; charset=utf-8',
       },
+    });
+  }
+
+  if (format === 'carry-sheet') {
+    const html = formatCarrySheet(draft, state.intake);
+    return new Response(html, {
+      headers: { 'Content-Type': 'text/html; charset=utf-8' },
+    });
+  }
+
+  if (format === 'fueling-sheet') {
+    const { formatFuelingSheet } = await import('./lib/protocol-formatter.ts');
+    const html = formatFuelingSheet(draft, state.intake);
+    return new Response(html, {
+      headers: { 'Content-Type': 'text/html; charset=utf-8' },
     });
   }
 

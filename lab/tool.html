@@ -769,6 +769,36 @@ h2 { font-size: 20px; font-weight: 600; margin-bottom: 6px; }
   margin-top: 12px;
 }
 
+/* ── Weeks picker ───────────────────────────────────────────────── */
+.weeks-picker {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+.weeks-btn {
+  height: 40px;
+  padding: 0 22px;
+  border-radius: var(--r-btn);
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  border: 1.5px solid rgba(0,0,0,0.12);
+  background: #fff;
+  color: var(--muted);
+  transition: background var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast);
+}
+.weeks-btn.active {
+  background: var(--off-black);
+  color: #fff;
+  border-color: var(--off-black);
+}
+.weeks-btn:hover:not(.active) {
+  border-color: var(--off-black);
+  color: var(--off-black);
+}
+
 /* ── Divider ────────────────────────────────────────────────────── */
 .divider {
   height: 1px;
@@ -782,6 +812,8 @@ h2 { font-size: 20px; font-weight: 600; margin-bottom: 6px; }
 .mt24 { margin-top: 24px; }
 .mb8 { margin-bottom: 8px; }
 .mb16 { margin-bottom: 16px; }
+.view-toggle { background: none; border: 1px solid var(--border); border-radius: 6px; padding: 4px 12px; font-size: 12px; font-weight: 500; color: var(--muted); cursor: pointer; }
+.view-toggle.active { background: var(--off-black); color: #fff; border-color: var(--off-black); }
 </style>
 </head>
 <body>
@@ -852,6 +884,7 @@ const app = {
   uploadedFiles: { intake: null, trainingPlan: null, feedback: null },
   elapsedTimer: null,
   elapsedSeconds: 0,
+  weeksToGenerate: 1,
 };
 
 // ── Helpers ────────────────────────────────────────────────────────────────
@@ -1049,7 +1082,10 @@ function renderSessionHome(state) {
       iterRows += `<div class="iter-row ${rowCls}">
         <div class="iter-icon">${icon}</div>
         <div class="iter-label">${cfg.label}</div>
-        ${dateStr}${delta}
+        <div style="display:flex;align-items:center;gap:12px;margin-left:auto">
+          ${dateStr}${delta}
+          <button class="prior-view" onclick="viewApprovedDraft(${i})">View</button>
+        </div>
       </div>`;
     } else if (i === current && state.step !== 'awaiting_feedback' && state.step !== 'exported') {
       icon = `<span class="pulse-dot"></span>`;
@@ -1262,9 +1298,11 @@ async function submitUpload(existingSessionId, iteration) {
   }
 
   app.currentStep = 2;
+  app.currentParseSessionId = existingSessionId || null;
   showStepBar(2);
 
   content().innerHTML = `
+    <button class="btn-ghost" onclick="backFromParse()" style="margin-bottom:16px">← Back</button>
     <h1>Parsing…</h1>
     <div class="step-list" id="parseSteps"></div>
     <div id="qualitySection" style="display:none"></div>
@@ -1305,6 +1343,7 @@ async function submitUpload(existingSessionId, iteration) {
   const qualityStepId = addStep('Running quality check');
   const flagStepId = addStep('Running red flag check');
 
+  app.parseAbortController = new AbortController();
   const formData = new FormData();
   if (isIteration0 && app.uploadedFiles.intake) formData.append('intake', app.uploadedFiles.intake);
   if (app.uploadedFiles.feedback) formData.append('feedback', app.uploadedFiles.feedback);
@@ -1315,7 +1354,7 @@ async function submitUpload(existingSessionId, iteration) {
   const url = `/api/parse-intake?sessionId=${sessionId || 'new'}`;
 
   try {
-    const response = await fetch(url, { method: 'POST', body: formData });
+    const response = await fetch(url, { method: 'POST', body: formData, signal: app.parseAbortController.signal });
     const reader = response.body.getReader();
     const decoder = new TextDecoder();
     let buffer = '';
@@ -1357,6 +1396,7 @@ async function submitUpload(existingSessionId, iteration) {
 
         if (evt.type === 'session_created') {
           app.sessionId = evt.sessionId;
+          app.currentParseSessionId = evt.sessionId;
           sessionId = evt.sessionId;
         }
 
@@ -1402,7 +1442,15 @@ async function submitUpload(existingSessionId, iteration) {
                 </div>
               ` : ''}
             </div>
-            <div style="text-align:right;margin-top:16px">
+            <div class="divider" style="margin:20px 0"></div>
+            <div class="label mb8">PROTOCOL DURATION</div>
+            <div class="weeks-picker" id="weeksPicker">
+              <button class="weeks-btn active" onclick="selectWeeks(1, this)">1 Week</button>
+              <button class="weeks-btn" onclick="selectWeeks(2, this)">2 Weeks</button>
+              <button class="weeks-btn" onclick="selectWeeks(3, this)">3 Weeks</button>
+              <button class="weeks-btn" onclick="selectWeeks(4, this)">4 Weeks</button>
+            </div>
+            <div style="text-align:right">
               <button class="btn btn-primary" onclick="startGenerate('${currentSessionId}')">Generate Protocol →</button>
             </div>
           `;
@@ -1421,6 +1469,7 @@ async function submitUpload(existingSessionId, iteration) {
       }
     }
   } catch (e) {
+    if (e.name === 'AbortError') return;
     $('errorSection').style.display = 'block';
     $('errorSection').innerHTML = `
       <div class="error-box">
@@ -1430,6 +1479,23 @@ async function submitUpload(existingSessionId, iteration) {
       <button class="btn btn-secondary mt16" onclick="renderUpload(null)">← Try again</button>
     `;
   }
+}
+
+function backFromParse() {
+  if (app.parseAbortController) app.parseAbortController.abort();
+  renderUpload(app.currentParseSessionId || null);
+}
+
+function backFromGenerate() {
+  clearInterval(app.elapsedTimer);
+  if (app.generateAbortController) app.generateAbortController.abort();
+  renderUpload(app.sessionId || null);
+}
+
+function selectWeeks(n, btn) {
+  app.weeksToGenerate = n;
+  document.querySelectorAll('.weeks-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
 }
 
 // ── Screen: Generate ───────────────────────────────────────────────────────
@@ -1456,6 +1522,7 @@ async function renderGenerate(sessionId, state) {
   const iterLabel = ['Building Week 1 Protocol', 'Adjusting for Week 2', 'Adjusting for Week 3', 'Finalising Race Week'][iter];
 
   content().innerHTML = `
+    <button class="btn-ghost" onclick="backFromGenerate()" style="margin-bottom:16px">← Back</button>
     <h1>${iterLabel}</h1>
     <div class="label mt8 mb24">${name} · ${event}${raceDate ? ' · Race: ' + raceDate : ''}</div>
     <div class="step-list" id="genSteps"></div>
@@ -1504,6 +1571,7 @@ async function renderGenerate(sessionId, state) {
 
   const r1 = addStep('Quality check passed', 'completed');
   const r2 = addStep('Generating protocol (Architect AI)', 'active');
+  const r2b = addStep('Validating protocol');
   const r3 = addStep('Auditing protocol');
 
   // Progress animation
@@ -1550,11 +1618,15 @@ async function renderGenerate(sessionId, state) {
     setGenProgress(pct, app.elapsedSeconds % 18 === 0 ? GEN_MESSAGES[genMsgIdx] : null);
   }, 1000);
 
+  app.generateAbortController = new AbortController();
   try {
+    // Include revisionBrief if this is a Return-to-AI revision cycle
+    const revisionBrief = state?.currentVerdict?.revisionBrief || null;
     const response = await fetch('/api/generate', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ sessionId }),
+      body: JSON.stringify({ sessionId, weeksToGenerate: app.weeksToGenerate || 1, ...(revisionBrief ? { revisionBrief } : {}) }),
+      signal: app.generateAbortController.signal,
     });
     const reader = response.body.getReader();
     const decoder = new TextDecoder();
@@ -1576,10 +1648,18 @@ async function renderGenerate(sessionId, state) {
           if (evt.step === 'generating' && evt.status === 'active') {
             updateStep('Generating protocol (Architect AI)', 'active');
           }
-          if (evt.step === 'auditing' && evt.status === 'active') {
+          if (evt.step === 'validating' && evt.status === 'active') {
             clearInterval(app.elapsedTimer);
-            setGenProgress(92, 'Auditing protocol...');
+            setGenProgress(80, 'Validating protocol...');
             updateStep('Generating protocol (Architect AI)', 'completed');
+            updateStep('Validating protocol', 'active');
+          }
+          if (evt.step === 'validating' && (evt.status === 'completed' || evt.status === 'failed')) {
+            updateStep('Validating protocol', evt.status === 'completed' ? 'completed' : 'error');
+            if (evt.supplyList) app.supplyList = evt.supplyList;
+          }
+          if (evt.step === 'auditing' && evt.status === 'active') {
+            setGenProgress(92, 'Auditing protocol...');
             updateStep('Auditing protocol', 'active');
           }
           if (evt.step === 'auditing' && evt.status === 'completed') {
@@ -1592,6 +1672,8 @@ async function renderGenerate(sessionId, state) {
         if (evt.type === 'ready') {
           clearInterval(app.elapsedTimer);
           setGenProgress(100, 'Protocol ready.');
+          if (evt.supplyList) app.supplyList = evt.supplyList;
+          if (evt.diagnosis) app.diagnosis = evt.diagnosis;
           const res = await fetch(`/api/session/${sessionId}`);
           const updatedState = await res.json();
           app.sessionState = updatedState;
@@ -1602,25 +1684,43 @@ async function renderGenerate(sessionId, state) {
         if (evt.type === 'error') {
           clearInterval(app.elapsedTimer);
           if ($('genProgress')) $('genProgress').style.display = 'none';
-          updateStep('Generating protocol (Architect AI)', 'error');
-          $('genError').style.display = 'block';
-          $('genError').innerHTML = `
-            <div class="error-box">
-              <div class="error-title">⚠ Generation failed</div>
-              <div class="error-body">${evt.message || 'The Claude API returned an error after 1 retry.'}</div>
-              <div class="error-body mt8">You've been notified at bek.zhou@rik-sports.com.</div>
-              <div class="error-preserved">SESSION PRESERVED — your intake data is saved.</div>
-            </div>
-            <div style="display:flex;gap:12px;margin-top:16px">
-              <button class="btn btn-secondary" onclick="renderGenerate('${sessionId}', null)">Try again</button>
-              <button class="btn-ghost" onclick="renderHome()">← Back to home</button>
-            </div>
-          `;
+          if (evt.validationFail) {
+            updateStep('Validating protocol', 'error');
+            $('genError').style.display = 'block';
+            $('genError').innerHTML = `
+              <div class="error-box">
+                <div class="error-title">✗ Protocol failed validation</div>
+                <div class="error-body">The Architect AI generated numbers outside safe bounds. These issues must be fixed before auditing:</div>
+                <ul style="margin:8px 0 0 16px;padding:0">${(evt.reasons||[]).map(r => `<li style="margin-top:6px;font-size:13px">${r}</li>`).join('')}</ul>
+                <div class="error-preserved" style="margin-top:12px">SESSION PRESERVED — regenerating will produce a fresh protocol.</div>
+              </div>
+              <div style="display:flex;gap:12px;margin-top:16px">
+                <button class="btn btn-secondary" onclick="renderGenerate('${sessionId}', null)">Regenerate</button>
+                <button class="btn-ghost" onclick="renderHome()">← Back to home</button>
+              </div>
+            `;
+          } else {
+            updateStep('Generating protocol (Architect AI)', 'error');
+            $('genError').style.display = 'block';
+            $('genError').innerHTML = `
+              <div class="error-box">
+                <div class="error-title">⚠ Generation failed</div>
+                <div class="error-body">${evt.message || 'The Claude API returned an error after 1 retry.'}</div>
+                <div class="error-body mt8">You've been notified at bek.zhou@rik-sports.com.</div>
+                <div class="error-preserved">SESSION PRESERVED — your intake data is saved.</div>
+              </div>
+              <div style="display:flex;gap:12px;margin-top:16px">
+                <button class="btn btn-secondary" onclick="renderGenerate('${sessionId}', null)">Try again</button>
+                <button class="btn-ghost" onclick="renderHome()">← Back to home</button>
+              </div>
+            `;
+          }
         }
       }
     }
   } catch (e) {
     clearInterval(app.elapsedTimer);
+    if (e.name === 'AbortError') return;
     if ($('genProgress')) $('genProgress').style.display = 'none';
     $('genError').style.display = 'block';
     $('genError').innerHTML = `
@@ -1631,6 +1731,58 @@ async function renderGenerate(sessionId, state) {
       <button class="btn btn-secondary mt16" onclick="startGenerate('${sessionId}')">Try again</button>
     `;
   }
+}
+
+function setProtocolView(mode) {
+  const lean = $('protocolLean');
+  const full = $('protocolFull');
+  if (!lean || !full) return;
+  if (mode === 'lean') {
+    lean.style.display = ''; full.style.display = 'none';
+    $('toggleLean').classList.add('active'); $('toggleFull').classList.remove('active');
+  } else {
+    lean.style.display = 'none'; full.style.display = '';
+    $('toggleFull').classList.add('active'); $('toggleLean').classList.remove('active');
+  }
+}
+
+function buildLeanView(markdown) {
+  const rows = [];
+  // Extract session blocks (### headers)
+  const sessionRe = /^### (.*?)\n([\s\S]*?)(?=\n### |\n## |$)/gm;
+  let m;
+  while ((m = sessionRe.exec(markdown)) !== null) {
+    const heading = m[1].trim();
+    const body = m[2];
+    if (/assumption|supply|race pack/i.test(heading)) continue;
+
+    const carb = body.match(/carb target[:\s]+(\d+)\s*g\/hr/i)?.[1];
+    const hasEuphoria = /euphoria/i.test(body);
+    const hasRefuelIntra = /refuel.*?intra/i.test(body);
+    const productMatches = [...body.matchAll(/\b(DM\d{3}|Gel\s*100|CAF\s*100|Beta\s*Fuel|Solid\s*160|FastChew|SaltStick|Refuel|Euphoria)\b/gi)];
+    const products = [...new Set(productMatches.map(x => x[1].replace(/\s+/g, ' ')))].slice(0, 5);
+
+    rows.push(`<tr>
+      <td style="font-weight:500;padding:8px 10px">${heading}</td>
+      <td style="font-family:'JetBrains Mono',monospace;color:#2D5A3D;font-weight:600;padding:8px 10px;white-space:nowrap">${carb ? carb + ' g/hr' : '—'}</td>
+      <td style="padding:8px 10px;font-size:12px">${hasEuphoria ? '✓ Pre-session' : '—'}</td>
+      <td style="padding:8px 10px;font-size:12px">${products.join(', ') || '—'}</td>
+      <td style="padding:8px 10px;font-size:12px;color:#2D5A3D">${hasRefuelIntra ? '✓ Intra + Post' : '✓ Post only'}</td>
+    </tr>`);
+  }
+
+  if (!rows.length) return `<div class="muted" style="padding:16px">No session data to summarise — switch to Full view.</div>`;
+
+  return `<table style="width:100%;border-collapse:collapse;font-size:13px">
+    <thead><tr style="border-bottom:2px solid var(--border)">
+      <th style="text-align:left;padding:6px 10px;font-size:10px;color:#999;font-weight:600;text-transform:uppercase;letter-spacing:.8px">Session</th>
+      <th style="text-align:left;padding:6px 10px;font-size:10px;color:#999;font-weight:600;text-transform:uppercase;letter-spacing:.8px">Carb Target</th>
+      <th style="text-align:left;padding:6px 10px;font-size:10px;color:#999;font-weight:600;text-transform:uppercase;letter-spacing:.8px">Pre-session</th>
+      <th style="text-align:left;padding:6px 10px;font-size:10px;color:#999;font-weight:600;text-transform:uppercase;letter-spacing:.8px">Products</th>
+      <th style="text-align:left;padding:6px 10px;font-size:10px;color:#999;font-weight:600;text-transform:uppercase;letter-spacing:.8px">Refuel</th>
+    </tr></thead>
+    <tbody>${rows.join('')}</tbody>
+  </table>`;
 }
 
 // ── Screen: Review ─────────────────────────────────────────────────────────
@@ -1693,6 +1845,7 @@ function renderReview(draft, verdict, state) {
 
   const rawMarkdown = draft?.rawMarkdown || '*Protocol content not available. Please regenerate.*';
   const renderedProtocol = typeof marked !== 'undefined' ? marked.parse(rawMarkdown) : rawMarkdown;
+  const leanView = buildLeanView(rawMarkdown);
 
   content().innerHTML = `
     <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:20px">
@@ -1700,11 +1853,19 @@ function renderReview(draft, verdict, state) {
         <h1>Review Protocol</h1>
         <div class="label mt8">${name} · ${event}</div>
       </div>
+      <button class="btn-ghost" onclick="renderUpload('${sessionId}')" style="margin-top:6px">← Back to upload</button>
     </div>
     <div class="review-layout">
       <div class="protocol-panel">
-        <div class="label mb16">PROTOCOL DRAFT</div>
-        <div class="protocol-render">${renderedProtocol}</div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+          <div class="label">PROTOCOL DRAFT</div>
+          <div style="display:flex;gap:8px">
+            <button class="view-toggle active" id="toggleLean" onclick="setProtocolView('lean')">Lean</button>
+            <button class="view-toggle" id="toggleFull" onclick="setProtocolView('full')">Full</button>
+          </div>
+        </div>
+        <div id="protocolLean">${leanView}</div>
+        <div id="protocolFull" style="display:none"><div class="protocol-render">${renderedProtocol}</div></div>
       </div>
       <div class="audit-panel">
         <div class="label mb12">AUDIT RESULT</div>
@@ -1736,6 +1897,38 @@ function renderReview(draft, verdict, state) {
 
         ${adjHtml}
 
+        ${app.diagnosis ? `
+          <div style="margin-top:16px;padding:12px;background:var(--sand);border-radius:12px">
+            <div class="label mb8">FUELING DIAGNOSIS</div>
+            <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:6px">
+              ${app.diagnosis.minutesLost !== null
+                ? `<span style="font-size:22px;font-weight:600;font-family:'JetBrains Mono',monospace">~${app.diagnosis.minutesLost} min</span><span class="label">estimated lost</span>`
+                : `<span class="label">Insufficient data</span>`}
+            </div>
+            <div style="font-size:11px;color:var(--muted);margin-bottom:4px">Confidence: ${app.diagnosis.confidence}</div>
+            <div style="font-size:12px;line-height:1.5;color:#444">${app.diagnosis.explanation}</div>
+          </div>
+        ` : ''}
+
+        ${(app.supplyList && app.supplyList.length > 0) ? `
+          <div style="margin-top:16px">
+            <div class="label mb8">SUPPLY LIST</div>
+            ${app.supplyList.map(s => `
+              <div style="display:flex;justify-content:space-between;align-items:baseline;padding:6px 0;border-bottom:1px solid var(--border);font-size:13px">
+                <div>
+                  <div style="font-weight:500">${s.productName}</div>
+                  <div style="font-size:11px;color:var(--muted)">${s.unitsToOrder}× ${s.unitDescription} · ${s.servingsNeeded} servings</div>
+                </div>
+                <div style="font-family:'JetBrains Mono',monospace;font-size:12px;white-space:nowrap;margin-left:8px">$${s.estimatedCostUsd}</div>
+              </div>
+            `).join('')}
+            <div style="display:flex;justify-content:space-between;padding-top:8px;font-size:12px;font-weight:600">
+              <span>Estimated total</span>
+              <span style="font-family:'JetBrains Mono',monospace">$${app.supplyList.reduce((t,s) => t + s.estimatedCostUsd, 0).toFixed(2)}</span>
+            </div>
+          </div>
+        ` : ''}
+
         <div class="revision-count">REVISION ${revCount}/${3}</div>
 
         <div class="btn-actions">
@@ -1763,6 +1956,15 @@ function viewPriorDraft(iterNum) {
   win.document.write(`<!DOCTYPE html><html><head><title>Iteration ${iterNum} Protocol</title><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet"><script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"><\/script></head><body style="font-family:Plus Jakarta Sans,sans-serif;max-width:800px;margin:40px auto;padding:0 24px;color:#0a0a0a">
     <div id="c"></div><script>document.getElementById('c').innerHTML=marked.parse(${JSON.stringify(iter.draft.rawMarkdown)})<\/script>
     </body></html>`);
+}
+
+function viewApprovedDraft(iterNum) {
+  const state = app.sessionState;
+  const iter = state?.iterations?.find(it => it.iterationNumber === iterNum);
+  if (!iter?.draft?.rawMarkdown) { alert('Protocol not available'); return; }
+  const win = window.open('', '_blank');
+  const labels = ['Week 1 Protocol', 'Week 2 Adjustment', 'Week 3 Adjustment', 'Race-Week Final'];
+  win.document.write(`<!DOCTYPE html><html><head><title>${labels[iterNum] || 'Protocol'}</title><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet"><script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"><\/script><style>body{font-family:'Plus Jakarta Sans',sans-serif;max-width:800px;margin:40px auto;padding:0 24px 60px;color:#0a0a0a;line-height:1.8}h1,h2{margin:28px 0 12px}h3{margin:20px 0 8px}p,ul,ol{margin-bottom:12px}table{border-collapse:collapse;width:100%;margin:16px 0}th,td{border:1px solid #e0e0e0;padding:8px 12px;text-align:left}th{background:#f6f5f4;font-size:13px}@media print{body{margin:24px auto}}<\/style></head><body><div id="c"></div><script>document.getElementById('c').innerHTML=marked.parse(${JSON.stringify(iter.draft.rawMarkdown)})<\/script></body></html>`);
 }
 
 // ── Submit decision ────────────────────────────────────────────────────────
@@ -1835,22 +2037,35 @@ function renderExport(state, completedIter) {
       </div>
       <div class="export-card">
         <div class="export-icon">🖨</div>
-        <div class="export-title">Print protocol (PDF)</div>
-        <div class="export-sub">Opens in browser tab · Cmd+P</div>
+        <div class="export-title">Full protocol (PDF)</div>
+        <div class="export-sub">Opens in browser tab · Cmd+P to save</div>
         <button class="btn btn-secondary btn-full" onclick="openPrint('${sessionId}')">Open</button>
+      </div>
+      <div class="export-card">
+        <div class="export-icon">📋</div>
+        <div class="export-title">Fueling Sheet</div>
+        <div class="export-sub">Athlete-facing compact guide — session targets, products, timing. Print and give to athlete.</div>
+        <button class="btn btn-secondary btn-full" onclick="openFuelingSheet('${sessionId}')">Open</button>
+      </div>
+      <div class="export-card">
+        <div class="export-icon">🗂</div>
+        <div class="export-title">Race Day Carry Sheet</div>
+        <div class="export-sub">One-page pocket guide — what to pack, when to take it. Print and put in transition bag.</div>
+        <button class="btn btn-green btn-full" onclick="openCarrySheet('${sessionId}')">Open</button>
       </div>
     </div>
     <div class="divider"></div>
     <div class="label mb8">BEK HAS BEEN NOTIFIED</div>
     <div class="muted">Email sent to bek.zhou@rik-sports.com</div>
+    <button class="btn-ghost" style="display:block;text-align:center;margin:16px 0 4px" onclick="viewApprovedDraft(${completedIter})">📄 View approved protocol</button>
     ${!isFinal ? `
-      <div class="next-step-box mt24">
+      <div class="next-step-box mt16">
         <div class="label mb8">NEXT STEP</div>
         <div style="font-size:14px;color:var(--off-black)">Return here after Week ${completedIter + 1} to upload the feedback CSV and generate the adjusted protocol.</div>
       </div>
       <button class="btn btn-secondary mt16" onclick="renderSessionHome(app.sessionState)">← Back to session</button>
     ` : `
-      <button class="btn btn-secondary mt24" onclick="renderHome()">← Back to all protocols</button>
+      <button class="btn btn-secondary mt16" onclick="renderHome()">← Back to all protocols</button>
     `}
   `;
 }
@@ -1876,7 +2091,51 @@ async function downloadICS(sessionId) {
 }
 
 async function openPrint(sessionId) {
-  window.open(`/api/export?sessionId=${sessionId}&format=html`, '_blank');
+  try {
+    const res = await fetch('/api/export', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ sessionId, format: 'html' }),
+    });
+    if (!res.ok) throw new Error('Export failed');
+    const html = await res.text();
+    const blob = new Blob([html], { type: 'text/html' });
+    window.open(URL.createObjectURL(blob), '_blank');
+  } catch (e) {
+    alert('Export failed: ' + e.message);
+  }
+}
+
+async function openCarrySheet(sessionId) {
+  try {
+    const res = await fetch('/api/export', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ sessionId, format: 'carry-sheet' }),
+    });
+    if (!res.ok) throw new Error('Export failed');
+    const html = await res.text();
+    const blob = new Blob([html], { type: 'text/html' });
+    window.open(URL.createObjectURL(blob), '_blank');
+  } catch (e) {
+    alert('Carry sheet failed: ' + e.message);
+  }
+}
+
+async function openFuelingSheet(sessionId) {
+  try {
+    const res = await fetch('/api/export', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ sessionId, format: 'fueling-sheet' }),
+    });
+    if (!res.ok) throw new Error('Export failed');
+    const html = await res.text();
+    const blob = new Blob([html], { type: 'text/html' });
+    window.open(URL.createObjectURL(blob), '_blank');
+  } catch (e) {
+    alert('Fueling sheet failed: ' + e.message);
+  }
 }
 
 // ── Screen: Escalated ──────────────────────────────────────────────────────
