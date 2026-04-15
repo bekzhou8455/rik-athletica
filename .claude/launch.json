@@ -3,7 +3,7 @@
   "autoPort": true,
   "configurations": [
     {
-      "name": "wireframe",
+      "name": "rik-site",
       "runtimeExecutable": "/Users/bekzhou/.bun/bin/bun",
       "runtimeArgs": ["run", "serve.ts"],
       "port": 3456
@@ -12,7 +12,8 @@
       "name": "lab",
       "runtimeExecutable": "/Users/bekzhou/.bun/bin/bun",
       "runtimeArgs": ["run", "lab/serve.ts"],
-      "port": 3457
+      "port": 3457,
+      "autoPort": false
     }
   ]
 }

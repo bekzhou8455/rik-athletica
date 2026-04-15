@@ -3,12 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>RIK Athletica — Wireframe v4</title>
+<title>RIK Athletica — Personalized Fueling Systems for Ironman Athletes</title>
+<meta name="description" content="Most Ironman athletes leave 20-40 minutes on the course from fueling errors. RIK builds your personal fueling system, delivers the products, and revises until your body responds.">
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300..800&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
-html { font-size: 16px; scroll-behavior: smooth; }
-body { font-family: 'Plus Jakarta Sans', sans-serif; background: #fff; color: #0a0a0a; -webkit-font-smoothing: antialiased; }
+html { font-size: 16px; scroll-behavior: smooth; overflow-x: hidden; }
+body { font-family: 'Plus Jakarta Sans', sans-serif; background: #fff; color: #0a0a0a; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
 
 :root {
   --sand: #f6f5f4;
@@ -47,6 +48,16 @@ nav ul { list-style: none; display: flex; gap: 28px; font-size: 14px; align-item
 nav ul a { text-decoration: none; color: #999; transition: color .2s; letter-spacing: -0.01em; padding: 19px 0; display: flex; align-items: center; }
 nav ul a:hover, nav ul a.active { color: var(--off-black); }
 .nav-cta { background: var(--off-black); color: #fff; border: none; padding: 8px 20px; min-height: 44px; display: inline-flex; align-items: center; font-size: 13px; font-weight: 500; cursor: pointer; border-radius: var(--r-btn); font-family: inherit; letter-spacing: -0.01em; }
+
+/* ── MOBILE NAV ── */
+.nav-toggle { display: none; background: none; border: none; cursor: pointer; padding: 8px; min-width: 44px; min-height: 44px; }
+.nav-toggle svg { color: var(--off-black); transition: transform .2s; }
+.nav-mobile { display: none; position: fixed; top: 56px; left: 0; right: 0; bottom: 0; background: rgba(255,255,255,0.98); backdrop-filter: blur(16px); z-index: 99; padding: 32px 24px; }
+.nav-mobile.open { display: flex; flex-direction: column; gap: 0; }
+.nav-mobile a { display: flex; align-items: center; padding: 16px 0; font-size: 18px; font-weight: 400; color: var(--off-black); text-decoration: none; border-bottom: 1px solid var(--border); letter-spacing: -0.01em; }
+.nav-mobile a:last-of-type { border-bottom: none; }
+.nav-mobile .nav-mobile-cta { margin-top: 24px; background: var(--off-black); color: #fff; padding: 14px 28px; border-radius: var(--r-btn); font-size: 15px; font-weight: 500; text-align: center; text-decoration: none; }
+.nav-toggle.open svg { transform: rotate(45deg); }
 
 /* ── SHARED ── */
 .eyebrow { font-size: 11px; font-weight: 500; letter-spacing: 2.5px; text-transform: uppercase; color: #aaa; margin-bottom: 16px; }
@@ -234,7 +245,7 @@ nav ul a:hover, nav ul a.active { color: var(--off-black); }
 .ingredients-section { padding: 96px 40px; }
 .ingredients-inner { max-width: 900px; margin: 0 auto; }
 .gel-tabs { display: flex; margin-bottom: 36px; border-bottom: 1px solid #ebebeb; }
-.gel-tab { padding: 12px 28px; font-size: 14px; font-weight: 400; cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -1px; color: #bbb; letter-spacing: -0.01em; transition: color .2s; }
+.gel-tab { padding: 12px 28px; min-height: 44px; font-size: 14px; font-weight: 400; cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -1px; color: #bbb; letter-spacing: -0.01em; transition: color .2s; }
 .gel-tab.active { color: var(--off-black); border-bottom-color: var(--off-black); }
 .gel-tab.tab-pink.active { border-bottom-color: #e05080; color: #e05080; }
 .gel-tab.tab-teal.active { border-bottom-color: #2a9d8f; color: #2a9d8f; }
@@ -249,6 +260,27 @@ nav ul a:hover, nav ul a.active { color: var(--off-black); }
 .tag-safe { display: inline-block; font-size: 9px; background: #e8f5e9; color: #2e7d32; padding: 1px 6px; margin-left: 6px; border-radius: 4px; font-weight: 600; }
 .tag-lead { display: inline-block; font-size: 9px; background: #0d1a14; color: var(--green-light); padding: 1px 6px; margin-left: 6px; border-radius: 4px; font-weight: 600; }
 .tag-caution { display: inline-block; font-size: 9px; background: #fff3e0; color: #e65100; padding: 1px 6px; margin-left: 6px; border-radius: 4px; font-weight: 600; }
+
+/* ── TWO PATHS ── */
+.two-paths-section { padding: 96px 40px; background: var(--sand); }
+.two-paths-inner { max-width: 900px; margin: 0 auto; }
+.two-paths-title { font-size: clamp(28px, 3vw, 40px); font-weight: 400; letter-spacing: -0.03em; text-align: center; margin-bottom: 48px; }
+.paths-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.path-card { background: #fff; border-radius: var(--r-card); padding: 44px 36px; border: 1px solid var(--border); }
+.path-card.featured { border: 2px solid var(--green); position: relative; }
+.path-badge { position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: var(--green); color: #fff; font-size: 10px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; padding: 4px 16px; border-radius: var(--r-btn); white-space: nowrap; }
+.path-card h3 { font-size: 20px; font-weight: 500; margin-bottom: 12px; }
+.path-desc { font-size: 14px; color: #555; line-height: 1.7; margin-bottom: 24px; }
+.path-price { font-size: 40px; font-weight: 300; letter-spacing: -0.03em; margin-bottom: 4px; }
+.path-sub { font-size: 13px; color: var(--muted); margin-bottom: 24px; }
+.path-guarantee { font-size: 12px; color: var(--green); margin-top: 12px; }
+.path-upgrade { font-size: 13px; color: var(--muted); margin-top: 16px; }
+.path-upgrade a { color: var(--green); text-decoration: none; display: inline-block; padding: 8px 0; min-height: 44px; }
+.tier-mini { display: flex; flex-direction: column; gap: 6px; margin-bottom: 24px; font-size: 14px; }
+.tier-mini-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--border); }
+.tier-mini-row:last-child { border-bottom: none; }
+.tier-mini-name { font-weight: 500; }
+.tier-mini-price { font-weight: 600; }
 
 /* ── CALCULATOR TEASER ── */
 .calc-teaser { background: var(--off-black); padding: 96px 40px; text-align: center; }
@@ -405,7 +437,7 @@ footer { background: var(--off-black); padding: 36px 40px; display: flex; flex-w
 /* Left: gallery */
 .pg-gallery { position: sticky; top: 96px; display: flex; flex-direction: column; gap: 16px; }
 .pg-switcher { display: flex; gap: 8px; }
-.pg-switch {
+.pg-switch { min-width: 44px;
   padding: 12px 20px; font-size: 13px; font-weight: 500; border-radius: var(--r-btn);
   cursor: pointer; border: 1px solid var(--border); background: transparent;
   color: #888; font-family: inherit; letter-spacing: -0.01em; transition: all .2s;
@@ -598,13 +630,13 @@ footer { background: var(--off-black); padding: 36px 40px; display: flex; flex-w
 .iph-totals { display: flex; justify-content: space-between; background: #e8e8ed; padding: 5px 9px; font-size: 7.5px; color: #555; font-weight: 600; }
 
 /* ── FOOTER LOGO ── */
-.footer-logo-img { height: 80px; width: auto; display: block; filter: invert(1); opacity: 0.75; margin: -12px 0; }
+.footer-logo-img { height: 28px; width: auto; display: block; filter: invert(1); opacity: 0.8; }
 
 /* ── RESPONSIVE ── */
 @media (max-width: 900px) {
   .pg-inner { grid-template-columns: 1fr; gap: 40px; }
   .pg-gallery { position: static; }
-  .product-card, .feature-card, .layer-grid, .steps-grid, .pricing-grid, .service-upsell, .box-inner, .calc-section-inner, .ingredient-panel { grid-template-columns: 1fr; }
+  .product-card, .feature-card, .layer-grid, .steps-grid, .pricing-grid, .service-upsell, .box-inner, .calc-section-inner, .ingredient-panel, .paths-grid { grid-template-columns: 1fr; }
   .pc-media { min-height: 300px; }
   .feature-card.reverse .fc-img { order: 0; }
   .feature-card.reverse .fc-body { order: 0; }
@@ -614,6 +646,8 @@ footer { background: var(--off-black); padding: 36px 40px; display: flex; flex-w
   .service-upsell-photo { min-height: 320px; }
   nav { padding: 0 20px; }
   nav ul { display: none; }
+  .nav-cta { display: none; }
+  .nav-toggle { display: flex; align-items: center; justify-content: center; }
   .stats-row { flex-wrap: wrap; }
   .stats-row-item { flex: 1 1 50%; }
   .service-hero-content { padding: 0 32px 64px; }
@@ -628,20 +662,39 @@ footer { background: var(--off-black); padding: 36px 40px; display: flex; flex-w
   .science-stat-card:last-child { border-radius: 4px 4px 4px 4px; }
 }
 @media (max-width: 600px) {
-  .photo-strip { grid-template-columns: 1fr 1fr; height: 180px; }
-  .photo-strip img:last-child { display: none; }
+  .photo-strip { grid-template-columns: 1fr; grid-template-rows: auto; height: auto; gap: 0; }
+  .photo-strip img { display: none; }
+  .photo-strip img:nth-child(2) { display: block; width: 100%; height: 420px; object-fit: cover; object-position: center 25%; }
   .athlete-band { grid-template-columns: 1fr 1fr; height: 200px; }
   .athlete-band img:last-child { display: none; }
   .fc-img { min-height: 260px; }
   .dtc-hero h1 { font-size: 38px; }
   .dtc-hero { padding-top: 48px; }
   nav { height: 52px; }
-  footer { padding: 24px 20px; }
+  .methodology .sub { font-size: 14px; }
+  .fc-body { padding: 32px 24px; }
+  .fc-title { font-size: 24px; }
+  .fc-desc { font-size: 13px; }
+  .lglut-feature { padding: 64px 20px; }
+  .lglut-feature blockquote { font-size: 20px; }
+  .calc-teaser { padding: 64px 20px; }
+  .service-upsell-copy { padding: 48px 24px; }
+  .service-upsell-copy h2 { font-size: 28px; }
+  .two-paths-section { padding: 64px 20px; }
+  .path-card { padding: 32px 24px; }
+  footer { padding: 24px 20px; flex-direction: column; text-align: center; gap: 12px; }
+  .footer-links { text-align: center; }
+  .footer-disclaimer { text-align: center; }
   /* Ingredient table: remove fixed column widths, hide description on small screens */
   .ingredient-table td:first-child { width: auto; }
   .ingredient-table td.dose { width: auto; white-space: nowrap; }
-  .ingredient-table th:nth-child(3),
-  .ingredient-table td:nth-child(3) { display: none; }
+  /* Ingredient table: card layout on mobile */
+  .ingredient-table th { display: none; }
+  .ingredient-table tr { display: block; padding: 14px 0; border-bottom: 1px solid var(--border); }
+  .ingredient-table td { display: block; padding: 2px 0; width: auto !important; }
+  .ingredient-table td:first-child { font-weight: 600; font-size: 14px; }
+  .ingredient-table td.dose { font-size: 13px; color: var(--green); }
+  .ingredient-table td:nth-child(3) { font-size: 12px; color: var(--muted); line-height: 1.5; }
   /* Science stats: single column */
   .science-stats-grid { grid-template-columns: 1fr; }
   .science-stat-card:first-child { border-radius: var(--r-card) var(--r-card) 4px 4px; }
@@ -659,14 +712,22 @@ footer { background: var(--off-black); padding: 36px 40px; display: flex; flex-w
 
 <!-- ═══ NAV ═══ -->
 <nav>
-  <a href="/" class="logo" style="display:flex;align-items:center;"><img src="https://cdn.jsdelivr.net/gh/bekzhou8455/rik-athletica@main/assets/media/rik-logo.png" alt="RIK Athletica" style="height:68px;width:auto;display:block;margin:-8px -10px;"></a>
+  <a href="/" class="logo" style="display:flex;align-items:center;"><img src="https://cdn.jsdelivr.net/gh/bekzhou8455/rik-athletica@main/assets/media/rik-logo-cropped.png" alt="RIK Athletica" style="height:32px;width:auto;display:block;"></a>
   <ul>
-    <li><a href="/" class="active">The Bundle</a></li>
+    <li><a href="/bundle">The Bundle</a></li>
     <li><a href="/sprint">4-Week Sprint</a></li>
     <li><a href="/calculator">Race Calculator</a></li>
   </ul>
   <a href="/sprint" class="nav-cta" style="text-decoration:none;">Get My Protocol</a>
+  <button class="nav-toggle" onclick="toggleMobileNav()" aria-label="Menu"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="2" y="2" width="7" height="7" rx="1.5" fill="currentColor"/><rect x="11" y="2" width="7" height="7" rx="1.5" fill="currentColor"/><rect x="2" y="11" width="7" height="7" rx="1.5" fill="currentColor"/><rect x="11" y="11" width="7" height="7" rx="1.5" fill="currentColor"/></svg></button>
 </nav>
+<div class="nav-mobile" id="nav-mobile">
+  <a href="/">Home</a>
+  <a href="/bundle">The Bundle</a>
+  <a href="/sprint">4-Week Sprint</a>
+  <a href="/calculator">Race Calculator</a>
+  <a href="/sprint" class="nav-mobile-cta">Get My Protocol</a>
+</div>
 
 
 <!-- ════════════════════════════════════════
@@ -676,11 +737,11 @@ footer { background: var(--off-black); padding: 36px 40px; display: flex; flex-w
 
 <!-- 1. CENTERED WHITE HERO (Sana homepage style) -->
 <section class="dtc-hero">
-  <div class="eyebrow-pill">30 Gels · One Training Block</div>
-  <h1>The gels built<br><em>for the long game.</em></h1>
-  <p class="hero-sub">10 Euphoria + 20 Refuel. The functional layer every Ironman athlete is missing — gut protection, pre-activation, and fresh legs the next day.</p>
+  <div class="eyebrow-pill">Personalized fueling systems for Ironman athletes</div>
+  <h1>You didn't train 20 hours a week<br>to leave <em>minutes on the course.</em></h1>
+  <p class="hero-sub">Research suggests correctable fueling errors may cost 20-40 minutes over a full Ironman distance.* Not from fitness. From the one thing you never built a system for.</p>
   <div class="dtc-hero-ctas">
-    <a href="https://buy.stripe.com/4gM7sN6Wq3cc7T0fZ67Re00" data-rewardful class="btn btn-primary">Add to Cart — $119 →</a>
+    <a href="/calculator" class="btn btn-primary">See How Many Minutes You're Losing →</a>
     <a href="/sprint" class="btn btn-secondary">See the 4-Week Sprint</a>
   </div>
 </section>
@@ -688,40 +749,40 @@ footer { background: var(--off-black); padding: 36px 40px; display: flex; flex-w
 <!-- 2. STATS ROW -->
 <div class="stats-row">
   <div class="stats-row-item">
-    <div class="stat-big">0<span class="unit">g sugar</span></div>
-    <div class="stat-desc">Euphoria pre-activation — all carbs, zero simple sugars</div>
+    <div class="stat-big">30–50<span class="unit">%</span></div>
+    <div class="stat-desc">of Ironman athletes report GI issues on race day (Pfeiffer et al., 2012)*</div>
   </div>
   <div class="stats-row-item">
-    <div class="stat-big">100<span class="unit">mg</span></div>
-    <div class="stat-desc">Plant caffeine via Yerba Maté — no synthetic stimulants</div>
+    <div class="stat-big">3–5<span class="unit">%</span></div>
+    <div class="stat-desc">performance reduction from inadequate carbohydrate intake (Cermak &amp; van Loon, 2013)*</div>
   </div>
   <div class="stats-row-item">
-    <div class="stat-big">1<span class="unit">g</span></div>
-    <div class="stat-desc">L-Glutamine per Refuel gel — no mainstream gel has this</div>
+    <div class="stat-big">0<span class="unit"> weeks</span></div>
+    <div class="stat-desc">of structured gut training for most self-coached athletes</div>
   </div>
   <div class="stats-row-item">
-    <div class="stat-big">+1<span class="unit"> day</span></div>
-    <div class="stat-desc">Fresh legs the next day — Tart Cherry + BCAA recovery</div>
+    <div class="stat-big">20–40<span class="unit"> min</span></div>
+    <div class="stat-desc">estimated time recoverable from correctable fueling errors*</div>
   </div>
 </div>
 
 <!-- 3. METHODOLOGY (why RIK exists — must come before gallery) -->
 <div class="methodology">
   <div class="methodology-inner">
-    <div class="eyebrow">The Methodology</div>
-    <h2>Most athletes only solve<br>half the fueling problem.</h2>
-    <p class="sub">Carbs and electrolytes are the foundation — but gut integrity, muscle preservation, and pre-activation are the layer that separates athletes who compound their training from those who break down.</p>
+    <div class="eyebrow">The RIK Methodology</div>
+    <h2>Most fueling stops at carbs. We go further.</h2>
+    <p class="sub">Traditional supplements deliver carbohydrates. That's Layer 1. Necessary, but it's table stakes. Layer 2 is the enhancement layer: session priming, gut protection, and accelerated recovery. That's what makes the same training volume produce more output.*</p>
     <div class="layer-grid">
       <div class="layer-card">
         <div class="layer-num">Layer 1 — The Foundation</div>
         <div class="layer-title">Carbs + Electrolytes</div>
-        <div class="layer-desc">Timed correctly, dosed to your training load. Best-in-class products from SIS, Maurten, and PF&H. The protocol every serious Ironman athlete needs — but alone, it's not enough.</div>
-        <div class="layer-products">SIS · Maurten · PF&H · protocol-dependent</div>
+        <div class="layer-desc">Carbs, hydration, electrolytes. Timed correctly, dosed to your training load. Curated from the best in endurance nutrition. The foundation every serious Ironman athlete needs.</div>
+        <div class="layer-products">SiS · Maurten · Precision Hydration · protocol-dependent</div>
       </div>
       <div class="layer-card">
         <div class="layer-num">Layer 2 — The Edge</div>
         <div class="layer-title">The RIK Bundle</div>
-        <div class="layer-desc">Gut protection. Fresh legs the next day. Pre-activation without sugar spikes. The functional layer no mainstream gel provides — and the reason your body keeps saying yes to hard training blocks.</div>
+        <div class="layer-desc">Session enhancement, gut protection, and accelerated recovery. The functional layer designed to help your training hours produce more output. No mainstream gel provides this.*</div>
         <div class="layer-products">Euphoria · Refuel · designed for long-course triathlon</div>
         <div class="layer-rik-tag">RIK EXCLUSIVE</div>
       </div>
@@ -736,7 +797,7 @@ footer { background: var(--off-black); padding: 36px 40px; display: flex; flex-w
     <!-- LEFT: Image gallery -->
     <div class="pg-gallery">
       <div class="pg-switcher">
-        <button class="pg-switch active" data-product="refuel" onclick="switchGallery('refuel')">Refuel</button>
+        <button class=.pg-switch.active" data-product="refuel" onclick="switchGallery('refuel')">Refuel</button>
         <button class="pg-switch" data-product="euphoria" onclick="switchGallery('euphoria')">Euphoria</button>
       </div>
       <div class="pg-main-img">
@@ -786,13 +847,13 @@ footer { background: var(--off-black); padding: 36px 40px; display: flex; flex-w
           </div>
         </div>
 
-        <p class="pg-desc">The only in-race gel designed for the day after, too. Refuel delivers fast carbs for sustained energy while the recovery stack — Tart Cherry, BCAA, and L-Glutamine — means fresh legs when you wake up tomorrow.</p>
+        <p class="pg-desc">The only in-race gel designed for the day after, too. Refuel delivers fast carbs for sustained energy while the recovery stack — Tart Cherry, BCAA, and L-Glutamine — supports recovery so you show up fresh tomorrow.†</p>
 
         <div class="pg-callout">
           <div class="pg-callout-icon">🧬</div>
           <div>
-            <div class="pg-callout-title">1g L-Glutamine per sachet — a first in Ironman nutrition</div>
-            <div class="pg-callout-body">Protects gut integrity during extended effort. Most GI crashes on the Ironman run aren't fitness — they're intestinal barrier breakdown. No mainstream gel addresses this.</div>
+            <div class="pg-callout-title">1g L-Glutamine per sachet — a first in Ironman nutrition†</div>
+            <div class="pg-callout-body">Supports gut integrity during extended effort.† Most GI issues on the Ironman run aren't fitness failures — they're intestinal barrier challenges. No mainstream gel addresses this. RIK does.</div>
           </div>
         </div>
 
@@ -800,7 +861,7 @@ footer { background: var(--off-black); padding: 36px 40px; display: flex; flex-w
           <span class="cred-badge">SGS Tested</span>
           <span class="cred-badge">GMP Certified</span>
           <span class="cred-badge">FDA-Registered Facility</span>
-          <span class="cred-badge">Clinical-Grade Dosages</span>
+          <span class="cred-badge">Research-Grade Dosages</span>
           <span class="cred-badge">Made in Malaysia</span>
         </div>
         <div class="pg-price-row">
@@ -809,7 +870,7 @@ footer { background: var(--off-black); padding: 36px 40px; display: flex; flex-w
         </div>
         <a href="https://buy.stripe.com/4gM7sN6Wq3cc7T0fZ67Re00" data-rewardful class="btn btn-primary btn-full" style="padding:15px;display:block;text-align:center;">Add to Cart — $119 →</a>
         <a href="/sprint" class="btn btn-secondary btn-full" style="margin-top:8px;padding:14px;display:block;text-align:center;">See the 4-Week Sprint</a>
-        <div class="pg-guarantee">✓ Full refund on products returned in resellable condition (packaging intact, sachets unopened) within 14 days of delivery. Products with torn packaging or opened sachets are not eligible for return.</div>
+        <div class="pg-guarantee">✓ 30-day satisfaction guarantee. If the gels don't change how your sessions feel, full refund on unopened products.</div>
         <p style="font-size:10px;color:#bbb;margin-top:10px;line-height:1.55;">† These statements have not been evaluated by the Food and Drug Administration. This product is not intended to diagnose, treat, cure, or prevent any disease. RIK Athletica products are dietary supplements.</p>
       </div>
 
@@ -817,7 +878,7 @@ footer { background: var(--off-black); padding: 36px 40px; display: flex; flex-w
       <div class="pg-panel" id="pg-panel-euphoria">
         <div class="pg-product-type euphoria">Pre-Activation · 50ml</div>
         <div class="pg-product-name euphoria">euphoria</div>
-        <div class="pg-tagline">Comprehensive Pre-Game Activator · Grapefruit Flavor</div>
+        <div class="pg-tagline">Pre-Session Activator · Grapefruit Flavor</div>
 
         <div class="pg-stats">
           <div class="pg-stat">
@@ -840,7 +901,7 @@ footer { background: var(--off-black); padding: 36px 40px; display: flex; flex-w
           <span class="cred-badge">SGS Tested</span>
           <span class="cred-badge">GMP Certified</span>
           <span class="cred-badge">FDA-Registered Facility</span>
-          <span class="cred-badge">Clinical-Grade Dosages</span>
+          <span class="cred-badge">Research-Grade Dosages</span>
           <span class="cred-badge">Made in Malaysia</span>
         </div>
         <div class="pg-price-row">
@@ -849,7 +910,7 @@ footer { background: var(--off-black); padding: 36px 40px; display: flex; flex-w
         </div>
         <a href="https://buy.stripe.com/4gM7sN6Wq3cc7T0fZ67Re00" data-rewardful class="btn btn-primary btn-full" style="padding:15px;display:block;text-align:center;">Add to Cart — $119 →</a>
         <a href="/sprint" class="btn btn-secondary btn-full" style="margin-top:8px;padding:14px;display:block;text-align:center;">See the 4-Week Sprint</a>
-        <div class="pg-guarantee">✓ Full refund on products returned in resellable condition (packaging intact, sachets unopened) within 14 days of delivery. Products with torn packaging or opened sachets are not eligible for return.</div>
+        <div class="pg-guarantee">✓ 30-day satisfaction guarantee. If the gels don't change how your sessions feel, full refund on unopened products.</div>
         <p style="font-size:10px;color:#bbb;margin-top:10px;line-height:1.55;">† These statements have not been evaluated by the Food and Drug Administration. This product is not intended to diagnose, treat, cure, or prevent any disease. RIK Athletica products are dietary supplements.</p>
       </div>
 
@@ -858,7 +919,7 @@ footer { background: var(--off-black); padding: 36px 40px; display: flex; flex-w
 </section>
 
 <!-- Video element (hidden — used for feature cards section) -->
-<video id="dtc-video" autoplay muted loop playsinline poster="https://cdn.jsdelivr.net/gh/bekzhou8455/rik-athletica@main/assets/media/hero-reel-poster.png" style="display:none">
+<video id="dtc-video" autoplay muted loop playsinline poster="/assets/media/hero-reel-poster.png" style="display:none">
   <source src="https://cdn.jsdelivr.net/gh/bekzhou8455/rik-athletica@main/assets/media/hero-reel.MP4" type="video/mp4">
 </video>
 
@@ -885,8 +946,8 @@ footer { background: var(--off-black); padding: 36px 40px; display: flex; flex-w
       </div>
       <div class="fc-body">
         <div class="fc-tag">Refuel · Intra + Recovery</div>
-        <div class="fc-title">Fresh legs the next day.</div>
-        <div class="fc-desc">The only in-race gel designed for the day after, too. Tart Cherry + BCAA stack reduces post-exercise muscle soreness so you can stack hard sessions back-to-back.</div>
+        <div class="fc-title">Show up fresh tomorrow.†</div>
+        <div class="fc-desc">The only in-race gel designed for the day after, too. Tart Cherry + BCAA stack supports recovery between sessions† so you can stack hard training days back-to-back.</div>
       </div>
     </div>
 
@@ -897,16 +958,16 @@ footer { background: var(--off-black); padding: 36px 40px; display: flex; flex-w
 <div class="lglut-feature">
   <div class="lglut-feature-inner">
     <div class="label">The differentiator</div>
-    <blockquote>"Most GI crashes at km 25–30 of the Ironman run aren't fitness failures.<br>They're <em>intestinal barrier breakdown.</em>"</blockquote>
-    <p class="citation">L-Glutamine is the primary fuel source for intestinal cells. 1g per Refuel gel protects gut integrity during extended effort. No mainstream energy gel — Maurten, SIS, or PF&H — addresses this. RIK does.</p>
+    <blockquote>"Most GI issues at km 25–30 of the Ironman run aren't fitness failures.<br>They're <em>intestinal barrier challenges that compound over extended effort.</em>"</blockquote>
+    <p class="citation">L-Glutamine is a key fuel source for intestinal cells.† 1g per Refuel sachet supports gut integrity during extended effort.† No mainstream energy gel — Maurten, SiS, or Precision Hydration — includes this. RIK does.</p>
     <button class="btn btn-green">See the ingredient science →</button>
   </div>
 </div>
 
 <!-- Photo strip -->
 <div class="photo-strip">
-  <img src="https://cdn.jsdelivr.net/gh/bekzhou8455/rik-athletica@main/assets/media/AL-DSC00802.jpg" loading="lazy" decoding="async" alt="Athlete riding — golden dappled light" style="object-position: center 31%;">
-  <img src="https://cdn.jsdelivr.net/gh/bekzhou8455/rik-athletica@main/assets/media/AL-DSC00647.jpg" loading="lazy" decoding="async" alt="Athlete in motion — black and white" style="object-position: center 40%;">
+  <img src="https://cdn.jsdelivr.net/gh/bekzhou8455/rik-athletica@main/assets/media/AL-DSC00366.png" loading="lazy" decoding="async" alt="Athlete riding — focused, determined" style="object-position: center 30%;">
+  <img src="https://cdn.jsdelivr.net/gh/bekzhou8455/rik-athletica@main/assets/media/AL-DSC00580.png" loading="lazy" decoding="async" alt="Athlete fueling mid-ride with Refuel" style="object-position: center 35%;">
   <img src="https://cdn.jsdelivr.net/gh/bekzhou8455/rik-athletica@main/assets/media/AL-DSC00885.jpg" loading="lazy" decoding="async" alt="Athlete fuelling — warm outdoor lifestyle" style="object-position: center 18%;">
 </div>
 
@@ -923,12 +984,12 @@ footer { background: var(--off-black); padding: 36px 40px; display: flex; flex-w
         <div class="ingredient-product-img"><img src="https://cdn.jsdelivr.net/gh/bekzhou8455/rik-athletica@main/assets/media/euphoria-studio.jpg" loading="lazy" decoding="async" alt="Euphoria gel"></div>
         <table class="ingredient-table">
           <tr><th>Ingredient</th><th>Dose</th><th>Function</th></tr>
-          <tr><td>Caffeine (Yerba Maté)<span class="tag-safe">SAFE</span></td><td class="dose">100mg</td><td>Plant-based energy. Increases alertness, reduces perceived effort. Natural source vs. synthetic caffeine.</td></tr>
-          <tr><td>L-Carnitine<span class="tag-safe">SAFE</span></td><td class="dose">1,000mg</td><td>Transports fatty acids into mitochondria. Full 1g clinically-studied dose.</td></tr>
+          <tr><td>Caffeine (Yerba Maté)<span class="tag-safe">SAFE</span></td><td class="dose">100mg</td><td>Plant-based energy. Supports alertness and may help reduce perceived effort. Natural source vs. synthetic caffeine.</td></tr>
+          <tr><td>L-Carnitine<span class="tag-safe">SAFE</span></td><td class="dose">1,000mg</td><td>Supports fatty acid metabolism. Full 1g research-studied dose.†</td></tr>
           <tr><td>Taurine<span class="tag-safe">SAFE</span></td><td class="dose">500mg</td><td>Cell hydration, osmoregulation, antioxidant support.</td></tr>
-          <tr><td>Beta-Alanine<span class="tag-safe">SAFE</span></td><td class="dose">1,200mg</td><td>Buffers lactic acid buildup. Supports sustained output.</td></tr>
+          <tr><td>Beta-Alanine<span class="tag-safe">SAFE</span></td><td class="dose">1,200mg</td><td>May help buffer lactic acid buildup. Supports sustained output.†</td></tr>
           <tr><td>Electrolyte Complex<span class="tag-safe">SAFE</span></td><td class="dose">400mg</td><td>Consistent delivery from activation through recovery.</td></tr>
-          <tr><td>Carbohydrates<span class="tag-caution">OQ-1</span></td><td class="dose">11g (0g sugar)</td><td>11g carbs, 0g sugar confirmed. Hold on carb source until OQ-1 resolved.</td></tr>
+          <tr><td>Carbohydrates<span class="tag-safe">SAFE</span></td><td class="dose">11g (0g sugar)</td><td>11g carbs, 0g sugar. Clean energy without sugar spikes.</td></tr>
         </table>
       </div>
     </div>
@@ -937,15 +998,51 @@ footer { background: var(--off-black); padding: 36px 40px; display: flex; flex-w
         <div class="ingredient-product-img"><img src="https://cdn.jsdelivr.net/gh/bekzhou8455/rik-athletica@main/assets/media/refuel-studio.jpg" loading="lazy" decoding="async" alt="Refuel gel"></div>
         <table class="ingredient-table">
           <tr><th>Ingredient</th><th>Dose</th><th>Function</th></tr>
-          <tr><td>L-Glutamine<span class="tag-lead">LEAD · ABOVE FOLD</span></td><td class="dose">1,000mg</td><td><strong>Gut integrity.</strong> Protects intestinal barrier during extended effort. No mainstream gel addresses this.</td></tr>
+          <tr><td>L-Glutamine<span class="tag-lead">LEAD · ABOVE FOLD</span></td><td class="dose">1,000mg</td><td><strong>Gut integrity support.†</strong> Key fuel source for digestive cells. Supports gut integrity during extended effort.† No mainstream gel addresses this.</td></tr>
           <tr><td>Maltodextrin<span class="tag-safe">SAFE</span></td><td class="dose">20g</td><td>Fast-absorbing carbohydrate. Primary intra-session energy fuel.</td></tr>
-          <tr><td>Tart Cherry Extract<span class="tag-safe">SAFE · LEAD RECOVERY</span></td><td class="dose">500mg</td><td><strong>"Fresh legs the next day."</strong> Reduces post-exercise muscle soreness. Enables back-to-back hard sessions.</td></tr>
-          <tr><td>BCAA Complex (2:1:1)<span class="tag-safe">SAFE</span></td><td class="dose">3,000mg</td><td>1.5g Leucine / 0.75g Isoleucine / 0.75g Valine. Muscle protein synthesis, reduces exercise-induced damage.</td></tr>
-          <tr><td>L-Citrulline<span class="tag-safe">SAFE</span></td><td class="dose">2,000mg</td><td>Nitric oxide precursor. Blood flow, muscle oxygenation, fatigue reduction.</td></tr>
-          <tr><td>Curcumin<span class="tag-safe">SAFE</span></td><td class="dose">100mg</td><td>Anti-inflammatory. Supporting claim within recovery blend.</td></tr>
-          <tr><td>Green Tea Extract<span class="tag-safe">SAFE</span></td><td class="dose">50mg</td><td>Antioxidant (EGCG). Reduces oxidative stress from endurance exercise.</td></tr>
+          <tr><td>Tart Cherry Extract<span class="tag-safe">SAFE · LEAD RECOVERY</span></td><td class="dose">500mg</td><td><strong>"Feel ready tomorrow."†</strong> Supports recovery between sessions.† Supports back-to-back hard training days.†.</td></tr>
+          <tr><td>BCAA Complex (2:1:1)<span class="tag-safe">SAFE</span></td><td class="dose">3,000mg</td><td>1.5g Leucine / 0.75g Isoleucine / 0.75g Valine. Supports muscle protein synthesis. May help reduce exercise-induced muscle damage.†</td></tr>
+          <tr><td>L-Citrulline<span class="tag-safe">SAFE</span></td><td class="dose">2,000mg</td><td>Nitric oxide precursor. Supports blood flow and muscle oxygenation. May help reduce fatigue.†</td></tr>
+          <tr><td>Curcumin<span class="tag-safe">SAFE</span></td><td class="dose">100mg</td><td>Contains curcumin. Supports recovery within the blend.†</td></tr>
+          <tr><td>Green Tea Extract<span class="tag-safe">SAFE</span></td><td class="dose">50mg</td><td>Antioxidant (EGCG). May help reduce oxidative stress from endurance exercise.†</td></tr>
           <tr><td>Electrolyte Complex<span class="tag-safe">SAFE</span></td><td class="dose">400mg</td><td>Same 400mg complex as Euphoria. Consistent delivery activation through recovery.</td></tr>
         </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 8.5 TWO PATHS — FUNNEL -->
+<div class="two-paths-section">
+  <div class="two-paths-inner">
+    <h2 class="two-paths-title">Two ways to start</h2>
+    <div class="paths-grid">
+      <div class="path-card">
+        <h3>Try the Enhancement Layer</h3>
+        <p class="path-desc">Experience Euphoria + Refuel in your own training. Layer 2, on your terms.</p>
+        <div class="path-price">$119</div>
+        <p class="path-sub">10 Euphoria + 20 Refuel · Free shipping</p>
+        <a href="https://buy.stripe.com/4gM7sN6Wq3cc7T0fZ67Re00" data-rewardful class="btn btn-primary btn-full" style="padding:14px;">Get the Bundle →</a>
+        <p class="path-guarantee">✓ 30-day satisfaction guarantee</p>
+        <p class="path-upgrade">Want the full system? <a href="/sprint">See Sprint →</a></p>
+      </div>
+      <div class="path-card featured">
+        <span class="path-badge">Complete System</span>
+        <h3>Let Us Handle Everything</h3>
+        <p class="path-desc">Your fueling protocol, products, and revision loop. One price. Nutrition handled.</p>
+        <div class="tier-mini">
+          <div class="tier-mini-row"><span class="tier-mini-name">70.3 Sprint</span><span class="tier-mini-price">$569</span></div>
+          <div class="tier-mini-row"><span class="tier-mini-name">Ironman Sprint</span><span class="tier-mini-price">$659</span></div>
+          <div class="tier-mini-row"><span class="tier-mini-name">Pro Sprint</span><span class="tier-mini-price">$899</span></div>
+        </div>
+        <a href="/sprint" class="btn btn-green btn-full" style="padding:14px;">Start My Sprint →</a>
+        <p class="path-guarantee">✓ Full refund before products ship. After that, we revise until it works.</p>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:16px;">
+          <span style="font-size:9px;font-weight:600;letter-spacing:1px;text-transform:uppercase;padding:3px 8px;border-radius:4px;background:var(--sand);color:var(--muted);border:1px solid var(--border);">SGS Tested</span>
+          <span style="font-size:9px;font-weight:600;letter-spacing:1px;text-transform:uppercase;padding:3px 8px;border-radius:4px;background:var(--sand);color:var(--muted);border:1px solid var(--border);">GMP Certified</span>
+          <span style="font-size:9px;font-weight:600;letter-spacing:1px;text-transform:uppercase;padding:3px 8px;border-radius:4px;background:var(--sand);color:var(--muted);border:1px solid var(--border);">FDA-Registered</span>
+        </div>
+        <p style="font-size:11px;color:var(--muted);margin-top:12px;">30 Sprint slots per race cycle. Founder-delivered.</p>
       </div>
     </div>
   </div>
@@ -955,27 +1052,33 @@ footer { background: var(--off-black); padding: 36px 40px; display: flex; flex-w
 <div class="calc-teaser">
   <div class="calc-teaser-inner">
     <div class="eyebrow light">Race Time Calculator</div>
-    <h2>How many minutes are you leaving <em>on the course?</em></h2>
-    <p>Enter your last race split, GI history, and fueling approach. We calculate exactly what fueling errors are costing you — broken down by root cause.</p>
-    <a href="/calculator" class="btn btn-green">Calculate My Time Loss →</a>
-    <div class="calc-fine">Takes 90 seconds · based on peer-reviewed Ironman nutrition research</div>
+    <h2>Still not sure? <em>See the math.</em></h2>
+    <p>How many minutes are you leaving on the course? Takes 60 seconds. Uses your race data. Shows your fueling gap, broken down by root cause.</p>
+    <a href="/calculator" class="btn btn-green">Calculate My Fueling Gap →</a>
+    <div class="calc-fine">Free. No signup required. Based on peer-reviewed research.*</div>
   </div>
 </div>
 
-<!-- 10. SERVICE UPSELL -->
+<!-- 10. SERVICE UPSELL — 4-WEEK SPRINT -->
 <div class="service-upsell">
   <div class="service-upsell-copy">
-    <div class="eyebrow light">Done-For-You</div>
-    <h2>Want someone to just handle all of it?</h2>
-    <p>The 4-Week Sprint gives you the full system — a custom fueling protocol, every product you need in one box, synced to your iPhone Calendar, and 3 refinement iterations before race day.</p>
+    <div class="eyebrow light">Done-For-You Fueling</div>
+    <h2>Let us handle<br>everything.</h2>
+    <p>The 4-Week Sprint builds your personal fueling system — both layers, every product, delivered to your door — and revises weekly until your body responds. One price. Nutrition handled.</p>
     <ul class="upsell-steps">
-      <li data-n="1">Submit 10-min intake form</li>
-      <li data-n="2">We build your protocol + pack your box</li>
-      <li data-n="3">Box ships in 5 days · syncs to your calendar</li>
-      <li data-n="4">3 iterations from session feedback</li>
-      <li data-n="5">Race-day plan locked in. Nothing left to guess.</li>
+      <li data-n="1">10-min intake form — your physiology, your training, your race</li>
+      <li data-n="2">We build your personalized protocol — both layers, every session</li>
+      <li data-n="3">Shipment 1 ships within 5 days — RIK Bundles + Layer 1 for Weeks 1-2</li>
+      <li data-n="4">Weekly revisions from real session feedback — the revision loop</li>
+      <li data-n="5">Shipment 2 at Week 2 — Layer 1 for Weeks 3-4. Race Pack add-on available.</li>
     </ul>
-    <a href="/sprint" class="btn btn-white">See the 4-Week Sprint — $499 →</a>
+    <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:24px;font-size:14px;color:rgba(255,255,255,0.6);">
+      <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.08);"><span>70.3 Sprint · &lt;12 hrs/wk</span><span style="color:#fff;font-weight:600;">$569</span></div>
+      <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.08);"><span>Ironman Sprint · 12-18 hrs/wk</span><span style="color:#fff;font-weight:600;">$659</span></div>
+      <div style="display:flex;justify-content:space-between;padding:8px 0;"><span>Pro Sprint · &gt;18 hrs/wk</span><span style="color:#fff;font-weight:600;">$899</span></div>
+    </div>
+    <a href="/sprint" class="btn btn-white">Start My Sprint →</a>
+    <div style="font-size:11px;color:rgba(255,255,255,0.25);margin-top:12px;">✓ Full refund before products ship. After that, we revise until it works.</div>
   </div>
   <div class="service-upsell-photo">
     <img src="https://cdn.jsdelivr.net/gh/bekzhou8455/rik-athletica@main/assets/media/AL-DSC00885.jpg" loading="lazy" decoding="async" alt="Athlete with Refuel gel — warm lifestyle" style="object-position: center 15%;">
@@ -983,16 +1086,25 @@ footer { background: var(--off-black); padding: 36px 40px; display: flex; flex-w
 </div>
 
 <footer>
-  <img src="https://cdn.jsdelivr.net/gh/bekzhou8455/rik-athletica@main/assets/media/rik-logo.png" alt="RIK Athletica" class="footer-logo-img">
+  <img src="https://cdn.jsdelivr.net/gh/bekzhou8455/rik-athletica@main/assets/media/rik-logo-cropped.png" alt="RIK Athletica" class="footer-logo-img">
   <span class="footer-links">Copyright © 2026 Rik Athletic Nutrition Inc. All rights reserved. &nbsp;·&nbsp; <a href="/privacy" style="color:rgba(255,255,255,0.38);text-decoration:none;">Privacy</a> &nbsp;·&nbsp; <a href="/terms" style="color:rgba(255,255,255,0.38);text-decoration:none;">Terms</a></span>
-  <div class="footer-disclaimer">
-    † These statements have not been evaluated by the Food and Drug Administration. RIK Athletica products are dietary supplements and are not intended to diagnose, treat, cure, or prevent any disease. The 4-Week Sprint is a personalised nutrition coaching service and does not constitute medical advice, diagnosis, or treatment. Individual results may vary. Always consult a qualified healthcare professional before starting any new supplement or nutrition programme. SGS-tested and GMP-certified refer to third-party quality and safety testing of our manufacturing facility and finished products. Results referenced in case studies represent documented individual outcomes and are not a guarantee of similar results.
+  <div class="footer-disclaimer" style="font-size:12px;color:rgba(255,255,255,0.45);border-top:1px solid rgba(255,255,255,0.08);padding-top:20px;margin-top:8px;line-height:1.7;">
+    <strong style="color:rgba(255,255,255,0.6);display:block;margin-bottom:6px;">† Supplement & Service Disclaimer</strong>
+    These statements have not been evaluated by the Food and Drug Administration. RIK Athletica products are dietary supplements and are not intended to diagnose, treat, cure, or prevent any disease. The 4-Week Sprint is a personalized nutrition coaching service and does not constitute medical advice, diagnosis, or treatment. Individual results may vary based on training load, baseline nutrition, race conditions, and other factors. *Estimates based on peer-reviewed research (Pfeiffer et al., 2012; Jeukendrup, 2014; Cermak &amp; van Loon, 2013). Individual results vary. Always consult a qualified healthcare professional before starting any new supplement or nutrition programme. SGS-tested and GMP-certified refer to third-party quality and safety testing of our manufacturing facility and finished products.
   </div>
 </footer>
 
 </div><!-- /page-dtc -->
 
 <script>
+function toggleMobileNav() {
+  var nav = document.getElementById('nav-mobile');
+  var btn = document.querySelector('.nav-toggle');
+  var open = nav.classList.toggle('open');
+  btn.classList.toggle('open');
+  document.body.style.overflow = open ? 'hidden' : '';
+}
+
 function switchTab(tab) {
   document.querySelectorAll('.gel-tab').forEach(t => t.classList.toggle('active', t.id === 'tab-' + tab));
   document.getElementById('panel-euphoria').style.display = tab === 'euphoria' ? '' : 'none';
@@ -1015,6 +1127,24 @@ function setThumb(el) {
   el.classList.add('active');
   document.getElementById('pg-main-img').src = el.dataset.src;
 }
+</script>
+
+<!-- GA4 (replace GA_MEASUREMENT_ID with your actual ID) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'GA_MEASUREMENT_ID');
+document.querySelectorAll('a[href="/calculator"]').forEach(function(el) {
+  el.addEventListener('click', function() { gtag('event', 'calculator_cta_click', { page: 'homepage' }); });
+});
+document.querySelectorAll('a[href="/sprint"]').forEach(function(el) {
+  el.addEventListener('click', function() { gtag('event', 'sprint_cta_click', { page: 'homepage' }); });
+});
+document.querySelectorAll('a[href*="buy.stripe.com"]').forEach(function(el) {
+  el.addEventListener('click', function() { gtag('event', 'bundle_add_to_cart', { page: 'homepage', value: 119 }); });
+});
 </script>
 
 <script>(function(w,r){w._rwq=r;w[r]=w[r]||function(){(w[r].q=w[r].q||[]).push(arguments)}})(window,'rewardful');</script>

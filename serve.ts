@@ -9,8 +9,9 @@ const REWARDFUL_KEY = process.env.REWARDFUL_KEY || "";
 
 // Named page routes → static files
 const ROUTES: Record<string, string> = {
-  "/": "/wireframe.html",
+  "/": "/index.html",
   "/sprint": "/sprint.html",
+  "/bundle": "/bundle.html",
   "/calculator": "/calculator.html",
   "/thank-you": "/thank-you.html",
   "/privacy": "/privacy.html",

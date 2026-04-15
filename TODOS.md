@@ -1,6 +1,6 @@
 # TODOS — RIK Athletica
 
-Last updated by /plan-ceo-review on 2026-03-27
+Last updated by /plan-ceo-review on 2026-04-02
 
 ---
 
@@ -129,37 +129,16 @@ Last updated by /plan-ceo-review on 2026-03-27
 
 ---
 
-### P1 — Protocol Generation Tool: Deterministic Engine Rebuild
-**What:** Replace the LLM Architect with a TypeScript protocol engine. Keep: pipeline (build→validate→audit→approve), tool.html UI, science docs, products catalogue. Rebuild: the generation core.
-
-**Architecture decision (from /plan-ceo-review 2026-03-31):**
-- Hybrid approach: deterministic engine for all numbers, LLM prose layer for narrative
-- Engine computes: bracket, g/hr targets, products, Euphoria/Refuel placement, gut ramp, race-day plan
-- LLM writes: session notes, assumption flags, carry sheet tips (500 tokens, not 3000+)
-- Validator + Auditor AI unchanged (auditor should now PASS on first try, always)
-
-**New files to build:**
-```
-lab/lib/protocol-engine/
-  bracket.ts           ~80 LOC
-  targets.ts           ~120 LOC
-  product-selector.ts  ~150 LOC
-  placer.ts            ~100 LOC
-  race-day.ts          ~200 LOC
-  session-planner.ts   ~150 LOC
-  gut-ramp.ts          ~40 LOC
-  index.ts             ~80 LOC
-lab/prompts/prose-system.md
-```
-
-**Why:** LLM Architect was executing a formal rule system (276-line prompt) probabilistically. Rules that should be code. Deterministic engine: zero hallucinated numbers, zero revision loops, 10x cheaper generation step.
-
-**Plan doc:** `~/.gstack/projects/bekzhou8455-rik-athletica/ceo-plans/2026-03-31-deterministic-protocol-engine.md`
-**Effort:** M (human: 2-3 days / CC+gstack: 1 session)
-**Depends on:** Run `/plan-eng-review` before coding.
-**Priority:** P1 — block on this before taking any new customers.
-**Depends on:** products.csv from thefeed.com scrape (TODO above). Requires /plan-eng-review before build.
-**Note:** This is the core product IP — design carefully. Plan its own dedicated session.
+### P1 — Matrix Content Authoring (BLOCKS engine build)
+**What:** Author the canonical protocol matrix — the research-backed scientific foundation for the hybrid engine. 15 session types × 9 cells × 2 race distances (Full IM + 70.3) = 270 cells. Each cell is a markdown file encoding: carb targets by bracket, sodium targets, fluid targets, Euphoria/Refuel placement rules, FastChews frequency, product requirements (not SKUs). All numbers cited against published sports nutrition research.
+**Why:** Without the matrix, the engine hard-errors on every session type with no cell file. This is the highest-risk item in the hybrid engine plan — not the code, the content.
+**Minimum viable:** BIKE_MOD × 9 cells (Full IM only) before engine code review begins.
+**Full IM priority:** All 15 session types × 9 cells before 70.3 matrix begins.
+**How:** CC can assist with structure, draft values from `architect-system.md` (which encodes the existing science rules), and citation lookup. Human sports science validation required before each cell is marked complete.
+**Effort:** M (human: 2-3 weeks for Full IM / CC: assists per session)
+**Depends on:** Nothing. Start immediately, in parallel with engine code design.
+**Blocked by:** None. This should begin before the engine code sprint.
+**Plan doc:** `~/.gstack/projects/bekzhou8455-rik-athletica/ceo-plans/2026-04-02-hybrid-matrix-engine.md`
 
 ---
 
