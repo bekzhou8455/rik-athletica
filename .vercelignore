@@ -6,4 +6,18 @@ leads.csv
 README.md
 CHANGELOG.md
 TODOS.md
-assets/
+
+# Large raw photo PNGs — JPEGs are served from jsDelivr CDN, not Vercel.
+# Excluding them keeps deployment well under the 100MB limit.
+assets/media/AL-DSC*.png
+assets/media/DSC0*.png
+assets/media/DSC1*.png
+assets/media/athlete-*.png
+assets/media/hero-reel-poster.png
+assets/media/lab-hero.png
+assets/media/comp-*.png
+assets/media/rik-phone-calendar.png
+assets/media/originals/
+
+# scripts/ is dev tooling only
+scripts/
