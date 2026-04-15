@@ -121,13 +121,21 @@ nav ul a:hover, nav ul a.active { color: var(--off-black); }
 .pg-gallery { position: sticky; top: 96px; display: flex; flex-direction: column; gap: 16px; }
 .pg-switcher { display: flex; gap: 8px; }
 .pg-switch {
-  padding: 12px 20px; font-size: 13px; font-weight: 500; border-radius: var(--r-btn);
+  padding: 10px 18px; font-size: 13px; font-weight: 500; border-radius: var(--r-btn);
   cursor: pointer; border: 1px solid var(--border); background: transparent;
   color: #888; font-family: inherit; letter-spacing: -0.01em; transition: all .2s;
-  min-height: 44px; display: inline-flex; align-items: center;
+  min-height: 44px; display: inline-flex; align-items: center; gap: 8px;
 }
+.pg-switch::before {
+  content: ''; display: block; width: 10px; height: 10px; border-radius: 50%;
+  background: var(--border); flex-shrink: 0; transition: background .2s;
+}
+.pg-switch[data-product="refuel"]::before { background: rgba(26,122,110,0.25); }
+.pg-switch[data-product="euphoria"]::before { background: rgba(192,25,74,0.25); }
 .pg-switch.active[data-product="refuel"] { background: var(--refuel-teal); color: #fff; border-color: var(--refuel-teal); }
+.pg-switch.active[data-product="refuel"]::before { background: rgba(255,255,255,0.55); }
 .pg-switch.active[data-product="euphoria"] { background: var(--euphoria-pink); color: #fff; border-color: var(--euphoria-pink); }
+.pg-switch.active[data-product="euphoria"]::before { background: rgba(255,255,255,0.55); }
 
 .pg-main-img {
   width: 100%; aspect-ratio: 3/4; background: var(--sand);
@@ -549,8 +557,8 @@ footer { background: var(--off-black); padding: 36px 40px; display: flex; flex-w
 </div>
 
 <div class="photo-strip">
-  <img src="https://cdn.jsdelivr.net/gh/bekzhou8455/rik-athletica@main/assets/media/AL-DSC00141.png" loading="lazy" decoding="async" alt="Refuel gel in bento box on bike frame" style="object-position: center 40%;">
-  <img src="https://cdn.jsdelivr.net/gh/bekzhou8455/rik-athletica@main/assets/media/AL-DSC01041.png" loading="lazy" decoding="async" alt="Athlete running with gel" style="object-position: center 30%;">
+  <img src="https://cdn.jsdelivr.net/gh/bekzhou8455/rik-athletica@main/assets/media/AL-DSC00141.jpg" loading="lazy" decoding="async" alt="Refuel gel in bento box on bike frame" style="object-position: center 40%;">
+  <img src="https://cdn.jsdelivr.net/gh/bekzhou8455/rik-athletica@main/assets/media/AL-DSC01041.jpg" loading="lazy" decoding="async" alt="Athlete running with gel" style="object-position: center 30%;">
   <img src="https://cdn.jsdelivr.net/gh/bekzhou8455/rik-athletica@main/assets/media/AL-DSC00885.jpg" loading="lazy" decoding="async" alt="Athlete fuelling — warm outdoor lifestyle" style="object-position: center 18%;">
 </div>
 

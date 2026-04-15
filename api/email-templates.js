@@ -96,7 +96,7 @@ export const E2 = {
 
   <div style="margin:0 0 16px;">
     <div style="background:${BRAND.text};border-radius:12px;overflow:hidden;margin-bottom:10px;">
-      <img src="https://cdn.jsdelivr.net/gh/bekzhou8455/rik-athletica@main/assets/media/comp-week-grid.png" alt="Week Grid" style="width:100%;height:auto;display:block;">
+      <img src="https://cdn.jsdelivr.net/gh/bekzhou8455/rik-athletica@main/assets/media/comp-week-grid.jpg" alt="Week Grid" style="width:100%;height:auto;display:block;">
       <div style="padding:16px 24px;">
         <p style="font-size:10px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.35);margin:0 0 6px;">Document 01</p>
         <p style="font-size:18px;font-weight:500;color:#fff;margin:0 0 4px;">Week Grid</p>
@@ -104,7 +104,7 @@ export const E2 = {
       </div>
     </div>
     <div style="background:${BRAND.text};border-radius:12px;overflow:hidden;margin-bottom:10px;">
-      <img src="https://cdn.jsdelivr.net/gh/bekzhou8455/rik-athletica@main/assets/media/comp-session-protocol.png" alt="Session Protocol" style="width:100%;height:auto;display:block;">
+      <img src="https://cdn.jsdelivr.net/gh/bekzhou8455/rik-athletica@main/assets/media/comp-session-protocol.jpg" alt="Session Protocol" style="width:100%;height:auto;display:block;">
       <div style="padding:16px 24px;">
         <p style="font-size:10px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.35);margin:0 0 6px;">Document 02</p>
         <p style="font-size:18px;font-weight:500;color:#fff;margin:0 0 4px;">Session Protocol</p>
@@ -112,7 +112,7 @@ export const E2 = {
       </div>
     </div>
     <div style="background:${BRAND.text};border-radius:12px;overflow:hidden;">
-      <img src="https://cdn.jsdelivr.net/gh/bekzhou8455/rik-athletica@main/assets/media/comp-performance-report.png" alt="Performance Report" style="width:100%;height:auto;display:block;">
+      <img src="https://cdn.jsdelivr.net/gh/bekzhou8455/rik-athletica@main/assets/media/comp-performance-report.jpg" alt="Performance Report" style="width:100%;height:auto;display:block;">
       <div style="padding:16px 24px;">
         <p style="font-size:10px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.35);margin:0 0 6px;">Document 03</p>
         <p style="font-size:18px;font-weight:500;color:#fff;margin:0 0 4px;">Performance Report</p>
