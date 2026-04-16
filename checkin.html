@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Session Check-in — RIK Athletica</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="description" content="Post-session check-in for RIK Sprint athletes.">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300..800&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 16px; }
+body {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  background: #fff;
+  color: #0a0a0a;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+:root {
+  --sand: #f6f5f4;
+  --off-black: #0a0a0a;
+  --border: rgba(0,0,0,0.08);
+  --green: #2D5A3D;
+}
+
+nav {
+  background: rgba(255,255,255,0.96);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 40px; height: 56px;
+  display: flex; justify-content: space-between; align-items: center;
+  position: sticky; top: 0; z-index: 10;
+}
+.logo { display: flex; align-items: center; text-decoration: none; }
+
+main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 24px 0;
+  width: 100%;
+}
+
+.intro {
+  max-width: 640px; width: 100%;
+  text-align: center;
+  margin-bottom: 28px;
+}
+.intro-eyebrow {
+  font-size: 11px; font-weight: 500; letter-spacing: 2.5px;
+  text-transform: uppercase; color: var(--green); margin-bottom: 14px;
+}
+.intro-heading {
+  font-size: clamp(24px, 4vw, 34px);
+  font-weight: 400; letter-spacing: -0.03em;
+  line-height: 1.15; margin-bottom: 10px;
+  color: var(--off-black);
+}
+.intro-sub {
+  font-size: 14px; color: #888; line-height: 1.6;
+  max-width: 520px; margin: 0 auto;
+  letter-spacing: -0.01em;
+}
+
+.form-wrap {
+  width: 100%;
+  max-width: 860px;
+  flex: 1 0 auto;
+  margin-bottom: 40px;
+}
+.form-wrap > div[data-tf-live] {
+  width: 100%;
+  min-height: 640px;
+  height: 72vh;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+
+footer {
+  background: var(--off-black); padding: 20px 40px;
+  display: flex; justify-content: space-between; align-items: center;
+  margin-top: auto;
+}
+.footer-logo-img { height: 48px; width: auto; display: block; filter: invert(1); opacity: 0.6; margin: -4px 0; }
+.footer-links { font-size: 12px; color: rgba(255,255,255,0.22); }
+.footer-links a { color: rgba(255,255,255,0.38); text-decoration: none; }
+
+@media (max-width: 600px) {
+  nav { padding: 0 20px; }
+  main { padding: 28px 16px 0; }
+  footer { padding: 18px 20px; flex-direction: column; gap: 12px; }
+  .intro { margin-bottom: 20px; }
+  .form-wrap { margin-bottom: 24px; }
+  .form-wrap > div[data-tf-live] { min-height: 560px; height: 70vh; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="logo">
+    <img src="https://cdn.jsdelivr.net/gh/bekzhou8455/rik-athletica@main/assets/media/rik-logo.png" alt="RIK Athletica" style="height:68px;width:auto;display:block;margin:-8px -10px;">
+  </a>
+</nav>
+
+<main>
+  <div class="intro">
+    <div class="intro-eyebrow">Session Check-in</div>
+    <h1 class="intro-heading">How did it go?</h1>
+    <p class="intro-sub">Quick feedback after your key session. Under 90 seconds — your input refines next week's protocol.</p>
+  </div>
+
+  <div class="form-wrap">
+    <div
+      data-tf-live="01KPBSN0NVX9TGYX94M38YSSDQ"
+      data-tf-opacity="100"
+      data-tf-iframe-props="title=RIK Session Check-in"
+      data-tf-transitive-search-params
+      data-tf-medium="snippet"
+    ></div>
+  </div>
+</main>
+
+<footer>
+  <img src="https://cdn.jsdelivr.net/gh/bekzhou8455/rik-athletica@main/assets/media/rik-logo.png" alt="RIK Athletica" class="footer-logo-img">
+  <span class="footer-links">Copyright © 2026 Rik Athletic Nutrition Inc. &nbsp;·&nbsp; <a href="/privacy">Privacy</a> &nbsp;·&nbsp; <a href="/terms">Terms</a></span>
+</footer>
+
+<script src="//embed.typeform.com/next/embed.js"></script>
+</body>
+</html>
