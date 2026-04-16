@@ -30,6 +30,21 @@ bun serve.ts         # Start dev server on http://localhost:3456
 bun test calculator.test.ts   # Run tests (4 passing)
 ```
 
+## Deployment
+
+**Always deploy via Vercel CLI, not GitHub auto-deploy.**
+
+GitHub push does not reliably trigger Vercel deploys on this project — changes land in `origin/main` but the live site (`www.rikathletica.com`) stays on the previous build. This has bitten us repeatedly (missing API serverless functions, stale HTML).
+
+Correct workflow after a commit:
+
+```bash
+git push origin main                # push to origin (for history / collab)
+vercel --prod --yes                 # FORCE production deploy from local
+```
+
+Wait for `readyState: READY` in the output, then verify with `curl` against the live URL before declaring done. Do not rely on the GitHub webhook.
+
 ## Key conventions
 
 **HTML files are standalone.** Each page is a single self-contained HTML file with inline `<style>` and `<script>`. No external CSS files, no JS modules. Keep it that way — the simplicity is intentional.
