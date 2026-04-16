@@ -23,6 +23,8 @@
 
 // ─── TYPEFORM FIELD REFS ─────────────────────────────────────────────────────
 const FIELD_REFS = {
+  athlete_email:      'athlete_email',
+  athlete_name_q:     'athlete_name_q',
   session_type:       'session_type',
   protocol_adherence: 'protocol_adherence',
   protocol_deviation: 'protocol_deviation',
@@ -45,6 +47,13 @@ function ratingDots(score, max = 5) {
   const dots     = filled.repeat(score) + empty.repeat(max - score);
   return `<span style="color:${color};font-size:16px;letter-spacing:2px;">${dots}</span>
           <span style="font-size:13px;color:#888;margin-left:6px;">${score}/${max}</span>`;
+}
+
+// ─── Is the PB value substantive enough to celebrate? ───
+function isRealPB(value) {
+  if (!value) return false;
+  const trivial = ['no', 'n/a', 'na', 'n.a.', 'none', 'nope', 'nothing', 'not yet', 'nah', '-', '—', 'no pb'];
+  return !trivial.includes(value.trim().toLowerCase());
 }
 
 // ─── Adherence badge ───
@@ -104,9 +113,9 @@ export default async function handler(req, res) {
   const pbComparison      = txt(FIELD_REFS.pb_comparison);
   const screenshotUrl     = file(FIELD_REFS.session_screenshot);
 
-  // ─── Athlete identity (from hidden fields, pre-filled via URL params) ───
-  const athleteName  = hidden.athlete_name || 'Athlete';
-  const athleteEmail = hidden.email        || '';
+  // ─── Athlete identity — read from visible answers first, fall back to hidden ───
+  const athleteEmail = em(FIELD_REFS.athlete_email)   || txt(FIELD_REFS.athlete_email)   || hidden.email        || '';
+  const athleteName  = txt(FIELD_REFS.athlete_name_q) || hidden.athlete_name || 'Athlete';
   const submittedAt  = form.submitted_at   || new Date().toISOString();
 
   console.log(`[checkin] ${athleteName} | ${sessionType} | adherence=${adherence} | energy=${energyRating} | recovery=${recoveryRating} | ts=${submittedAt}`);
@@ -224,7 +233,7 @@ export default async function handler(req, res) {
     We've logged your <strong style="color:#111410;">${sessionType || 'session'}</strong> data and will factor it into your next protocol update.
   </p>
 
-  ${pbComparison ? `
+  ${isRealPB(pbComparison) ? `
   <div style="background:#e6f4ec;border:1px solid #a8d5b5;border-radius:8px;padding:14px 18px;margin-bottom:24px;">
     <p style="margin:0 0 2px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:#1a6b3a;">Result logged</p>
     <p style="margin:0;font-size:15px;font-weight:600;color:#111410;">${pbComparison}</p>
