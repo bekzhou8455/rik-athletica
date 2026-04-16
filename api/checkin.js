@@ -100,6 +100,7 @@ export default async function handler(req, res) {
   const findAnswer = (ref) => answers.find(a => a.field?.ref === ref);
   const ch   = (ref) => findAnswer(ref)?.choice?.label || findAnswer(ref)?.choices?.labels?.join(', ') || '';
   const txt  = (ref) => findAnswer(ref)?.text || '';
+  const em   = (ref) => findAnswer(ref)?.email || '';
   const num  = (ref) => findAnswer(ref)?.number ?? null;
   const file = (ref) => findAnswer(ref)?.file_url || '';
 
@@ -114,9 +115,10 @@ export default async function handler(req, res) {
   const screenshotUrl     = file(FIELD_REFS.session_screenshot);
 
   // ─── Athlete identity — read from visible answers first, fall back to hidden ───
-  const athleteEmail = em(FIELD_REFS.athlete_email)   || txt(FIELD_REFS.athlete_email)   || hidden.email        || '';
-  const athleteName  = txt(FIELD_REFS.athlete_name_q) || hidden.athlete_name || 'Athlete';
-  const submittedAt  = form.submitted_at   || new Date().toISOString();
+  const rawEmail     = em(FIELD_REFS.athlete_email) || txt(FIELD_REFS.athlete_email) || hidden.email || '';
+  const athleteEmail = rawEmail.trim().toLowerCase();
+  const athleteName  = (txt(FIELD_REFS.athlete_name_q) || hidden.athlete_name || 'Athlete').trim();
+  const submittedAt  = form.submitted_at || new Date().toISOString();
 
   console.log(`[checkin] ${athleteName} | ${sessionType} | adherence=${adherence} | energy=${energyRating} | recovery=${recoveryRating} | ts=${submittedAt}`);
 
