@@ -1,6 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<!-- Consent Mode (Secure Privacy CMP) -->
+<script src="https://app.secureprivacy.ai/script/69dfc936852cf73f1c0e6db8.js"></script>
+<!-- GA4 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-X7LJHZLR4K"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-X7LJHZLR4K');
+</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>4-Week Sprint — RIK Athletica</title>
@@ -297,7 +307,7 @@ nav ul a:hover, nav ul a.active { color: var(--off-black); }
 <section class="s-method" id="how">
   <div class="section-inner">
     <div class="eyebrow">THE METHODOLOGY</div>
-    <h2 class="fade-up">Other services give you a plan. We give you the plan, the products, and the revision loop.</h2>
+    <h2 class="fade-up">Other services give you a protocol. We give you the protocol, the products, and the revision loop.</h2>
     <p class="lead fade-up stagger-1">Two layers. One system. That's what nobody else offers.</p>
     <div class="layer-row">
       <div class="lcard l1 fade-up stagger-1">
@@ -345,7 +355,7 @@ nav ul a:hover, nav ul a.active { color: var(--off-black); }
 <!-- REVISION LOOP -->
 <section class="s-loop">
   <div class="section-inner">
-    <h2 class="fade-up">We don't hand you a plan and disappear.</h2>
+    <h2 class="fade-up">We don't hand you a protocol and disappear.</h2>
     <p class="lead fade-up stagger-1">Every week, we review how your body responded and adjust. This is not a template. It's a system that adapts to you.</p>
     <div class="loop-visual fade-up stagger-2">
       <div class="loop-step">
@@ -369,7 +379,7 @@ nav ul a:hover, nav ul a.active { color: var(--off-black); }
       <div class="loop-step">
         <div class="loop-icon">&#x1F4E6;</div>
         <h4>Delivery</h4>
-        <p>Revised plan delivered. Repeat weekly.</p>
+        <p>Revised protocol delivered. Repeat weekly.</p>
       </div>
     </div>
   </div>
@@ -952,7 +962,7 @@ setupVideoTrim(document.getElementById('service-video'));
     function showError(msg) {
       titleEl.textContent = 'Something went wrong';
       subEl.style.display = 'none';
-      errorMsg.textContent = msg || 'We could not set up your contract. Please try again or email hello@rikathletica.com.';
+      errorMsg.textContent = msg || 'We could not set up your contract. Please try again or email bek.zhou@rikathletica.com.';
       errorDiv.style.display = 'block';
       var spinner = overlay.querySelector('.sign-overlay-spinner');
       if (spinner) spinner.style.display = 'none';
@@ -981,14 +991,7 @@ setupVideoTrim(document.getElementById('service-video'));
 })();
 </script>
 
-<!-- GA4 -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
 <script>
-window.dataLayer = window.dataLayer || [];
-function gtag(){dataLayer.push(arguments);}
-gtag('js', new Date());
-gtag('config', 'GA_MEASUREMENT_ID');
-// Track Sprint page view
 gtag('event', 'sprint_page_view');
 // Track screen CTA clicks
 document.querySelectorAll('.screen-cta').forEach(function(el) {

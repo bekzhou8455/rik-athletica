@@ -241,6 +241,17 @@ export default async function handler(req, res) {
     <p style="margin:0;font-size:15px;font-weight:600;color:#111410;">${pbComparison}</p>
   </div>` : ''}
 
+  <div style="background:#F0EEE8;border-radius:8px;padding:16px 18px;margin-bottom:28px;">
+    <p style="margin:0 0 4px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:#2D5A3D;">Next check-in</p>
+    <p style="margin:0 0 10px;font-size:14px;color:#6B6860;line-height:1.55;">
+      Bookmark your check-in page and log every key session — long bike, long run, brick, or race simulation.
+    </p>
+    <a href="https://www.rikathletica.com/checkin?email=${encodeURIComponent(athleteEmail)}&athlete_name=${encodeURIComponent(athleteName)}"
+       style="font-size:13px;color:#2D5A3D;font-weight:600;text-decoration:none;">
+      rikathletica.com/checkin →
+    </a>
+  </div>
+
   <div style="height:1px;background:#E4E1DA;margin:0 0 20px;"></div>
   <p style="font-size:11px;color:#9C9890;line-height:1.6;margin:0;">
     Questions? Reply to this email.

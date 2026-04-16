@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Send Protocol — Internal Tool</title>
+<!--
+  Internal tool for manually sending Protocol Delivery emails.
+  Intended usage:
+    1. Open this file locally (double-click, or file://... in browser)
+    2. Fill the form (name, email, race name, race date)
+    3. Click "Copy email HTML" → rich text goes to clipboard
+    4. Paste into Gmail compose (from bek.zhou@rikathletica.com)
+    5. Set subject from the Subject field (click to copy)
+    6. Attach protocol PDF(s)
+    7. Send
+
+  Template logic mirrors api/email-templates.js → PROTOCOL_DELIVERY.build().
+  Keep the two in sync if either changes.
+-->
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #0f0f10;
+    --panel: #18181b;
+    --panel-2: #1f1f23;
+    --border: #2a2a30;
+    --text: #e8e8ea;
+    --muted: #8b8b92;
+    --accent: #2D5A3D;
+    --accent-bright: #4a8a5f;
+    --danger: #b94a3a;
+  }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 32px;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  .wrap { max-width: 1400px; margin: 0 auto; }
+  header { margin-bottom: 24px; }
+  h1 { font-size: 22px; font-weight: 600; letter-spacing: -0.02em; margin-bottom: 6px; }
+  header p { color: var(--muted); font-size: 13px; }
+  .grid {
+    display: grid;
+    grid-template-columns: 380px 1fr;
+    gap: 24px;
+    align-items: start;
+  }
+  @media (max-width: 900px) { .grid { grid-template-columns: 1fr; } }
+
+  .panel {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px;
+  }
+  .panel h2 {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    margin-bottom: 14px;
+  }
+  label {
+    display: block;
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 4px;
+    margin-top: 12px;
+  }
+  label:first-of-type { margin-top: 0; }
+  input[type="text"], input[type="email"], input[type="date"] {
+    width: 100%;
+    background: var(--panel-2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 10px 12px;
+    color: var(--text);
+    font-size: 14px;
+    font-family: inherit;
+    transition: border-color .15s;
+  }
+  input:focus {
+    outline: none;
+    border-color: var(--accent-bright);
+  }
+
+  .subject-row {
+    display: flex;
+    gap: 8px;
+    align-items: stretch;
+    margin-top: 6px;
+  }
+  .subject-display {
+    flex: 1;
+    background: var(--panel-2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 10px 12px;
+    font-size: 13px;
+    color: var(--text);
+    word-break: break-word;
+  }
+
+  button {
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 10px 16px;
+    font-size: 13px;
+    font-weight: 500;
+    font-family: inherit;
+    cursor: pointer;
+    transition: background .15s, transform .05s;
+    white-space: nowrap;
+  }
+  button:hover { background: var(--accent-bright); }
+  button:active { transform: scale(0.98); }
+  button.secondary { background: var(--panel-2); border: 1px solid var(--border); color: var(--text); }
+  button.secondary:hover { background: var(--border); }
+
+  .actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+  }
+
+  .preview-wrap {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px;
+  }
+  .preview-wrap h2 {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    margin-bottom: 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .preview-frame {
+    width: 100%;
+    min-height: 700px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: #F7F5F1;
+  }
+
+  .toast {
+    position: fixed;
+    bottom: 32px;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    background: var(--accent);
+    color: #fff;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+    opacity: 0;
+    transition: transform .3s, opacity .3s;
+    pointer-events: none;
+    z-index: 100;
+  }
+  .toast.show {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+  }
+  .toast.error { background: var(--danger); }
+
+  .steps {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.6;
+    margin-top: 18px;
+    padding-top: 18px;
+    border-top: 1px solid var(--border);
+  }
+  .steps ol { padding-left: 18px; }
+  .steps li { margin-bottom: 4px; }
+  .steps strong { color: var(--text); font-weight: 600; }
+
+  .field-hint {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 4px;
+    font-style: italic;
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <header>
+    <h1>Protocol Delivery — Send Tool</h1>
+    <p>Fills the template, renders a preview, copies HTML to clipboard for Gmail paste.</p>
+  </header>
+
+  <div class="grid">
+
+    <!-- FORM -->
+    <div class="panel">
+      <h2>Athlete Details</h2>
+
+      <label for="name">First name</label>
+      <input id="name" type="text" placeholder="Alex" value="Alex">
+
+      <label for="email">Athlete email</label>
+      <input id="email" type="email" placeholder="alex@example.com" value="alex@example.com">
+      <div class="field-hint">Used only to pre-fill the check-in page link. Send the email from Gmail separately.</div>
+
+      <label for="raceName">Race name (optional)</label>
+      <input id="raceName" type="text" placeholder="IM 70.3 Eagleman" value="">
+
+      <label for="raceDate">Race date (optional)</label>
+      <input id="raceDate" type="date" value="">
+
+      <h2 style="margin-top:24px;">Subject Line</h2>
+      <div class="subject-row">
+        <div class="subject-display" id="subjectDisplay"></div>
+        <button class="secondary" id="copySubject" title="Copy subject to clipboard">Copy</button>
+      </div>
+
+      <div class="actions">
+        <button id="copyHtml">Copy email HTML</button>
+        <button class="secondary" id="copyPlain">Copy plain text</button>
+      </div>
+
+      <div class="steps">
+        <strong>Send workflow:</strong>
+        <ol>
+          <li>Click <strong>Copy email HTML</strong></li>
+          <li>Open Gmail, compose new email to the athlete</li>
+          <li>Paste into the body (Gmail preserves formatting)</li>
+          <li>Copy the subject, paste into Gmail subject field</li>
+          <li>Drag in the protocol PDF(s) as attachments</li>
+          <li>Send from <strong>bek.zhou@rikathletica.com</strong></li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- PREVIEW -->
+    <div class="preview-wrap">
+      <h2>
+        <span>Preview</span>
+        <span id="previewStatus" style="font-weight:400;text-transform:none;letter-spacing:0;font-style:italic;"></span>
+      </h2>
+      <iframe id="previewFrame" class="preview-frame" title="Email preview"></iframe>
+    </div>
+
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ─── Brand tokens (mirror email-templates.js BRAND) ───
+const BRAND = {
+  logo: 'https://cdn.jsdelivr.net/gh/bekzhou8455/rik-athletica@main/assets/media/rik-logo-cropped.png',
+  green: '#2D5A3D',
+  bg: '#F7F5F1',
+  text: '#111410',
+  muted: '#6B6860',
+  subtle: '#9C9890',
+  border: '#E4E1DA',
+  site: 'https://www.rikathletica.com',
+};
+
+const SUBJECT = 'Your Sprint protocol — review before your Training Box ships';
+
+// ─── Template builder (mirror of PROTOCOL_DELIVERY.build in email-templates.js) ───
+function buildEmail({ name, email, raceName, raceDate }) {
+  const displayName = (name || '').trim() || 'Athlete';
+  const raceLine = raceName && raceDate
+    ? `${raceName} · ${raceDate}`
+    : (raceName || raceDate || '');
+  const checkinUrl = `${BRAND.site}/checkin?email=${encodeURIComponent(email || '')}&athlete_name=${encodeURIComponent(displayName)}`;
+
+  return `<!DOCTYPE html>
+<html>
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>
+<body style="margin:0;padding:0;background:${BRAND.bg};font-family:Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased;">
+<div style="max-width:560px;margin:0 auto;padding:40px 24px;">
+
+  <div style="margin-bottom:36px;">
+    <img src="${BRAND.logo}" alt="RIK Athletica" style="height:40px;width:auto;">
+  </div>
+
+  <h1 style="font-size:26px;font-weight:600;color:${BRAND.text};letter-spacing:-0.03em;line-height:1.2;margin:0 0 12px;">
+    Your protocol is built, ${displayName}.
+  </h1>
+  <p style="font-size:15px;color:${BRAND.muted};line-height:1.65;margin:0 0 8px;">
+    Three documents attached. All three drawn from your intake — body weight, sweat rate, GI history, training load, race conditions.
+  </p>
+  ${raceLine ? `<p style="font-size:13px;color:${BRAND.subtle};line-height:1.65;margin:0 0 24px;">Race: ${raceLine}</p>` : '<div style="height:16px;"></div>'}
+
+  <div style="height:1px;background:${BRAND.border};margin:0 0 24px;"></div>
+
+  <div style="margin-bottom:20px;">
+    <div style="font-size:11px;font-weight:700;color:${BRAND.green};text-transform:uppercase;letter-spacing:0.04em;margin-bottom:6px;">Document 01 — Week Grid</div>
+    <p style="font-size:14px;color:${BRAND.muted};line-height:1.6;margin:0;">
+      Your training week with carb targets, product timing, and fluid goals per session.
+    </p>
+  </div>
+
+  <div style="margin-bottom:20px;">
+    <div style="font-size:11px;font-weight:700;color:${BRAND.green};text-transform:uppercase;letter-spacing:0.04em;margin-bottom:6px;">Document 02 — Session Protocol</div>
+    <p style="font-size:14px;color:${BRAND.muted};line-height:1.6;margin:0;">
+      Minute-by-minute fueling timeline for each key session. Pre, intra, recovery. Every product placed.
+    </p>
+  </div>
+
+  <div style="margin-bottom:28px;">
+    <div style="font-size:11px;font-weight:700;color:${BRAND.green};text-transform:uppercase;letter-spacing:0.04em;margin-bottom:6px;">Document 03 — Performance Report</div>
+    <p style="font-size:14px;color:${BRAND.muted};line-height:1.6;margin:0;">
+      Where your current fueling is leaving time on the course. What this protocol is designed to close.*
+    </p>
+  </div>
+
+  <div style="height:1px;background:${BRAND.border};margin:0 0 24px;"></div>
+
+  <h2 style="font-size:16px;font-weight:600;color:${BRAND.text};letter-spacing:-0.02em;margin:0 0 10px;">
+    If the protocol is what you need
+  </h2>
+  <p style="font-size:14px;color:${BRAND.muted};line-height:1.65;margin:0 0 12px;">
+    Sit tight. We're packing your Training Box now — it ships within 5 days. Tracking lands in a separate email. Once it arrives, start training to the protocol and log every key session below. Your Week 2 revision is built from that feedback.
+  </p>
+
+  <div style="margin:0 0 28px;">
+    <a href="${checkinUrl}"
+       style="display:inline-block;background:${BRAND.green};color:#fff;text-decoration:none;font-size:14px;font-weight:500;padding:13px 28px;border-radius:36px;">
+      Bookmark your check-in page →
+    </a>
+  </div>
+
+  <div style="height:1px;background:${BRAND.border};margin:0 0 24px;"></div>
+
+  <h2 style="font-size:16px;font-weight:600;color:${BRAND.text};letter-spacing:-0.02em;margin:0 0 10px;">
+    If it's not what you were expecting
+  </h2>
+  <p style="font-size:14px;color:${BRAND.muted};line-height:1.65;margin:0 0 10px;">
+    Read it carefully. If the protocol doesn't meet your standard, or reads no different from what you already run, reply to this email to cancel. Full refund, no questions, per our <a href="${BRAND.site}/terms#refunds" style="color:${BRAND.green};text-decoration:underline;">refund policy</a>.
+  </p>
+  <p style="font-size:14px;color:${BRAND.muted};line-height:1.65;margin:0 0 20px;">
+    Reply before your Training Box ships. If it's already left our warehouse, refuse delivery at the door — the package returns unopened and we issue your refund on receipt.
+  </p>
+
+  <div style="height:1px;background:${BRAND.border};margin:0 0 20px;"></div>
+  <p style="font-size:11px;color:${BRAND.subtle};line-height:1.6;margin:0;">
+    *Individual results vary. Performance estimates based on peer-reviewed carbohydrate and hydration research. Not medical advice.
+    <br>Questions? Reply to this email.
+    &nbsp;·&nbsp; <a href="${BRAND.site}/privacy" style="color:${BRAND.subtle};">Privacy</a>
+    &nbsp;·&nbsp; <a href="${BRAND.site}/terms" style="color:${BRAND.subtle};">Terms</a>
+    &nbsp;·&nbsp; RIK Athletic Nutrition Inc.
+  </p>
+
+</div>
+</body>
+</html>`;
+}
+
+// ─── HTML → approximate plain text for clipboard fallback ───
+function htmlToPlain(html) {
+  const tmp = document.createElement('div');
+  tmp.innerHTML = html;
+  // Preserve line breaks around block-level elements
+  tmp.querySelectorAll('p, h1, h2, h3, div, br').forEach(el => {
+    el.insertAdjacentText('beforebegin', '\n');
+  });
+  return tmp.textContent.replace(/\n{3,}/g, '\n\n').trim();
+}
+
+// ─── Refs ───
+const nameEl      = document.getElementById('name');
+const emailEl     = document.getElementById('email');
+const raceNameEl  = document.getElementById('raceName');
+const raceDateEl  = document.getElementById('raceDate');
+const subjectEl   = document.getElementById('subjectDisplay');
+const frameEl     = document.getElementById('previewFrame');
+const statusEl    = document.getElementById('previewStatus');
+const toastEl     = document.getElementById('toast');
+
+function currentValues() {
+  return {
+    name:     nameEl.value,
+    email:    emailEl.value,
+    raceName: raceNameEl.value,
+    raceDate: raceDateEl.value,
+  };
+}
+
+function render() {
+  const html = buildEmail(currentValues());
+  frameEl.srcdoc = html;
+  subjectEl.textContent = SUBJECT;
+  const nameDisplay = (nameEl.value || '').trim() || 'Athlete';
+  statusEl.textContent = `To: ${nameDisplay} <${emailEl.value}>`;
+  return html;
+}
+
+// ─── Toast ───
+let toastTimer;
+function toast(msg, variant = 'ok') {
+  clearTimeout(toastTimer);
+  toastEl.textContent = msg;
+  toastEl.className = 'toast show' + (variant === 'error' ? ' error' : '');
+  toastTimer = setTimeout(() => {
+    toastEl.className = 'toast' + (variant === 'error' ? ' error' : '');
+  }, 2200);
+}
+
+// ─── Copy handlers ───
+async function copyRichHtml() {
+  const html = buildEmail(currentValues());
+  const plain = htmlToPlain(html);
+  try {
+    if (navigator.clipboard && window.ClipboardItem) {
+      const item = new ClipboardItem({
+        'text/html':  new Blob([html],  { type: 'text/html'  }),
+        'text/plain': new Blob([plain], { type: 'text/plain' }),
+      });
+      await navigator.clipboard.write([item]);
+      toast('Email HTML copied — paste into Gmail');
+    } else {
+      // Legacy fallback
+      await navigator.clipboard.writeText(html);
+      toast('Copied as plain HTML (browser too old for rich copy)', 'error');
+    }
+  } catch (err) {
+    console.error(err);
+    toast('Copy failed: ' + err.message, 'error');
+  }
+}
+
+async function copyPlainText() {
+  const plain = htmlToPlain(buildEmail(currentValues()));
+  try {
+    await navigator.clipboard.writeText(plain);
+    toast('Plain text copied');
+  } catch (err) {
+    toast('Copy failed: ' + err.message, 'error');
+  }
+}
+
+async function copySubject() {
+  try {
+    await navigator.clipboard.writeText(SUBJECT);
+    toast('Subject copied');
+  } catch (err) {
+    toast('Copy failed: ' + err.message, 'error');
+  }
+}
+
+// ─── Events ───
+[nameEl, emailEl, raceNameEl, raceDateEl].forEach(el => el.addEventListener('input', render));
+document.getElementById('copyHtml').addEventListener('click', copyRichHtml);
+document.getElementById('copyPlain').addEventListener('click', copyPlainText);
+document.getElementById('copySubject').addEventListener('click', copySubject);
+
+// ─── Init ───
+render();
+</script>
+
+</body>
+</html>

@@ -1,6 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<!-- Consent Mode (Secure Privacy CMP) -->
+<script src="https://app.secureprivacy.ai/script/69dfc936852cf73f1c0e6db8.js"></script>
+<!-- GA4 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-X7LJHZLR4K"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-X7LJHZLR4K');
+</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>RIK Athletica — Personalized Fueling Systems for Ironman Athletes</title>
@@ -1031,13 +1041,13 @@ footer { background: var(--off-black); padding: 36px 40px; display: flex; flex-w
         <div class="path-price">$119</div>
         <p class="path-sub">10 Euphoria + 20 Refuel · Free shipping</p>
         <a href="https://buy.stripe.com/4gM7sN6Wq3cc7T0fZ67Re00" data-rewardful class="btn btn-primary btn-full" style="padding:14px;">Get the Bundle →</a>
-        <p class="path-guarantee">✓ 30-day satisfaction guarantee</p>
+        <p class="path-guarantee">✓ 30-day refund window on unopened product</p>
         <p class="path-upgrade">Want the full system? <a href="/sprint">See Sprint →</a></p>
       </div>
       <div class="path-card featured">
         <span class="path-badge">Complete System</span>
-        <h3>Let Us Handle Everything</h3>
-        <p class="path-desc">Your fueling protocol, products, and revision loop. One price. Nutrition handled.</p>
+        <h3>Your protocol, built from your data.</h3>
+        <p class="path-desc">Fueling protocol, products, and revision loop. One price. Nutrition handled.</p>
         <div class="tier-mini">
           <div class="tier-mini-row"><span class="tier-mini-name">70.3 Sprint</span><span class="tier-mini-price">$569</span></div>
           <div class="tier-mini-row"><span class="tier-mini-name">Ironman Sprint</span><span class="tier-mini-price">$659</span></div>
@@ -1071,7 +1081,7 @@ footer { background: var(--off-black); padding: 36px 40px; display: flex; flex-w
 <div class="service-upsell">
   <div class="service-upsell-copy">
     <div class="eyebrow light">Done-For-You Fueling</div>
-    <h2>Let us handle<br>everything.</h2>
+    <h2>Your protocol,<br>built from your data.</h2>
     <p>The 4-Week Sprint builds your personal fueling system — both layers, every product, delivered to your door — and revises weekly until your body responds. One price. Nutrition handled.</p>
     <ul class="upsell-steps">
       <li data-n="1">10-min intake form — your physiology, your training, your race</li>
@@ -1137,13 +1147,7 @@ function setThumb(el) {
 }
 </script>
 
-<!-- GA4 (replace GA_MEASUREMENT_ID with your actual ID) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
 <script>
-window.dataLayer = window.dataLayer || [];
-function gtag(){dataLayer.push(arguments);}
-gtag('js', new Date());
-gtag('config', 'GA_MEASUREMENT_ID');
 document.querySelectorAll('a[href="/calculator"]').forEach(function(el) {
   el.addEventListener('click', function() { gtag('event', 'calculator_cta_click', { page: 'homepage' }); });
 });

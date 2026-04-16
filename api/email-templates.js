@@ -137,6 +137,117 @@ export const E2 = {
   `),
 };
 
+// ─── PROTOCOL DELIVERY — manual send after protocol is built ───
+// Attaches the protocol PDF. Athlete has until their Training Box ships to
+// review and cancel for a full refund (per /terms §7).
+//
+// Usage:
+//   import { PROTOCOL_DELIVERY } from './email-templates.js';
+//   import { sendMail } from './mailer.js';
+//   const { subject, html } = PROTOCOL_DELIVERY.build({
+//     name: 'Alex',
+//     email: 'alex@example.com',
+//     raceName: 'IM 70.3 Eagleman',   // optional
+//     raceDate: '2026-06-14',           // optional, YYYY-MM-DD
+//   });
+//   await sendMail({
+//     to: 'alex@example.com',
+//     subject,
+//     html,
+//     attachments: [{ filename: 'alex-sprint-protocol.pdf', path: '/abs/path/to/protocol.pdf' }],
+//   });
+export const PROTOCOL_DELIVERY = {
+  subject: 'Your Sprint protocol — review before your Training Box ships',
+  build: ({ name = 'Athlete', email = '', raceName = '', raceDate = '' } = {}) => {
+    const raceLine = raceName && raceDate
+      ? `${raceName} · ${raceDate}`
+      : (raceName || raceDate || '');
+    const checkinUrl = `${BRAND.site}/checkin?email=${encodeURIComponent(email)}&athlete_name=${encodeURIComponent(name)}`;
+    const html = `<!DOCTYPE html>
+<html>
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>
+<body style="margin:0;padding:0;background:${BRAND.bg};font-family:Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased;">
+<div style="max-width:560px;margin:0 auto;padding:40px 24px;">
+
+  <div style="margin-bottom:36px;">
+    <img src="${BRAND.logo}" alt="RIK Athletica" style="height:40px;width:auto;">
+  </div>
+
+  <h1 style="font-size:26px;font-weight:600;color:${BRAND.text};letter-spacing:-0.03em;line-height:1.2;margin:0 0 12px;">
+    Your protocol is built, ${name}.
+  </h1>
+  <p style="font-size:15px;color:${BRAND.muted};line-height:1.65;margin:0 0 8px;">
+    Three documents attached. All three drawn from your intake — body weight, sweat rate, GI history, training load, race conditions.
+  </p>
+  ${raceLine ? `<p style="font-size:13px;color:${BRAND.subtle};line-height:1.65;margin:0 0 24px;">Race: ${raceLine}</p>` : '<div style="height:16px;"></div>'}
+
+  <div style="height:1px;background:${BRAND.border};margin:0 0 24px;"></div>
+
+  <div style="margin-bottom:20px;">
+    <div style="font-size:11px;font-weight:700;color:${BRAND.green};text-transform:uppercase;letter-spacing:0.04em;margin-bottom:6px;">Document 01 — Week Grid</div>
+    <p style="font-size:14px;color:${BRAND.muted};line-height:1.6;margin:0;">
+      Your training week with carb targets, product timing, and fluid goals per session.
+    </p>
+  </div>
+
+  <div style="margin-bottom:20px;">
+    <div style="font-size:11px;font-weight:700;color:${BRAND.green};text-transform:uppercase;letter-spacing:0.04em;margin-bottom:6px;">Document 02 — Session Protocol</div>
+    <p style="font-size:14px;color:${BRAND.muted};line-height:1.6;margin:0;">
+      Minute-by-minute fueling timeline for each key session. Pre, intra, recovery. Every product placed.
+    </p>
+  </div>
+
+  <div style="margin-bottom:28px;">
+    <div style="font-size:11px;font-weight:700;color:${BRAND.green};text-transform:uppercase;letter-spacing:0.04em;margin-bottom:6px;">Document 03 — Performance Report</div>
+    <p style="font-size:14px;color:${BRAND.muted};line-height:1.6;margin:0;">
+      Where your current fueling is leaving time on the course. What this protocol is designed to close.*
+    </p>
+  </div>
+
+  <div style="height:1px;background:${BRAND.border};margin:0 0 24px;"></div>
+
+  <h2 style="font-size:16px;font-weight:600;color:${BRAND.text};letter-spacing:-0.02em;margin:0 0 10px;">
+    If the protocol is what you need
+  </h2>
+  <p style="font-size:14px;color:${BRAND.muted};line-height:1.65;margin:0 0 12px;">
+    Sit tight. We're packing your Training Box now — it ships within 5 days. Tracking lands in a separate email. Once it arrives, start training to the protocol and log every key session below. Your Week 2 revision is built from that feedback.
+  </p>
+
+  <div style="margin:0 0 28px;">
+    <a href="${checkinUrl}"
+       style="display:inline-block;background:${BRAND.green};color:#fff;text-decoration:none;font-size:14px;font-weight:500;padding:13px 28px;border-radius:36px;">
+      Bookmark your check-in page →
+    </a>
+  </div>
+
+  <div style="height:1px;background:${BRAND.border};margin:0 0 24px;"></div>
+
+  <h2 style="font-size:16px;font-weight:600;color:${BRAND.text};letter-spacing:-0.02em;margin:0 0 10px;">
+    If it's not what you were expecting
+  </h2>
+  <p style="font-size:14px;color:${BRAND.muted};line-height:1.65;margin:0 0 10px;">
+    Read it carefully. If the protocol doesn't meet your standard, or reads no different from what you already run, reply to this email to cancel. Full refund, no questions, per our <a href="${BRAND.site}/terms#refunds" style="color:${BRAND.green};text-decoration:underline;">refund policy</a>.
+  </p>
+  <p style="font-size:14px;color:${BRAND.muted};line-height:1.65;margin:0 0 20px;">
+    Reply before your Training Box ships. If it's already left our warehouse, refuse delivery at the door — the package returns unopened and we issue your refund on receipt.
+  </p>
+
+  <div style="height:1px;background:${BRAND.border};margin:0 0 20px;"></div>
+  <p style="font-size:11px;color:${BRAND.subtle};line-height:1.6;margin:0;">
+    *Individual results vary. Performance estimates based on peer-reviewed carbohydrate and hydration research. Not medical advice.
+    <br>Questions? Reply to this email.
+    &nbsp;·&nbsp; <a href="${BRAND.site}/privacy" style="color:${BRAND.subtle};">Privacy</a>
+    &nbsp;·&nbsp; <a href="${BRAND.site}/terms" style="color:${BRAND.subtle};">Terms</a>
+    &nbsp;·&nbsp; RIK Athletic Nutrition Inc.
+  </p>
+
+</div>
+</body>
+</html>`;
+    return { subject: PROTOCOL_DELIVERY.subject, html };
+  },
+};
+
 // ─── E3: Day 7 — Urgency ───
 export const E3 = {
   subject: 'Your race is getting closer. The protocol needs 4 weeks.',

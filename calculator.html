@@ -6,13 +6,15 @@
 <title>IRONMAN Nutrition Calculator — How Many Minutes Are You Losing?</title>
 <meta name="description" content="Free IRONMAN nutrition calculator. Find out exactly how many minutes GI distress, carb deficits, and second-half collapse are costing you — backed by peer-reviewed research.">
 <link rel="canonical" href="https://rikathletica.com/calculator">
+<!-- Consent Mode (Secure Privacy CMP) -->
+<script src="https://app.secureprivacy.ai/script/69dfc936852cf73f1c0e6db8.js"></script>
 <!-- GA4 -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-X7LJHZLR4K"></script>
 <script>
 window.dataLayer = window.dataLayer || [];
 function gtag(){dataLayer.push(arguments);}
 gtag('js', new Date());
-gtag('config', 'GA_MEASUREMENT_ID');
+gtag('config', 'G-X7LJHZLR4K');
 gtag('event', 'calculator_start');
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
@@ -938,7 +940,7 @@ function Step2({ d, set }) {
 function Step3({ d, set }) {
   return <>
     <div className="s-step-title">Your fueling strategy</div>
-    <div className="s-step-desc">Most athletes significantly under-fuel without realising it. These answers tell us how wide the gap is between what you're taking in and what the research says you need.</div>
+    <div className="s-step-desc">Most athletes under-fuel by 20–30g/hr without knowing it. These answers tell us how wide your gap is between what you're taking in and what the research says you need.</div>
 
     <div className="s-field">
       <label className="s-label">Estimated carbohydrate intake per hour on the bike</label>
@@ -1005,10 +1007,10 @@ function Counter({ target }) {
 
 /* ── Results ─────────────────────────────────────────────────────── */
 const motiveCopy = {
-  redemption: 'Athletes who have experienced nutrition-related race failure convert fastest — because they already know the cost of getting it wrong.',
-  time:       'The gap between your training fitness and race performance is not a fitness problem. It is a protocol problem.',
-  mental:     'The hours each week spent on planning, second-guessing, and reordering — those belong to training and recovery, not logistics.',
-  optimize:   'Elite athletes do not guess at nutrition. They run protocols designed for their specific physiology. That is exactly what RIK builds.',
+  redemption: 'You know the cost of a nutrition-wrecked race. That is why you are here. It does not happen twice.',
+  time:       'The gap between your training fitness and your race performance is not a fitness problem. It is a protocol problem.',
+  mental:     'Hours you spend planning, second-guessing, reordering — those belong to training. Not logistics.',
+  optimize:   'Elite athletes do not guess at nutrition. They run protocols designed for their physiology. That is what RIK builds for you.',
 };
 
 function Results({ data, onRestart }) {
@@ -1033,7 +1035,7 @@ function Results({ data, onRestart }) {
     <><strong>Your gut has never been trained for what race day demands.</strong> A 28-day gut training intervention produces a 15.2% increase in carbohydrate absorption capacity (Cox et al., Journal of Applied Physiology, 2010).</>
   );
   if (r.pgConfirm) insights.push(
-    <><strong>Your training pace confirms the gap is real.</strong> Based on your submitted data, there is a documented {r.pgLo}–{r.pgHi} minute shortfall between your fitness level and your race-day execution — the kind of gap nutrition optimization closes.</>
+    <><strong>Your training pace confirms the gap is real.</strong> Based on your submitted data, there is a documented {r.pgLo}–{r.pgHi} minute shortfall between your fitness level and your race-day execution — the kind of gap a protocol closes.</>
   );
 
   return (

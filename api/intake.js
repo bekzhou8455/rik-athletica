@@ -24,16 +24,78 @@
  *   TODO: replace these refs with actual values from your Typeform dashboard:
  */
 
-// ─── TYPEFORM FIELD REFS (replace before deploying) ─────────────────────────
+// ─── TYPEFORM FIELD REFS ─────────────────────────────────────────────────────
+// Sourced from: Typeform Builder → Block References (April 16 2026)
 const FIELD_REFS = {
-  name:          'athlete_name',     // TODO: replace with actual ref
-  email:         'athlete_email',    // TODO: replace with actual ref
-  race_date:     'race_date',        // TODO: replace with actual ref
-  race_distance: 'race_distance',    // TODO: replace with actual ref
+  // Core — used by webhook to send confirmation emails
+  name:                        'athlete_name',
+  email:                       'athlete_email',
+  race_date:                   'race_date',
+  race_distance:               'race_distance',
+
+  // Race & goal
+  training_phase:              'training_phase',
+  body_weight:                 'body_weight_kg',
+  biological_sex:              'biological_sex',
+  occupation:                  'occupation',
+  goal_finish_time:            'goal_finish_time',
+  historical_finish_time_1406: 'historical_1406_finish_time',
+  historical_finish_time_703:  'historical_703_finish_time',
+
+  // Training load
+  total_training_hours:        'total_training_hours',
+  longest_bike:                'longest_bike_min',
+  longest_run:                 'longest_run_min',
+  coach_relationship:          'coach_relationship',
+  travel_frequency:            'travel_frequency',
+
+  // Fueling
+  current_products:            'current_products',
+  current_carb_target:         'current_carb_target',
+  max_carbs_per_hour:          'max_carbs_per_hour',
+  gi_history:                  'gi_history',
+  intra_session_fueling:       'intra_session_fueling',
+  gut_training_status:         'gut_training_status',
+
+  // Physiology
+  sweat_rate:                  'sweat_rate',
+  heat_context:                'heat_context',
+  cgm_data:                    'cgm_data',
+  dietary_restrictions:        'dietary_restrictions',
+  other_dietary:               'other_dietary',
+
+  // Race logistics
+  race_type:                   'race_type',
+  bike_config:                 'bike_config',
+  race_temperature:            'race_temperature',
+
+  // File uploads
+  training_plan_file:          'training_plan_file',
+  activity_screenshots:        'activity_screenshots',
+  race_splits_file:            'race_splits_file',
+
+  // Medical
+  arrhythmia_caffeine:         'arrhythmia_caffeine',
+  hyponatremia:                'hyponatremia',
+  cardiac_conditions:          'cardiac_conditions',
+  gi_condition:                'gi_condition',
+  gi_condition_description:    'gi_condition_description',
+  pregnancy:                   'pregnancy',
+  rhabdomyolysis:              'rhabdomyolysis',
+  medications_yn:              'medications_yn',
+  medications_list:            'medications_list',
+  medical_history:             'medical_history',
+
+  // Agreement
+  age_confirm:                 'age_confirm',
+  terms_agree:                 'terms_agree',
+  athlete_signature:           'athlete_signature',
+  signature_date:              'athlete_signature_date',
 };
 // ────────────────────────────────────────────────────────────────────────────
 
 import crypto from 'crypto';
+import { sendMail, mailerReady } from './mailer.js';
 
 function addDays(dateStr, days) {
   const d = new Date(dateStr + 'T00:00:00Z');
@@ -64,15 +126,50 @@ export default async function handler(req, res) {
     }
   }
 
+  // Skip partial responses — only process completed submissions
+  const eventType = req.body?.event_type || '';
+  if (eventType === 'form_response_partial') {
+    console.log('[intake] Skipping partial response');
+    return res.status(200).json({ ok: true, skipped: 'partial' });
+  }
+
   const form = req.body?.form_response || {};
   const answers = form.answers || [];
 
   // Extract fields by ref
-  const findAnswer = (ref) => answers.find(a => a.field?.ref === ref);
-  const name      = findAnswer(FIELD_REFS.name)?.text || 'Athlete';
-  const email     = findAnswer(FIELD_REFS.email)?.email || '';
-  const raceDate  = findAnswer(FIELD_REFS.race_date)?.date || '';  // 'YYYY-MM-DD'
-  const distance  = findAnswer(FIELD_REFS.race_distance)?.choice?.label || '';
+  const findAnswer  = (ref) => answers.find(a => a.field?.ref === ref);
+  const txt  = (ref) => findAnswer(ref)?.text || '';
+  const em   = (ref) => findAnswer(ref)?.email || '';
+  const dt   = (ref) => findAnswer(ref)?.date || '';
+  const ch   = (ref) => findAnswer(ref)?.choice?.label || findAnswer(ref)?.choices?.labels?.join(', ') || '';
+  const num  = (ref) => findAnswer(ref)?.number ?? '';
+
+  const name      = txt(FIELD_REFS.name) || 'Athlete';
+  const email     = em(FIELD_REFS.email);
+  const raceDate  = dt(FIELD_REFS.race_date);
+  const distance  = ch(FIELD_REFS.race_distance);
+
+  // Additional fields for internal summary
+  const bodyWeight       = num(FIELD_REFS.body_weight);
+  const biologicalSex    = ch(FIELD_REFS.biological_sex);
+  const trainingPhase    = ch(FIELD_REFS.training_phase);
+  const goalFinish       = txt(FIELD_REFS.goal_finish_time);
+  const hist1406         = txt(FIELD_REFS.historical_finish_time_1406);
+  const hist703          = txt(FIELD_REFS.historical_finish_time_703);
+  const totalHours       = num(FIELD_REFS.total_training_hours);
+  const longestBike      = num(FIELD_REFS.longest_bike);
+  const longestRun       = num(FIELD_REFS.longest_run);
+  const currentCarb      = num(FIELD_REFS.current_carb_target);
+  const maxCarbs         = num(FIELD_REFS.max_carbs_per_hour);
+  const giHistory        = ch(FIELD_REFS.gi_history);
+  const gutTraining      = ch(FIELD_REFS.gut_training_status);
+  const sweatRate        = ch(FIELD_REFS.sweat_rate);
+  const heatContext      = ch(FIELD_REFS.heat_context);
+  const raceTemp         = ch(FIELD_REFS.race_temperature);
+  const currentProducts  = txt(FIELD_REFS.current_products);
+  const dietaryRestrict  = ch(FIELD_REFS.dietary_restrictions);
+  const medicalHistory   = txt(FIELD_REFS.medical_history);
+  const occupation       = ch(FIELD_REFS.occupation);
 
   const shipByDate    = raceDate ? addDays(raceDate, -10) : '';
   const raceDateFmt   = formatDate(raceDate);
@@ -81,66 +178,96 @@ export default async function handler(req, res) {
 
   console.log(`[intake] name=${name} email=${email} race=${raceDate} distance=${distance} shipBy=${shipByDate} ts=${submittedAt}`);
 
-  const apiKey     = process.env.RESEND_API_KEY;
   const alertEmail = process.env.INTERNAL_ALERT_EMAIL;
 
-  if (!apiKey) {
-    // Key not set — acknowledge webhook, log for manual follow-up
-    console.warn('[intake] RESEND_API_KEY not set — emails not sent');
+  if (!mailerReady()) {
+    console.warn('[intake] Gmail credentials not set — emails not sent');
     return res.status(200).json({ ok: true, sent: false });
   }
 
   // Send both emails concurrently
   const sendEmail = async (to, subject, html) => {
     try {
-      const r = await fetch('https://api.resend.com/emails', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${apiKey}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          from: 'RIK Athletica <hello@rikathletica.com>',
-          to: [to],
-          subject,
-          html,
-        }),
-      });
-      if (!r.ok) {
-        console.error(`[intake] Resend error for ${to}:`, r.status, await r.text());
-        return false;
-      }
+      await sendMail({ to, subject, html });
       return true;
     } catch (err) {
-      console.error(`[intake] Resend exception for ${to}:`, err);
+      console.error(`[intake] Mail error for ${to}:`, err.message);
       return false;
     }
   };
 
   const emails = [];
 
-  // Email 1: Internal Race Pack ship alert
+  // Email 1: Internal new intake alert + Race Pack reminder (merged)
   if (alertEmail) {
+    const row = (label, value) => value
+      ? `<tr><td style="padding:7px 16px 7px 0;color:#888;white-space:nowrap;vertical-align:top;">${label}</td><td style="padding:7px 0;color:#111;">${value}</td></tr>`
+      : '';
     emails.push(sendEmail(
       alertEmail,
-      `[RACE PACK] Ship for ${name} — race ${raceDate}`,
+      `New intake: ${name} — ${distance} — race ${raceDate}`,
       `<!DOCTYPE html>
 <html>
 <head><meta charset="UTF-8"></head>
-<body style="font-family:Helvetica,Arial,sans-serif;padding:32px;max-width:560px;">
-  <h2 style="color:#0a0a0a;margin:0 0 4px;">Race Pack Ship Reminder</h2>
-  <p style="font-size:13px;color:#aaa;margin:0 0 24px;">Intake submitted — action needed</p>
-  <table style="width:100%;border-collapse:collapse;font-size:15px;">
-    <tr><td style="padding:10px 0;color:#888;width:140px;border-bottom:1px solid #eee;">Athlete</td><td style="padding:10px 0;font-weight:600;border-bottom:1px solid #eee;">${name}</td></tr>
-    <tr><td style="padding:10px 0;color:#888;border-bottom:1px solid #eee;">Email</td><td style="padding:10px 0;border-bottom:1px solid #eee;">${email || '—'}</td></tr>
-    <tr><td style="padding:10px 0;color:#888;border-bottom:1px solid #eee;">Distance</td><td style="padding:10px 0;border-bottom:1px solid #eee;">${distance || '—'}</td></tr>
-    <tr><td style="padding:10px 0;color:#888;border-bottom:1px solid #eee;">Race Date</td><td style="padding:10px 0;font-weight:600;color:#2D5A3D;border-bottom:1px solid #eee;">${raceDateFmt}</td></tr>
-    <tr><td style="padding:10px 0;color:#888;">📦 Ship Race Pack by</td><td style="padding:10px 0;font-weight:700;font-size:18px;color:#c0392b;">${shipByFmt}</td></tr>
+<body style="font-family:Helvetica,Arial,sans-serif;padding:32px;max-width:600px;color:#111;">
+
+  <h2 style="margin:0 0 4px;color:#2D5A3D;">New Intake Received</h2>
+  <p style="font-size:13px;color:#aaa;margin:0 0 28px;">Submitted ${submittedAt.replace('T',' ').slice(0,16)} UTC</p>
+
+  <!-- Athlete & Race -->
+  <h3 style="font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#2D5A3D;margin:0 0 8px;">Athlete</h3>
+  <table style="font-size:14px;border-collapse:collapse;margin-bottom:24px;">
+    ${row('Name', name)}
+    ${row('Email', email)}
+    ${row('Distance', distance)}
+    ${row('Race Date', raceDateFmt)}
+    ${row('Sex', biologicalSex)}
+    ${row('Weight', bodyWeight ? bodyWeight + ' kg' : '')}
+    ${row('Occupation', occupation)}
   </table>
-  <div style="background:#fff5f5;border:1px solid #f5c6c6;border-radius:8px;padding:16px;margin-top:24px;">
-    <p style="margin:0;font-size:13px;color:#c0392b;font-weight:600;">Action: Submit Race Pack pick list to ShipWizard before ${shipByFmt}.</p>
-    <p style="margin:8px 0 0;font-size:12px;color:#888;">Race Pack contents: see Sprint v2 plan doc. Set a calendar reminder if needed.</p>
+
+  <!-- Performance -->
+  <h3 style="font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#2D5A3D;margin:0 0 8px;">Performance</h3>
+  <table style="font-size:14px;border-collapse:collapse;margin-bottom:24px;">
+    ${row('Goal finish', goalFinish)}
+    ${row('Historical 140.6', hist1406)}
+    ${row('Historical 70.3', hist703)}
+    ${row('Training phase', trainingPhase)}
+    ${row('Weekly hours', totalHours ? totalHours + ' hrs' : '')}
+    ${row('Longest bike', longestBike ? longestBike + ' min' : '')}
+    ${row('Longest run', longestRun ? longestRun + ' min' : '')}
+  </table>
+
+  <!-- Fueling -->
+  <h3 style="font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#2D5A3D;margin:0 0 8px;">Fueling</h3>
+  <table style="font-size:14px;border-collapse:collapse;margin-bottom:24px;">
+    ${row('Current carb target', currentCarb ? currentCarb + ' g/hr' : '')}
+    ${row('Max carbs/hr', maxCarbs ? maxCarbs + ' g/hr' : '')}
+    ${row('GI history', giHistory)}
+    ${row('Gut training', gutTraining)}
+    ${row('Current products', currentProducts)}
+    ${row('Dietary restrictions', dietaryRestrict)}
+  </table>
+
+  <!-- Environment -->
+  <h3 style="font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#2D5A3D;margin:0 0 8px;">Environment</h3>
+  <table style="font-size:14px;border-collapse:collapse;margin-bottom:24px;">
+    ${row('Sweat rate', sweatRate)}
+    ${row('Heat context', heatContext)}
+    ${row('Race temperature', raceTemp)}
+  </table>
+
+  ${medicalHistory ? `
+  <h3 style="font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#c0392b;margin:0 0 8px;">Medical notes</h3>
+  <p style="font-size:14px;color:#111;margin:0 0 24px;">${medicalHistory}</p>
+  ` : ''}
+
+  <!-- Race Pack action -->
+  <div style="background:#fff5f5;border:1px solid #f5c6c6;border-radius:8px;padding:20px;margin-top:8px;">
+    <p style="margin:0 0 4px;font-size:14px;font-weight:700;color:#c0392b;">📦 Race Pack — ship by ${shipByFmt}</p>
+    <p style="margin:0;font-size:13px;color:#888;">Submit pick list to ShipWizard before this date. Set a calendar reminder.</p>
   </div>
+
 </body>
 </html>`,
     ));
@@ -179,18 +306,19 @@ export default async function handler(req, res) {
 
   <div style="margin-bottom:20px;">
     <div style="font-size:11px;font-weight:700;color:#2D5A3D;text-transform:uppercase;letter-spacing:0.04em;margin-bottom:6px;">3 Protocol Iterations</div>
-    <p style="font-size:14px;color:#6B6860;line-height:1.6;margin:0;">
-      Log session feedback each week. We refine. By Week 4, your race-day plan is locked in.
+    <p style="font-size:14px;color:#6B6860;line-height:1.6;margin:0 0 14px;">
+      After each key session — long bike, long run, brick, or race simulation — fill in a quick check-in. We use it to refine your protocol each week. By Week 4, your race-day protocol is locked in.
     </p>
+    <a href="https://www.rikathletica.com/checkin?email=${encodeURIComponent(email)}&athlete_name=${encodeURIComponent(name)}"
+       style="display:inline-block;background:#2D5A3D;color:#fff;text-decoration:none;font-size:13px;font-weight:500;padding:11px 22px;border-radius:36px;">
+      Bookmark your check-in page →
+    </a>
   </div>
 
   <div style="margin-bottom:36px;">
-    <div style="font-size:11px;font-weight:700;color:#2D5A3D;text-transform:uppercase;letter-spacing:0.04em;margin-bottom:6px;">Race Pack</div>
+    <div style="font-size:11px;font-weight:700;color:#2D5A3D;text-transform:uppercase;letter-spacing:0.04em;margin-bottom:6px;">Race Pack (Add-on)</div>
     <p style="font-size:14px;color:#6B6860;line-height:1.6;margin:0;">
-      ${raceDate
-        ? `Your Race Pack — race-day products selected to your final protocol — ships approximately 10 days before your race on <strong style="color:#111410;">${raceDateFmt}</strong>.`
-        : `Your Race Pack ships approximately 10 days before your race once your race date is confirmed.`
-      }
+      Want race-day products selected to your final protocol? Add the Race Pack before Week 4 and it ships approximately 10 days before your race${raceDate ? ` on <strong style="color:#111410;">${raceDateFmt}</strong>` : ''}.
     </p>
   </div>
 
