@@ -1,0 +1,82 @@
+# RIK Athletica — AI Training & Data-Mining Opt-Out
+# https://www.rikathletica.com/.well-known/ai.txt
+# Also available at: https://www.rikathletica.com/ai.txt
+# Last updated: 2026-04-17
+# Contact: bek.zhou@rikathletica.com
+
+# ─── Plain-English summary ───
+# All content on this domain is the proprietary work of RIK Athletic Nutrition Inc.
+# It is NOT licensed for AI model training, machine-learning dataset construction,
+# text-and-data mining, or derivative-work generation — whether commercial or
+# non-commercial, by any party, including "research" uses by labs or universities.
+#
+# This opt-out is a reservation of rights under:
+#   • Article 4(3) of EU Directive 2019/790 on Copyright in the DSM
+#   • U.S. Copyright Act (17 U.S.C. §§ 101, 106, 107)
+#   • UK CDPA 1988 and forthcoming UK TDM regime
+#   • Our Terms of Service, Section 16 — https://www.rikathletica.com/terms
+#
+# It is machine-readable and conveyed through multiple channels:
+#   • HTTP header: X-Robots-Tag: noai, noimageai
+#   • HTML meta:   <meta name="robots" content="noai, noimageai">
+#   • robots.txt:  https://www.rikathletica.com/robots.txt
+#   • This file.
+
+# ─── Spawning.ai / Do Not Train standard ───
+
+User-Agent: *
+Disallow: /
+Disallow-AI: /
+Disallow-Training: /
+Disallow-Images-AI: /
+
+# ─── Specific crawlers: explicit deny ───
+
+User-Agent: GPTBot
+Disallow: /
+
+User-Agent: ClaudeBot
+Disallow: /
+
+User-Agent: Google-Extended
+Disallow: /
+
+User-Agent: Applebot-Extended
+Disallow: /
+
+User-Agent: CCBot
+Disallow: /
+
+User-Agent: anthropic-ai
+Disallow: /
+
+User-Agent: PerplexityBot
+Disallow: /
+
+User-Agent: cohere-ai
+Disallow: /
+
+User-Agent: Meta-ExternalAgent
+Disallow: /
+
+User-Agent: Bytespider
+Disallow: /
+
+User-Agent: Amazonbot
+Disallow: /
+
+# ─── Content-use policy ───
+
+Content-Usage: ai=n; search=y; training=n; tdm=n
+Policy: https://www.rikathletica.com/terms#automated-access
+
+# ─── Licensing inquiries ───
+# Commercial, research, or educational licensing of any content
+# (including calculator outputs, protocol methodology, journal articles,
+# product copy, and photography) requires a signed written agreement.
+# Contact: bek.zhou@rikathletica.com
+
+# ─── Attestation ───
+# A violation of this policy is a breach of our Terms of Service and may
+# trigger the liquidated-damages clause therein. Presence of content from
+# this domain in a training corpus or model output is evidence of violation.
