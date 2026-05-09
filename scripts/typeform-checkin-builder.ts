@@ -74,7 +74,7 @@ const formSpec = {
       validations: { required: true },
       properties: {
         description: 'Today or yesterday. Older sessions roll into next week\'s review.',
-        structure: 'YYYY-MM-DD',
+        structure: 'MMDDYYYY', // US display format. Typeform allowed values: MMDDYYYY | DDMMYYYY | YYYYMMDD. URL prefill still accepts ISO YYYY-MM-DD.
       },
     },
     {
@@ -178,38 +178,17 @@ const formSpec = {
     },
   ],
 
-  // ─── Logic jumps ───
-  logic: [
-    // If Q2 (session date) is more than 36h old, jump to a hard-stop thank-you.
-    // Typeform doesn't have a direct "older than X" comparator at the top of
-    // form-build — but Q2 has a built-in relative-date validator that's set
-    // via dashboard post-import (see README addendum).
-    //
-    // If Q8 ≠ 'plan_yes', skip Q9 (skip the upload).
-    {
-      type: 'field',
-      ref: 'q8_plan_status',
-      actions: [
-        {
-          action: 'jump',
-          details: { to: { type: 'field', value: 'q9_plan_upload' } },
-          condition: {
-            op: 'equal',
-            vars: [
-              { type: 'field', value: 'q8_plan_status' },
-              { type: 'choice', value: 'plan_yes' },
-            ],
-          },
-        },
-        {
-          // else → jump straight to thank-you, skipping Q9
-          action: 'jump',
-          details: { to: { type: 'thankyou', value: 'thanks' } },
-          condition: { op: 'always', vars: [] },
-        },
-      ],
-    },
-  ],
+  // ─── Logic jumps — DELIBERATELY OMITTED ───
+  // Typeform's Create-API logic schema is fragile (different shape per
+  // condition.op + per details.target type) and the validator rejects
+  // most variations. Faster path: ship the form without logic, then add
+  // the single Q8→Q9 jump in Typeform's visual logic editor:
+  //   1. Open form → Logic (lightning-bolt icon, left rail)
+  //   2. Select Q8 → "Add jump"
+  //   3. Rule: "If answer is NOT 'Yes — I'll upload it below' → jump to Thank-you screen"
+  //   4. Save
+  // ~20 seconds in dashboard. Trade-off accepted: 1 manual click vs ~2hrs
+  // debugging the Logic API schema.
 
   // ─── Thank-you screen ───
   thankyou_screens: [{
@@ -270,12 +249,16 @@ console.log(`✓ Form ${isUpdate ? 'updated' : 'created'}: id=${data.id}`);
 if (data._links?.display) console.log(`  Public URL: ${data._links.display}`);
 console.log('');
 console.log('Next steps (manual, in Typeform dashboard):');
-console.log('  1. Settings → Connect → Webhooks → add https://www.rikathletica.com/api/checkin');
-console.log('  2. Design → Theme → upload background image (1920×1080 desktop, 1080×1920 mobile)');
-console.log('  3. Design → Theme → Outfit font (or fallback Inter), buttons #0E0E0E, accent #5A5853');
-console.log('  4. Q2 settings → Date validation → relative range: today minus 1 day to today');
-console.log('  5. Update checkin.html → swap data-tf-live="01KPBSN0NVX9TGYX94M38YSSDQ" → "' + data.id + '"');
-console.log('  6. Smoke-test by submitting yourself, verify webhook hit /api/checkin in logs');
+console.log(`  1. Logic → Q8 → Add jump: "If answer is NOT 'Yes — I will upload it below' → jump to Thank-you screen"`);
+console.log('  2. Q2 → Settings → Date validation → relative range: today minus 1 day to today');
+console.log('  3. Settings → Connect → Webhooks → add https://www.rikathletica.com/api/checkin');
+console.log('  4. Design → Theme → upload background image (1920×1080 desktop, 1080×1920 mobile)');
+console.log('  5. Design → Theme → Outfit font (or fallback Inter), buttons #0E0E0E, accent #5A5853');
+console.log('  6. Settings → General → ☑ Hide Typeform branding · ☑ Disable search-engine indexing');
+if (!isUpdate) {
+  console.log('  7. Update checkin.html → swap data-tf-live="01KPBSN0NVX9TGYX94M38YSSDQ" → "' + data.id + '"');
+}
+console.log('  ' + (isUpdate ? '7' : '8') + '. Smoke-test by submitting yourself, verify webhook hit /api/checkin in logs');
 
 /* ═══════════════════════════════════════════════════════════════════════════
    DESIGN DIMENSIONS — for the background image You're going to design
