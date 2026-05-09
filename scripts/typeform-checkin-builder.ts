@@ -156,9 +156,28 @@ const formSpec = {
         description: 'Optional. Anything: gel taste, hydration timing, gut feedback, energy at hour 3.',
       },
     },
-    // ─── NEW Pillar-3 questions ───
+    // ─── Session-outcome questions (May 2026 — Bek-added) ───
     {
-      ref: 'q8_plan_status',
+      ref: 'q8_pb_standout',
+      title: 'Did You hit a new PB or see a standout stat?',
+      type: 'short_text',
+      validations: { required: false },
+      properties: {
+        description: 'Optional. e.g. "3:52 / 13:44 marathon" or "220W → 238W FTP".',
+      },
+    },
+    {
+      ref: 'q9_session_screenshot',
+      title: 'Upload Your session screenshot',
+      type: 'file_upload',
+      validations: { required: false },
+      properties: {
+        description: 'Garmin, Wahoo, Apple Watch, Strava — any works. Size limit: 10 MB. Optional.',
+      },
+    },
+    // ─── Pillar-3 forward-planning questions ───
+    {
+      ref: 'q10_plan_status',
       title: "Have You uploaded next week's training plan?",
       type: 'multiple_choice',
       validations: { required: true },
@@ -174,12 +193,12 @@ const formSpec = {
       },
     },
     {
-      ref: 'q9_plan_upload',
+      ref: 'q11_plan_upload',
       title: "Upload next week's training plan",
       type: 'file_upload',
       validations: { required: false },
       properties: {
-        description: 'PDF · JPG · PNG · screenshots all OK. Skip if Q8 said \'No\' or \'Pending\'.',
+        description: 'PDF · JPG · PNG · screenshots all OK. Skip if Q10 said \'No\' or \'Pending\'.',
       },
     },
   ],
@@ -188,9 +207,9 @@ const formSpec = {
   // Typeform's Create-API logic schema is fragile (different shape per
   // condition.op + per details.target type) and the validator rejects
   // most variations. Faster path: ship the form without logic, then add
-  // the single Q8→Q9 jump in Typeform's visual logic editor:
+  // the single Q10 → Thank-you jump in Typeform's visual logic editor:
   //   1. Open form → Logic (lightning-bolt icon, left rail)
-  //   2. Select Q8 → "Add jump"
+  //   2. Select Q10 → "Add jump"
   //   3. Rule: "If answer is NOT 'Yes — I'll upload it below' → jump to Thank-you screen"
   //   4. Save
   // ~20 seconds in dashboard. Trade-off accepted: 1 manual click vs ~2hrs
@@ -255,7 +274,7 @@ console.log(`✓ Form ${isUpdate ? 'updated' : 'created'}: id=${data.id}`);
 if (data._links?.display) console.log(`  Public URL: ${data._links.display}`);
 console.log('');
 console.log('Next steps (manual, in Typeform dashboard):');
-console.log(`  1. Logic → Q8 → Add jump: "If answer is NOT 'Yes — I will upload it below' → jump to Thank-you screen"`);
+console.log(`  1. Logic → Q10 → Add jump: "If answer is NOT 'Yes — I will upload it below' → jump to Thank-you screen"`);
 console.log('  2. Q2 → Settings → Date validation → relative range: today minus 1 day to today');
 console.log('  3. Settings → Connect → Webhooks → add https://www.rikathletica.com/api/checkin');
 console.log('  4. Design → Theme → upload background image (1920×1080 desktop, 1080×1920 mobile)');
