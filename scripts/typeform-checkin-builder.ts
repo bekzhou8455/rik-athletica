@@ -16,9 +16,15 @@
  *        bun scripts/typeform-checkin-builder.ts          # creates a new form
  *        bun scripts/typeform-checkin-builder.ts <id>     # updates existing form
  *
- *   The current live check-in form ID is `01KPBSN0NVX9TGYX94M38YSSDQ` (the one
- *   embedded on /checkin via data-tf-live). To overwrite that form, pass it as
- *   the first arg. To create a parallel form for testing, pass nothing.
+ *   The current live check-in form ID is `xhtuSNpJ` (created May 10 2026 via
+ *   this script, embedded on /checkin via data-tf-live). To overwrite it,
+ *   pass that ID as the first arg. To create a parallel form for testing,
+ *   pass nothing.
+ *
+ *   The previous form (Typeform UI-created, ID `01KPBSN0NVX9TGYX94M38YSSDQ`)
+ *   is orphaned — its embed-only ID format isn't compatible with the Create
+ *   API. Delete it from the Typeform dashboard once `xhtuSNpJ` is verified
+ *   working in production.
  *
  * What this script does NOT do:
  *   - Apply a custom theme (set via dashboard after creation — see DESIGN
@@ -256,7 +262,7 @@ console.log('  4. Design → Theme → upload background image (1920×1080 deskt
 console.log('  5. Design → Theme → Outfit font (or fallback Inter), buttons #0E0E0E, accent #5A5853');
 console.log('  6. Settings → General → ☑ Hide Typeform branding · ☑ Disable search-engine indexing');
 if (!isUpdate) {
-  console.log('  7. Update checkin.html → swap data-tf-live="01KPBSN0NVX9TGYX94M38YSSDQ" → "' + data.id + '"');
+  console.log('  7. Update checkin.html → swap data-tf-live="xhtuSNpJ" → "' + data.id + '"');
 }
 console.log('  ' + (isUpdate ? '7' : '8') + '. Smoke-test by submitting yourself, verify webhook hit /api/checkin in logs');
 
