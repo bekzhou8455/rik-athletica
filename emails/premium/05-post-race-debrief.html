@@ -1,0 +1,86 @@
+<!doctype html>
+<!--
+  Email: Premium #5 — Post-race debrief (async-only, Typeform-embedded)
+  Trigger: api/cron/daily-sweep.js — Day +2 from athlete's race date (gives 48h decompression)
+  Subject: Tell us how race day went — 5 minutes.
+
+  Out-of-scope, removed in this version (per Bek 2026-05-10):
+    ❌ "30-minute call" / "debrief call"
+    ❌ Synchronous voice / video time
+
+  In-scope, what the email actually does:
+    ✅ Embeds (or links) a Typeform debrief — 5 minutes async
+    ✅ Sets expectation: we run analysis against 4 weeks of training-plan +
+       protocol-execution data, then send back a "Your wins" analysis email
+       with quantified outcomes vs baseline + a starter blueprint for next race
+    ✅ Refund-window mention (14 days post-race) — soft, not pushy
+
+  Tokens:
+    {{first_name}} {{race_distance}} {{race_date}} {{debrief_link}} {{wa_link}} {{unsubscribe}}
+-->
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Tell Us How Race Day Went — RIK Athletica</title></head>
+<body style="margin:0;padding:0;background:#EEEDEA;font-family:'Outfit',-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif;color:#0E0E0E;-webkit-font-smoothing:antialiased;">
+<div style="display:none;max-height:0;overflow:hidden;">5 minutes of honest signal. Then we run analysis on Your 4 weeks of data and send Your wins back.</div>
+
+<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background:#EEEDEA;"><tr><td align="center" style="padding:32px 20px;">
+<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="600" style="max-width:600px;width:100%;background:#FFFFFF;border:1px solid rgba(14,14,14,.10);border-radius:18px;overflow:hidden;">
+
+  <tr><td style="padding:28px 36px;border-bottom:1px solid rgba(14,14,14,.10);"><p style="margin:0;font-family:'Outfit',sans-serif;font-size:13px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:#0E0E0E;">RIK Athletica · Post-race debrief</p></td></tr>
+
+  <tr><td style="padding:48px 36px 28px;">
+    <p style="margin:0 0 16px;font-size:11px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:#5A5853;">─── &nbsp;&nbsp;Day +2 from {{race_distance}}&nbsp;&nbsp;───</p>
+    <h1 style="margin:0 0 18px;font-family:'Outfit',sans-serif;font-size:34px;font-weight:700;line-height:1.02;letter-spacing:-.02em;color:#0E0E0E;">Tell Us How It Went. <span style="color:#5A5853;font-weight:700;">5 Minutes.</span></h1>
+    <p style="margin:0 0 14px;font-size:15px;line-height:1.65;color:#5A5853;">{{first_name}} — Race day was <strong style="color:#0E0E0E;font-weight:500;">{{race_date}}</strong>. Two days past now. Long enough to decompress, short enough that the details are still sharp. Time to debrief.</p>
+    <p style="margin:0 0 28px;font-size:15px;line-height:1.65;color:#5A5853;">Async. Five minutes. <strong style="color:#0E0E0E;font-weight:500;">Honest signal beats polished signal</strong> — what hit, what missed, what felt off. The Typeform below is the input; what We send back is the analysis.</p>
+    <table role="presentation" cellpadding="0" cellspacing="0" border="0"><tr><td style="background:#0E0E0E;border-radius:999px;"><a href="{{debrief_link}}" style="display:inline-block;padding:14px 28px;font-family:'Outfit',sans-serif;font-size:14px;font-weight:500;color:#FFFFFF;text-decoration:none;">Open Race-Day Debrief Form &nbsp;↗</a></td></tr></table>
+  </td></tr>
+
+  <tr><td style="padding:0 36px 32px;">
+    <p style="margin:0 0 14px;font-family:'Outfit',sans-serif;font-size:11px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:#5A5853;">What We do with Your debrief</p>
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+      <tr><td style="padding:14px 0;border-top:1px dashed rgba(14,14,14,.18);"><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr>
+        <td width="32" style="font-family:'Outfit',sans-serif;font-size:13px;font-weight:600;color:#5A5853;vertical-align:top;font-variant-numeric:tabular-nums;">01</td>
+        <td style="font-family:'Outfit',sans-serif;font-size:13.5px;line-height:1.65;color:#0E0E0E;font-weight:500;">Pull Your 4 weeks of <strong>training-plan + protocol-execution data</strong> — every check-in submitted, every plan logged, every revision made.</td>
+      </tr></table></td></tr>
+      <tr><td style="padding:14px 0;border-top:1px dashed rgba(14,14,14,.18);"><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr>
+        <td width="32" style="font-family:'Outfit',sans-serif;font-size:13px;font-weight:600;color:#5A5853;vertical-align:top;font-variant-numeric:tabular-nums;">02</td>
+        <td style="font-family:'Outfit',sans-serif;font-size:13.5px;line-height:1.65;color:#0E0E0E;font-weight:500;">Run analysis against the baseline at intake — <strong>quantified wins</strong>, what shifted, where the protocol revisions paid out vs the original plan.</td>
+      </tr></table></td></tr>
+      <tr><td style="padding:14px 0;border-top:1px dashed rgba(14,14,14,.18);border-bottom:1px dashed rgba(14,14,14,.18);"><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr>
+        <td width="32" style="font-family:'Outfit',sans-serif;font-size:13px;font-weight:600;color:#5A5853;vertical-align:top;font-variant-numeric:tabular-nums;">03</td>
+        <td style="font-family:'Outfit',sans-serif;font-size:13.5px;line-height:1.65;color:#0E0E0E;font-weight:500;">Email the analysis back within <strong>7 days</strong> of Your debrief — Your wins file + lessons + a starter blueprint for next race.</td>
+      </tr></table></td></tr>
+    </table>
+  </td></tr>
+
+  <tr><td style="padding:0 36px 32px;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#EEEDEA;border-radius:12px;border-left:3px solid #0E0E0E;"><tr><td style="padding:18px 22px;font-family:'Outfit',sans-serif;font-size:13px;line-height:1.6;color:#0E0E0E;">
+      <p style="margin:0 0 6px;font-weight:500;">Honest is more useful than polite.</p>
+      <p style="margin:0;color:#5A5853;font-size:12.5px;">If something didn't work, We want to know exactly why and where. Bring rough edges, not the highlight reel — every signal sharpens the methodology for the next cohort.</p>
+    </td></tr></table>
+  </td></tr>
+
+  <tr><td style="padding:0 36px 32px;">
+    <p style="margin:0 0 12px;font-family:'Outfit',sans-serif;font-size:11px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:#5A5853;">Refund window — open 14 days post-race</p>
+    <p style="margin:0;font-size:13.5px;line-height:1.65;color:#5A5853;">If You completed every weekly check-in and the protocol didn't deliver value, the refund is honored — full $1,599. We'd cover that in Your wins email; reply to this thread within 14 days if You want to discuss.</p>
+  </td></tr>
+
+  <tr><td style="padding:0 36px 32px;">
+    <p style="margin:0 0 14px;font-family:'Outfit',sans-serif;font-size:11px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:#5A5853;">Question first?</p>
+    <p style="margin:0;font-size:13.5px;line-height:1.65;color:#5A5853;"><a href="{{wa_link}}" style="color:#0E0E0E;text-decoration:none;border-bottom:1px solid rgba(14,14,14,.25);font-weight:500;">Message Me on WhatsApp</a> with PREMIUM in the thread.</p>
+  </td></tr>
+
+  <tr><td style="padding:0 36px 32px;">
+    <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="margin-top:16px;border-top:1px dashed rgba(14,14,14,.18);padding-top:24px;"><tr><td style="font-family:'Outfit',sans-serif;font-size:11px;line-height:1.65;color:#5A5853;letter-spacing:.04em;">
+      <p style="margin:0 0 12px;font-weight:500;color:#0E0E0E;">— Bek</p>
+      <p style="margin:0 0 14px;"><a href="{{wa_link}}" style="color:#0E0E0E;text-decoration:none;border-bottom:1px solid rgba(14,14,14,.25);">WhatsApp</a> &nbsp;·&nbsp; <a href="mailto:Bek.Zhou@rikathletica.com" style="color:#0E0E0E;text-decoration:none;border-bottom:1px solid rgba(14,14,14,.25);">Bek.Zhou@rikathletica.com</a></p>
+      <p style="margin:0 0 8px;font-size:10px;color:#8A8780;letter-spacing:.06em;">Copyright &copy; 2026 Rik Athletic Nutrition Inc.</p>
+      <p style="margin:0 0 8px;font-size:10px;color:#8A8780;line-height:1.7;"><strong style="color:#5A5853;">&dagger;</strong> Founding Cohort Premium is a nutrition-planning service — not medical advice. Always consult a qualified healthcare professional.</p>
+      <p style="margin:0 0 8px;font-size:10px;color:#8A8780;line-height:1.6;">{{registered_address}}</p>
+      <p style="margin:0;font-size:10px;color:#8A8780;"><a href="{{unsubscribe}}" style="color:#8A8780;text-decoration:underline;">Unsubscribe</a> &nbsp;·&nbsp; <a href="https://www.rikathletica.com/privacy" style="color:#8A8780;text-decoration:underline;">Privacy</a> &nbsp;·&nbsp; <a href="https://www.rikathletica.com/terms" style="color:#8A8780;text-decoration:underline;">Terms</a></p>
+    </td></tr></table>
+  </td></tr>
+
+</table>
+</td></tr></table>
+</body></html>

@@ -32,6 +32,7 @@
  */
 
 import crypto from 'crypto';
+import { sendMail, mailerReady } from './mailer.js';
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -68,22 +69,14 @@ export default async function handler(req, res) {
 
   // --- Send operator notification only for FAIL ---
   if (screenResult === 'fail') {
-    const apiKey = process.env.RESEND_API_KEY;
     const alertEmail = process.env.INTERNAL_ALERT_EMAIL;
 
-    if (apiKey && alertEmail) {
+    if (mailerReady() && alertEmail) {
       try {
-        const r = await fetch('https://api.resend.com/emails', {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${apiKey}`,
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            from: 'RIK Athletica <hello@rikathletica.com>',
-            to: [alertEmail],
-            subject: `[RIK Sprint] Screening blocked: ${name}`,
-            html: `<!DOCTYPE html>
+        await sendMail({
+          to: alertEmail,
+          subject: `[RIK Sprint] Screening blocked: ${name}`,
+          html: `<!DOCTYPE html>
 <html>
 <head><meta charset="UTF-8"></head>
 <body style="font-family:Helvetica,Arial,sans-serif;padding:32px;max-width:560px;">
@@ -97,14 +90,9 @@ export default async function handler(req, res) {
   <p style="font-size:12px;color:#aaa;margin-top:24px;">This athlete did not proceed to sign-up. No action needed unless they reach out.</p>
 </body>
 </html>`,
-          }),
         });
-
-        if (!r.ok) {
-          console.error('[screen] Resend error:', r.status, await r.text());
-        }
       } catch (err) {
-        console.error('[screen] Unexpected Resend error:', err);
+        console.error('[screen] Mail error:', err.message);
       }
     }
   }

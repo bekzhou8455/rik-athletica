@@ -91,10 +91,10 @@ export function paymentConfirmation({ name, email, tier, amount }) {
         If you haven't completed the intake form yet, do it now so we can start building your protocol.
       </p>
 
-      ${cta('Complete Your Intake Form →', 'https://form.typeform.com/to/XT5Qo0HD')}
+      ${cta('Complete Your Intake Form →', 'https://form.typeform.com/to/L8eKXcks')}
 
       <p style="font-size:12px;color:${BRAND.subtle};margin:0;">
-        Questions? Reply to this email or contact hello@rikathletica.com.
+        Questions? Reply to this email or contact bek.zhou@rikathletica.com.
       </p>
     `),
   };
@@ -104,41 +104,127 @@ export function paymentConfirmation({ name, email, tier, amount }) {
 export function onboardingWelcome({ name, raceDate, raceDistance }) {
   const dist = raceDistance === 'full' ? 'Full Ironman' : '70.3';
   return {
-    subject: `Welcome to Sprint — your ${dist} protocol is being built`,
+    subject: `Welcome to Sprint — intake received, protocol in build`,
     html: wrap(`
-      <h1 style="font-size:24px;font-weight:600;color:${BRAND.text};letter-spacing:-0.03em;line-height:1.2;margin:0 0 16px;">
-        We're building your protocol now.
+      <h1 style="font-size:26px;font-weight:600;color:${BRAND.text};letter-spacing:-0.03em;line-height:1.2;margin:0 0 14px;">
+        Welcome onboard, ${name || 'athlete'}.
       </h1>
-      <p style="font-size:15px;color:${BRAND.muted};line-height:1.65;margin:0 0 24px;">
-        Hi ${name || 'there'}, we've received your intake form. Your ${dist} protocol is being built now.
+      <p style="font-size:15px;color:${BRAND.muted};line-height:1.65;margin:0 0 14px;">
+        Your intake is in. Your ${dist} protocol is officially in the build — personalized from your body weight, sweat rate, GI history, training load, and race conditions.
+      </p>
+      <p style="font-size:15px;color:${BRAND.muted};line-height:1.65;margin:0 0 28px;">
+        From this point, nutrition is handled. You focus on the sessions.
       </p>
 
-      <div style="background:#fff;border:1px solid ${BRAND.border};border-radius:12px;padding:24px;margin:0 0 24px;">
-        <p style="font-size:13px;font-weight:600;color:${BRAND.text};margin:0 0 12px;">Your Sprint timeline:</p>
-        <div style="display:flex;gap:12px;padding:8px 0;border-bottom:1px solid ${BRAND.border};font-size:13px;">
-          <span style="color:${BRAND.green};font-weight:600;min-width:80px;">Now</span>
-          <span style="color:${BRAND.muted};">Protocol being built from your intake data</span>
-        </div>
-        <div style="display:flex;gap:12px;padding:8px 0;border-bottom:1px solid ${BRAND.border};font-size:13px;">
-          <span style="color:${BRAND.green};font-weight:600;min-width:80px;">~5 days</span>
-          <span style="color:${BRAND.muted};">Training Box ships with all products + protocol</span>
-        </div>
-        <div style="display:flex;gap:12px;padding:8px 0;border-bottom:1px solid ${BRAND.border};font-size:13px;">
-          <span style="color:${BRAND.green};font-weight:600;min-width:80px;">Weekly</span>
-          <span style="color:${BRAND.muted};">Check-in form + protocol revision</span>
-        </div>
-        ${raceDate ? `<div style="display:flex;gap:12px;padding:8px 0;font-size:13px;">
-          <span style="color:${BRAND.green};font-weight:600;min-width:80px;">Race day</span>
-          <span style="color:${BRAND.muted};">${raceDate} — Race Pack (add-on) ships 10 days before if purchased</span>
-        </div>` : ''}
+      <div style="height:1px;background:${BRAND.border};margin:0 0 24px;"></div>
+
+      <h2 style="font-size:17px;font-weight:600;color:${BRAND.text};letter-spacing:-0.02em;margin:0 0 10px;">
+        What we're working toward
+      </h2>
+      <p style="font-size:14px;color:${BRAND.muted};line-height:1.65;margin:0 0 24px;">
+        A race-day fueling plan that your gut has already trained to absorb — no GI distress, no second-half collapse, no minutes left on the course from preventable nutrition gaps.* Four weeks to get there. One training block.
+      </p>
+
+      <h2 style="font-size:17px;font-weight:600;color:${BRAND.text};letter-spacing:-0.02em;margin:0 0 12px;">
+        How the program works
+      </h2>
+      <div style="background:#fff;border:1px solid ${BRAND.border};border-radius:12px;padding:20px 22px;margin:0 0 24px;">
+        <p style="font-size:14px;color:${BRAND.muted};line-height:1.65;margin:0 0 10px;">
+          <strong style="color:${BRAND.text};">Layer 1</strong> — curated third-party carbs, hydration, electrolytes, dosed to your physiology.
+        </p>
+        <p style="font-size:14px;color:${BRAND.muted};line-height:1.65;margin:0 0 10px;">
+          <strong style="color:${BRAND.text};">Layer 2</strong> — RIK's Euphoria (pre) + Refuel (intra/recovery), the enhancement layer no mainstream gel includes.
+        </p>
+        <p style="font-size:14px;color:${BRAND.muted};line-height:1.65;margin:0;">
+          Both layers are deployed inside a personalized protocol, then revised every week from your real session feedback until race day.
+        </p>
       </div>
 
-      <p style="font-size:15px;color:${BRAND.muted};line-height:1.65;margin:0 0 20px;">
-        You'll receive your first protocol documents (Week Grid, Session Protocol, Performance Report) when your Training Box ships. Everything syncs to your calendar automatically.
+      <h2 style="font-size:17px;font-weight:600;color:${BRAND.text};letter-spacing:-0.02em;margin:0 0 12px;">
+        What we handle vs. what you do
+      </h2>
+      <table role="presentation" cellpadding="0" cellspacing="0" style="width:100%;border-collapse:collapse;margin:0 0 28px;">
+        <tr>
+          <td style="width:50%;vertical-align:top;padding:14px 14px 14px 0;border-right:1px solid ${BRAND.border};">
+            <p style="font-size:11px;font-weight:700;color:${BRAND.green};text-transform:uppercase;letter-spacing:0.06em;margin:0 0 8px;">We handle</p>
+            <p style="font-size:13px;color:${BRAND.muted};line-height:1.6;margin:0 0 6px;">· Protocol build from your intake</p>
+            <p style="font-size:13px;color:${BRAND.muted};line-height:1.6;margin:0 0 6px;">· All products sourced &amp; shipped</p>
+            <p style="font-size:13px;color:${BRAND.muted};line-height:1.6;margin:0 0 6px;">· Calendar-synced session fueling</p>
+            <p style="font-size:13px;color:${BRAND.muted};line-height:1.6;margin:0;">· Weekly revisions through race day</p>
+          </td>
+          <td style="width:50%;vertical-align:top;padding:14px 0 14px 14px;">
+            <p style="font-size:11px;font-weight:700;color:${BRAND.orange || '#C4500F'};text-transform:uppercase;letter-spacing:0.06em;margin:0 0 8px;">You do</p>
+            <p style="font-size:13px;color:${BRAND.muted};line-height:1.6;margin:0 0 6px;">· Train the sessions as planned</p>
+            <p style="font-size:13px;color:${BRAND.muted};line-height:1.6;margin:0 0 6px;">· Fuel exactly to protocol</p>
+            <p style="font-size:13px;color:${BRAND.muted};line-height:1.6;margin:0 0 6px;">· <strong style="color:${BRAND.text};">Check in after every key session</strong> (2 min) — long ride, long run, brick, race sim</p>
+            <p style="font-size:13px;color:${BRAND.muted};line-height:1.6;margin:0;">· Flag any GI signal early</p>
+          </td>
+        </tr>
+      </table>
+
+      <div style="background:rgba(45,90,61,0.06);border-left:3px solid ${BRAND.green};border-radius:4px;padding:16px 18px;margin:0 0 28px;">
+        <p style="font-size:11px;font-weight:700;color:${BRAND.green};text-transform:uppercase;letter-spacing:0.06em;margin:0 0 6px;">Why the per-session check-in matters</p>
+        <p style="font-size:13px;color:${BRAND.muted};line-height:1.65;margin:0;">
+          Each revision is built from your session data — adherence, energy in the final third, recovery, GI signal, PB. Miss a check-in and we revise on stale assumptions. Hit every one and the protocol compounds across 4 weeks into the adaptation your race day depends on. Your inputs drive material protocol improvements. We're aligned: the better your check-ins, the better your race.
+        </p>
+      </div>
+
+      <h2 style="font-size:17px;font-weight:600;color:${BRAND.text};letter-spacing:-0.02em;margin:0 0 12px;">
+        Your program timeline
+      </h2>
+      <div style="background:${BRAND.bg};border:1px solid ${BRAND.border};border-radius:12px;padding:8px 22px;margin:0 0 28px;">
+        <div style="display:flex;gap:14px;align-items:flex-start;padding:14px 0;border-bottom:1px solid ${BRAND.border};">
+          <span style="display:inline-block;width:10px;height:10px;background:${BRAND.green};border-radius:50%;margin-top:6px;flex-shrink:0;"></span>
+          <div>
+            <p style="font-size:11px;font-weight:700;color:${BRAND.green};text-transform:uppercase;letter-spacing:0.06em;margin:0 0 2px;">Today</p>
+            <p style="font-size:14px;color:${BRAND.text};font-weight:500;margin:0 0 2px;">Protocol in build</p>
+            <p style="font-size:13px;color:${BRAND.muted};line-height:1.55;margin:0;">We're drafting your Week Grid, Session Protocol, and Performance Report from your intake.</p>
+          </div>
+        </div>
+        <div style="display:flex;gap:14px;align-items:flex-start;padding:14px 0;border-bottom:1px solid ${BRAND.border};">
+          <span style="display:inline-block;width:10px;height:10px;background:${BRAND.green};border-radius:50%;margin-top:6px;flex-shrink:0;"></span>
+          <div>
+            <p style="font-size:11px;font-weight:700;color:${BRAND.green};text-transform:uppercase;letter-spacing:0.06em;margin:0 0 2px;">~2–3 days</p>
+            <p style="font-size:14px;color:${BRAND.text};font-weight:500;margin:0 0 2px;">Protocol delivered for review</p>
+            <p style="font-size:13px;color:${BRAND.muted};line-height:1.55;margin:0;">Three documents emailed to you. Read them before the box ships — full refund if they don't meet your standard.</p>
+          </div>
+        </div>
+        <div style="display:flex;gap:14px;align-items:flex-start;padding:14px 0;border-bottom:1px solid ${BRAND.border};">
+          <span style="display:inline-block;width:10px;height:10px;background:${BRAND.green};border-radius:50%;margin-top:6px;flex-shrink:0;"></span>
+          <div>
+            <p style="font-size:11px;font-weight:700;color:${BRAND.green};text-transform:uppercase;letter-spacing:0.06em;margin:0 0 2px;">~5 days</p>
+            <p style="font-size:14px;color:${BRAND.text};font-weight:500;margin:0 0 2px;">Training Box ships</p>
+            <p style="font-size:13px;color:${BRAND.muted};line-height:1.55;margin:0;">Layer 1 + Layer 2 + protocol card with calendar-sync QR.</p>
+          </div>
+        </div>
+        <div style="display:flex;gap:14px;align-items:flex-start;padding:14px 0;border-bottom:1px solid ${BRAND.border};">
+          <span style="display:inline-block;width:10px;height:10px;background:${BRAND.green};border-radius:50%;margin-top:6px;flex-shrink:0;"></span>
+          <div>
+            <p style="font-size:11px;font-weight:700;color:${BRAND.green};text-transform:uppercase;letter-spacing:0.06em;margin:0 0 2px;">Week 1 → Week 4</p>
+            <p style="font-size:14px;color:${BRAND.text};font-weight:500;margin:0 0 2px;">Train + revise loop</p>
+            <p style="font-size:13px;color:${BRAND.muted};line-height:1.55;margin:0;">Weekly 2-min check-in. We revise carb targets, timing, sodium, Euphoria/Refuel placement, fluids. Protocol adapts to you.</p>
+          </div>
+        </div>
+        <div style="display:flex;gap:14px;align-items:flex-start;padding:14px 0;">
+          <span style="display:inline-block;width:10px;height:10px;background:${BRAND.text};border-radius:50%;margin-top:6px;flex-shrink:0;"></span>
+          <div>
+            <p style="font-size:11px;font-weight:700;color:${BRAND.text};text-transform:uppercase;letter-spacing:0.06em;margin:0 0 2px;">Race day${raceDate ? ` · ${raceDate}` : ''}</p>
+            <p style="font-size:14px;color:${BRAND.text};font-weight:500;margin:0 0 2px;">Plan locked in</p>
+            <p style="font-size:13px;color:${BRAND.muted};line-height:1.55;margin:0;">Race-day fueling executed against a protocol your gut has already trained to. Race Pack (add-on) ships 10 days before if purchased.</p>
+          </div>
+        </div>
+      </div>
+
+      <h2 style="font-size:17px;font-weight:600;color:${BRAND.text};letter-spacing:-0.02em;margin:0 0 10px;">
+        What you need to do right now
+      </h2>
+      <p style="font-size:14px;color:${BRAND.muted};line-height:1.65;margin:0 0 22px;">
+        Nothing. Sit tight. Your protocol lands in your inbox within 2–3 days for review. We'll take it from there.
       </p>
 
-      <p style="font-size:12px;color:${BRAND.subtle};margin:0;">
-        Questions anytime: reply to this email or hello@rikathletica.com.
+      <p style="font-size:12px;color:${BRAND.subtle};line-height:1.6;margin:0;">
+        *Individual results vary. Performance estimates based on peer-reviewed carbohydrate and hydration research. Not medical advice.
+        <br>Questions anytime — reply here or bek.zhou@rikathletica.com.
       </p>
     `),
   };

@@ -64,7 +64,7 @@ export default async function handler(req, res) {
 
   const diffDays = validateRaceDays(cleanDate);
   if (diffDays < 28) {
-    return res.status(400).json({ error: 'We need at least 4 weeks to build your program. Email hello@rikathletica.com if you have questions.' });
+    return res.status(400).json({ error: 'We need at least 4 weeks to build your program. Email bek.zhou@rikathletica.com if you have questions.' });
   }
   if (diffDays > 56) {
     return res.status(400).json({ error: 'We build programs for races 4–8 weeks out. Come back when you\'re closer to your race!' });
@@ -81,7 +81,7 @@ export default async function handler(req, res) {
 
   if (!apiKey || !templateId || !stripeBase) {
     console.error('[create-sign-request] Missing env vars:', { apiKey: !!apiKey, templateId: !!templateId, stripeBase: !!stripeBase });
-    return res.status(500).json({ error: 'Service configuration error. Email hello@rikathletica.com.' });
+    return res.status(500).json({ error: 'Service configuration error. Email bek.zhou@rikathletica.com.' });
   }
 
   // Append Rewardful referral to Stripe URL if present
@@ -124,13 +124,13 @@ export default async function handler(req, res) {
 
     if (!signRes.ok) {
       console.error('[create-sign-request] Dropbox Sign error:', signRes.status, JSON.stringify(body));
-      return res.status(500).json({ error: 'Could not set up your contract. Email hello@rikathletica.com and we\'ll sort it out.' });
+      return res.status(500).json({ error: 'Could not set up your contract. Email bek.zhou@rikathletica.com and we\'ll sort it out.' });
     }
 
     const signingUrl = body?.signature_request?.signatures?.[0]?.sign_url;
     if (!signingUrl) {
       console.error('[create-sign-request] No sign_url in response:', JSON.stringify(body));
-      return res.status(500).json({ error: 'Could not retrieve signing link. Email hello@rikathletica.com.' });
+      return res.status(500).json({ error: 'Could not retrieve signing link. Email bek.zhou@rikathletica.com.' });
     }
 
     console.log(`[create-sign-request] sign request created: ${body?.signature_request?.signature_request_id}`);
@@ -138,6 +138,6 @@ export default async function handler(req, res) {
 
   } catch (err) {
     console.error('[create-sign-request] Unexpected error:', err);
-    return res.status(500).json({ error: 'Something went wrong. Email hello@rikathletica.com.' });
+    return res.status(500).json({ error: 'Something went wrong. Email bek.zhou@rikathletica.com.' });
   }
 }

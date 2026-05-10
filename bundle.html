@@ -15,636 +15,1330 @@ gtag('config', 'G-X7LJHZLR4K');
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="index, follow, noai, noimageai">
 <meta name="rikathletica:ip" content="Proprietary methodology — all rights reserved. Automated use, AI training, and text-and-data mining prohibited. See /terms#automated-access and /ai.txt.">
-<title>The Enhancement Layer — RIK Athletica</title>
-<meta name="description" content="Euphoria + Refuel. The products that help your training hours compound. 10 Euphoria + 20 Refuel gels. $119 with free shipping.">
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300..800&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<title>The RIK Bundle — More Than Just Carbs.</title>
+<meta name="description" content="Euphoria + Refuel. 30 functional gels designed to help Your training hours compound. 10 Euphoria + 20 Refuel. $119 with free shipping for the first 50 customers.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap">
 <style>
-* { box-sizing: border-box; margin: 0; padding: 0; }
-html { font-size: 16px; scroll-behavior: smooth; overflow-x: hidden; }
-body { font-family: 'Plus Jakarta Sans', sans-serif; background: #fff; color: #0a0a0a; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+/* ================================================================
+   /bundle iter-5.5b — locked DESIGN.md, applied 6 fixes from
+   2026-05-09 round-A:
+     #1 hero swap (bundle-hero.jpg + "More than just carbs.")
+     #2 RD review section removed
+     #3 merged product display + matte-glass auto-scroll carousel
+     #4 three moments → dynamic illustration with packshots + dotted SVG
+     #5 dedicated refund-policy banner
+     #6 closing right-column contrast fix
+   ================================================================ */
 
-:root {
-  --sand: #f6f5f4;
-  --off-black: #0a0a0a;
-  --dark-card: #141414;
-  --border: rgba(0,0,0,0.08);
-  --muted: #888;
-  --green: #2D5A3D;
-  --green-light: #4ade80;
-  --refuel-teal: #1a7a6e;
-  --euphoria-pink: #c0194a;
-  --r-card: 20px;
-  --r-btn: 36px;
+:root{
+  --bg:        #EEEDEA;
+  --bg-2:      #D5D2CC;
+  --bg-sand:   #C4B59E;
+  --ink:       #0E0E0E;
+  --ink-soft:  #5A5853;
+  --ink-dim:   #8A8780;
+  --rule:      rgba(14,14,14,.18);
+  --rule-soft: rgba(14,14,14,.10);
+  --warm-img:  linear-gradient(135deg,#7a4a2a,#c98b5a 50%,#3a2418);
+  --sans:      "Outfit", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+  --display:   "Outfit", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+  --maxw:      1320px;
 }
 
-/* ── NAV ── */
-nav {
-  position: sticky; top: 0; z-index: 100;
-  background: rgba(255,255,255,0.96);
-  backdrop-filter: blur(16px);
-  border-bottom: 1px solid var(--border);
-  padding: 0 40px; height: 56px;
-  display: flex; justify-content: space-between; align-items: center;
-}
-.logo { font-size: 13px; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; color: var(--off-black); text-decoration: none; }
-nav ul { list-style: none; display: flex; gap: 28px; font-size: 14px; align-items: center; }
-nav ul a { text-decoration: none; color: #999; transition: color .2s; letter-spacing: -0.01em; padding: 19px 0; display: flex; align-items: center; }
-nav ul a:hover, nav ul a.active { color: var(--off-black); }
-.nav-cta { background: var(--off-black); color: #fff; border: none; padding: 8px 20px; min-height: 44px; display: inline-flex; align-items: center; font-size: 13px; font-weight: 500; cursor: pointer; border-radius: var(--r-btn); font-family: inherit; letter-spacing: -0.01em; text-decoration: none; }
-.nav-toggle { display: none; background: none; border: none; cursor: pointer; padding: 8px; min-width: 44px; min-height: 44px; }
-.nav-toggle svg { color: var(--off-black); transition: transform .2s; }
-.nav-mobile { display: none; position: fixed; top: 56px; left: 0; right: 0; bottom: 0; background: rgba(255,255,255,0.98); backdrop-filter: blur(16px); z-index: 99; padding: 32px 24px; }
-.nav-mobile.open { display: flex; flex-direction: column; gap: 0; }
-.nav-mobile a { display: flex; align-items: center; padding: 16px 0; font-size: 18px; font-weight: 400; color: var(--off-black); text-decoration: none; border-bottom: 1px solid var(--border); }
-.nav-mobile a:last-of-type { border-bottom: none; }
-.nav-mobile .nav-mobile-cta { margin-top: 24px; background: var(--off-black); color: #fff; padding: 14px 28px; border-radius: var(--r-btn); font-size: 15px; font-weight: 500; text-align: center; text-decoration: none; }
-.nav-toggle.open svg { transform: rotate(45deg); }
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--sans);background:var(--bg);color:var(--ink);font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+a{color:inherit;text-decoration:none}
+img{display:block;max-width:100%}
+button{font-family:inherit}
+.wrap{max-width:var(--maxw);margin:0 auto}
 
-/* ── SHARED ── */
-.eyebrow { font-size: 11px; font-weight: 500; letter-spacing: 2.5px; text-transform: uppercase; color: #aaa; margin-bottom: 16px; }
-.eyebrow.light { color: rgba(255,255,255,0.3); }
-.eyebrow-pill { display: inline-block; font-size: 11px; font-weight: 500; letter-spacing: 1.5px; text-transform: uppercase; padding: 5px 16px; border-radius: var(--r-btn); border: 1px solid var(--border); color: #888; margin-bottom: 24px; }
-.section-inner { max-width: 1000px; margin: 0 auto; }
-
-/* ── BUTTONS ── */
-.btn { display: inline-block; padding: 13px 28px; font-size: 14px; font-weight: 500; border-radius: var(--r-btn); cursor: pointer; border: none; font-family: inherit; letter-spacing: -0.01em; transition: opacity .15s; text-decoration: none; }
-.btn:hover { opacity: 0.82; }
-.btn-primary { background: var(--off-black); color: #fff; }
-.btn-secondary { background: transparent; color: var(--off-black); border: 1px solid var(--border); }
-.btn-white { background: #fff; color: var(--off-black); }
-.btn-outline-white { background: transparent; color: #fff; border: 1px solid rgba(255,255,255,0.25); }
-.btn-green { background: var(--green); color: #fff; }
-.btn-full { width: 100%; text-align: center; display: block; }
-
-/* ── ANIMATIONS ── */
-.fade-up { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
-.fade-up.visible { opacity: 1; transform: translateY(0); }
-.stagger-1 { transition-delay: 0.1s; }
-.stagger-2 { transition-delay: 0.2s; }
-@media (prefers-reduced-motion: reduce) { .fade-up { opacity: 1; transform: none; transition: none; } }
-
-/* ═══ HERO (centered white — Sana style) ═══ */
-.dtc-hero {
-  padding: 80px 40px 0;
-  text-align: center;
-  background: #fff;
+/* ─── NAV (transparent over hero, fade-on-scroll) ─── */
+nav.site-nav{
+  position:fixed;top:0;left:0;right:0;z-index:30;
+  background:transparent;
+  border-bottom:1px solid rgba(255,255,255,.08);
+  padding:22px 36px;
+  display:flex;justify-content:space-between;align-items:center;
+  color:#fff;
+  transition:opacity .28s ease, transform .28s ease;
 }
-.dtc-hero h1 {
-  font-size: clamp(48px, 6vw, 80px);
-  font-weight: 400;
-  line-height: 1.0;
-  letter-spacing: -0.04em;
-  color: var(--off-black);
-  max-width: 800px;
-  margin: 0 auto 20px;
-}
-.dtc-hero h1 em { font-style: normal; font-weight: 300; color: #bbb; }
-.dtc-hero .hero-sub {
-  font-size: 17px; color: #888; line-height: 1.65;
-  max-width: 500px; margin: 0 auto 32px; letter-spacing: -0.01em;
-}
-.dtc-hero-ctas { display: flex; gap: 10px; justify-content: center; margin-bottom: 56px; flex-wrap: wrap; }
+nav.site-nav[data-state="hidden"]{opacity:0;pointer-events:none;transform:translateY(-6px)}
+.nav-mark{display:flex;align-items:center;gap:10px;font-weight:700;font-size:15px;letter-spacing:-.005em;color:#fff}
+.nav-mark img{height:26px;width:auto;filter:brightness(0) invert(1)}
+.nav-links{display:flex;gap:22px;font-size:13px;color:rgba(255,255,255,.78);align-items:center}
+.nav-links a{padding:6px 0;letter-spacing:-.005em;color:inherit}
+.nav-links a:hover, .nav-links a.active{color:#fff}
+.dot-sep{width:3px;height:3px;border-radius:50%;background:rgba(255,255,255,.4)}
+nav.site-nav .nav-toggle{color:#fff;display:none;background:none;border:none;cursor:pointer;padding:10px;min-width:44px;min-height:44px}
+nav.site-nav .cta .pill{background:#fff;color:var(--ink);border-color:#fff}
+nav.site-nav .cta .arrow{background:var(--ink);color:#fff;border-color:#fff}
+.nav-mobile{display:none;position:fixed;top:60px;left:0;right:0;bottom:0;background:var(--bg);z-index:25;padding:32px 20px;flex-direction:column}
+.nav-mobile.open{display:flex}
+.nav-mobile a{padding:18px 0;font-size:18px;font-weight:500;border-bottom:1px dashed var(--rule);color:var(--ink)}
+.nav-mobile a:last-of-type{border-bottom:0}
 
-/* ═══ STATS ROW ═══ */
-.stats-row {
-  display: flex;
-  border-top: 1px solid var(--border);
-  border-bottom: 1px solid var(--border);
-  background: #fff;
-}
-.stats-row-item {
-  flex: 1; padding: 24px 32px;
-  border-right: 1px solid var(--border);
-  display: flex; flex-direction: column; gap: 4px;
-}
-.stats-row-item:last-child { border-right: none; }
-.stat-big { font-size: 30px; font-weight: 500; color: var(--off-black); letter-spacing: -0.04em; line-height: 1; }
-.stat-big .unit { font-size: 15px; font-weight: 400; color: #ccc; }
-.stat-desc { font-size: 12px; color: #aaa; line-height: 1.4; margin-top: 4px; }
+/* ─── CTA pill+circle ─── */
+.cta{display:inline-flex;align-items:center;gap:6px;font-size:13px;line-height:1;cursor:pointer;border:0;background:transparent;font-family:var(--sans)}
+.cta .pill{padding:14px 22px;border-radius:999px;border:1px solid var(--ink);background:var(--ink);color:#fff;letter-spacing:-.005em;white-space:nowrap}
+.cta .arrow{width:42px;height:42px;border-radius:999px;border:1px solid var(--ink);display:flex;align-items:center;justify-content:center;background:#fff;color:var(--ink);font-size:14px;flex-shrink:0;transition:transform .2s ease}
+.cta:hover .arrow{transform:translate(2px,-2px)}
+.cta.invert .pill{background:#fff;color:var(--ink)}
+.cta.invert .arrow{background:var(--ink);color:#fff;border-color:#fff}
+.cta.sm .pill{padding:10px 16px;font-size:12px}
+.cta.sm .arrow{width:34px;height:34px;font-size:12px}
+.cta.lg .pill{padding:18px 28px;font-size:14px}
+.cta.lg .arrow{width:50px;height:50px;font-size:16px}
 
-/* ═══ PRODUCT GALLERY ═══ */
-.product-gallery { padding: 80px 40px; background: #fff; }
-.pg-inner {
-  max-width: 1200px; margin: 0 auto;
-  display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start;
+/* ─── HERO ─── */
+.hero{
+  position:relative;padding:96px 36px;
+  border-bottom:1px solid var(--rule);
+  isolation:isolate;overflow:hidden;
+  min-height:100vh;display:flex;align-items:center;
+  color:#fff;
+}
+.hero::before{
+  content:"";position:absolute;inset:0;z-index:0;
+  background-image:url(/assets/web/bundle-hero.jpg);
+  background-size:cover;
+  background-position:center 40%;
+}
+.hero::after{
+  content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:
+    radial-gradient(ellipse 50% 65% at 18% 50%, rgba(0,0,0,.65) 0%, rgba(0,0,0,.32) 40%, rgba(0,0,0,.08) 70%, rgba(0,0,0,0) 85%),
+    linear-gradient(98deg, rgba(0,0,0,.55) 0%, rgba(0,0,0,.22) 50%, rgba(0,0,0,0) 80%);
+}
+.hero > .wrap{position:relative;z-index:2;width:100%}
+.hero .hero-content{position:relative;max-width:min(620px, 50%)}
+.hero .h1, .hero .lead, .hero .eyebrow, .hero .hero-cta{max-width:100%}
+.hero .h1{
+  font-family:var(--display);font-size:clamp(48px, 7.5vw, 104px);
+  font-weight:700;line-height:.94;letter-spacing:-.02em;
+  margin:20px 0 22px;max-width:13ch;color:#fff;
+}
+.hero .h1 em{font-style:normal;font-weight:700;color:rgba(255,255,255,.6);
+  text-shadow:0 1px 0 rgba(0,0,0,.5), 0 4px 16px rgba(0,0,0,.4), 0 12px 36px rgba(0,0,0,.25);
+}
+.hero .lead{font-size:16px;line-height:1.55;margin-bottom:32px;color:#fff;max-width:50ch}
+.hero .eyebrow{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.85);font-weight:600}
+.hero-cta{display:flex;flex-wrap:wrap;gap:14px;margin-top:36px}
+.hero .h1, .hero .lead, .hero .eyebrow{
+  text-shadow:0 1px 0 rgba(0,0,0,.6), 0 2px 6px rgba(0,0,0,.55), 0 8px 24px rgba(0,0,0,.45), 0 16px 48px rgba(0,0,0,.30);
 }
 
-/* Left: gallery */
-.pg-gallery { position: sticky; top: 96px; display: flex; flex-direction: column; gap: 16px; }
-.pg-switcher { display: flex; gap: 8px; }
-.pg-switch {
-  padding: 10px 18px; font-size: 13px; font-weight: 500; border-radius: var(--r-btn);
-  cursor: pointer; border: 1px solid var(--border); background: transparent;
-  color: #888; font-family: inherit; letter-spacing: -0.01em; transition: all .2s;
-  min-height: 44px; display: inline-flex; align-items: center; gap: 8px;
+/* ─── Section scaffold ─── */
+section.s{padding:96px 36px;border-bottom:1px solid var(--rule);position:relative}
+section.s.alt{background:var(--bg-2)}
+section.s.dark{background:var(--ink);color:#fff}
+.s-head{display:grid;grid-template-columns:240px 1fr;gap:48px;margin-bottom:56px;align-items:baseline;max-width:var(--maxw);margin-left:auto;margin-right:auto}
+.s-num{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-soft);font-weight:500}
+.s-head h2{font-family:var(--display);font-size:clamp(36px, 5.5vw, 72px);font-weight:700;line-height:.98;letter-spacing:-.02em;margin-bottom:18px;color:var(--ink)}
+.s-head h2 em{font-style:normal;color:var(--ink-soft);font-weight:700}
+.s-head p{font-size:15px;color:var(--ink-soft);max-width:62ch;line-height:1.6}
+
+/* ─── Pattern B: title-left, icon-list-right ─── */
+.icon-list-card{background:#fff;border-radius:18px;padding:48px;border:1px solid var(--rule-soft);max-width:var(--maxw);margin:0 auto}
+.icon-list{display:grid;grid-template-columns:1fr 1.4fr;gap:64px;align-items:start}
+.icon-list h3{font-family:var(--display);font-size:clamp(30px, 3.8vw, 50px);font-weight:700;line-height:1.02;letter-spacing:-.02em;color:var(--ink)}
+.icon-list h3 em{font-style:normal;color:var(--ink-soft);font-weight:700}
+.icon-list-sub{margin-top:16px;font-size:14px;color:var(--ink-soft);max-width:38ch;line-height:1.6}
+.icon-list-cta{margin-top:24px}
+.il-rows{display:flex;flex-direction:column;gap:28px}
+.il-row{display:grid;grid-template-columns:64px 1fr;gap:20px;align-items:flex-start;padding-bottom:28px;border-bottom:1px dashed var(--rule)}
+.il-row:last-child{border-bottom:0;padding-bottom:0}
+.il-icon{width:48px;height:48px;border-radius:999px;border:1.5px solid var(--ink);display:flex;align-items:center;justify-content:center;color:var(--ink)}
+.il-icon svg{width:22px;height:22px;stroke:currentColor;stroke-width:1.5;fill:none}
+.il-row strong{display:block;font-size:16px;font-weight:500;margin-bottom:6px;color:var(--ink);letter-spacing:-.005em}
+.il-row p{font-size:13.5px;color:var(--ink-soft);line-height:1.6;max-width:50ch}
+
+/* ─── Warm-amber atmospheric break ─── */
+section.warm-atmos{position:relative;padding:128px 36px;border-bottom:1px solid var(--rule);background:var(--warm-img);color:#fff;isolation:isolate;overflow:hidden}
+section.warm-atmos::before{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;background:radial-gradient(at 18% 22%, rgba(255,255,255,.08) 0%, transparent 55%), radial-gradient(at 82% 78%, rgba(0,0,0,.18) 0%, transparent 55%)}
+section.warm-atmos > .wrap{position:relative;z-index:1;max-width:var(--maxw);margin:0 auto}
+section.warm-atmos .atmos-eyebrow{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.7);font-weight:500;margin-bottom:24px;display:block}
+section.warm-atmos h2{font-family:var(--display);font-size:clamp(40px, 6.5vw, 96px);font-weight:700;line-height:.96;letter-spacing:-.02em;color:#fff;max-width:18ch;margin-bottom:32px}
+section.warm-atmos h2 em{font-style:normal;color:rgba(255,255,255,.55);font-weight:700}
+section.warm-atmos .atmos-meta{display:grid;grid-template-columns:repeat(3,1fr);gap:32px;border-top:1px dashed rgba(255,255,255,.32);padding-top:32px;margin-top:48px}
+section.warm-atmos .atmos-meta strong{display:block;font-size:32px;font-weight:700;letter-spacing:-.02em;color:#fff;line-height:1;font-variant-numeric:tabular-nums;margin-bottom:8px}
+section.warm-atmos .atmos-meta span{font-size:13px;color:rgba(255,255,255,.7);line-height:1.55}
+
+/* ─── Product display (NEW — fix #3) ─── */
+.product-display{max-width:var(--maxw);margin:0 auto;background:#fff;border:1px solid var(--rule-soft);border-radius:24px;overflow:hidden}
+.pd-tabs{display:flex;align-items:center;gap:0;border-bottom:1px solid var(--rule-soft);padding:0;background:var(--bg)}
+.pd-tab{flex:1;padding:18px 24px;font-family:var(--display);font-size:13px;font-weight:500;letter-spacing:.04em;text-transform:uppercase;color:var(--ink-soft);background:transparent;border:0;cursor:pointer;border-right:1px solid var(--rule-soft);transition:background .2s ease, color .2s ease;position:relative}
+.pd-tab:last-child{border-right:0}
+.pd-tab:hover{color:var(--ink);background:rgba(14,14,14,.03)}
+.pd-tab[aria-selected="true"]{color:var(--ink);background:#fff;font-weight:600}
+.pd-tab[aria-selected="true"]::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:2px;background:var(--ink)}
+.pd-panels{display:block}
+.pd-panel{display:none;grid-template-columns:1.4fr 1fr;gap:0;align-items:stretch}
+.pd-panel[data-active="true"]{display:grid}
+.pd-gallery{position:relative;background:linear-gradient(180deg, var(--bg) 0%, var(--bg-2) 100%);min-height:720px;display:flex;flex-direction:column;border-right:1px solid var(--rule-soft)}
+.pd-gallery-main{flex:1;display:flex;align-items:center;justify-content:center;padding:32px 48px;position:relative;overflow:hidden;min-height:560px}
+.pd-gallery-main img{max-width:96%;max-height:600px;width:auto;height:auto;object-fit:contain;mix-blend-mode:multiply;transition:opacity .3s ease, transform .3s ease}
+.pd-gallery-thumbs{display:flex;gap:10px;padding:22px 28px 28px;border-top:1px dashed rgba(14,14,14,.12);background:rgba(255,255,255,.4);overflow-x:auto}
+.pd-thumb{flex-shrink:0;width:84px;height:84px;border-radius:12px;border:1px solid var(--rule-soft);background:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:8px;transition:border-color .2s ease, transform .15s ease;position:relative}
+.pd-thumb img{max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;mix-blend-mode:multiply}
+.pd-thumb:hover{border-color:var(--ink-soft)}
+.pd-thumb[aria-selected="true"]{border-color:var(--ink);border-width:2px}
+.pd-info{padding:48px;display:flex;flex-direction:column;gap:24px;background:#fff}
+.pd-info-eyebrow{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-soft);font-weight:500}
+.pd-info h3{font-family:var(--display);font-size:clamp(32px, 3.4vw, 44px);font-weight:700;line-height:1.02;letter-spacing:-.02em;color:var(--ink)}
+.pd-info h3 em{font-style:normal;color:var(--ink-soft);font-weight:700}
+.pd-info-tagline{font-size:15px;line-height:1.6;color:var(--ink-soft);max-width:42ch}
+.pd-specs{display:grid;grid-template-columns:repeat(2,1fr);gap:14px 24px;border-top:1px dashed var(--rule);padding-top:20px;margin-top:6px}
+.pd-spec{display:flex;flex-direction:column;gap:4px}
+.pd-spec-label{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-soft);font-weight:500}
+.pd-spec-val{font-size:15px;font-weight:500;letter-spacing:-.005em;color:var(--ink);font-variant-numeric:tabular-nums;line-height:1.35}
+.pd-bullets{display:flex;flex-direction:column;gap:10px;margin-top:6px}
+.pd-bullet{display:flex;gap:12px;align-items:flex-start;font-size:13.5px;line-height:1.55;color:var(--ink)}
+.pd-bullet svg{width:14px;height:14px;flex-shrink:0;margin-top:4px;stroke:currentColor;stroke-width:2;fill:none;color:var(--ink)}
+.pd-cta-row{display:flex;flex-wrap:wrap;gap:12px;margin-top:auto;padding-top:14px}
+.pd-price{display:flex;align-items:baseline;gap:10px;border-top:1px dashed var(--rule);padding-top:18px}
+.pd-price-num{font-family:var(--display);font-size:28px;font-weight:600;letter-spacing:-.02em;color:var(--ink)}
+.pd-price-meta{font-size:12px;color:var(--ink-soft)}
+
+/* ─── Matte-glass auto-scroll ingredient carousel ─── */
+.ing-carousel{margin-top:32px;position:relative;overflow:hidden;border-top:1px dashed var(--rule);border-bottom:1px dashed var(--rule);padding:24px 0;background:rgba(238,237,234,.5);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.ing-carousel-head{display:flex;justify-content:space-between;align-items:baseline;padding:0 36px 18px;max-width:var(--maxw);margin:0 auto;border-bottom:1px dashed var(--rule)}
+.ing-carousel-eyebrow{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-soft);font-weight:500}
+.ing-carousel-counter{font-size:11px;letter-spacing:.12em;color:var(--ink-soft);font-variant-numeric:tabular-nums}
+.ing-track-wrap{position:relative;overflow:hidden;padding:24px 0 6px}
+.ing-track-wrap::before, .ing-track-wrap::after{content:"";position:absolute;top:0;bottom:0;width:80px;z-index:2;pointer-events:none}
+.ing-track-wrap::before{left:0;background:linear-gradient(90deg, var(--bg) 0%, rgba(238,237,234,0) 100%)}
+.ing-track-wrap::after{right:0;background:linear-gradient(-90deg, var(--bg) 0%, rgba(238,237,234,0) 100%)}
+.ing-track{display:flex;gap:18px;width:max-content;animation:ing-scroll 60s linear infinite;will-change:transform}
+.ing-track:hover{animation-play-state:paused}
+@keyframes ing-scroll{
+  0%{transform:translateX(0)}
+  100%{transform:translateX(calc(-50% - 9px))}
 }
-.pg-switch::before {
-  content: ''; display: block; width: 10px; height: 10px; border-radius: 50%;
-  background: var(--border); flex-shrink: 0; transition: background .2s;
+.ing-chip{flex-shrink:0;width:240px;background:rgba(255,255,255,.78);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.6);border-radius:14px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 1px 2px rgba(14,14,14,.04), 0 8px 24px -8px rgba(14,14,14,.08)}
+.ing-chip-img{aspect-ratio:5/3;width:100%;background-size:cover;background-position:center;background-color:var(--bg-2)}
+.ing-chip-body{padding:14px 16px 16px;display:flex;flex-direction:column;gap:4px}
+.ing-chip-tag{font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-soft);font-weight:500}
+.ing-chip-name{font-family:var(--display);font-size:15px;font-weight:600;letter-spacing:-.005em;color:var(--ink);line-height:1.2}
+.ing-chip-claim{font-size:11.5px;color:var(--ink-soft);line-height:1.5;margin-top:4px}
+
+/* ─── Three Moments — dynamic illustration (NEW — fix #4) ─── */
+.three-moments{max-width:var(--maxw);margin:0 auto;position:relative}
+.tm-illustration{position:relative;background:#fff;border-radius:24px;border:1px solid var(--rule-soft);padding:64px 24px 72px;overflow:hidden;min-height:520px}
+.tm-stage{position:relative;display:grid;grid-template-columns:repeat(3,1fr);gap:0;align-items:center;z-index:2}
+.tm-cell{display:flex;flex-direction:column;align-items:center;text-align:center;padding:0 16px;opacity:0;transform:translateY(24px);transition:opacity 700ms cubic-bezier(.4,0,.2,1), transform 700ms cubic-bezier(.4,0,.2,1)}
+.tm-cell.in-view{opacity:1;transform:translateY(0)}
+.tm-cell:nth-child(2){transition-delay:200ms}
+.tm-cell:nth-child(3){transition-delay:400ms}
+.tm-pack{width:100%;max-width:200px;height:240px;display:flex;align-items:flex-end;justify-content:center;margin-bottom:32px;position:relative}
+.tm-pack img{max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;mix-blend-mode:multiply;filter:drop-shadow(0 8px 18px rgba(14,14,14,.12))}
+.tm-time-tag{display:inline-flex;align-items:center;gap:8px;padding:6px 14px;border-radius:999px;background:var(--ink);color:#fff;font-size:10px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;font-variant-numeric:tabular-nums;margin-bottom:14px}
+.tm-time-tag-dot{width:6px;height:6px;border-radius:50%;background:#fff}
+.tm-cell strong{font-family:var(--display);font-size:22px;font-weight:600;line-height:1.2;letter-spacing:-.01em;color:var(--ink);margin-bottom:10px;max-width:18ch}
+.tm-cell p{font-size:13.5px;color:var(--ink-soft);line-height:1.6;max-width:32ch;margin:0 auto}
+/* dotted SVG connectors */
+.tm-connectors{position:absolute;top:62px;left:0;right:0;height:120px;z-index:1;pointer-events:none}
+.tm-connectors svg{width:100%;height:100%}
+.tm-connectors path{stroke:var(--ink-soft);stroke-width:1.5;stroke-dasharray:1 6;stroke-linecap:round;fill:none;opacity:0;animation:tm-draw 1.6s ease forwards;animation-delay:.6s}
+.tm-connectors.in-view path{opacity:.6}
+@keyframes tm-draw{from{stroke-dashoffset:120;opacity:0}to{stroke-dashoffset:0;opacity:.6}}
+.tm-rhythm{display:flex;justify-content:center;align-items:center;gap:14px;margin-top:48px;padding-top:24px;border-top:1px dashed var(--rule);font-size:12px;color:var(--ink-soft);letter-spacing:.06em}
+.tm-rhythm strong{font-weight:500;color:var(--ink);font-variant-numeric:tabular-nums}
+
+/* ─── Voices rotator ─── */
+section.voices{background:var(--bg-2)}
+.voices-stage{position:relative;max-width:980px;margin:0 auto;padding:24px 0 0;isolation:isolate}
+.voices-quote-mark{position:absolute;left:-16px;top:-32px;z-index:0;font-family:Georgia,"Times New Roman",serif;font-size:240px;line-height:1;color:rgba(14,14,14,.07);font-weight:700;user-select:none;pointer-events:none}
+.voices-cycle{position:relative;min-height:260px}
+.voice-card{position:absolute;inset:0;opacity:0;transform:translateY(8px);transition:opacity 700ms cubic-bezier(.4,0,.2,1), transform 700ms cubic-bezier(.4,0,.2,1);pointer-events:none;display:flex;flex-direction:column;justify-content:center;gap:18px;padding:0 8px;will-change:opacity,transform}
+.voice-card.active{opacity:1;transform:translateY(0);pointer-events:auto}
+.voice-card blockquote{font-family:var(--display);font-size:clamp(20px, 2.4vw, 30px);font-weight:500;line-height:1.35;letter-spacing:-.015em;color:var(--ink);margin:0;max-width:48ch;font-variant-numeric:tabular-nums}
+.voice-card cite{font-style:normal;font-family:var(--sans);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-soft);font-weight:500}
+.voices-progress{display:flex;align-items:center;justify-content:space-between;margin-top:32px;padding-top:18px;border-top:1px dashed var(--rule);font-family:var(--sans)}
+.voices-counter{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-soft);font-weight:500;font-variant-numeric:tabular-nums}
+.voices-counter .voices-current{color:var(--ink);font-weight:600}
+.voices-controls{display:flex;align-items:center;gap:8px}
+.voices-dots{display:flex;gap:4px;align-items:center}
+.voices-dot{width:6px;height:6px;border-radius:999px;background:rgba(14,14,14,.18);transition:background .3s ease, transform .3s ease}
+.voices-dot.active{background:var(--ink);transform:scale(1.4)}
+.voices-pause{width:28px;height:28px;border-radius:999px;border:1px solid var(--ink);background:transparent;color:var(--ink);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;font-family:inherit;transition:background .15s ease, color .15s ease;margin-left:8px}
+.voices-pause:hover{background:var(--ink);color:#fff}
+.voices-pause[data-state="paused"]::before{content:"▶";font-size:9px}
+.voices-pause[data-state="playing"]::before{content:"❚❚";font-size:9px;letter-spacing:0}
+
+/* ─── CTA wall ─── */
+.cta-wall{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;max-width:var(--maxw);margin:0 auto}
+.cta-cell{padding:40px 36px;border-radius:18px;border:1px solid var(--rule-soft);background:#fff;display:flex;flex-direction:column;gap:18px;min-height:280px}
+.cta-cell.dark{background:var(--ink);color:#fff;border-color:transparent}
+.cta-cell.sand{background:var(--bg-sand)}
+.cta-cell .cell-eyebrow{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-soft);font-weight:500}
+.cta-cell.dark .cell-eyebrow{color:rgba(255,255,255,.6)}
+.cta-cell h3{font-family:var(--display);font-size:34px;font-weight:700;line-height:1.04;letter-spacing:-.02em}
+.cta-cell.dark h3{color:#fff}
+.cta-cell p{font-size:14px;color:var(--ink-soft);line-height:1.55}
+.cta-cell.dark p{color:rgba(255,255,255,.7)}
+.cta-cell .cta-bottom{margin-top:auto}
+.cta-cell .cell-price{font-family:var(--display);font-size:28px;font-weight:600;color:var(--ink);letter-spacing:-.02em}
+.cta-cell .cell-price-meta{font-size:12px;color:var(--ink-soft);margin-top:4px}
+.cta-cell .cell-trust{display:flex;flex-direction:column;gap:6px;margin-top:8px;font-size:12px;color:var(--ink-soft);line-height:1.5}
+.cta-cell .cell-trust span{display:inline-flex;align-items:center;gap:6px}
+.cta-cell .cell-trust svg{width:12px;height:12px;color:var(--ink-soft);stroke:currentColor;stroke-width:2;fill:none;flex-shrink:0}
+
+/* ─── Refund banner (NEW — fix #5) ─── */
+section.refund-banner{background:var(--ink);color:#fff;padding:96px 36px;border-bottom:1px solid var(--rule);position:relative;overflow:hidden;isolation:isolate}
+section.refund-banner::before{content:"";position:absolute;inset:0;z-index:0;background:radial-gradient(ellipse 60% 80% at 25% 50%, rgba(196,181,158,.18) 0%, rgba(0,0,0,0) 70%), radial-gradient(ellipse 50% 70% at 80% 30%, rgba(122,74,42,.15) 0%, rgba(0,0,0,0) 65%);pointer-events:none}
+.refund-card{position:relative;z-index:1;max-width:var(--maxw);margin:0 auto;display:grid;grid-template-columns:260px 1fr;gap:48px;align-items:center}
+.refund-stamp{display:flex;flex-direction:column;align-items:flex-start;gap:18px}
+.refund-stamp-numwrap{display:flex;align-items:flex-end;gap:14px;line-height:.9}
+.refund-stamp-num{font-family:var(--display);font-size:clamp(96px, 12vw, 168px);font-weight:700;line-height:.86;letter-spacing:-.05em;color:#fff;font-variant-numeric:tabular-nums}
+.refund-stamp-day{display:flex;flex-direction:column;font-family:var(--display);font-size:13px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.7);line-height:1.1;padding-bottom:14px}
+.refund-stamp-day strong{color:#fff;font-weight:700;font-size:14px;letter-spacing:.16em}
+.refund-stamp-tag{display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border-radius:999px;border:1px solid rgba(255,255,255,.3);font-size:10px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.85)}
+.refund-stamp-tag svg{width:12px;height:12px;stroke:currentColor;stroke-width:2.5;fill:none}
+.refund-body{display:flex;flex-direction:column;gap:18px}
+.refund-eyebrow{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.6);font-weight:500}
+.refund-body h3{font-family:var(--display);font-size:clamp(32px, 4.5vw, 56px);font-weight:700;line-height:1.0;letter-spacing:-.02em;color:#fff;max-width:18ch}
+.refund-body h3 em{font-style:normal;color:rgba(255,255,255,.55);font-weight:700}
+.refund-body p{font-size:16px;line-height:1.6;color:rgba(255,255,255,.85);max-width:62ch}
+.refund-body p em{font-style:italic;color:#fff}
+.refund-meta{display:flex;flex-wrap:wrap;gap:24px;padding-top:18px;border-top:1px dashed rgba(255,255,255,.18);font-size:13px;color:rgba(255,255,255,.65)}
+.refund-meta span{display:inline-flex;align-items:center;gap:8px}
+.refund-meta svg{width:13px;height:13px;stroke:currentColor;stroke-width:2;fill:none;color:rgba(255,255,255,.6)}
+
+/* ─── Closing ─── */
+.closing{position:relative;color:#fff;padding:160px 36px;border-bottom:1px solid var(--rule);isolation:isolate;overflow:hidden;min-height:88vh;display:flex;align-items:center}
+.closing::before{content:"";position:absolute;inset:0;z-index:0;background-image:url(/assets/web/al-DSC00580.jpg);background-size:cover;background-position:center 30%}
+/* Fix #6 — stronger right-column scrim so closing-meta text reads cleanly even on mobile + over-bright photos */
+.closing::after{
+  content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:
+    radial-gradient(ellipse 45% 60% at 22% 50%, rgba(0,0,0,.55) 0%, rgba(0,0,0,.22) 38%, rgba(0,0,0,0) 76%),
+    radial-gradient(ellipse 38% 60% at 82% 55%, rgba(0,0,0,.62) 0%, rgba(0,0,0,.30) 45%, rgba(0,0,0,0) 78%),
+    linear-gradient(98deg, rgba(0,0,0,.40) 0%, rgba(0,0,0,.12) 38%, rgba(0,0,0,.20) 70%, rgba(0,0,0,.45) 100%);
 }
-.pg-switch[data-product="refuel"]::before { background: rgba(26,122,110,0.25); }
-.pg-switch[data-product="euphoria"]::before { background: rgba(192,25,74,0.25); }
-.pg-switch.active[data-product="refuel"] { background: var(--refuel-teal); color: #fff; border-color: var(--refuel-teal); }
-.pg-switch.active[data-product="refuel"]::before { background: rgba(255,255,255,0.55); }
-.pg-switch.active[data-product="euphoria"] { background: var(--euphoria-pink); color: #fff; border-color: var(--euphoria-pink); }
-.pg-switch.active[data-product="euphoria"]::before { background: rgba(255,255,255,0.55); }
+.closing > .closing-row{position:relative;z-index:2;width:100%;max-width:var(--maxw);margin:0 auto;display:grid;grid-template-columns:1.4fr 1fr;gap:48px;align-items:flex-end}
+.closing h2{font-family:var(--display);font-size:clamp(48px, 7.5vw, 120px);font-weight:700;line-height:.94;letter-spacing:-.02em;max-width:13ch;color:#fff;text-shadow:0 1px 0 rgba(0,0,0,.6), 0 2px 6px rgba(0,0,0,.5), 0 8px 24px rgba(0,0,0,.4), 0 16px 48px rgba(0,0,0,.28)}
+.closing h2 em{font-style:normal;color:rgba(255,255,255,.55);font-weight:700}
+.closing-meta{display:flex;flex-direction:column;gap:14px;text-align:left}
+.closing-meta .eyebrow{color:rgba(255,255,255,.78);font-size:11px;letter-spacing:.18em;text-transform:uppercase;font-weight:600;text-shadow:0 1px 2px rgba(0,0,0,.5), 0 2px 12px rgba(0,0,0,.35)}
+.closing-meta p{font-size:14px;color:#fff;max-width:42ch;line-height:1.6;text-shadow:0 1px 2px rgba(0,0,0,.6), 0 2px 14px rgba(0,0,0,.45), 0 6px 24px rgba(0,0,0,.30)}
+.closing-meta .closing-cta{display:flex;flex-wrap:wrap;gap:14px;margin-top:8px}
+.closing-meta .closing-cta .cta{filter:drop-shadow(0 8px 24px rgba(0,0,0,.40))}
 
-.pg-main-img {
-  width: 100%; aspect-ratio: 3/4; background: var(--sand);
-  border-radius: 16px; overflow: hidden; cursor: zoom-in;
+/* ─── FDA Banner (in-page disclaimer for product gallery section) ─── */
+.fda-banner{
+  margin-top:48px;
+  padding:24px 28px;
+  background:#fff;
+  border:1px solid var(--rule);
+  border-left:3px solid var(--ink);
+  border-radius:14px;
+  display:grid;
+  grid-template-columns:48px 1fr;
+  gap:20px;
+  align-items:flex-start;
+  max-width:var(--maxw);
+  margin-left:auto;
+  margin-right:auto;
 }
-.pg-main-img img { width: 100%; height: 100%; object-fit: contain; transition: opacity .25s; }
-
-.pg-thumbs { display: flex; gap: 10px; }
-.pg-thumb {
-  width: 80px; height: 104px; border-radius: 10px; overflow: hidden;
-  border: 2px solid transparent; cursor: pointer; flex-shrink: 0;
-  background: var(--sand); transition: border-color .2s;
+.fda-banner-icon{
+  width:44px;height:44px;border-radius:999px;
+  border:1.5px solid var(--ink);
+  display:flex;align-items:center;justify-content:center;
+  color:var(--ink);flex-shrink:0;
 }
-.pg-thumb img { width: 100%; height: 100%; object-fit: contain; }
-.pg-thumb.active { border-color: var(--off-black); }
-.pg-thumb[data-product="refuel"].active { border-color: var(--refuel-teal); }
-.pg-thumb[data-product="euphoria"].active { border-color: var(--euphoria-pink); }
-
-/* Right: details */
-.pg-details { display: flex; flex-direction: column; gap: 0; }
-
-.pg-detail-tabs { display: flex; border-bottom: 1px solid var(--border); margin-bottom: 32px; }
-.pg-detail-tab {
-  padding: 13px 0; margin-right: 28px; font-size: 14px; font-weight: 400;
-  cursor: pointer; border: none; background: transparent;
-  color: #bbb; border-bottom: 2px solid transparent;
-  margin-bottom: -1px; font-family: inherit; letter-spacing: -0.01em; transition: color .2s;
-  min-height: 44px; display: inline-flex; align-items: center;
+.fda-banner-icon svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.8}
+.fda-banner-body{font-size:12.5px;line-height:1.65;color:var(--ink-soft)}
+.fda-banner-body strong{color:var(--ink);display:block;margin-bottom:4px;font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:600}
+@media (max-width:720px){
+  .fda-banner{grid-template-columns:1fr;gap:14px;padding:20px 22px}
+  .fda-banner-icon{width:40px;height:40px}
 }
-.pg-detail-tab.active[data-tab="refuel"] { color: var(--refuel-teal); border-bottom-color: var(--refuel-teal); }
-.pg-detail-tab.active[data-tab="euphoria"] { color: var(--euphoria-pink); border-bottom-color: var(--euphoria-pink); }
 
-.pg-panel { display: none; }
-.pg-panel.active { display: block; }
+/* ─── Footer ─── */
+footer.legal{background:var(--ink);color:rgba(255,255,255,.55);padding:48px 36px 64px;font-size:13px;line-height:1.7}
+footer.legal .wrap{display:flex;flex-direction:column;gap:18px}
+footer.legal .legal-top{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;border-bottom:1px dashed rgba(255,255,255,.18);padding-bottom:18px}
+footer.legal .legal-top a{color:rgba(255,255,255,.55);font-size:12px;letter-spacing:.06em}
+footer.legal .legal-top a:hover{color:#fff}
+footer.legal .legal-logo{height:34px;width:auto;filter:brightness(0) invert(1);opacity:.92}
+footer.legal .footer-disclaimer{font-size:12px;color:rgba(255,255,255,.42);max-width:920px;line-height:1.7}
+footer.legal .footer-disclaimer strong{color:rgba(255,255,255,.6);display:block;margin-bottom:6px}
 
-.pg-color-dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 8px; vertical-align: middle; }
-.pg-product-type { font-size: 11px; font-weight: 500; letter-spacing: 2.5px; text-transform: uppercase; margin-bottom: 16px; display: flex; align-items: center; gap: 6px; }
-.pg-product-type.refuel { color: var(--refuel-teal); }
-.pg-product-type.euphoria { color: var(--euphoria-pink); }
+/* ─── Sticky float CTA ─── */
+.float-cta{position:fixed;right:24px;bottom:24px;z-index:50;display:inline-flex;align-items:center;gap:6px;padding:14px 22px;border-radius:999px;background:var(--ink);color:#fff;font-size:13px;font-weight:500;letter-spacing:-.005em;border:1px solid var(--ink);text-decoration:none;box-shadow:0 12px 32px -8px rgba(0,0,0,.22), 0 0 0 1px rgba(255,255,255,.04) inset;transition:transform .2s ease, box-shadow .2s ease}
+.float-cta:hover{transform:translateY(-2px);box-shadow:0 16px 40px -10px rgba(0,0,0,.28)}
+.float-cta .float-arrow{width:22px;height:22px;border-radius:999px;background:#fff;color:var(--ink);display:inline-flex;align-items:center;justify-content:center;font-size:12px}
 
-.pg-product-name { font-size: 52px; font-weight: 400; letter-spacing: -0.04em; line-height: 1.0; margin-bottom: 6px; }
-.pg-product-name.refuel { color: var(--refuel-teal); }
-.pg-product-name.euphoria { color: var(--euphoria-pink); }
-
-.pg-tagline { font-size: 14px; color: #888; margin-bottom: 28px; letter-spacing: -0.01em; }
-
-.pg-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; margin-bottom: 28px; }
-.pg-stat { background: var(--sand); padding: 16px; border-radius: 10px; }
-.pg-stat-val { font-size: 22px; font-weight: 500; color: var(--off-black); letter-spacing: -0.04em; line-height: 1; }
-.pg-stat-val .pg-unit { font-size: 13px; font-weight: 400; color: #bbb; }
-.pg-stat-label { font-size: 11px; color: #aaa; margin-top: 4px; }
-
-.pg-desc { font-size: 15px; color: #666; line-height: 1.7; margin-bottom: 24px; letter-spacing: -0.01em; }
-
-.pg-callout {
-  background: rgba(45,90,61,0.08); border: 1px solid rgba(74,222,128,0.2);
-  border-radius: 12px; padding: 16px 18px;
-  display: flex; gap: 12px; align-items: flex-start; margin-bottom: 28px;
+@media (prefers-reduced-motion: reduce){
+  *{transition:none !important;animation:none !important}
+  .ing-track{animation:none !important}
+  .tm-cell{opacity:1 !important;transform:none !important}
+  .tm-connectors path{animation:none !important;opacity:.6 !important;stroke-dashoffset:0 !important}
 }
-.pg-callout-icon { font-size: 18px; flex-shrink: 0; }
-.pg-callout-title { font-size: 12px; font-weight: 600; color: var(--green); margin-bottom: 3px; }
-.pg-callout-body { font-size: 12px; color: #777; line-height: 1.55; }
 
-.pg-price-row { display: flex; align-items: baseline; gap: 10px; margin-bottom: 16px; }
-.pg-price { font-size: 40px; font-weight: 500; letter-spacing: -0.04em; color: var(--off-black); }
-.pg-price-meta { font-size: 13px; color: #bbb; }
-.pg-guarantee { font-size: 11px; color: #bbb; text-align: center; margin-top: 10px; }
-
-/* ── CREDIBILITY BADGES ── */
-.cred-badges { display: flex; flex-wrap: wrap; gap: 8px; margin: 16px 0 4px; }
-.cred-badge { font-size: 10px; letter-spacing: 0.8px; text-transform: uppercase; color: rgba(255,255,255,0.5); background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08); border-radius: 4px; padding: 4px 10px; }
-.pg-panel .cred-badges .cred-badge { color: #888; background: var(--sand); border-color: var(--border); }
-
-/* ═══ FEATURE CARDS ═══ */
-.feature-cards { padding: 0 40px 80px; background: #fff; }
-.feature-cards-inner { max-width: 1400px; margin: 0 auto; display: flex; flex-direction: column; gap: 14px; }
-.feature-card {
-  background: var(--dark-card);
-  border-radius: var(--r-card);
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  min-height: 460px;
-  overflow: hidden;
+/* ─── Responsive ─── */
+@media (max-width:960px){
+  nav.site-nav{padding:14px 20px}
+  .nav-links,.nav-cta-desktop{display:none}
+  .nav-toggle{display:inline-flex !important;align-items:center;justify-content:center}
+  .hero,section.s,.closing,footer.legal,section.warm-atmos,section.refund-banner{padding-left:20px;padding-right:20px}
+  .hero{padding-top:88px;padding-bottom:48px;min-height:92vh;align-items:center}
+  .hero .hero-content{max-width:100%}
+  section.s{padding-top:64px;padding-bottom:64px}
+  section.warm-atmos{padding-top:80px;padding-bottom:80px}
+  section.refund-banner{padding-top:64px;padding-bottom:64px}
+  .closing{padding-top:96px;padding-bottom:96px;min-height:auto}
+  .closing-row{grid-template-columns:1fr;align-items:flex-start;gap:32px}
+  .s-head{grid-template-columns:1fr;gap:14px;margin-bottom:36px}
+  .icon-list{grid-template-columns:1fr;gap:36px}
+  .icon-list-card{padding:28px}
+  .pd-panel[data-active="true"]{grid-template-columns:1fr}
+  .pd-gallery{border-right:0;border-bottom:1px solid var(--rule-soft);min-height:520px}
+  .pd-gallery-main{min-height:420px}
+  .pd-gallery-main img{max-height:440px}
+  .pd-info{padding:32px 24px}
+  .pd-specs{grid-template-columns:repeat(2,1fr)}
+  .tm-stage{grid-template-columns:1fr;gap:48px}
+  .tm-connectors{display:none}
+  .tm-illustration{padding:48px 20px 56px;min-height:auto}
+  .tm-pack{height:200px;max-width:160px}
+  .tm-cell:nth-child(2),.tm-cell:nth-child(3){transition-delay:0ms}
+  .refund-card{grid-template-columns:1fr;gap:24px}
+  .refund-stamp{flex-direction:column;align-items:flex-start;gap:14px}
+  .refund-stamp-numwrap{align-items:flex-end;gap:12px}
+  .cta-wall{grid-template-columns:1fr}
+  section.warm-atmos .atmos-meta{grid-template-columns:1fr;gap:24px}
 }
-.feature-card.reverse { }
-.fc-img { position: relative; overflow: hidden; }
-.fc-img img { width: 100%; height: 100%; object-fit: cover; display: block; opacity: 0.82; }
-.fc-body {
-  padding: 52px 56px;
-  display: flex; flex-direction: column; justify-content: center; gap: 14px;
+@media (max-width:640px){
+  section.s{padding:56px 20px}
+  section.warm-atmos{padding:64px 20px}
+  section.refund-banner{padding:56px 20px}
+  .closing{padding:80px 20px}
+  .hero .h1{font-size:clamp(40px, 11vw, 56px);max-width:14ch;line-height:.96;letter-spacing:-.025em;margin:16px 0 18px}
+  .hero .h1, .hero .lead, .hero .eyebrow{text-shadow:0 1px 0 rgba(0,0,0,.55), 0 2px 8px rgba(0,0,0,.4), 0 6px 20px rgba(0,0,0,.22);max-width:min(75%, 280px)}
+  .hero .hero-cta{flex-direction:column;align-items:stretch;gap:12px;max-width:min(82%, 320px)}
+  .hero .hero-cta .pill{padding:14px 20px;font-size:13px}
+  .hero .lead{font-size:14.5px;margin-bottom:24px}
+  .hero .eyebrow{font-size:10px;letter-spacing:.18em}
+  .s-head{margin-bottom:28px}
+  .s-head h2{font-size:clamp(30px, 7.5vw, 40px);line-height:1.0}
+  .icon-list-card{padding:24px 20px}
+  .icon-list h3{font-size:clamp(26px, 6.8vw, 36px);line-height:1.05}
+  .il-rows{gap:20px}
+  .il-row{grid-template-columns:48px 1fr;gap:14px;padding-bottom:20px}
+  .il-icon{width:40px;height:40px}
+  .il-icon svg{width:18px;height:18px}
+  .il-row strong{font-size:15px}
+  .il-row p{font-size:13px}
+  section.warm-atmos h2{font-size:clamp(32px, 9vw, 48px);max-width:16ch;margin-bottom:24px}
+  section.warm-atmos .atmos-meta{padding-top:24px;margin-top:32px;gap:18px}
+  section.warm-atmos .atmos-meta strong{font-size:24px}
+  .pd-tab{padding:14px 12px;font-size:11.5px;letter-spacing:.06em}
+  .pd-gallery-main{padding:32px}
+  .pd-info{padding:28px 22px;gap:18px}
+  .pd-info h3{font-size:clamp(26px, 7vw, 34px)}
+  .pd-info-tagline{font-size:14px}
+  .pd-specs{grid-template-columns:1fr 1fr;gap:12px 16px}
+  .pd-spec-val{font-size:14px}
+  .ing-carousel-head{padding:0 20px 14px}
+  .ing-chip{width:200px}
+  .ing-chip-name{font-size:14px}
+  .voices-stage{padding:16px 0 0}
+  .voices-cycle{min-height:340px}
+  .voice-card blockquote{font-size:18px;line-height:1.4}
+  .voices-progress{margin-top:24px;padding-top:14px}
+  .voices-counter{font-size:10px}
+  .tm-illustration{padding:40px 18px 48px}
+  .tm-pack{height:180px;max-width:140px;margin-bottom:24px}
+  .tm-cell strong{font-size:19px}
+  .tm-cell p{font-size:13px}
+  .refund-stamp{flex-direction:column;align-items:flex-start;gap:12px}
+  .refund-stamp-numwrap{gap:10px}
+  .refund-stamp-num{font-size:clamp(72px, 22vw, 112px)}
+  .refund-stamp-day{font-size:11px;padding-bottom:10px}
+  .refund-stamp-day strong{font-size:12px}
+  .refund-body h3{font-size:clamp(26px, 7vw, 34px)}
+  .refund-body p{font-size:14.5px}
+  .refund-meta{font-size:12px;gap:14px}
+  .cta-wall{gap:14px}
+  .cta-cell{padding:28px 24px;min-height:auto;gap:14px}
+  .cta-cell h3{font-size:26px;line-height:1.05}
+  .cta-cell p{font-size:13.5px}
+  .closing h2{font-size:clamp(36px, 10vw, 56px);max-width:14ch;line-height:.96}
+  .closing-row{gap:24px}
+  .closing-meta p{font-size:13px}
+  .closing-meta .closing-cta{flex-direction:column;align-items:stretch;gap:12px}
+  footer.legal{padding:40px 20px 56px}
+  footer.legal .footer-disclaimer{font-size:11px}
+  footer.legal .legal-logo{height:28px}
+  .float-cta{padding:12px 18px;font-size:12px;right:14px;bottom:14px}
+  .float-cta .float-arrow{width:20px;height:20px;font-size:11px}
 }
-.feature-card.reverse .fc-img { order: 2; }
-.feature-card.reverse .fc-body { order: 1; }
-.fc-tag { font-size: 11px; letter-spacing: 2.5px; text-transform: uppercase; color: rgba(255,255,255,0.28); }
-.fc-title { font-size: 34px; font-weight: 400; color: #fff; letter-spacing: -0.03em; line-height: 1.1; }
-.fc-desc { font-size: 15px; color: rgba(255,255,255,0.48); line-height: 1.65; letter-spacing: -0.01em; }
+@media (max-width:480px){
+  .ing-chip{width:180px}
+}
 
-/* ═══ L-GLUTAMINE FEATURE ═══ */
-.lglut-feature {
-  background: #0d1810;
-  padding: 112px 40px;
-  text-align: center;
-}
-.lglut-feature-inner { max-width: 720px; margin: 0 auto; }
-.lglut-feature .label { font-size: 11px; letter-spacing: 2.5px; text-transform: uppercase; color: rgba(74,222,128,0.55); margin-bottom: 28px; }
-.lglut-feature blockquote {
-  font-size: clamp(26px, 3.5vw, 44px);
-  font-weight: 400; color: #fff;
-  letter-spacing: -0.03em; line-height: 1.2;
-  margin-bottom: 24px;
-}
-.lglut-feature blockquote em { font-style: normal; color: var(--green-light); }
-.lglut-feature .citation { font-size: 15px; color: rgba(255,255,255,0.32); line-height: 1.65; max-width: 520px; margin: 0 auto 32px; }
-
-/* ═══ PHOTO STRIP ═══ */
-.photo-strip { display: grid; grid-template-columns: 2fr 1fr 1fr; grid-template-rows: 420px; height: 420px; gap: 3px; overflow: hidden; }
-.photo-strip img { width: 100%; height: 100%; object-fit: cover; display: block; min-height: 0; }
-
-/* ═══ SPRINT UPGRADE HOOK ═══ */
-.b-upgrade { padding: 96px 40px; background: var(--off-black); color: #fff; text-align: center; }
-.b-upgrade h2 { font-size: clamp(24px, 3.5vw, 36px); font-weight: 400; letter-spacing: -0.03em; margin-bottom: 12px; }
-.b-upgrade .sub { font-size: 15px; color: rgba(255,255,255,0.45); line-height: 1.7; max-width: 540px; margin: 0 auto 36px; }
-
-/* ═══ FOOTER ═══ */
-footer { background: var(--off-black); padding: 36px 40px; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 16px; }
-.footer-logo { font-size: 12px; font-weight: 700; letter-spacing: 2px; color: rgba(255,255,255,0.38); }
-.footer-logo-img { height: 28px; width: auto; display: block; filter: invert(1); opacity: 0.8; }
-.footer-links { font-size: 12px; color: rgba(255,255,255,0.22); letter-spacing: -0.01em; }
-.footer-links a { display: inline-flex; align-items: center; min-height: 44px; padding: 0 4px; color: rgba(255,255,255,0.38); text-decoration: none; }
-.footer-links a:hover { color: #fff; }
-.footer-disclaimer { width: 100%; border-top: 1px solid rgba(255,255,255,0.05); margin-top: 20px; padding-top: 18px; font-size: 10px; color: rgba(255,255,255,0.14); line-height: 1.65; letter-spacing: 0.1px; }
-
-/* ═══ RESPONSIVE ═══ */
-@media (max-width: 900px) {
-  .pg-inner { grid-template-columns: 1fr; gap: 40px; }
-  .pg-gallery { position: static; }
-  .feature-card { grid-template-columns: 1fr; }
-  .feature-card.reverse .fc-img { order: 0; }
-  .feature-card.reverse .fc-body { order: 0; }
-  .fc-img { min-height: 300px; }
-  .photo-strip { grid-template-columns: repeat(3, 1fr); height: 220px; }
-  nav { padding: 0 20px; }
-  nav ul { display: none; }
-  .nav-cta { display: none; }
-  .nav-toggle { display: flex; align-items: center; justify-content: center; }
-  .stats-row { flex-wrap: wrap; }
-  .stats-row-item { flex: 1 1 50%; }
-  .dtc-hero, .feature-cards, .lglut-feature { padding-left: 20px; padding-right: 20px; }
-}
-@media (max-width: 600px) {
-  .fc-body { padding: 32px 24px; }
-  .fc-title { font-size: 24px; }
-  .fc-desc { font-size: 13px; }
-  .lglut-feature { padding: 64px 20px; }
-  .b-upgrade { padding: 64px 20px; }
-  .photo-strip { grid-template-columns: 1fr; grid-template-rows: auto; height: auto; gap: 3px; }
-  .photo-strip img:last-child { display: block; }
-  .photo-strip img { height: 220px; object-fit: cover; }
-  .fc-img { min-height: 260px; }
-  .dtc-hero h1 { font-size: 38px; }
-  .dtc-hero { padding-top: 48px; }
-  nav { height: 52px; }
-  footer { padding: 24px 20px; flex-direction: column; text-align: center; gap: 12px; }
-  .footer-links { text-align: center; }
-  .footer-disclaimer { text-align: center; }
-}
-@media (max-width: 480px) {
-  .stats-row { flex-direction: column; }
-  .stats-row-item { flex: 1 1 100%; border-right: none; border-bottom: 1px solid var(--border); padding: 16px 20px; }
-  .stats-row-item:last-child { border-bottom: none; }
-}
+.visually-hidden{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 </style>
 </head>
-<body>
+<body id="top">
 
 <!-- ═══ NAV ═══ -->
-<nav>
-  <a href="/" class="logo" style="display:flex;align-items:center;"><img src="https://cdn.jsdelivr.net/gh/bekzhou8455/rik-athletica@main/assets/media/rik-logo-cropped.png" alt="RIK Athletica" style="height:32px;width:auto;display:block;"></a>
-  <ul>
-    <li><a href="/bundle" class="active">The Bundle</a></li>
-    <li><a href="/sprint">4-Week Sprint</a></li>
-    <li><a href="/calculator">Race Calculator</a></li>
-  </ul>
-  <a href="/sprint" class="nav-cta" style="text-decoration:none;">Get My Protocol</a>
-  <button class="nav-toggle" onclick="toggleMobileNav()" aria-label="Menu"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="2" y="2" width="7" height="7" rx="1.5" fill="currentColor"/><rect x="11" y="2" width="7" height="7" rx="1.5" fill="currentColor"/><rect x="2" y="11" width="7" height="7" rx="1.5" fill="currentColor"/><rect x="11" y="11" width="7" height="7" rx="1.5" fill="currentColor"/></svg></button>
+<nav class="site-nav">
+  <a href="/" class="nav-mark" aria-label="RIK Athletica home">
+    <img src="https://cdn.jsdelivr.net/gh/bekzhou8455/rik-athletica@main/assets/media/rik-logo-cropped.png" alt="RIK Athletica">
+  </a>
+  <div class="nav-links">
+    <a href="/bundle" class="active">Bundle</a>
+    <span class="dot-sep"></span>
+    <a href="/sprint">4-Week Sprint</a>
+    <span class="dot-sep"></span>
+    <a href="/premium">Founding Cohort</a>
+    <span class="dot-sep"></span>
+    <a href="/calculator">Calculator</a>
+    <span class="dot-sep"></span>
+    <a href="/audit">Audit</a>
+  </div>
+  <a href="/sprint" class="cta sm nav-cta-desktop"><span class="pill">Get My Protocol</span><span class="arrow">↗</span></a>
+  <button class="nav-toggle" onclick="toggleMobileNav()" aria-label="Menu" aria-expanded="false">
+    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 6h14M3 10h14M3 14h14" stroke-linecap="round"/></svg>
+  </button>
 </nav>
 <div class="nav-mobile" id="nav-mobile">
   <a href="/">Home</a>
-  <a href="/bundle">The Bundle</a>
+  <a href="/bundle">Bundle</a>
   <a href="/sprint">4-Week Sprint</a>
-  <a href="/calculator">Race Calculator</a>
-  <a href="/sprint" class="nav-mobile-cta">Get My Protocol</a>
+  <a href="/premium">Founding Cohort</a>
+  <a href="/calculator">Calculator</a>
+  <a href="/audit">Audit</a>
+  <a href="/sprint" class="cta lg" style="margin-top:24px"><span class="pill">Get My Protocol</span><span class="arrow">↗</span></a>
 </div>
 
-<!-- ═══ 1. HERO — centered white (Sana style) ═══ -->
-<section class="dtc-hero">
-  <div class="eyebrow-pill">The Enhancement Layer</div>
-  <h1>The layer above gels.</h1>
-  <p class="hero-sub">Euphoria + Refuel. The products designed to help your training hours compound. Not another carb delivery system.*</p>
-  <div class="dtc-hero-ctas">
-    <a href="https://buy.stripe.com/4gM7sN6Wq3cc7T0fZ67Re00" data-rewardful class="btn btn-primary">Add to Cart &mdash; $119 &rarr;</a>
-    <a href="/sprint" class="btn btn-secondary">See the 4-Week Sprint</a>
+
+<!-- ═══ HERO (fix #1 — bundle-hero.jpg + new headline) ═══ -->
+<section class="hero">
+  <div class="wrap">
+    <div class="hero-content">
+      <div class="eyebrow">The enhancement layer — Layer 2 functional gels</div>
+      <h1 class="h1">More than just carbs.</h1>
+      <p class="lead">Euphoria + Refuel. 30 functional gels designed to help Your training hours compound — not just deliver carbs.&dagger; The functional layer mainstream gels skip.</p>
+      <div class="hero-cta">
+        <a href="https://buy.stripe.com/4gM7sN6Wq3cc7T0fZ67Re00" data-rewardful class="cta invert lg" data-track="bundle_add_to_cart">
+          <span class="pill">Add to Cart — $119</span><span class="arrow">↗</span>
+        </a>
+        <a href="/audit" class="cta lg" data-track="audit_cta_click">
+          <span class="pill" style="background:transparent;border-color:rgba(255,255,255,.5);color:#fff">Or take the free audit first</span>
+          <span class="arrow" style="background:transparent;border-color:rgba(255,255,255,.5);color:#fff">↗</span>
+        </a>
+      </div>
+    </div>
   </div>
 </section>
 
-<!-- ═══ 2. STATS ROW ═══ -->
-<div class="stats-row">
-  <div class="stats-row-item">
-    <div class="stat-big">0<span class="unit">g sugar</span></div>
-    <div class="stat-desc">Euphoria pre-activation — all carbs, zero simple sugars</div>
-  </div>
-  <div class="stats-row-item">
-    <div class="stat-big">100<span class="unit">mg</span></div>
-    <div class="stat-desc">Plant caffeine via Yerba Mat&eacute; — no synthetic stimulants</div>
-  </div>
-  <div class="stats-row-item">
-    <div class="stat-big">1<span class="unit">g</span></div>
-    <div class="stat-desc">L-Glutamine per Refuel gel — no mainstream gel has this</div>
-  </div>
-  <div class="stats-row-item">
-    <div class="stat-big">+1<span class="unit"> day</span></div>
-    <div class="stat-desc">Supports recovery between sessions† — Tart Cherry + BCAA</div>
-  </div>
-</div>
 
-<!-- ═══ 3. PRODUCT GALLERY ═══ -->
-<section class="product-gallery">
-  <div class="pg-inner">
-
-    <!-- LEFT: Image gallery -->
-    <div class="pg-gallery">
-      <div class="pg-switcher">
-        <button class="pg-switch active" data-product="refuel" onclick="switchGallery('refuel')">Refuel</button>
-        <button class="pg-switch" data-product="euphoria" onclick="switchGallery('euphoria')">Euphoria</button>
-      </div>
-      <div class="pg-main-img">
-        <img id="pg-main-img" src="https://cdn.jsdelivr.net/gh/bekzhou8455/rik-athletica@main/assets/media/refuel-studio.jpg" loading="lazy" decoding="async" alt="Refuel gel — front">
-      </div>
-      <div class="pg-thumbs">
-        <div class="pg-thumb active" data-product="refuel" data-src="https://cdn.jsdelivr.net/gh/bekzhou8455/rik-athletica@main/assets/media/refuel-studio.jpg" onclick="setThumb(this)">
-          <img src="https://cdn.jsdelivr.net/gh/bekzhou8455/rik-athletica@main/assets/media/refuel-studio.jpg" loading="lazy" decoding="async" alt="Refuel front">
-        </div>
-        <div class="pg-thumb" data-product="refuel" data-src="https://cdn.jsdelivr.net/gh/bekzhou8455/rik-athletica@main/assets/media/Fefuel_back.jpg" onclick="setThumb(this)">
-          <img src="https://cdn.jsdelivr.net/gh/bekzhou8455/rik-athletica@main/assets/media/Fefuel_back.jpg" loading="lazy" decoding="async" alt="Refuel back">
-        </div>
-        <div class="pg-thumb" data-product="euphoria" data-src="https://cdn.jsdelivr.net/gh/bekzhou8455/rik-athletica@main/assets/media/euphoria-studio.jpg" onclick="setThumb(this)" style="display:none">
-          <img src="https://cdn.jsdelivr.net/gh/bekzhou8455/rik-athletica@main/assets/media/euphoria-studio.jpg" loading="lazy" decoding="async" alt="Euphoria front">
-        </div>
-        <div class="pg-thumb" data-product="euphoria" data-src="https://cdn.jsdelivr.net/gh/bekzhou8455/rik-athletica@main/assets/media/Euphoria_back.jpg" onclick="setThumb(this)" style="display:none">
-          <img src="https://cdn.jsdelivr.net/gh/bekzhou8455/rik-athletica@main/assets/media/Euphoria_back.jpg" loading="lazy" decoding="async" alt="Euphoria back">
-        </div>
-      </div>
+<!-- ═══ 01 — WHAT'S INSIDE THE BUNDLE (Pattern B icon-list) ═══ -->
+<section class="s" id="whats-inside">
+  <div class="s-head">
+    <div class="s-num">01 — What's inside</div>
+    <div>
+      <h2>30 Gels. <em>One System.</em></h2>
+      <p>Two products designed to work as a system. Pre-session activation. Mid-effort fuel. Post-session recovery. Shipped to Your door, gut-trainable from the first sachet.</p>
     </div>
+  </div>
 
-    <!-- RIGHT: Product details -->
-    <div class="pg-details">
-      <div class="pg-detail-tabs">
-        <button class="pg-detail-tab active" data-tab="refuel" onclick="switchGallery('refuel')">Refuel</button>
-        <button class="pg-detail-tab" data-tab="euphoria" onclick="switchGallery('euphoria')">Euphoria</button>
-      </div>
-
-      <!-- Refuel panel -->
-      <div class="pg-panel active" id="pg-panel-refuel">
-        <div class="pg-product-type refuel">Intra + Recovery &middot; 50ml</div>
-        <div class="pg-product-name refuel">refuel</div>
-        <div class="pg-tagline">Dual-Action Recovery-Energy Gel &middot; Citrus Flavor</div>
-
-        <div class="pg-stats">
-          <div class="pg-stat">
-            <div class="pg-stat-val">100<span class="pg-unit">kcal</span></div>
-            <div class="pg-stat-label">Per serving</div>
-          </div>
-          <div class="pg-stat">
-            <div class="pg-stat-val">23<span class="pg-unit">g</span></div>
-            <div class="pg-stat-label">Fast carbs</div>
-          </div>
-          <div class="pg-stat">
-            <div class="pg-stat-val">3<span class="pg-unit">g</span></div>
-            <div class="pg-stat-label">BCAA (2:1:1)</div>
-          </div>
+  <div class="icon-list-card">
+    <div class="icon-list">
+      <div>
+        <h3>Two Products. <em>One Box.</em></h3>
+        <p class="icon-list-sub">A bundle that covers Your full training day — pre-activation, in-race fuel, and post-session recovery — without forcing You to stack four brands.</p>
+        <div class="icon-list-cta">
+          <a href="https://buy.stripe.com/4gM7sN6Wq3cc7T0fZ67Re00" data-rewardful class="cta" data-track="bundle_add_to_cart"><span class="pill">Add to Cart — $119</span><span class="arrow">↗</span></a>
         </div>
-
-        <p class="pg-desc">The only in-race gel designed for the day after, too. Refuel delivers fast carbs for sustained energy while the recovery stack — Tart Cherry, BCAA, and L-Glutamine — supports recovery so you show up fresh tomorrow.&dagger;</p>
-
-        <div class="pg-callout">
-          <div class="pg-callout-icon">&#x1F9EC;</div>
+      </div>
+      <div class="il-rows">
+        <div class="il-row">
+          <div class="il-icon">
+            <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 14 4-4"/><path d="M3.34 19a10 10 0 1 1 17.32 0"/></svg>
+          </div>
           <div>
-            <div class="pg-callout-title">1g L-Glutamine per sachet — a first in Ironman nutrition&dagger;</div>
-            <div class="pg-callout-body">Supports gut integrity during extended effort.&dagger; Most GI issues on the Ironman run aren't fitness failures — they're intestinal barrier challenges. No mainstream gel addresses this. RIK does.</div>
+            <strong>10 × Euphoria — Pre-Session Activator (50ml)</strong>
+            <p>100mg plant caffeine via Yerba Maté. Zero sugar spike. L-Carnitine + Beta-Alanine support sustained output from the first pedal stroke.&dagger;</p>
           </div>
         </div>
-
-        <div class="cred-badges">
-          <span class="cred-badge">SGS Tested</span>
-          <span class="cred-badge">GMP Certified</span>
-          <span class="cred-badge">FDA-Registered Facility</span>
-          <span class="cred-badge">Research-Grade Dosages</span>
-          <span class="cred-badge">Made in Malaysia</span>
+        <div class="il-row">
+          <div class="il-icon">
+            <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+          </div>
+          <div>
+            <strong>20 × Refuel — Intra + Recovery (50ml)</strong>
+            <p>23g fast carbs for sustained energy + recovery stack (Tart Cherry, BCAA 2:1:1, L-Glutamine). The only in-race gel designed for the day after, too.&dagger;</p>
+          </div>
         </div>
-        <div class="pg-price-row">
-          <div class="pg-price">$119</div>
-          <div class="pg-price-meta">/ bundle (10 Euphoria + 20 Refuel) &middot; free shipping</div>
+        <div class="il-row">
+          <div class="il-icon">
+            <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="16" height="13" x="4" y="6" rx="1.5"/><path d="m4 9 8 5 8-5"/></svg>
+          </div>
+          <div>
+            <strong>Free Shipping — First 50 Customers</strong>
+            <p>Founding-customer pricing. Free domestic shipping locked in for the first 50 bundles. After that, standard shipping rates apply.</p>
+          </div>
         </div>
-        <a href="https://buy.stripe.com/4gM7sN6Wq3cc7T0fZ67Re00" data-rewardful class="btn btn-primary btn-full" style="padding:15px;display:block;text-align:center;">Add to Cart &mdash; $119 &rarr;</a>
-        <a href="/sprint" class="btn btn-secondary btn-full" style="margin-top:8px;padding:14px;display:block;text-align:center;">See the 4-Week Sprint</a>
-        <div class="pg-guarantee">&check; 30-day satisfaction guarantee. If the gels don't change how your sessions feel, full refund on unopened products.</div>
-        <p style="font-size:10px;color:#bbb;margin-top:10px;line-height:1.55;">&dagger; These statements have not been evaluated by the Food and Drug Administration. This product is not intended to diagnose, treat, cure, or prevent any disease. RIK Athletica products are dietary supplements.</p>
+        <div class="il-row">
+          <div class="il-icon">
+            <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5L10 17.5L19 7.5"/></svg>
+          </div>
+          <div>
+            <strong>30-Day Money-Back. No Questions.</strong>
+            <p>If the gels don't change how Your sessions feel, full refund within 30 days of delivery. SGS-tested, GMP-certified, FDA-registered facility.</p>
+          </div>
+        </div>
       </div>
-
-      <!-- Euphoria panel -->
-      <div class="pg-panel" id="pg-panel-euphoria">
-        <div class="pg-product-type euphoria">Pre-Activation &middot; 50ml</div>
-        <div class="pg-product-name euphoria">euphoria</div>
-        <div class="pg-tagline">Pre-Session Activator &middot; Grapefruit Flavor</div>
-
-        <div class="pg-stats">
-          <div class="pg-stat">
-            <div class="pg-stat-val">45<span class="pg-unit">kcal</span></div>
-            <div class="pg-stat-label">Per serving</div>
-          </div>
-          <div class="pg-stat">
-            <div class="pg-stat-val">11<span class="pg-unit">g</span></div>
-            <div class="pg-stat-label">Carbs (0g sugar)</div>
-          </div>
-          <div class="pg-stat">
-            <div class="pg-stat-val">100<span class="pg-unit">mg</span></div>
-            <div class="pg-stat-label">Plant caffeine</div>
-          </div>
-        </div>
-
-        <p class="pg-desc">Wake up the session before it starts. Euphoria delivers 100mg of natural caffeine from Yerba Mat&eacute; with zero sugar spike — paired with L-Carnitine and Beta-Alanine to prime your body for sustained output from the first pedal stroke.</p>
-
-        <div class="cred-badges">
-          <span class="cred-badge">SGS Tested</span>
-          <span class="cred-badge">GMP Certified</span>
-          <span class="cred-badge">FDA-Registered Facility</span>
-          <span class="cred-badge">Research-Grade Dosages</span>
-          <span class="cred-badge">Made in Malaysia</span>
-        </div>
-        <div class="pg-price-row">
-          <div class="pg-price">$119</div>
-          <div class="pg-price-meta">/ bundle (10 Euphoria + 20 Refuel) &middot; free shipping</div>
-        </div>
-        <a href="https://buy.stripe.com/4gM7sN6Wq3cc7T0fZ67Re00" data-rewardful class="btn btn-primary btn-full" style="padding:15px;display:block;text-align:center;">Add to Cart &mdash; $119 &rarr;</a>
-        <a href="/sprint" class="btn btn-secondary btn-full" style="margin-top:8px;padding:14px;display:block;text-align:center;">See the 4-Week Sprint</a>
-        <div class="pg-guarantee">&check; 30-day satisfaction guarantee. If the gels don't change how your sessions feel, full refund on unopened products.</div>
-        <p style="font-size:10px;color:#bbb;margin-top:10px;line-height:1.55;">&dagger; These statements have not been evaluated by the Food and Drug Administration. This product is not intended to diagnose, treat, cure, or prevent any disease. RIK Athletica products are dietary supplements.</p>
-      </div>
-
     </div>
   </div>
 </section>
 
-<!-- ═══ 4. FEATURE CARDS ═══ -->
-<div class="feature-cards">
-  <div class="feature-cards-inner">
 
-    <!-- Euphoria card -->
-    <div class="feature-card">
-      <div class="fc-img">
-        <img src="https://cdn.jsdelivr.net/gh/bekzhou8455/rik-athletica@main/assets/media/AL-DSC00802.jpg" loading="lazy" decoding="async" alt="Athlete in motion — golden dappled light" style="object-position: center 18%;">
-      </div>
-      <div class="fc-body">
-        <div class="fc-tag">Euphoria &middot; Pre-Activation</div>
-        <div class="fc-title">Wake up the session before it starts.</div>
-        <div class="fc-desc">100mg plant caffeine from Yerba Mat&eacute;. No sugar spike, no crash. L-Carnitine + Beta-Alanine prime your body for sustained output from the first pedal stroke.</div>
-      </div>
+<!-- ═══ 02 — BUILT ON LAYER 2 (warm-amber atmospheric break) ═══ -->
+<section class="warm-atmos">
+  <div class="wrap">
+    <span class="atmos-eyebrow">The functional layer mainstream gels skip</span>
+    <h2>Two layers. <em>Not one.</em></h2>
+    <div class="atmos-meta">
+      <div><strong>0g</strong><span>Sugar in Euphoria pre-activation. All carbs, zero simple sugars, no insulin spike before You start.</span></div>
+      <div><strong>100mg</strong><span>Plant caffeine per Euphoria — sourced from Yerba Maté, not synthetic stimulants.</span></div>
+      <div><strong>1g</strong><span>L-Glutamine per Refuel sachet. No mainstream Ironman gel includes this.&dagger;</span></div>
     </div>
-
-    <!-- Refuel card (reversed) -->
-    <div class="feature-card reverse">
-      <div class="fc-img">
-        <img src="https://cdn.jsdelivr.net/gh/bekzhou8455/rik-athletica@main/assets/media/AL-DSC00863.jpg" loading="lazy" decoding="async" alt="Athlete tearing open Refuel gel" style="object-position: center 42%;">
-      </div>
-      <div class="fc-body">
-        <div class="fc-tag">Refuel &middot; Intra + Recovery</div>
-        <div class="fc-title">Show up fresh tomorrow.&dagger;</div>
-        <div class="fc-desc">The only in-race gel designed for the day after, too. Tart Cherry + BCAA stack supports recovery between sessions&dagger; so you can stack hard training days back-to-back.</div>
-      </div>
-    </div>
-
-  </div>
-</div>
-
-<!-- ═══ 5. L-GLUTAMINE FEATURE ═══ -->
-<div class="lglut-feature">
-  <div class="lglut-feature-inner">
-    <div class="label">The differentiator</div>
-    <blockquote>"Most GI issues at km 25–30 of the Ironman run aren't fitness failures.<br>They're <em>intestinal barrier challenges that compound over extended effort.</em>"</blockquote>
-    <p class="citation">L-Glutamine is a key fuel source for intestinal cells.&dagger; 1g per Refuel sachet supports gut integrity during extended effort.&dagger; No mainstream energy gel — Maurten, SIS, or PF&amp;H — addresses this. RIK does.</p>
-    <a href="#product-gallery" class="btn btn-green">See the ingredient science &rarr;</a>
-  </div>
-</div>
-
-<!-- ═══ 6. PHOTO STRIP ═══ -->
-<!-- ═══ HOW TO USE ═══ -->
-<div style="padding:96px 40px;background:var(--sand);">
-  <div style="max-width:900px;margin:0 auto;text-align:center;">
-    <div class="eyebrow">Simple to use</div>
-    <h2 style="font-size:clamp(28px,3vw,40px);font-weight:400;letter-spacing:-0.03em;margin-bottom:48px;">Three moments. That's it.</h2>
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;">
-      <div style="background:#fff;border:1px solid var(--border);border-radius:var(--r-card);padding:36px 24px;">
-        <div style="font-size:28px;margin-bottom:12px;">&#x26A1;</div>
-        <h3 style="font-size:16px;font-weight:600;margin-bottom:8px;">Euphoria: Before</h3>
-        <p style="font-size:13px;color:var(--muted);line-height:1.6;">Take 25-30 minutes before key sessions. Long rides, race-pace runs, bricks.</p>
-      </div>
-      <div style="background:#fff;border:1px solid var(--border);border-radius:var(--r-card);padding:36px 24px;">
-        <div style="font-size:28px;margin-bottom:12px;">&#x1F504;</div>
-        <h3 style="font-size:16px;font-weight:600;margin-bottom:8px;">Refuel: During</h3>
-        <p style="font-size:13px;color:var(--muted);line-height:1.6;">Back half of sessions over 90 minutes. Sustained energy when it counts.</p>
-      </div>
-      <div style="background:#fff;border:1px solid var(--border);border-radius:var(--r-card);padding:36px 24px;">
-        <div style="font-size:28px;margin-bottom:12px;">&#x1F4AA;</div>
-        <h3 style="font-size:16px;font-weight:600;margin-bottom:8px;">Refuel: After</h3>
-        <p style="font-size:13px;color:var(--muted);line-height:1.6;">Within 30 minutes post-session. Supports recovery so you show up fresh tomorrow.†</p>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="photo-strip">
-  <img src="https://cdn.jsdelivr.net/gh/bekzhou8455/rik-athletica@main/assets/media/AL-DSC00141.jpg" loading="lazy" decoding="async" alt="Refuel gel in bento box on bike frame" style="object-position: center 40%;">
-  <img src="https://cdn.jsdelivr.net/gh/bekzhou8455/rik-athletica@main/assets/media/AL-DSC01041.jpg" loading="lazy" decoding="async" alt="Athlete running with gel" style="object-position: center 30%;">
-  <img src="https://cdn.jsdelivr.net/gh/bekzhou8455/rik-athletica@main/assets/media/AL-DSC00885.jpg" loading="lazy" decoding="async" alt="Athlete fuelling — warm outdoor lifestyle" style="object-position: center 18%;">
-</div>
-
-<!-- ═══ 7. SPRINT UPGRADE HOOK ═══ -->
-<section class="b-upgrade">
-  <div class="section-inner">
-    <h2 class="fade-up">Layer 2 works on its own. Inside Sprint, it works precisely.</h2>
-    <p class="sub fade-up stagger-1">When you deploy Euphoria + Refuel inside a personalized protocol, timed to your specific sessions, adjusted weekly based on how your body responds — that's when the same products slot into the system designed to close your fueling gap.</p>
-    <a href="/sprint" class="btn btn-green fade-up stagger-2">See How Sprint Works &rarr;</a>
   </div>
 </section>
 
-<!-- ═══ 8. FOOTER ═══ -->
-<footer>
-  <img src="https://cdn.jsdelivr.net/gh/bekzhou8455/rik-athletica@main/assets/media/rik-logo-cropped.png" alt="RIK Athletica" class="footer-logo-img">
-  <span class="footer-links">Copyright &copy; 2026 Rik Athletic Nutrition Inc. All rights reserved. &nbsp;&middot;&nbsp; <a href="/privacy">Privacy</a> &nbsp;&middot;&nbsp; <a href="/terms">Terms</a></span>
-  <div class="footer-disclaimer" style="font-size:12px;color:rgba(255,255,255,0.45);border-top:1px solid rgba(255,255,255,0.08);padding-top:20px;margin-top:8px;line-height:1.7;">
-    <strong style="color:rgba(255,255,255,0.6);display:block;margin-bottom:6px;">&dagger; Supplement &amp; Service Disclaimer</strong>
-    These statements have not been evaluated by the Food and Drug Administration. RIK Athletica products are dietary supplements and are not intended to diagnose, treat, cure, or prevent any disease. The 4-Week Sprint is a nutrition planning service for informational and educational purposes only — it does not constitute medical advice, diagnosis, or treatment. Individual results may vary based on training load, baseline nutrition, race conditions, and other factors. Race time improvement claims reflect potential outcomes based on fueling optimisation research and are not a guarantee of specific results. Always consult a qualified healthcare professional before starting any new supplement or nutrition programme. SGS-tested and GMP-certified refer to third-party quality and safety testing of our manufacturing facility and finished products.
+
+<!-- ═══ 03 — THE PRODUCTS (NEW MERGED — fix #3) ═══ -->
+<section class="s" id="products">
+  <div class="s-head">
+    <div class="s-num">03 — The products</div>
+    <div>
+      <h2>10 Functional Ingredients. <em>Photographed As-Is.</em></h2>
+      <p>Two products, ten functional ingredients. Every pack on the rack — same boxes, same bottles, no hero-shot stylistics. The carousel below scrolls through every ingredient. Every quantity is on the label.</p>
+    </div>
+  </div>
+
+  <div class="product-display">
+
+    <!-- Tab strip -->
+    <div class="pd-tabs" role="tablist" aria-label="Product gallery tabs">
+      <button class="pd-tab" role="tab" aria-selected="true" aria-controls="pd-panel-bundle" data-pd-tab="bundle" id="pd-tab-bundle">The Bundle · 30 gels</button>
+      <button class="pd-tab" role="tab" aria-selected="false" aria-controls="pd-panel-euphoria" data-pd-tab="euphoria" id="pd-tab-euphoria">Euphoria · pre-session</button>
+      <button class="pd-tab" role="tab" aria-selected="false" aria-controls="pd-panel-refuel" data-pd-tab="refuel" id="pd-tab-refuel">Refuel · intra + recovery</button>
+    </div>
+
+    <!-- Panels -->
+    <div class="pd-panels">
+
+      <!-- BUNDLE -->
+      <div class="pd-panel" data-active="true" id="pd-panel-bundle" role="tabpanel" aria-labelledby="pd-tab-bundle">
+        <div class="pd-gallery">
+          <div class="pd-gallery-main">
+            <img src="/assets/web/pack-bundle-open.jpg" alt="The RIK Bundle box, open — 10 Euphoria + 20 Refuel sachets" data-pd-main="bundle">
+          </div>
+          <div class="pd-gallery-thumbs" role="tablist" aria-label="Bundle photo angles">
+            <button class="pd-thumb" aria-selected="true" data-pd-thumb="bundle" data-pd-src="/assets/web/pack-bundle-open.jpg" aria-label="Box open">
+              <img src="/assets/web/pack-bundle-open.jpg" alt="">
+            </button>
+            <button class="pd-thumb" aria-selected="false" data-pd-thumb="bundle" data-pd-src="/assets/web/pack-bundle-top.jpg" aria-label="Box top">
+              <img src="/assets/web/pack-bundle-top.jpg" alt="">
+            </button>
+            <button class="pd-thumb" aria-selected="false" data-pd-thumb="bundle" data-pd-src="/assets/web/pack-bundle-front.jpg" aria-label="Box front">
+              <img src="/assets/web/pack-bundle-front.jpg" alt="">
+            </button>
+            <button class="pd-thumb" aria-selected="false" data-pd-thumb="bundle" data-pd-src="/assets/web/pack-bundle-back.jpg" aria-label="Box back">
+              <img src="/assets/web/pack-bundle-back.jpg" alt="">
+            </button>
+          </div>
+        </div>
+        <div class="pd-info">
+          <span class="pd-info-eyebrow">The Bundle · Layer 2 system</span>
+          <h3>The full session arc. <em>One box.</em></h3>
+          <p class="pd-info-tagline">10 Euphoria pre-activators + 20 Refuel intra/recovery gels. Designed to work together. Pre-session activation, mid-effort fuel, post-session recovery — covered without stacking four brands.&dagger;</p>
+          <div class="pd-specs">
+            <div class="pd-spec"><span class="pd-spec-label">Box contents</span><span class="pd-spec-val">10 Euphoria + 20 Refuel</span></div>
+            <div class="pd-spec"><span class="pd-spec-label">Sachet size</span><span class="pd-spec-val">50ml each</span></div>
+            <div class="pd-spec"><span class="pd-spec-label">Total carbs</span><span class="pd-spec-val">460g across 20 Refuel</span></div>
+            <div class="pd-spec"><span class="pd-spec-label">Plant caffeine</span><span class="pd-spec-val">1,000mg across 10 Euphoria</span></div>
+          </div>
+          <div class="pd-bullets">
+            <div class="pd-bullet"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5L10 17.5L19 7.5"/></svg><span>SGS-tested · GMP-certified · FDA-registered facility</span></div>
+            <div class="pd-bullet"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5L10 17.5L19 7.5"/></svg><span>30-day money-back. Full refund. No questions.</span></div>
+            <div class="pd-bullet"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5L10 17.5L19 7.5"/></svg><span>Free shipping for the first 50 customers</span></div>
+          </div>
+          <div class="pd-price">
+            <span class="pd-price-num">$119</span>
+            <span class="pd-price-meta">/ bundle (10 + 20 sachets) · free shipping</span>
+          </div>
+          <div class="pd-cta-row">
+            <a href="https://buy.stripe.com/4gM7sN6Wq3cc7T0fZ67Re00" data-rewardful class="cta" data-track="bundle_add_to_cart"><span class="pill">Add to Cart — $119</span><span class="arrow">↗</span></a>
+          </div>
+        </div>
+      </div>
+
+      <!-- EUPHORIA -->
+      <div class="pd-panel" data-active="false" id="pd-panel-euphoria" role="tabpanel" aria-labelledby="pd-tab-euphoria" hidden>
+        <div class="pd-gallery">
+          <div class="pd-gallery-main">
+            <img src="/assets/web/pack-euphoria-front.jpg" alt="Euphoria pre-session activator sachet — front" data-pd-main="euphoria">
+          </div>
+          <div class="pd-gallery-thumbs" role="tablist" aria-label="Euphoria photo angles">
+            <button class="pd-thumb" aria-selected="true" data-pd-thumb="euphoria" data-pd-src="/assets/web/pack-euphoria-front.jpg" aria-label="Euphoria front">
+              <img src="/assets/web/pack-euphoria-front.jpg" alt="">
+            </button>
+            <button class="pd-thumb" aria-selected="false" data-pd-thumb="euphoria" data-pd-src="/assets/web/pack-euphoria-back.jpg" aria-label="Euphoria back">
+              <img src="/assets/web/pack-euphoria-back.jpg" alt="">
+            </button>
+          </div>
+        </div>
+        <div class="pd-info">
+          <span class="pd-info-eyebrow">Euphoria · pre-session activator</span>
+          <h3>25 Minutes Before. <em>Lights On.</em></h3>
+          <p class="pd-info-tagline">Plant caffeine from Yerba Maté, calibrated with L-Carnitine and Beta-Alanine. Zero sugar. No insulin spike. The pre-session ritual — not another carb gel.</p>
+          <div class="pd-specs">
+            <div class="pd-spec"><span class="pd-spec-label">Format</span><span class="pd-spec-val">50ml sachet</span></div>
+            <div class="pd-spec"><span class="pd-spec-label">Plant caffeine</span><span class="pd-spec-val">100mg (Yerba Maté)</span></div>
+            <div class="pd-spec"><span class="pd-spec-label">Sugar</span><span class="pd-spec-val">0g</span></div>
+            <div class="pd-spec"><span class="pd-spec-label">Use</span><span class="pd-spec-val">25 min pre-session</span></div>
+            <div class="pd-spec"><span class="pd-spec-label">Key actives</span><span class="pd-spec-val">L-Carnitine · Beta-Alanine · Taurine</span></div>
+            <div class="pd-spec"><span class="pd-spec-label">Per bundle</span><span class="pd-spec-val">10 sachets</span></div>
+          </div>
+          <div class="pd-bullets">
+            <div class="pd-bullet"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5L10 17.5L19 7.5"/></svg><span>Smooth ramp — no jitters, no caffeine cliff</span></div>
+            <div class="pd-bullet"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5L10 17.5L19 7.5"/></svg><span>Activates fat metabolism alongside carb pathways&dagger;</span></div>
+            <div class="pd-bullet"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5L10 17.5L19 7.5"/></svg><span>Pairs with Refuel — does not duplicate it</span></div>
+          </div>
+          <div class="pd-price">
+            <span class="pd-price-num">Bundle only</span>
+            <span class="pd-price-meta">10 × Euphoria included in the $119 RIK Bundle</span>
+          </div>
+          <div class="pd-cta-row">
+            <a href="https://buy.stripe.com/4gM7sN6Wq3cc7T0fZ67Re00" data-rewardful class="cta" data-track="bundle_add_to_cart"><span class="pill">Add the Bundle — $119</span><span class="arrow">↗</span></a>
+          </div>
+        </div>
+      </div>
+
+      <!-- REFUEL -->
+      <div class="pd-panel" data-active="false" id="pd-panel-refuel" role="tabpanel" aria-labelledby="pd-tab-refuel" hidden>
+        <div class="pd-gallery">
+          <div class="pd-gallery-main">
+            <img src="/assets/web/pack-refuel-front.jpg" alt="Refuel intra + recovery gel sachet — front" data-pd-main="refuel">
+          </div>
+          <div class="pd-gallery-thumbs" role="tablist" aria-label="Refuel photo angles">
+            <button class="pd-thumb" aria-selected="true" data-pd-thumb="refuel" data-pd-src="/assets/web/pack-refuel-front.jpg" aria-label="Refuel front">
+              <img src="/assets/web/pack-refuel-front.jpg" alt="">
+            </button>
+            <button class="pd-thumb" aria-selected="false" data-pd-thumb="refuel" data-pd-src="/assets/web/pack-refuel-back.jpg" aria-label="Refuel back">
+              <img src="/assets/web/pack-refuel-back.jpg" alt="">
+            </button>
+          </div>
+        </div>
+        <div class="pd-info">
+          <span class="pd-info-eyebrow">Refuel · intra + recovery</span>
+          <h3>Mid-Effort Fuel. <em>Recovery Built-In.</em></h3>
+          <p class="pd-info-tagline">23g fast carbs in a 1:0.8 glucose-to-fructose ratio for sustained absorption. Stacked with Tart Cherry, BCAA 2:1:1, L-Glutamine and Curcumin — the same gel works tomorrow morning.&dagger;</p>
+          <div class="pd-specs">
+            <div class="pd-spec"><span class="pd-spec-label">Format</span><span class="pd-spec-val">50ml sachet</span></div>
+            <div class="pd-spec"><span class="pd-spec-label">Carbs</span><span class="pd-spec-val">23g (1:0.8 ratio)</span></div>
+            <div class="pd-spec"><span class="pd-spec-label">L-Glutamine</span><span class="pd-spec-val">1g per sachet</span></div>
+            <div class="pd-spec"><span class="pd-spec-label">Use</span><span class="pd-spec-val">Every 45–60 min · post-session</span></div>
+            <div class="pd-spec"><span class="pd-spec-label">Recovery stack</span><span class="pd-spec-val">Tart Cherry · BCAA 2:1:1 · Curcumin</span></div>
+            <div class="pd-spec"><span class="pd-spec-label">Per bundle</span><span class="pd-spec-val">20 sachets</span></div>
+          </div>
+          <div class="pd-bullets">
+            <div class="pd-bullet"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5L10 17.5L19 7.5"/></svg><span>Designed for gut training from the first sachet</span></div>
+            <div class="pd-bullet"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5L10 17.5L19 7.5"/></svg><span>1g L-Glutamine — gut integrity at long-effort doses&dagger;</span></div>
+            <div class="pd-bullet"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5L10 17.5L19 7.5"/></svg><span>Same sachet works post-session for recovery</span></div>
+          </div>
+          <div class="pd-price">
+            <span class="pd-price-num">Bundle only</span>
+            <span class="pd-price-meta">20 × Refuel included in the $119 RIK Bundle</span>
+          </div>
+          <div class="pd-cta-row">
+            <a href="https://buy.stripe.com/4gM7sN6Wq3cc7T0fZ67Re00" data-rewardful class="cta" data-track="bundle_add_to_cart"><span class="pill">Add the Bundle — $119</span><span class="arrow">↗</span></a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Matte-glass auto-scroll ingredient carousel -->
+    <div class="ing-carousel" id="ing-carousel">
+      <div class="ing-carousel-head">
+        <span class="ing-carousel-eyebrow">10 functional ingredients</span>
+        <span class="ing-carousel-counter">Hover to pause · scrolls continuously</span>
+      </div>
+      <div class="ing-track-wrap">
+        <div class="ing-track" id="ing-track">
+          <!-- Track set 1 -->
+          <div class="ing-chip">
+            <div class="ing-chip-img" style="background-image:url(/assets/ingredients/yerba.jpg)"></div>
+            <div class="ing-chip-body">
+              <span class="ing-chip-tag">Euphoria</span>
+              <span class="ing-chip-name">Yerba Maté</span>
+              <span class="ing-chip-claim">100mg plant caffeine. Smoother than synthetic.</span>
+            </div>
+          </div>
+          <div class="ing-chip">
+            <div class="ing-chip-img" style="background-image:url(/assets/ingredients/l-carnitine.jpg)"></div>
+            <div class="ing-chip-body">
+              <span class="ing-chip-tag">Euphoria</span>
+              <span class="ing-chip-name">L-Carnitine</span>
+              <span class="ing-chip-claim">Supports fat metabolism for sustained endurance.&dagger;</span>
+            </div>
+          </div>
+          <div class="ing-chip">
+            <div class="ing-chip-img" style="background-image:url(/assets/ingredients/taurine.jpg)"></div>
+            <div class="ing-chip-body">
+              <span class="ing-chip-tag">Euphoria</span>
+              <span class="ing-chip-name">Taurine</span>
+              <span class="ing-chip-claim">Cellular hydration. Backs the activation profile.&dagger;</span>
+            </div>
+          </div>
+          <div class="ing-chip">
+            <div class="ing-chip-img" style="background-image:url(/assets/ingredients/beta-alanine.jpg)"></div>
+            <div class="ing-chip-body">
+              <span class="ing-chip-tag">Euphoria</span>
+              <span class="ing-chip-name">Beta-Alanine</span>
+              <span class="ing-chip-claim">Buffers muscle acidity during high-intensity work.&dagger;</span>
+            </div>
+          </div>
+          <div class="ing-chip">
+            <div class="ing-chip-img" style="background-image:url(/assets/ingredients/electrolytes.jpg)"></div>
+            <div class="ing-chip-body">
+              <span class="ing-chip-tag">Refuel</span>
+              <span class="ing-chip-name">Electrolyte Matrix</span>
+              <span class="ing-chip-claim">Sodium, potassium, magnesium, calcium — calibrated.</span>
+            </div>
+          </div>
+          <div class="ing-chip">
+            <div class="ing-chip-img" style="background-image:url(/assets/ingredients/glutamine.jpg)"></div>
+            <div class="ing-chip-body">
+              <span class="ing-chip-tag">Refuel</span>
+              <span class="ing-chip-name">L-Glutamine</span>
+              <span class="ing-chip-claim">1g per sachet. Supports gut integrity in long efforts.&dagger;</span>
+            </div>
+          </div>
+          <div class="ing-chip">
+            <div class="ing-chip-img" style="background-image:url(/assets/ingredients/cherry.jpg)"></div>
+            <div class="ing-chip-body">
+              <span class="ing-chip-tag">Refuel</span>
+              <span class="ing-chip-name">Tart Cherry</span>
+              <span class="ing-chip-claim">Antioxidant-rich. Supports back-to-back training days.&dagger;</span>
+            </div>
+          </div>
+          <div class="ing-chip">
+            <div class="ing-chip-img" style="background-image:url(/assets/ingredients/bcaa.jpg)"></div>
+            <div class="ing-chip-body">
+              <span class="ing-chip-tag">Refuel</span>
+              <span class="ing-chip-name">BCAAs (2:1:1)</span>
+              <span class="ing-chip-claim">Leucine-weighted for muscle preservation.&dagger;</span>
+            </div>
+          </div>
+          <div class="ing-chip">
+            <div class="ing-chip-img" style="background-image:url(/assets/ingredients/curcumin.jpg)"></div>
+            <div class="ing-chip-body">
+              <span class="ing-chip-tag">Refuel</span>
+              <span class="ing-chip-name">Curcumin</span>
+              <span class="ing-chip-claim">Liposomal delivery for systemic recovery support.&dagger;</span>
+            </div>
+          </div>
+          <div class="ing-chip">
+            <div class="ing-chip-img" style="background-image:url(/assets/ingredients/citrulline.jpg)"></div>
+            <div class="ing-chip-body">
+              <span class="ing-chip-tag">Refuel</span>
+              <span class="ing-chip-name">L-Citrulline</span>
+              <span class="ing-chip-claim">Supports nitric oxide for late-race vasodilation.&dagger;</span>
+            </div>
+          </div>
+          <!-- Track set 2 (duplicate for seamless loop) -->
+          <div class="ing-chip" aria-hidden="true">
+            <div class="ing-chip-img" style="background-image:url(/assets/ingredients/yerba.jpg)"></div>
+            <div class="ing-chip-body"><span class="ing-chip-tag">Euphoria</span><span class="ing-chip-name">Yerba Maté</span><span class="ing-chip-claim">100mg plant caffeine. Smoother than synthetic.</span></div>
+          </div>
+          <div class="ing-chip" aria-hidden="true">
+            <div class="ing-chip-img" style="background-image:url(/assets/ingredients/l-carnitine.jpg)"></div>
+            <div class="ing-chip-body"><span class="ing-chip-tag">Euphoria</span><span class="ing-chip-name">L-Carnitine</span><span class="ing-chip-claim">Supports fat metabolism for sustained endurance.&dagger;</span></div>
+          </div>
+          <div class="ing-chip" aria-hidden="true">
+            <div class="ing-chip-img" style="background-image:url(/assets/ingredients/taurine.jpg)"></div>
+            <div class="ing-chip-body"><span class="ing-chip-tag">Euphoria</span><span class="ing-chip-name">Taurine</span><span class="ing-chip-claim">Cellular hydration. Backs the activation profile.&dagger;</span></div>
+          </div>
+          <div class="ing-chip" aria-hidden="true">
+            <div class="ing-chip-img" style="background-image:url(/assets/ingredients/beta-alanine.jpg)"></div>
+            <div class="ing-chip-body"><span class="ing-chip-tag">Euphoria</span><span class="ing-chip-name">Beta-Alanine</span><span class="ing-chip-claim">Buffers muscle acidity during high-intensity work.&dagger;</span></div>
+          </div>
+          <div class="ing-chip" aria-hidden="true">
+            <div class="ing-chip-img" style="background-image:url(/assets/ingredients/electrolytes.jpg)"></div>
+            <div class="ing-chip-body"><span class="ing-chip-tag">Refuel</span><span class="ing-chip-name">Electrolyte Matrix</span><span class="ing-chip-claim">Sodium, potassium, magnesium, calcium — calibrated.</span></div>
+          </div>
+          <div class="ing-chip" aria-hidden="true">
+            <div class="ing-chip-img" style="background-image:url(/assets/ingredients/glutamine.jpg)"></div>
+            <div class="ing-chip-body"><span class="ing-chip-tag">Refuel</span><span class="ing-chip-name">L-Glutamine</span><span class="ing-chip-claim">1g per sachet. Supports gut integrity in long efforts.&dagger;</span></div>
+          </div>
+          <div class="ing-chip" aria-hidden="true">
+            <div class="ing-chip-img" style="background-image:url(/assets/ingredients/cherry.jpg)"></div>
+            <div class="ing-chip-body"><span class="ing-chip-tag">Refuel</span><span class="ing-chip-name">Tart Cherry</span><span class="ing-chip-claim">Antioxidant-rich. Supports back-to-back training days.&dagger;</span></div>
+          </div>
+          <div class="ing-chip" aria-hidden="true">
+            <div class="ing-chip-img" style="background-image:url(/assets/ingredients/bcaa.jpg)"></div>
+            <div class="ing-chip-body"><span class="ing-chip-tag">Refuel</span><span class="ing-chip-name">BCAAs (2:1:1)</span><span class="ing-chip-claim">Leucine-weighted for muscle preservation.&dagger;</span></div>
+          </div>
+          <div class="ing-chip" aria-hidden="true">
+            <div class="ing-chip-img" style="background-image:url(/assets/ingredients/curcumin.jpg)"></div>
+            <div class="ing-chip-body"><span class="ing-chip-tag">Refuel</span><span class="ing-chip-name">Curcumin</span><span class="ing-chip-claim">Liposomal delivery for systemic recovery support.&dagger;</span></div>
+          </div>
+          <div class="ing-chip" aria-hidden="true">
+            <div class="ing-chip-img" style="background-image:url(/assets/ingredients/citrulline.jpg)"></div>
+            <div class="ing-chip-body"><span class="ing-chip-tag">Refuel</span><span class="ing-chip-name">L-Citrulline</span><span class="ing-chip-claim">Supports nitric oxide for late-race vasodilation.&dagger;</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- FDA disclaimer banner — appears at the close of the product gallery section -->
+  <div class="fda-banner" role="note" aria-label="FDA dietary supplement disclaimer">
+    <div class="fda-banner-icon" aria-hidden="true">
+      <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+    </div>
+    <div class="fda-banner-body">
+      <strong>&dagger; FDA Dietary Supplement Disclosure</strong>
+      These statements have not been evaluated by the Food and Drug Administration. RIK Athletica products are dietary supplements and are not intended to diagnose, treat, cure, or prevent any disease. Individual results may vary. Always consult a qualified healthcare professional before starting any new supplement programme — especially if You are pregnant, nursing, taking medication, or have a medical condition. SGS-tested · GMP-certified · FDA-registered facility refer to third-party quality and safety testing only.
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══ 04 — THREE MOMENTS (REVAMPED — fix #4 dynamic illustration) ═══ -->
+<section class="s alt" id="three-moments">
+  <div class="s-head">
+    <div class="s-num">04 — Three moments</div>
+    <div>
+      <h2>Three Moments. <em>One Simple Rhythm.</em></h2>
+      <p>The bundle covers the full session arc. Not "every 25 minutes for 5 hours" — three deliberate moments that match how Your body actually metabolizes effort.</p>
+    </div>
+  </div>
+
+  <div class="three-moments">
+    <div class="tm-illustration" id="tmStage">
+
+      <!-- Dotted SVG connectors (between cells, viewport: cell1 right → cell2 left, cell2 right → cell3 left) -->
+      <div class="tm-connectors" id="tmConnectors" aria-hidden="true">
+        <svg viewBox="0 0 1200 120" preserveAspectRatio="none">
+          <!-- arc 1: from end of cell 1 (~28% x, 50% y) to start of cell 2 (~38% x, 50% y) -->
+          <path d="M 250 60 Q 350 12, 480 60"/>
+          <!-- arc 2: from end of cell 2 (~62%) to start of cell 3 (~72%) -->
+          <path d="M 720 60 Q 820 108, 950 60"/>
+        </svg>
+      </div>
+
+      <div class="tm-stage">
+        <div class="tm-cell" data-tm="1">
+          <div class="tm-pack">
+            <img src="/assets/web/pack-euphoria-front.jpg" alt="Euphoria pre-session activator">
+          </div>
+          <span class="tm-time-tag"><span class="tm-time-tag-dot"></span>— 25 min</span>
+          <strong>Pre — 25 minutes before</strong>
+          <p>1 × Euphoria. Plant caffeine + L-Carnitine + Beta-Alanine support output from the first interval.&dagger;</p>
+        </div>
+        <div class="tm-cell" data-tm="2">
+          <div class="tm-pack">
+            <img src="/assets/web/pack-refuel-front.jpg" alt="Refuel intra + recovery gel">
+          </div>
+          <span class="tm-time-tag"><span class="tm-time-tag-dot"></span>+ 45–60 min</span>
+          <strong>Mid — back half of session</strong>
+          <p>1 × Refuel every 45–60 minutes. 23g fast carbs for sustained output, electrolytes matched to Your sweat rate.&dagger;</p>
+        </div>
+        <div class="tm-cell" data-tm="3">
+          <div class="tm-pack">
+            <img src="/assets/web/pack-refuel-front.jpg" alt="Refuel post-session recovery gel">
+          </div>
+          <span class="tm-time-tag"><span class="tm-time-tag-dot"></span>+ 30 min after</span>
+          <strong>Post — within 30 minutes</strong>
+          <p>1 × Refuel. Tart Cherry + BCAA + L-Glutamine support recovery so You show up fresh tomorrow.&dagger;</p>
+        </div>
+      </div>
+
+      <div class="tm-rhythm">
+        Three sachets · <strong>one rhythm</strong> · same Refuel, two roles
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══ 05 — VOICES (Reddit-sourced rotating concerns) ═══ -->
+<section class="s voices" id="voices">
+  <div class="s-head">
+    <div class="s-num">05 — In the wild</div>
+    <div>
+      <h2>Real concerns. <em>Real athletes.</em></h2>
+      <p>Pulled from r/triathlon, r/IronmanTriathlon, r/AdvancedRunning, r/Velo, r/Ultramarathon. The conversations the bundle was built to address.</p>
+    </div>
+  </div>
+
+  <div class="voices-stage">
+    <span class="voices-quote-mark" aria-hidden="true">&ldquo;</span>
+    <div class="voices-cycle" id="voicesCycle" aria-live="polite" aria-atomic="true"></div>
+    <div class="voices-progress">
+      <span class="voices-counter">
+        <span class="voices-current" id="voicesCurrent">01</span>
+        &nbsp;/&nbsp;<span id="voicesTotal">25</span>
+      </span>
+      <div class="voices-controls">
+        <div class="voices-dots" id="voicesDots" aria-hidden="true"></div>
+        <button class="voices-pause" id="voicesPause" data-state="playing" aria-label="Pause auto-rotation"></button>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══ 06 — ADD TO CART (cta-wall) ═══ -->
+<section class="s alt" id="add-to-cart">
+  <div class="s-head">
+    <div class="s-num">06 — Get the bundle</div>
+    <div>
+      <h2>Add the Bundle. <em>Or upgrade to Sprint.</em></h2>
+      <p>The bundle works on its own. Inside the 4-Week Sprint, the same products are calibrated to Your sweat rate, body weight, and race distance — and arrive in two shipments across the protocol, with an optional Race Pack at checkout for race-day fueling.</p>
+    </div>
+  </div>
+
+  <div class="cta-wall">
+    <div class="cta-cell">
+      <span class="cell-eyebrow">The Bundle · 30 gels</span>
+      <h3>Race-Day Fuel Bundle.</h3>
+      <p>10 Euphoria + 20 Refuel. Free shipping for the first 50 customers. Ships in 3 business days.</p>
+      <div class="cell-trust">
+        <span><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5L10 17.5L19 7.5"/></svg> 30-day money-back guarantee</span>
+        <span><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5L10 17.5L19 7.5"/></svg> SGS tested · GMP certified</span>
+        <span><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5L10 17.5L19 7.5"/></svg> FDA-registered facility</span>
+      </div>
+      <div class="cell-price">$119</div>
+      <div class="cell-price-meta">/ bundle (10 Euphoria + 20 Refuel) · free shipping</div>
+      <div class="cta-bottom">
+        <a href="https://buy.stripe.com/4gM7sN6Wq3cc7T0fZ67Re00" data-rewardful class="cta" data-track="bundle_add_to_cart"><span class="pill">Add to Cart — $119</span><span class="arrow">↗</span></a>
+      </div>
+    </div>
+    <div class="cta-cell sand">
+      <span class="cell-eyebrow">The 4-Week Sprint · personalized</span>
+      <h3>Or — Build the System.</h3>
+      <p>If Your race is 4–8 weeks out, Sprint takes the same products and calibrates them to Your physiology. Two shipments across the protocol. Race Pack — optional at checkout — covers race-day product mix.</p>
+      <div class="cell-price">From $569</div>
+      <div class="cell-price-meta">/ Sprint (Half Ironman) · two shipments + optional Race Pack</div>
+      <div class="cta-bottom">
+        <a href="/sprint" class="cta" data-track="sprint_cta_click"><span class="pill">See the Sprint</span><span class="arrow">↗</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══ 07 — REFUND POLICY BANNER (verbatim from sprint memo v2) ═══ -->
+<section class="refund-banner" id="refund-policy">
+  <div class="refund-card">
+    <div class="refund-stamp">
+      <div class="refund-stamp-numwrap">
+        <span class="refund-stamp-num">30</span>
+        <span class="refund-stamp-day"><strong>Days</strong>Money-back</span>
+      </div>
+      <span class="refund-stamp-tag">
+        <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5L10 17.5L19 7.5"/></svg>
+        No questions asked
+      </span>
+    </div>
+    <div class="refund-body">
+      <span class="refund-eyebrow">The deal we make with You</span>
+      <h3>30 Days. <em>Zero Questions.</em></h3>
+      <p>If You train with these gels for 30 days and don't notice better energy or fewer GI issues than Your current fueling, email us — full refund, keep the gels. We'll eat the cost. We're that confident.</p>
+      <div class="refund-meta">
+        <span><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5L10 17.5L19 7.5"/></svg> No restocking fee</span>
+        <span><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5L10 17.5L19 7.5"/></svg> No questionnaire to complete</span>
+        <span><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5L10 17.5L19 7.5"/></svg> One email — that's it</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══ CLOSING — full-bleed dramatic finale (fix #6 right-column scrim strengthened above in CSS) ═══ -->
+<section class="closing">
+  <div class="closing-row">
+    <h2>Bundle Works on Its Own. <em>Inside Sprint, It Works Precisely.</em></h2>
+    <div class="closing-meta">
+      <span class="eyebrow">For athletes who race</span>
+      <p>The Bundle is the products. The Sprint is the protocol. If You have a race in 4–8 weeks, the Sprint calibrates the Bundle to Your physiology — same products, dialed to Your sweat rate, body weight, and race distance.</p>
+      <div class="closing-cta">
+        <a href="https://buy.stripe.com/4gM7sN6Wq3cc7T0fZ67Re00" data-rewardful class="cta invert" data-track="bundle_add_to_cart"><span class="pill">Add the Bundle — $119</span><span class="arrow">↗</span></a>
+        <a href="/sprint" class="cta" data-track="sprint_cta_click"><span class="pill" style="background:transparent;border-color:rgba(255,255,255,.5);color:#fff">Or upgrade to Sprint</span><span class="arrow" style="background:transparent;border-color:rgba(255,255,255,.5);color:#fff">↗</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══ Back to top ═══ -->
+<div style="text-align:center;padding:32px 20px;background:#fff;border-top:1px solid rgba(14,14,14,.08);">
+  <a href="#top" aria-label="Back to top of page" style="display:inline-flex;align-items:center;gap:8px;padding:12px 24px;border-radius:999px;border:1px solid #0E0E0E;background:#fff;color:#0E0E0E;font-family:'Outfit',-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif;font-size:13px;font-weight:500;letter-spacing:.02em;text-decoration:none;transition:all .2s ease;">
+    <span aria-hidden="true">↑</span>
+    <span>Back to top</span>
+  </a>
+</div>
+
+
+<!-- ═══ FOOTER ═══ -->
+<footer class="legal">
+  <div class="wrap">
+    <div class="legal-top">
+      <img src="https://cdn.jsdelivr.net/gh/bekzhou8455/rik-athletica@main/assets/media/rik-logo-cropped.png" alt="RIK Athletica" class="legal-logo">
+      <div>
+        <a href="https://wa.me/16263609822?text=Hi%20RIK%20%E2%80%94%20" target="_blank" rel="noopener" data-track="whatsapp_open" aria-label="Message RIK Athletica on WhatsApp" style="display:inline-flex;align-items:center;gap:5px;vertical-align:middle"><svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor" aria-hidden="true"><path d="M17.5 14.4c-.3-.2-1.7-.8-2-1-.3-.1-.4-.2-.6.1-.2.3-.7.9-.9 1.1-.2.2-.3.2-.6.1-.3-.2-1.2-.5-2.3-1.4-.9-.7-1.4-1.7-1.6-1.9-.2-.3 0-.4.1-.6.1-.1.3-.3.4-.5.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5-.1-.1-.6-1.5-.9-2.1-.2-.5-.5-.5-.6-.5h-.5c-.2 0-.5.1-.7.4-.2.3-.9.9-.9 2.2 0 1.3.9 2.6 1.1 2.7.1.2 1.8 2.7 4.3 3.8.6.3 1.1.4 1.4.5.6.2 1.2.2 1.6.1.5-.1 1.5-.6 1.7-1.1.2-.5.2-1 .1-1.1-.1-.1-.3-.1-.6-.3zM12 0C5.4 0 0 5.4 0 12c0 2.1.5 4.1 1.5 5.8L0 24l6.4-1.4c1.7.9 3.6 1.4 5.6 1.4 6.6 0 12-5.4 12-12S18.6 0 12 0zm0 22c-1.9 0-3.6-.5-5.1-1.4l-3.7.8.8-3.6C3 16.2 2.5 14.1 2.5 12 2.5 6.7 6.7 2.5 12 2.5S21.5 6.7 21.5 12 17.3 22 12 22z"/></svg>WhatsApp</a> &nbsp;·&nbsp; <a href="/privacy">Privacy</a> &nbsp;·&nbsp; <a href="/terms">Terms</a>
+      </div>
+    </div>
+    <div style="font-size:12px;color:rgba(255,255,255,.55);letter-spacing:.04em">Copyright &copy; 2026 Rik Athletic Nutrition Inc. All rights reserved.</div>
+    <div class="footer-disclaimer">
+      <strong>&dagger; Supplement &amp; Service Disclaimer</strong>
+      These statements have not been evaluated by the Food and Drug Administration. RIK Athletica products are dietary supplements and are not intended to diagnose, treat, cure, or prevent any disease. The 4-Week Sprint is a personalized nutrition coaching service and does not constitute medical advice, diagnosis, or treatment. Individual results may vary based on training load, baseline nutrition, race conditions, and other factors. Estimates based on peer-reviewed research (Pfeiffer et al., 2012; Jeukendrup, 2014; Cermak &amp; van Loon, 2013). Always consult a qualified healthcare professional before starting any new supplement or nutrition programme. SGS-tested and GMP-certified refer to third-party quality and safety testing of our manufacturing facility and finished products.
+    </div>
   </div>
 </footer>
 
-<!-- ═══ GALLERY JS ═══ -->
+
+<!-- ═══ SCRIPTS ═══ -->
 <script>
-function toggleMobileNav() {
-  var nav = document.getElementById("nav-mobile");
-  var btn = document.querySelector(".nav-toggle");
-  var open = nav.classList.toggle("open");
-  btn.classList.toggle("open");
-  document.body.style.overflow = open ? "hidden" : "";
+function toggleMobileNav(){
+  var nav = document.getElementById('nav-mobile');
+  var btn = document.querySelector('.nav-toggle');
+  var open = nav.classList.toggle('open');
+  btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+  document.body.style.overflow = open ? 'hidden' : '';
 }
 
-function switchGallery(product) {
-  document.querySelectorAll('.pg-switch').forEach(b => b.classList.toggle('active', b.dataset.product === product));
-  document.querySelectorAll('.pg-detail-tab').forEach(b => b.classList.toggle('active', b.dataset.tab === product));
-  document.getElementById('pg-panel-refuel').classList.toggle('active', product === 'refuel');
-  document.getElementById('pg-panel-euphoria').classList.toggle('active', product === 'euphoria');
-  var thumbs = document.querySelectorAll('.pg-thumb');
-  thumbs.forEach(t => { t.style.display = t.dataset.product === product ? '' : 'none'; t.classList.remove('active'); });
-  var firstThumb = document.querySelector('.pg-thumb[data-product="' + product + '"]');
-  if (firstThumb) { firstThumb.classList.add('active'); document.getElementById('pg-main-img').src = firstThumb.dataset.src; }
-}
-
-function setThumb(el) {
-  document.querySelectorAll('.pg-thumb').forEach(t => t.classList.remove('active'));
-  el.classList.add('active');
-  document.getElementById('pg-main-img').src = el.dataset.src;
-}
+/* Nav fade-on-scroll */
+(function(){
+  var nav = document.querySelector('.site-nav');
+  if (!nav) return;
+  var ticking = false;
+  function update(){
+    var y = window.scrollY || window.pageYOffset;
+    var vh = window.innerHeight;
+    var startFade = vh * 0.50, endFade = vh * 0.85;
+    var opacity = 1;
+    if (y > startFade) opacity = Math.max(0, 1 - (y - startFade) / (endFade - startFade));
+    nav.style.opacity = opacity;
+    nav.setAttribute('data-state', opacity < 0.04 ? 'hidden' : 'visible');
+    ticking = false;
+  }
+  window.addEventListener('scroll', function(){ if (!ticking){ requestAnimationFrame(update); ticking = true; } }, { passive: true });
+  update();
+})();
 </script>
 
 <script>
+/* Product display: tab + thumb gallery */
+(function(){
+  var tabs = document.querySelectorAll('.pd-tab');
+  var panels = document.querySelectorAll('.pd-panel');
+  if (!tabs.length || !panels.length) return;
+
+  function activate(tabKey){
+    tabs.forEach(function(t){
+      var on = t.getAttribute('data-pd-tab') === tabKey;
+      t.setAttribute('aria-selected', on ? 'true' : 'false');
+    });
+    panels.forEach(function(p){
+      var on = p.id === 'pd-panel-' + tabKey;
+      p.setAttribute('data-active', on ? 'true' : 'false');
+      if (on) p.removeAttribute('hidden'); else p.setAttribute('hidden','');
+    });
+    if (typeof gtag === 'function') gtag('event', 'product_tab_view', { page: 'bundle', product: tabKey });
+  }
+  tabs.forEach(function(t){
+    t.addEventListener('click', function(){
+      activate(t.getAttribute('data-pd-tab'));
+    });
+  });
+
+  /* thumb → main image swap */
+  document.querySelectorAll('.pd-thumb').forEach(function(thumb){
+    thumb.addEventListener('click', function(){
+      var key = thumb.getAttribute('data-pd-thumb');
+      var src = thumb.getAttribute('data-pd-src');
+      var main = document.querySelector('img[data-pd-main="' + key + '"]');
+      if (main && src){
+        main.style.opacity = '0';
+        setTimeout(function(){
+          main.src = src;
+          main.style.opacity = '1';
+        }, 150);
+      }
+      document.querySelectorAll('.pd-thumb[data-pd-thumb="' + key + '"]').forEach(function(o){
+        o.setAttribute('aria-selected', o === thumb ? 'true' : 'false');
+      });
+    });
+  });
+})();
+</script>
+
+<script>
+/* Three Moments — IntersectionObserver staggered reveal + connector animation */
+(function(){
+  var stage = document.getElementById('tmStage');
+  var connectors = document.getElementById('tmConnectors');
+  var cells = document.querySelectorAll('.tm-cell');
+  if (!stage || !cells.length) return;
+
+  if ('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if (e.isIntersecting){
+          cells.forEach(function(c){ c.classList.add('in-view'); });
+          if (connectors) connectors.classList.add('in-view');
+          io.disconnect();
+        }
+      });
+    }, { threshold: 0.18 });
+    io.observe(stage);
+  } else {
+    cells.forEach(function(c){ c.classList.add('in-view'); });
+    if (connectors) connectors.classList.add('in-view');
+  }
+})();
+</script>
+
+<script>
+/* Voices rotator — 25 curated Reddit pain-points (same source set as /home) */
+(function(){
+  var VOICES = [
+    { q: "Stomach stopped accepting liquids around mile 9. That never resolved. Through all the struggles, we finished.", s: "r/Ultramarathon" },
+    { q: "Horrendous stomach cramping from the very beginning. I couldn't fuel or hydrate properly. So I bonked. Hard.", s: "r/Ultramarathon" },
+    { q: "Finished first 70.3 on Sunday. The gels absolutely wrecked my stomach midway through the bike — and I hate them.", s: "r/IronmanTriathlon" },
+    { q: "Doing another 70.3 in 4 weeks. Want to try a real food strategy. Anyone done this without bonking?", s: "r/IronmanTriathlon" },
+    { q: "T1 was a mess. The bike butter. The run hell of stitches. 120g of carbs an hour was a bit much.", s: "r/triathlon" },
+    { q: "Big gel has its hooks in the average marathon runner. I eat nerd gummies — only use gels on race day.", s: "r/AdvancedRunning" },
+    { q: "REI carries gels made from dates, bananas, real food. Those sit WAYYY better in my stomach.", s: "r/IronmanTriathlon" },
+    { q: "The 2:1 ratio was based on older studies. Newer ones suggest 1:1 when above 90g/hr.", s: "r/Velo" },
+    { q: "Most gels go with 1:0.8 because anything higher just won't sit. Gut absorption is the real wall.", s: "r/Velo" },
+    { q: "You likely still underfueled. If no GI issues, do more next time. Get carbs in your bottles.", s: "r/Velo" },
+    { q: "GI distress can just be the stress of going all-out for four hours. Not the carbs. The pace.", s: "r/Velo" },
+    { q: "Carb content of Gu is too low. You'd need a ton to hit 60-90g/hr. Try SiS Beta Fuel at 40g each.", s: "r/AdvancedRunning" },
+    { q: "Cramp 90% of the time is muscles asked to do something beyond what they've done before. Not just sodium.", s: "r/Velo" },
+    { q: "I want race-day fueling extremely simple and predictable. Reduce decision-making at aid stations.", s: "r/Ultramarathon" },
+    { q: "Anyone have teeth issues from consuming so much sugar on the bike? My dentist sees worn enamel.", s: "r/Velo" },
+    { q: "DQ'd at 50 miles due to massive bonk. Forgot my water pack — worried about so many other things.", s: "r/Ultramarathon" },
+    { q: "First Ironman in 14 weeks. Starting to worry about my capacity to finish. Where do I even start with fueling?", s: "r/IronmanTriathlon" },
+    { q: "Achilles wiped out my run training. 6 weeks of less than 10 miles. Now race week — what's my fueling plan?", s: "r/triathlon" },
+    { q: "Raced Oceanside with the flu. The real lesson? My fueling wasn't dialed even when healthy.", s: "r/triathlon" },
+    { q: "Averaged 150g per hour on the bike at IM WA. Four bottles, 95g each. 1:0.8 mix the whole way.", s: "r/triathlon" },
+    { q: "First Ironman in 7 months. New to triathlon. Worried I won't finish the swim, let alone fuel through 8 hours.", s: "r/IronmanTriathlon" },
+    { q: "Underfueling on the bike + caffeine gels every 30 min. HR went vertical. Tanked by mile 22.", s: "r/AdvancedRunning" },
+    { q: "Trained the body for 6 months. Trained the gut for 0 weeks. Guess what failed on race day.", s: "r/IronmanTriathlon" },
+    { q: "Z4 stitches during training and races from gels without enough water. There has to be a system.", s: "r/AdvancedRunning" },
+    { q: "Cycled through Maurten, SiS, Precision, Skratch. Each brand wrecks me differently. Still no system.", s: "r/AdvancedRunning" }
+  ];
+  var cycleEl = document.getElementById('voicesCycle');
+  var counterEl = document.getElementById('voicesCurrent');
+  var totalEl = document.getElementById('voicesTotal');
+  var pauseBtn = document.getElementById('voicesPause');
+  var dotsEl = document.getElementById('voicesDots');
+  if (!cycleEl) return;
+  VOICES.forEach(function(v, i){
+    var card = document.createElement('div');
+    card.className = 'voice-card' + (i===0 ? ' active' : '');
+    card.innerHTML = '<blockquote>&ldquo;' + v.q + '&rdquo;</blockquote><cite>&mdash; ' + v.s + '</cite>';
+    cycleEl.appendChild(card);
+  });
+  if (totalEl) totalEl.textContent = String(VOICES.length).padStart(2, '0');
+  var DOT_COUNT = 5;
+  for (var d = 0; d < DOT_COUNT; d++){
+    var dot = document.createElement('span');
+    dot.className = 'voices-dot' + (d===0 ? ' active' : '');
+    dotsEl.appendChild(dot);
+  }
+  function updateDots(idx){
+    var active = Math.floor(idx / VOICES.length * DOT_COUNT);
+    Array.prototype.forEach.call(dotsEl.children, function(el, i){ el.classList.toggle('active', i === active); });
+  }
+  var idx = 0, INTERVAL = 4500, timer = null, userPaused = false, inView = true;
+  function setActive(newIdx){
+    Array.prototype.forEach.call(cycleEl.children, function(el, i){ el.classList.toggle('active', i === newIdx); });
+    if (counterEl) counterEl.textContent = String(newIdx + 1).padStart(2, '0');
+    updateDots(newIdx);
+  }
+  function tick(){ idx = (idx + 1) % VOICES.length; setActive(idx); }
+  function start(){
+    if (timer || userPaused || !inView) return;
+    timer = setInterval(tick, INTERVAL);
+    pauseBtn.setAttribute('data-state', 'playing');
+    pauseBtn.setAttribute('aria-label', 'Pause auto-rotation');
+  }
+  function stop(){ if (timer){ clearInterval(timer); timer = null; } }
+  pauseBtn.addEventListener('click', function(){
+    userPaused = !userPaused;
+    if (userPaused){ stop(); pauseBtn.setAttribute('data-state', 'paused'); pauseBtn.setAttribute('aria-label', 'Resume auto-rotation'); } else start();
+  });
+  if ('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){ inView = e.isIntersecting; if (inView) start(); else stop(); });
+    }, { threshold: 0.15 });
+    io.observe(cycleEl.parentElement);
+  } else start();
+  setTimeout(function(){ if (!timer && !userPaused) start(); }, 1000);
+})();
+</script>
+
+<script>
+/* GA4 + Rewardful event tracking — preserve all existing flows */
 gtag('event', 'bundle_page_view');
-document.querySelectorAll('a[href*="buy.stripe.com"]').forEach(function(el) {
-  el.addEventListener('click', function() { gtag('event', 'bundle_add_to_cart', { page: 'bundle', value: 119 }); });
+
+/* data-track CTAs */
+document.querySelectorAll('a[data-track]').forEach(function(el){
+  el.addEventListener('click', function(){
+    var ev = el.getAttribute('data-track');
+    if (ev && typeof gtag === 'function') gtag('event', ev, { page: 'bundle' });
+  });
 });
-document.querySelectorAll('a[href="/sprint"]').forEach(function(el) {
-  el.addEventListener('click', function() { gtag('event', 'sprint_cta_click', { page: 'bundle', source: 'upgrade_hook' }); });
+
+/* Stripe checkout tracking — preserve bundle_add_to_cart event with $119 value */
+document.querySelectorAll('a[href*="buy.stripe.com"]').forEach(function(el){
+  el.addEventListener('click', function(){
+    gtag('event', 'bundle_add_to_cart', { page: 'bundle', value: 119 });
+    if (window.RIK && window.RIK.cta) window.RIK.cta('bundle_stripe_checkout');
+  });
+});
+
+/* Sprint upgrade hook tracking */
+document.querySelectorAll('a[href="/sprint"]').forEach(function(el){
+  el.addEventListener('click', function(){
+    gtag('event', 'sprint_cta_click', { page: 'bundle', source: 'upgrade_hook' });
+    if (window.RIK && window.RIK.cta) window.RIK.cta('bundle_to_sprint_upgrade');
+  });
 });
 </script>
 
-<!-- REWARDFUL -->
+<!-- Rewardful affiliate -->
 <script>(function(w,r){w._rwq=r;w[r]=w[r]||function(){(w[r].q=w[r].q||[]).push(arguments)}})(window,'rewardful');</script>
 <script async src='https://r.wdfl.co/rw.js' data-rewardful='73b07c'></script>
 
-<!-- SCROLL ANIMATIONS -->
-<script>
-(function() {
-  var observer = new IntersectionObserver(function(entries) {
-    entries.forEach(function(entry) {
-      if (entry.isIntersecting) { entry.target.classList.add('visible'); observer.unobserve(entry.target); }
-    });
-  }, { threshold: 0.15 });
-  document.querySelectorAll('.fade-up').forEach(function(el) { observer.observe(el); });
-})();
-</script>
+<!-- Phase 1.6 instrumentation helpers -->
+<script defer src="/assets/rik-analytics.js"></script>
+
+<!-- Sticky floating CTA (persistent) -->
+<a href="/sprint" class="float-cta" data-track="sprint_cta_click" aria-label="Get my protocol">
+  <span>Get My Protocol</span>
+  <span class="float-arrow" aria-hidden="true">↗</span>
+</a>
+
+<!-- Warm-lead exit-intent popup with WELCOME15 promo + WhatsApp CTA -->
+<script defer src="/assets/exit-intent.js"></script>
 </body>
 </html>

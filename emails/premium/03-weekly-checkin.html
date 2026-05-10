@@ -1,0 +1,82 @@
+<!doctype html>
+<!--
+  Email: Premium #3 — Per-key-session check-in (NOT weekly Monday — fires on the day of each key session)
+  Trigger: api/cron/daily-sweep.js — runs daily, queries Postgres for athletes whose
+           training-plan key sessions = TODAY, fires this email at 18:00 ICT local-or-athlete-tz.
+
+           Key sessions are identified at protocol-generation time and stored in
+           the athlete record as an array of {date, session_type, session_label}.
+
+  Out-of-scope, removed in this version (per Bek 2026-05-10):
+    ❌ Weekly check-in CALL (15 min) — replaced with async Typeform
+    ❌ Monday-only cadence — replaced with per-key-session
+
+  Tokens:
+    {{first_name}}            — Athlete first name
+    {{session_label}}         — e.g., "long bike", "interval run", "brick", "open-water swim"
+    {{session_date_short}}    — "Tuesday May 12"
+    {{week_n}}                — 1, 2, 3, or 4 (so they know where they are in the protocol)
+    {{checkin_link}}          — Typeform check-in URL with session_id and tier prefilled
+    {{has_next_week_plan}}    — boolean from athlete record; if false, copy nudges submission
+    {{wa_link}}               — wa.me link
+    {{unsubscribe}}            — Resend-managed
+-->
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>After Your {{session_label}} — RIK Athletica</title></head>
+<body style="margin:0;padding:0;background:#EEEDEA;font-family:'Outfit',-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif;color:#0E0E0E;-webkit-font-smoothing:antialiased;">
+<div style="display:none;max-height:0;overflow:hidden;">3-min check-in after Your {{session_label}}. Tells Me everything for next protocol revision.</div>
+
+<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background:#EEEDEA;"><tr><td align="center" style="padding:32px 20px;">
+<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="600" style="max-width:600px;width:100%;background:#FFFFFF;border:1px solid rgba(14,14,14,.10);border-radius:18px;overflow:hidden;">
+
+  <tr><td style="padding:28px 36px;border-bottom:1px solid rgba(14,14,14,.10);"><p style="margin:0;font-family:'Outfit',sans-serif;font-size:13px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:#0E0E0E;">RIK Athletica · Week {{week_n}} · Key Session</p></td></tr>
+
+  <tr><td style="padding:48px 36px 32px;">
+    <p style="margin:0 0 16px;font-size:11px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:#5A5853;">─── &nbsp;&nbsp;{{session_date_short}} · {{session_label}}&nbsp;&nbsp;───</p>
+    <h1 style="margin:0 0 18px;font-family:'Outfit',sans-serif;font-size:34px;font-weight:700;line-height:1.02;letter-spacing:-.02em;color:#0E0E0E;">How did the <em style="font-style:normal;color:#5A5853;font-weight:700;">{{session_label}}</em> land?</h1>
+    <p style="margin:0 0 14px;font-size:15px;line-height:1.65;color:#5A5853;">{{first_name}} — Today's session was a <strong style="color:#0E0E0E;font-weight:500;">key session</strong> from Your training plan, identified at protocol generation. We log key-session signal so the next revision is calibrated on the right data.</p>
+    <p style="margin:0 0 28px;font-size:15px;line-height:1.65;color:#5A5853;">Three minutes. Honest. Specific. <strong style="color:#0E0E0E;font-weight:500;">"Felt good" doesn't tune anything</strong> — what hit, what missed, where the protocol started to drift.</p>
+    <table role="presentation" cellpadding="0" cellspacing="0" border="0"><tr><td style="background:#0E0E0E;border-radius:999px;"><a href="{{checkin_link}}" style="display:inline-block;padding:14px 28px;font-family:'Outfit',sans-serif;font-size:14px;font-weight:500;color:#FFFFFF;text-decoration:none;">Submit Today's Check-in &nbsp;↗</a></td></tr></table>
+  </td></tr>
+
+  <tr><td style="padding:0 36px 32px;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#EEEDEA;border-radius:12px;border-left:3px solid #0E0E0E;"><tr><td style="padding:18px 22px;font-family:'Outfit',sans-serif;font-size:13px;line-height:1.6;color:#0E0E0E;">
+      <p style="margin:0 0 6px;font-weight:500;">What I'm watching for after a {{session_label}}.</p>
+      <p style="margin:0;color:#5A5853;font-size:12.5px;">Mid-session bloat, late-session crashes, weird HR, sleep quality the night after a long effort, GI signals during the back half. Specifics matter — the more precise You are, the sharper the next revision.</p>
+    </td></tr></table>
+  </td></tr>
+
+  <!-- Training plan nudge — Bek's 3-pillar adherence design (follow protocol / submit feedback / submit next week's plan) -->
+  <tr><td style="padding:0 36px 32px;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#fff;border:1px solid rgba(14,14,14,.10);border-radius:12px;"><tr><td style="padding:18px 22px;font-family:'Outfit',sans-serif;color:#0E0E0E;">
+      <p style="margin:0 0 8px;font-size:10px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:#5A5853;">Three pillars of adherence</p>
+      <p style="margin:0 0 10px;font-size:13.5px;line-height:1.6;color:#0E0E0E;font-weight:500;">The check-in form covers all three:</p>
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr><td style="padding:8px 0;font-size:13px;line-height:1.55;color:#5A5853;"><strong style="color:#0E0E0E;font-weight:500;">01</strong> &nbsp;&nbsp; Follow the protocol as closely as possible.</td></tr>
+        <tr><td style="padding:8px 0;border-top:1px dashed rgba(14,14,14,.10);font-size:13px;line-height:1.55;color:#5A5853;"><strong style="color:#0E0E0E;font-weight:500;">02</strong> &nbsp;&nbsp; Submit feedback after each key session (this email).</td></tr>
+        <tr><td style="padding:8px 0;border-top:1px dashed rgba(14,14,14,.10);font-size:13px;line-height:1.55;color:#5A5853;"><strong style="color:#0E0E0E;font-weight:500;">03</strong> &nbsp;&nbsp; Submit next week's training plan once Your coach delivers it — the form has a file-upload field for the PDF or screenshot.</td></tr>
+      </table>
+    </td></tr></table>
+  </td></tr>
+
+  <tr><td style="padding:0 36px 32px;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:rgba(37,211,102,.08);border:1px solid rgba(37,211,102,.32);border-radius:12px;"><tr><td style="padding:18px 22px;font-family:'Outfit',sans-serif;color:#0E0E0E;">
+      <p style="margin:0 0 8px;font-size:10px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:#0E5A1F;">Or submit via WhatsApp</p>
+      <p style="margin:0 0 10px;font-size:14px;font-weight:500;line-height:1.45;color:#0E0E0E;">Prefer voice notes to a form? <strong>Reply with `WEEK {{week_n}} CHECKIN` + a 30-second voice note</strong> covering gut, energy, recovery — We'll log it against Your protocol. Same for next week's plan: send `WEEK {{week_n}} PLAN` + the PDF or photo.</p>
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0"><tr><td style="background:#0E0E0E;border-radius:999px;"><a href="{{wa_link}}" style="display:inline-block;padding:11px 22px;font-family:'Outfit',sans-serif;font-size:13px;font-weight:500;color:#FFFFFF;text-decoration:none;">Open WhatsApp Thread &nbsp;↗</a></td></tr></table>
+    </td></tr></table>
+  </td></tr>
+
+  <tr><td style="padding:0 36px 32px;">
+    <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="margin-top:16px;border-top:1px dashed rgba(14,14,14,.18);padding-top:24px;"><tr><td style="font-family:'Outfit',sans-serif;font-size:11px;line-height:1.65;color:#5A5853;letter-spacing:.04em;">
+      <p style="margin:0 0 12px;font-weight:500;color:#0E0E0E;">— Bek</p>
+      <p style="margin:0 0 14px;"><a href="{{wa_link}}" style="color:#0E0E0E;text-decoration:none;border-bottom:1px solid rgba(14,14,14,.25);">WhatsApp</a> &nbsp;·&nbsp; <a href="mailto:Bek.Zhou@rikathletica.com" style="color:#0E0E0E;text-decoration:none;border-bottom:1px solid rgba(14,14,14,.25);">Bek.Zhou@rikathletica.com</a></p>
+      <p style="margin:0 0 8px;font-size:10px;color:#8A8780;letter-spacing:.06em;">Copyright &copy; 2026 Rik Athletic Nutrition Inc.</p>
+      <p style="margin:0 0 8px;font-size:10px;color:#8A8780;line-height:1.7;"><strong style="color:#5A5853;">&dagger;</strong> Founding Cohort Premium is a nutrition-planning service — not medical advice. Always consult a qualified healthcare professional.</p>
+      <p style="margin:0 0 8px;font-size:10px;color:#8A8780;line-height:1.6;">{{registered_address}}</p>
+      <p style="margin:0;font-size:10px;color:#8A8780;"><a href="{{unsubscribe}}" style="color:#8A8780;text-decoration:underline;">Unsubscribe</a> &nbsp;·&nbsp; <a href="https://www.rikathletica.com/privacy" style="color:#8A8780;text-decoration:underline;">Privacy</a> &nbsp;·&nbsp; <a href="https://www.rikathletica.com/terms" style="color:#8A8780;text-decoration:underline;">Terms</a></p>
+    </td></tr></table>
+  </td></tr>
+
+</table>
+</td></tr></table>
+</body></html>

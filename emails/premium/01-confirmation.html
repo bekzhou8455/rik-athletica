@@ -1,0 +1,218 @@
+<!doctype html>
+<!--
+  Email: Premium #1 — Enrollment confirmation
+  Trigger: Stripe webhook checkout.session.completed, line-item match for Premium ($1,599)
+  Subject: You're in. The Founding Cohort closes in {{days_until_close}} days.
+  Tokens: {{first_name}} {{full_name}} {{email}} {{order_total}} {{stripe_session_id}} {{intake_link}} {{wa_link}} {{unsubscribe}}
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="x-apple-disable-message-reformatting">
+<title>You're in — RIK Athletica Founding Cohort</title>
+</head>
+<body style="margin:0;padding:0;background:#EEEDEA;font-family:'Outfit',-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif;color:#0E0E0E;-webkit-font-smoothing:antialiased;">
+<!-- Preheader (hidden, shows in inbox preview) -->
+<div style="display:none;max-height:0;overflow:hidden;">
+Your slot is locked. Next: 12-minute intake so we can build Your protocol.
+</div>
+
+<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background:#EEEDEA;">
+<tr>
+<td align="center" style="padding:32px 20px;">
+
+  <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="600" style="max-width:600px;width:100%;background:#FFFFFF;border:1px solid rgba(14,14,14,.10);border-radius:18px;overflow:hidden;">
+
+    <!-- Header strip -->
+    <tr>
+      <td style="padding:28px 36px;border-bottom:1px solid rgba(14,14,14,.10);">
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+          <tr>
+            <td style="font-family:'Outfit',sans-serif;font-size:13px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:#0E0E0E;">
+              RIK Athletica
+            </td>
+            <td align="right" style="font-family:'Outfit',sans-serif;font-size:11px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:#5A5853;">
+              Founding Cohort confirmed
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+
+    <!-- Hero block -->
+    <tr>
+      <td style="padding:48px 36px 32px;">
+        <p style="margin:0 0 16px;font-size:11px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:#5A5853;">
+          ─── &nbsp;&nbsp;Payment received&nbsp;&nbsp;───
+        </p>
+        <h1 style="margin:0 0 20px;font-family:'Outfit',sans-serif;font-size:36px;font-weight:700;line-height:1.0;letter-spacing:-.02em;color:#0E0E0E;">
+          You're in. <span style="color:#5A5853;font-weight:700;">The Cohort is closing.</span>
+        </h1>
+        <p style="margin:0 0 16px;font-size:15px;line-height:1.65;color:#5A5853;">
+          {{first_name}} — Your slot in the Founding Cohort is locked. <strong style="color:#0E0E0E;font-weight:500;">Ten people, founder-delivered, then this version is gone.</strong>
+        </p>
+        <p style="margin:0 0 12px;font-size:15px;line-height:1.65;color:#5A5853;">
+          Last enrollment closes <strong style="color:#0E0E0E;font-weight:500;">May 18, 23:59 ET</strong> — that's {{days_until_close}} days from now. After that, Premium 2.0 launches at $1,299 with larger capacity, but it won't be ten and it won't be me personally.
+        </p>
+      </td>
+    </tr>
+
+    <!-- Receipt strip -->
+    <tr>
+      <td style="padding:0 36px 32px;">
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#EEEDEA;border-radius:12px;border:1px solid rgba(14,14,14,.10);">
+          <tr>
+            <td style="padding:18px 22px;font-family:'Outfit',sans-serif;font-size:13px;line-height:1.6;color:#5A5853;">
+              <p style="margin:0 0 4px;font-size:10px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:#8A8780;">Order summary</p>
+              <p style="margin:0 0 4px;color:#0E0E0E;font-weight:500;">Founding Cohort Premium · ${{order_total}}</p>
+              <p style="margin:0 0 4px;font-size:12px;color:#5A5853;">4-week protocol · 3 RIK Bundles · race-week WhatsApp concierge · RD-reviewed methodology · post-race debrief</p>
+              <p style="margin:8px 0 0;font-size:11px;color:#8A8780;font-variant-numeric:tabular-nums;">Reference: {{stripe_session_id}}</p>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+
+    <!-- Next-step CTA -->
+    <tr>
+      <td style="padding:0 36px 36px;">
+        <h2 style="margin:0 0 14px;font-family:'Outfit',sans-serif;font-size:22px;font-weight:600;line-height:1.2;letter-spacing:-.01em;color:#0E0E0E;">
+          Next: 12 minutes of Intake.
+        </h2>
+        <p style="margin:0 0 24px;font-size:14.5px;line-height:1.65;color:#5A5853;">
+          We can't build Your protocol without it. Race date, training history, sweat rate baseline, gut tolerance, and the medical exclusion list (heart, diabetes, eating disorders, pregnancy, IBS, anti-arrhythmics, caffeine restriction). Honest answers — we calibrate to the body You actually have.
+        </p>
+        <table role="presentation" cellpadding="0" cellspacing="0" border="0">
+          <tr>
+            <td style="background:#0E0E0E;border-radius:999px;">
+              <a href="{{intake_link}}" style="display:inline-block;padding:14px 28px;font-family:'Outfit',sans-serif;font-size:14px;font-weight:500;letter-spacing:-.005em;color:#FFFFFF;text-decoration:none;">
+                Complete My Intake &nbsp;↗
+              </a>
+            </td>
+          </tr>
+        </table>
+        <p style="margin:14px 0 0;font-size:12px;color:#8A8780;line-height:1.6;">
+          Takes 12 minutes. Saves Your progress automatically. <strong style="color:#5A5853;">If You can't get to it within 7 days, message me on WhatsApp</strong> — Your race-week timing depends on it.
+        </p>
+      </td>
+    </tr>
+
+    <!-- Timeline -->
+    <tr>
+      <td style="padding:0 36px 36px;">
+        <p style="margin:0 0 14px;font-size:11px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:#5A5853;">What happens next</p>
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+          <tr>
+            <td style="padding:14px 0;border-top:1px dashed rgba(14,14,14,.18);">
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                  <td width="120" style="font-family:'Outfit',sans-serif;font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#5A5853;vertical-align:top;">Day 0 — Now</td>
+                  <td style="font-family:'Outfit',sans-serif;font-size:13.5px;line-height:1.6;color:#0E0E0E;font-weight:500;">Complete intake (above).</td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:14px 0;border-top:1px dashed rgba(14,14,14,.18);">
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                  <td width="120" style="font-family:'Outfit',sans-serif;font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#5A5853;vertical-align:top;">Within 24 hrs</td>
+                  <td style="font-family:'Outfit',sans-serif;font-size:13.5px;line-height:1.6;color:#0E0E0E;font-weight:500;">RD reviewer signs off. I build Your 4-week protocol.</td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:14px 0;border-top:1px dashed rgba(14,14,14,.18);">
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                  <td width="120" style="font-family:'Outfit',sans-serif;font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#5A5853;vertical-align:top;">Day 5</td>
+                  <td style="font-family:'Outfit',sans-serif;font-size:13.5px;line-height:1.6;color:#0E0E0E;font-weight:500;">Shipment 1 (Training Box) arrives. Gut adaptation begins on Day 1.</td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:14px 0;border-top:1px dashed rgba(14,14,14,.18);">
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                  <td width="120" style="font-family:'Outfit',sans-serif;font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#5A5853;vertical-align:top;">Key sessions</td>
+                  <td style="font-family:'Outfit',sans-serif;font-size:13.5px;line-height:1.6;color:#0E0E0E;font-weight:500;">Async Typeform check-ins on the day of each key session (3 min each). We tune the protocol on each signal.</td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:14px 0;border-top:1px dashed rgba(14,14,14,.18);border-bottom:1px dashed rgba(14,14,14,.18);">
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                  <td width="120" style="font-family:'Outfit',sans-serif;font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#5A5853;vertical-align:top;">Day −7 race</td>
+                  <td style="font-family:'Outfit',sans-serif;font-size:13.5px;line-height:1.6;color:#0E0E0E;font-weight:500;"><strong>RIK Direct goes live.</strong> Dedicated WhatsApp number in a separate email. Async-first, 2-hr SLA.</td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+
+    <!-- Refund block -->
+    <tr>
+      <td style="padding:0 36px 36px;">
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#0E0E0E;border-radius:12px;">
+          <tr>
+            <td style="padding:22px 24px;font-family:'Outfit',sans-serif;color:#FFFFFF;">
+              <p style="margin:0 0 8px;font-size:10px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,210,140,.85);">The deal we make with You</p>
+              <p style="margin:0 0 8px;font-size:16px;font-weight:600;line-height:1.3;color:#FFFFFF;">Complete the 4 Weeks. Race. We Carry the Risk.</p>
+              <p style="margin:0;font-size:13px;line-height:1.6;color:rgba(255,255,255,.78);">
+                Complete the 4-week protocol as written, race, and within <strong style="color:#FFFFFF;">14 days</strong> request a refund if You didn't get the value. Full $1,599 returned, conditional on every weekly check-in being submitted.
+              </p>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+
+    <!-- Footer -->
+    <tr>
+      <td style="padding:0 36px 32px;">
+        <!-- @include _shared/footer.html -->
+        <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="margin-top:24px;border-top:1px dashed rgba(14,14,14,.18);padding-top:24px;">
+          <tr>
+            <td style="font-family:'Outfit',sans-serif;font-size:11px;line-height:1.65;color:#5A5853;letter-spacing:.04em;">
+              <p style="margin:0 0 12px;font-weight:500;color:#0E0E0E;">— Bek &amp; the RIK team</p>
+              <p style="margin:0 0 14px;">
+                <a href="{{wa_link}}" style="color:#0E0E0E;text-decoration:none;border-bottom:1px solid rgba(14,14,14,.25);">WhatsApp us</a>
+                &nbsp;·&nbsp;
+                <a href="mailto:Bek.Zhou@rikathletica.com" style="color:#0E0E0E;text-decoration:none;border-bottom:1px solid rgba(14,14,14,.25);">Bek.Zhou@rikathletica.com</a>
+                &nbsp;·&nbsp;
+                <a href="https://www.rikathletica.com" style="color:#0E0E0E;text-decoration:none;border-bottom:1px solid rgba(14,14,14,.25);">rikathletica.com</a>
+              </p>
+              <p style="margin:0 0 8px;font-size:10px;color:#8A8780;letter-spacing:.06em;">Copyright &copy; 2026 Rik Athletic Nutrition Inc. All rights reserved.</p>
+              <p style="margin:0 0 8px;font-size:10px;color:#8A8780;line-height:1.7;max-width:62ch;">
+                <strong style="color:#5A5853;">&dagger; Service &amp; Supplement Disclaimer.</strong>
+                These statements have not been evaluated by the FDA. RIK Athletica products are dietary supplements and are not intended to diagnose, treat, cure, or prevent any disease. The Founding Cohort Premium is a nutrition-planning service — not medical advice. Always consult a qualified healthcare professional before starting any new supplement or nutrition programme.
+              </p>
+              <p style="margin:0 0 8px;font-size:10px;color:#8A8780;line-height:1.6;">{{registered_address}}</p>
+              <p style="margin:0;font-size:10px;color:#8A8780;">
+                <a href="{{unsubscribe}}" style="color:#8A8780;text-decoration:underline;">Unsubscribe</a>
+                &nbsp;·&nbsp;
+                <a href="https://www.rikathletica.com/privacy" style="color:#8A8780;text-decoration:underline;">Privacy</a>
+                &nbsp;·&nbsp;
+                <a href="https://www.rikathletica.com/terms" style="color:#8A8780;text-decoration:underline;">Terms</a>
+              </p>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+
+  </table>
+
+</td>
+</tr>
+</table>
+
+</body>
+</html>

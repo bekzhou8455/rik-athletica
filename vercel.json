@@ -2,7 +2,21 @@
   "cleanUrls": true,
   "rewrites": [
     { "source": "/", "destination": "/index.html" },
-    { "source": "/ai.txt", "destination": "/.well-known/ai.txt" }
+    { "source": "/ai.txt", "destination": "/.well-known/ai.txt" },
+    { "source": "/a/:slug", "destination": "/api/audit/render?slug=:slug" }
+  ],
+  "functions": {
+    "api/audit/submit.js": { "maxDuration": 30 },
+    "api/audit/approve.js": { "maxDuration": 60 },
+    "api/audit/render.js": { "maxDuration": 10 },
+    "api/admin/queue.js": { "maxDuration": 15 },
+    "api/admin/draft.js": { "maxDuration": 15 },
+    "api/stripe-webhook.js": { "maxDuration": 15 },
+    "api/cron/daily-sweep.js": { "maxDuration": 90 },
+    "api/screen-capture.js": { "maxDuration": 10 }
+  },
+  "crons": [
+    { "path": "/api/cron/daily-sweep", "schedule": "0 9 * * *" }
   ],
   "headers": [
     {

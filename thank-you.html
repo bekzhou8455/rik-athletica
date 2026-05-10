@@ -4,169 +4,272 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex, noai, noimageai">
+<meta name="rikathletica:ip" content="Proprietary methodology — all rights reserved.">
 <title>You're In — RIK Athletica</title>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300..800&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap">
+<!-- GA4 (loaded eagerly so the purchase event fires before any rage-back) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-X7LJHZLR4K"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-X7LJHZLR4K');
+</script>
 <style>
-* { box-sizing: border-box; margin: 0; padding: 0; }
-html { font-size: 16px; }
-body { font-family: 'Plus Jakarta Sans', sans-serif; background: #fff; color: #0a0a0a; -webkit-font-smoothing: antialiased; min-height: 100vh; display: flex; flex-direction: column; }
+/* ================================================================
+   /thank-you iter-5.10 — restyled to locked DESIGN.md + closed-loop
+   GA4 enhanced-ecommerce purchase tracking.
+   PRESERVED: Rewardful loader, rik-analytics hook, noindex.
+   ================================================================ */
 
-:root {
-  --sand: #f6f5f4;
-  --off-black: #0a0a0a;
-  --border: rgba(0,0,0,0.08);
-  --green: #2D5A3D;
-  --green-light: #4ade80;
-  --r-card: 20px;
-  --r-btn: 36px;
+:root{
+  --bg:        #EEEDEA;
+  --bg-2:      #D5D2CC;
+  --bg-sand:   #C4B59E;
+  --ink:       #0E0E0E;
+  --ink-soft:  #5A5853;
+  --ink-dim:   #8A8780;
+  --rule:      rgba(14,14,14,.18);
+  --rule-soft: rgba(14,14,14,.10);
+  --sans:      "Outfit", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+  --display:   "Outfit", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+  --maxw:      1320px;
 }
 
-nav {
-  background: rgba(255,255,255,0.96);
-  backdrop-filter: blur(16px);
-  border-bottom: 1px solid var(--border);
-  padding: 0 40px; height: 56px;
-  display: flex; justify-content: space-between; align-items: center;
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--sans);background:var(--bg);color:var(--ink);font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;min-height:100vh;display:flex;flex-direction:column}
+a{color:inherit;text-decoration:none}
+img{display:block;max-width:100%}
+
+/* ─── NAV ─── */
+nav.site-nav{
+  position:sticky;top:0;left:0;right:0;z-index:30;
+  background:rgba(238,237,234,.92);
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--rule-soft);
+  padding:18px 36px;
+  display:flex;justify-content:space-between;align-items:center;
 }
-.logo { display: flex; align-items: center; text-decoration: none; }
+.nav-mark{display:flex;align-items:center;gap:10px;font-weight:700;font-size:15px;letter-spacing:-.005em;color:var(--ink)}
+.nav-mark img{height:26px;width:auto}
+.nav-tier{display:inline-flex;align-items:center;gap:8px;font-size:11px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-soft);padding:6px 12px;border:1px solid var(--rule);border-radius:999px}
+.nav-tier .tier-dot{width:6px;height:6px;border-radius:50%;background:var(--ink);display:inline-block}
 
-.btn { display: inline-block; padding: 13px 28px; font-size: 14px; font-weight: 500; border-radius: var(--r-btn); cursor: pointer; border: none; font-family: inherit; letter-spacing: -0.01em; transition: opacity .15s; text-decoration: none; }
-.btn:hover { opacity: 0.82; }
-.btn-primary { background: var(--off-black); color: #fff; }
-.btn-secondary { background: transparent; color: var(--off-black); border: 1px solid var(--border); }
-.btn-green { background: var(--green); color: #fff; }
+/* ─── Main ─── */
+main{flex:1;display:flex;align-items:center;justify-content:center;padding:80px 36px 120px;width:100%}
 
-main { flex: 1; display: flex; align-items: center; justify-content: center; padding: 80px 40px; }
+/* ─── TY card (shared) ─── */
+.ty-card{max-width:680px;width:100%;text-align:left}
+.ty-eyebrow{font-size:11px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:20px;display:inline-flex;align-items:center;gap:10px}
+.ty-eyebrow::before{content:"";display:inline-block;width:24px;height:1px;background:var(--ink)}
+.ty-eyebrow .ty-check{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;background:var(--ink);color:#fff;font-size:11px;letter-spacing:0}
+.ty-eyebrow .ty-check svg{width:10px;height:10px;stroke:currentColor;stroke-width:2.5;fill:none}
+.ty-heading{font-family:var(--display);font-size:clamp(40px,6vw,76px);font-weight:700;line-height:.96;letter-spacing:-.02em;color:var(--ink);margin-bottom:22px;max-width:14ch}
+.ty-heading em{font-style:normal;font-weight:700;color:var(--ink-soft)}
+.ty-sub{font-size:16px;line-height:1.65;color:var(--ink-soft);max-width:58ch;margin-bottom:48px}
+.ty-sub strong{color:var(--ink);font-weight:500}
 
-.ty-card {
-  max-width: 620px; width: 100%;
-  text-align: center;
+/* ─── Timeline (3-step horizontal) ─── */
+.timeline{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin-bottom:40px;
+  background:#fff;border:1px solid var(--rule-soft);border-radius:18px;overflow:hidden;
+}
+.tl-step{padding:28px 22px;border-right:1px dashed var(--rule);display:flex;flex-direction:column;gap:6px;min-height:140px}
+.tl-step:last-child{border-right:0}
+.tl-step.active{background:var(--ink);color:#fff}
+.tl-num{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-soft);font-weight:600;font-variant-numeric:tabular-nums}
+.tl-step.active .tl-num{color:rgba(255,255,255,.55)}
+.tl-label{font-family:var(--display);font-size:17px;font-weight:600;letter-spacing:-.005em;color:var(--ink);line-height:1.2;margin-top:auto}
+.tl-step.active .tl-label{color:#fff}
+.tl-desc{font-size:12.5px;color:var(--ink-soft);line-height:1.5}
+.tl-step.active .tl-desc{color:rgba(255,255,255,.65)}
+
+/* ─── CTA buttons ─── */
+.ty-actions{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:28px}
+.btn{display:inline-flex;align-items:center;gap:10px;padding:14px 26px;font-size:14px;font-weight:500;letter-spacing:-.005em;border-radius:999px;border:1px solid var(--ink);font-family:inherit;text-decoration:none;cursor:pointer;transition:opacity .15s,transform .15s}
+.btn:hover{opacity:.88;transform:translate(1px,-1px)}
+.btn-primary{background:var(--ink);color:#fff}
+.btn-secondary{background:transparent;color:var(--ink)}
+.btn .arrow{font-size:14px}
+
+/* ─── Note + meta ─── */
+.ty-note{font-size:12.5px;color:var(--ink-soft);line-height:1.65;padding-top:18px;border-top:1px dashed var(--rule);max-width:58ch}
+.ty-note strong{color:var(--ink);font-weight:500}
+
+/* ─── Direct line callout (Premium-only) ─── */
+.direct-line{display:flex;flex-direction:column;gap:10px;margin:24px 0 36px;padding:22px 24px;background:#fff;border:1px solid var(--rule-soft);border-left:3px solid var(--ink);border-radius:8px}
+.direct-line strong{font-family:var(--display);font-size:14px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--ink)}
+.direct-line p{font-size:13.5px;color:var(--ink-soft);line-height:1.55;max-width:54ch}
+.direct-line p em{font-style:normal;color:var(--ink);font-weight:500}
+
+/* ─── "Stay informed" WhatsApp banner (Sprint + Bundle thank-you) ─── */
+.wa-banner{display:flex;flex-direction:column;gap:12px;margin:28px 0 36px;padding:24px 26px;background:#fff;border:1px solid rgba(37,211,102,.32);border-left:3px solid #0E5A1F;border-radius:12px;position:relative;overflow:hidden}
+.wa-banner::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse 50% 80% at 100% 50%,rgba(37,211,102,.06) 0%,rgba(0,0,0,0) 60%);pointer-events:none}
+.wa-banner-eyebrow{font-size:10px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:#0E5A1F;display:inline-flex;align-items:center;gap:8px}
+.wa-banner-eyebrow .wa-dot{width:6px;height:6px;border-radius:50%;background:#25D366;box-shadow:0 0 0 3px rgba(37,211,102,.2);display:inline-block}
+.wa-banner h3{font-family:var(--display);font-size:20px;font-weight:600;line-height:1.25;letter-spacing:-.005em;color:var(--ink);max-width:24ch}
+.wa-banner h3 em{font-style:normal;color:var(--ink-soft);font-weight:600}
+.wa-banner p{font-size:14px;line-height:1.6;color:var(--ink-soft);max-width:52ch}
+.wa-banner p strong{color:var(--ink);font-weight:500}
+.wa-banner-cta{display:inline-flex;align-items:center;gap:8px;padding:11px 20px;background:var(--ink);color:#fff;font-size:13px;font-weight:500;letter-spacing:-.005em;border-radius:999px;text-decoration:none;align-self:flex-start;margin-top:4px}
+.wa-banner-cta:hover{opacity:.88}
+.wa-banner-cta svg{width:14px;height:14px;fill:currentColor}
+
+/* ─── Footer (iter-5 footer.legal) ─── */
+footer.legal{background:var(--ink);color:rgba(255,255,255,.55);padding:48px 36px 64px;font-size:13px;line-height:1.7;margin-top:auto}
+footer.legal .wrap{max-width:var(--maxw);margin:0 auto;display:flex;flex-direction:column;gap:18px}
+footer.legal .legal-top{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;border-bottom:1px dashed rgba(255,255,255,.18);padding-bottom:18px}
+footer.legal .legal-top a{color:rgba(255,255,255,.55);font-size:12px;letter-spacing:.06em}
+footer.legal .legal-top a:hover{color:#fff}
+footer.legal .legal-logo{height:34px;width:auto;filter:brightness(0) invert(1);opacity:.92}
+footer.legal .footer-disclaimer{font-size:12px;color:rgba(255,255,255,.42);max-width:920px;line-height:1.7}
+footer.legal .footer-disclaimer strong{color:rgba(255,255,255,.6);display:block;margin-bottom:6px}
+
+/* ─── Responsive ─── */
+@media (max-width:720px){
+  nav.site-nav{padding:14px 20px}
+  main{padding:48px 20px 80px}
+  .ty-heading{font-size:clamp(32px,9vw,48px);max-width:14ch}
+  .ty-sub{font-size:14.5px;margin-bottom:32px}
+  .timeline{grid-template-columns:1fr}
+  .tl-step{border-right:0;border-bottom:1px dashed var(--rule);min-height:auto;padding:22px}
+  .tl-step:last-child{border-bottom:0}
+  .ty-actions{flex-direction:column;align-items:stretch}
+  .btn{justify-content:center}
+  footer.legal{padding:36px 20px 48px}
+  footer.legal .legal-logo{height:28px}
+  footer.legal .footer-disclaimer{font-size:11px}
 }
 
-.ty-icon {
-  width: 64px; height: 64px;
-  border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 28px;
-  margin: 0 auto 32px;
-}
-.ty-icon.sprint { background: #0d1810; }
-.ty-icon.bundle { background: var(--sand); }
+@media (prefers-reduced-motion:reduce){*{transition:none !important;animation:none !important}}
 
-.ty-eyebrow {
-  font-size: 11px; font-weight: 500; letter-spacing: 2.5px;
-  text-transform: uppercase; color: #aaa; margin-bottom: 16px;
-}
-
-.ty-heading {
-  font-size: clamp(32px, 5vw, 52px);
-  font-weight: 400; letter-spacing: -0.04em;
-  line-height: 1.05; margin-bottom: 16px;
-}
-.ty-heading em { font-style: normal; font-weight: 300; color: #bbb; }
-
-.ty-sub {
-  font-size: 16px; color: #888; line-height: 1.65;
-  max-width: 480px; margin: 0 auto 48px;
-  letter-spacing: -0.01em;
-}
-
-.timeline {
-  display: grid; grid-template-columns: repeat(3, 1fr);
-  gap: 2px; margin-bottom: 48px;
-  background: var(--border);
-  border-radius: var(--r-card);
-  overflow: hidden;
-}
-.tl-step {
-  background: #fff; padding: 24px 16px; text-align: center;
-}
-.tl-step:first-child { border-radius: var(--r-card) 0 0 var(--r-card); }
-.tl-step:last-child { border-radius: 0 var(--r-card) var(--r-card) 0; }
-.tl-num { font-size: 10px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: #ccc; margin-bottom: 8px; }
-.tl-label { font-size: 14px; font-weight: 600; color: var(--off-black); margin-bottom: 4px; letter-spacing: -0.01em; }
-.tl-desc { font-size: 12px; color: #aaa; line-height: 1.5; }
-
-.tl-step.active { background: var(--off-black); }
-.tl-step.active .tl-num { color: rgba(255,255,255,0.25); }
-.tl-step.active .tl-label { color: #fff; }
-.tl-step.active .tl-desc { color: rgba(255,255,255,0.35); }
-
-.ty-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
-
-.ty-note {
-  margin-top: 32px; font-size: 12px; color: #bbb; line-height: 1.6;
-}
-
-footer {
-  background: var(--off-black); padding: 28px 40px;
-  display: flex; justify-content: space-between; align-items: center;
-}
-.footer-logo-img { height: 60px; width: auto; display: block; filter: invert(1); opacity: 0.6; margin: -8px 0; }
-.footer-links { font-size: 12px; color: rgba(255,255,255,0.22); }
-.footer-links a { display: inline-flex; align-items: center; min-height: 44px; padding: 0 4px; }
-
-@media (max-width: 600px) {
-  .timeline { grid-template-columns: 1fr; }
-  .tl-step:first-child { border-radius: var(--r-card) var(--r-card) 0 0; }
-  .tl-step:last-child { border-radius: 0 0 var(--r-card) var(--r-card); }
-  main { padding: 48px 24px; }
-  footer { padding: 24px 20px; }
-}
+/* hidden by default — JS reveals the right one */
+.ty-card[data-tier]{display:none}
+.ty-card[data-tier].show{display:block}
 </style>
 </head>
-<body>
+<body id="top">
 
-<nav>
-  <a href="/" class="logo"><img src="https://cdn.jsdelivr.net/gh/bekzhou8455/rik-athletica@main/assets/media/rik-logo.png" alt="RIK Athletica" style="height:68px;width:auto;display:block;margin:-8px -10px;"></a>
+<!-- ═══ NAV ═══ -->
+<nav class="site-nav">
+  <a href="/" class="nav-mark" aria-label="RIK Athletica home">
+    <img src="https://cdn.jsdelivr.net/gh/bekzhou8455/rik-athletica@main/assets/media/rik-logo-cropped.png" alt="RIK Athletica">
+  </a>
+  <span class="nav-tier" id="navTierBadge" aria-label="Order tier">
+    <span class="tier-dot" aria-hidden="true"></span>
+    <span id="navTierLabel">Order confirmed</span>
+  </span>
 </nav>
 
 <main>
-  <div class="ty-card" id="ty-sprint" style="display:none">
-    <div class="ty-icon sprint">🎯</div>
-    <div class="ty-eyebrow">Payment confirmed</div>
-    <h1 class="ty-heading">You're in the<br><em>Sprint.</em></h1>
-    <p class="ty-sub">Payment received. Your spot is locked. Next step: complete your 10-minute intake so we can build your protocol and pack your box.</p>
+
+  <!-- ═══ PREMIUM ═══ -->
+  <div class="ty-card" data-tier="premium" id="ty-premium">
+    <span class="ty-eyebrow"><span class="ty-check"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5L10 17.5L19 7.5"/></svg></span>Founding Cohort confirmed</span>
+    <h1 class="ty-heading">You're in. <em>The Cohort is closing.</em></h1>
+    <p class="ty-sub">Payment received. Your slot in the Founding Cohort is locked. <strong>Next:</strong> complete a 12-minute intake so we can build Your protocol, source Your products, and prep race-week concierge.</p>
 
     <div class="timeline">
       <div class="tl-step active">
         <div class="tl-num">Now</div>
-        <div class="tl-label">Complete Intake</div>
-        <div class="tl-desc">10 min · race data + fueling history</div>
+        <div class="tl-label">Complete intake</div>
+        <div class="tl-desc">12 min · race data, sweat rate, gut history, medical screen</div>
+      </div>
+      <div class="tl-step">
+        <div class="tl-num">Within 24 hrs</div>
+        <div class="tl-label">RD review &amp; protocol</div>
+        <div class="tl-desc">Reviewer signs off · We build Your 4-week plan</div>
+      </div>
+      <div class="tl-step">
+        <div class="tl-num">Day −7 from race</div>
+        <div class="tl-label">RIK Direct goes live</div>
+        <div class="tl-desc">Race-week WhatsApp channel + dashboard</div>
+      </div>
+    </div>
+
+    <div class="direct-line">
+      <strong>RIK Direct — race-week concierge</strong>
+      <p>Your dedicated WhatsApp number is delivered <em>by email on Day −7</em> from Your race date. Async-first, 2-hour SLA during race week. <em>Not on call</em> — for medical emergencies, dial Your local emergency number.</p>
+    </div>
+
+    <div class="ty-actions">
+      <a href="https://form.typeform.com/to/XT5Qo0HD?tier=premium" class="btn btn-primary">Complete My Intake <span class="arrow">↗</span></a>
+      <a href="/" class="btn btn-secondary">Back to Home</a>
+    </div>
+    <p class="ty-note"><strong>Confirmation email sent.</strong> Check Your inbox (and spam) for receipt + intake link. <strong>Refund honored</strong> if You complete every weekly check-in and the protocol doesn't deliver value — full $1,599 within 14 days post-race.</p>
+  </div>
+
+  <!-- ═══ SPRINT ═══ -->
+  <div class="ty-card" data-tier="sprint" id="ty-sprint">
+    <span class="ty-eyebrow"><span class="ty-check"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5L10 17.5L19 7.5"/></svg></span>Sprint enrolled</span>
+    <h1 class="ty-heading">You're in the <em>Sprint.</em></h1>
+    <p class="ty-sub">Payment received. Your spot is locked. <strong>Next:</strong> complete Your 10-minute intake so we can build Your protocol and pack Your Training Box.</p>
+
+    <!-- WhatsApp "stay informed" banner — Use Case 2 -->
+    <div class="wa-banner">
+      <span class="wa-banner-eyebrow"><span class="wa-dot" aria-hidden="true"></span>RIK on WhatsApp · Sprint customer line</span>
+      <h3>Stay close to RIK. <em>Faster than email.</em></h3>
+      <p>Add Your Sprint help line now — same business day during Your protocol, founder-direct. Where the weekly check-ins, mid-week protocol questions, and shipment alerts land if You prefer them over email. <strong>Save the number, message us hi, and we'll route You to the SPRINT label.</strong></p>
+      <a class="wa-banner-cta" href="https://wa.me/16263609822?text=Hi%20RIK%20%E2%80%94%20I%20just%20enrolled%20in%20Sprint%20%E2%80%94%20opening%20my%20line" target="_blank" rel="noopener" data-track="thankyou_whatsapp_open">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.5 14.4c-.3-.2-1.7-.8-2-1-.3-.1-.4-.2-.6.1-.2.3-.7.9-.9 1.1-.2.2-.3.2-.6.1-.3-.2-1.2-.5-2.3-1.4-.9-.7-1.4-1.7-1.6-1.9-.2-.3 0-.4.1-.6.1-.1.3-.3.4-.5.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5-.1-.1-.6-1.5-.9-2.1-.2-.5-.5-.5-.6-.5h-.5c-.2 0-.5.1-.7.4-.2.3-.9.9-.9 2.2 0 1.3.9 2.6 1.1 2.7.1.2 1.8 2.7 4.3 3.8.6.3 1.1.4 1.4.5.6.2 1.2.2 1.6.1.5-.1 1.5-.6 1.7-1.1.2-.5.2-1 .1-1.1-.1-.1-.3-.1-.6-.3zM12 0C5.4 0 0 5.4 0 12c0 2.1.5 4.1 1.5 5.8L0 24l6.4-1.4c1.7.9 3.6 1.4 5.6 1.4 6.6 0 12-5.4 12-12S18.6 0 12 0zm0 22c-1.9 0-3.6-.5-5.1-1.4l-3.7.8.8-3.6C3 16.2 2.5 14.1 2.5 12 2.5 6.7 6.7 2.5 12 2.5S21.5 6.7 21.5 12 17.3 22 12 22z"/></svg>
+        Open My Sprint Line on WhatsApp &nbsp;↗
+      </a>
+    </div>
+
+    <div class="timeline">
+      <div class="tl-step active">
+        <div class="tl-num">Now</div>
+        <div class="tl-label">Complete intake</div>
+        <div class="tl-desc">10 min · race data + sweat rate + gut history</div>
       </div>
       <div class="tl-step">
         <div class="tl-num">Within 48 hrs</div>
-        <div class="tl-label">Protocol Built</div>
-        <div class="tl-desc">We review + build your 2-layer protocol</div>
+        <div class="tl-label">Protocol built</div>
+        <div class="tl-desc">CHO/hr targets, sodium tier, gut-week ceiling — calibrated</div>
       </div>
       <div class="tl-step">
         <div class="tl-num">Within 5 days</div>
-        <div class="tl-label">Box Ships</div>
-        <div class="tl-desc">Packed to your protocol · tracked</div>
+        <div class="tl-label">Training Box ships</div>
+        <div class="tl-desc">Layer 2 gels · gut adaptation begins</div>
       </div>
     </div>
 
     <div class="ty-actions">
-      <a href="https://form.typeform.com/to/XT5Qo0HD" class="btn btn-primary" style="padding:15px 36px;font-size:15px;">Complete My Intake →</a>
+      <a href="https://form.typeform.com/to/XT5Qo0HD" class="btn btn-primary">Complete My Intake <span class="arrow">↗</span></a>
+      <a href="/" class="btn btn-secondary">Back to Home</a>
     </div>
-    <p class="ty-note">Takes 10 minutes · We can't build your protocol without it<br>Check your email for your confirmation + intake link</p>
+    <p class="ty-note"><strong>Confirmation email sent.</strong> Check Your inbox for receipt + intake link. <strong>If You added the Race Pack at checkout</strong>, it ships 10 days before Your race — Your race-day product mix from the finalized protocol.</p>
   </div>
 
-  <div class="ty-card" id="ty-bundle" style="display:none">
-    <div class="ty-icon bundle">📦</div>
-    <div class="ty-eyebrow">Order confirmed</div>
-    <h1 class="ty-heading">Your box<br><em>ships in 5 days.</em></h1>
-    <p class="ty-sub">Your RIK Bundle is confirmed. 10 Euphoria + 20 Refuel — the enhancement layer most athletes are missing. We'll email your tracking number once it ships.</p>
+  <!-- ═══ BUNDLE ═══ -->
+  <div class="ty-card" data-tier="bundle" id="ty-bundle">
+    <span class="ty-eyebrow"><span class="ty-check"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5L10 17.5L19 7.5"/></svg></span>Order confirmed</span>
+    <h1 class="ty-heading">Your box <em>ships in 5 days.</em></h1>
+    <p class="ty-sub">Your RIK Bundle is confirmed. <strong>10 Euphoria + 20 Refuel</strong> — the enhancement layer most athletes are missing. We'll email Your tracking number once it ships.</p>
+
+    <!-- WhatsApp "stay informed" banner — Use Case 2 -->
+    <div class="wa-banner">
+      <span class="wa-banner-eyebrow"><span class="wa-dot" aria-hidden="true"></span>RIK on WhatsApp · Bundle customer line</span>
+      <h3>Got Questions Once They Land? <em>Talk to us.</em></h3>
+      <p>Open our line for "how do I take Euphoria before a brick?" or "Refuel mid-marathon — water or no water?" — anything, no pitch. Carrier issues, refunds, fueling-protocol questions for Your training. <strong>One business day, real people.</strong></p>
+      <a class="wa-banner-cta" href="https://wa.me/16263609822?text=Hi%20RIK%20%E2%80%94%20I%20just%20got%20the%20Bundle%20%E2%80%94%20" target="_blank" rel="noopener" data-track="thankyou_whatsapp_open">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.5 14.4c-.3-.2-1.7-.8-2-1-.3-.1-.4-.2-.6.1-.2.3-.7.9-.9 1.1-.2.2-.3.2-.6.1-.3-.2-1.2-.5-2.3-1.4-.9-.7-1.4-1.7-1.6-1.9-.2-.3 0-.4.1-.6.1-.1.3-.3.4-.5.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5-.1-.1-.6-1.5-.9-2.1-.2-.5-.5-.5-.6-.5h-.5c-.2 0-.5.1-.7.4-.2.3-.9.9-.9 2.2 0 1.3.9 2.6 1.1 2.7.1.2 1.8 2.7 4.3 3.8.6.3 1.1.4 1.4.5.6.2 1.2.2 1.6.1.5-.1 1.5-.6 1.7-1.1.2-.5.2-1 .1-1.1-.1-.1-.3-.1-.6-.3zM12 0C5.4 0 0 5.4 0 12c0 2.1.5 4.1 1.5 5.8L0 24l6.4-1.4c1.7.9 3.6 1.4 5.6 1.4 6.6 0 12-5.4 12-12S18.6 0 12 0zm0 22c-1.9 0-3.6-.5-5.1-1.4l-3.7.8.8-3.6C3 16.2 2.5 14.1 2.5 12 2.5 6.7 6.7 2.5 12 2.5S21.5 6.7 21.5 12 17.3 22 12 22z"/></svg>
+        Open My Bundle Line on WhatsApp &nbsp;↗
+      </a>
+    </div>
 
     <div class="timeline">
       <div class="tl-step active">
         <div class="tl-num">Confirmed</div>
-        <div class="tl-label">Order Received</div>
-        <div class="tl-desc">10 Euphoria + 20 Refuel packed</div>
+        <div class="tl-label">Order received</div>
+        <div class="tl-desc">10 Euphoria + 20 Refuel · packing started</div>
       </div>
       <div class="tl-step">
         <div class="tl-num">1–2 days</div>
-        <div class="tl-label">Packed + Labelled</div>
+        <div class="tl-label">Packed &amp; labelled</div>
         <div class="tl-desc">Your box is prepped for dispatch</div>
       </div>
       <div class="tl-step">
@@ -177,44 +280,158 @@ footer {
     </div>
 
     <div class="ty-actions">
-      <a href="/sprint" class="btn btn-primary">Upgrade to the Sprint →</a>
+      <a href="/sprint" class="btn btn-primary">Upgrade to the Sprint <span class="arrow">↗</span></a>
       <a href="/" class="btn btn-secondary">Back to Home</a>
     </div>
-    <p class="ty-note">The $119 you paid counts toward your Sprint if you upgrade anytime.<br>Questions? WhatsApp us.</p>
+    <p class="ty-note"><strong>30-day money-back guarantee.</strong> If You train with these gels for 30 days and don't notice better energy or fewer GI issues than Your current fueling, email <strong>Bek.Zhou@rikathletica.com</strong> — full refund, keep the gels.</p>
   </div>
 
-  <!-- Fallback if no type param -->
-  <div class="ty-card" id="ty-default" style="display:none">
-    <div class="ty-icon sprint">✓</div>
-    <div class="ty-eyebrow">Thank you</div>
-    <h1 class="ty-heading">You're all set.</h1>
-    <p class="ty-sub">We've received your order. Check your email for confirmation and next steps.</p>
+  <!-- ═══ FALLBACK (no tier param) ═══ -->
+  <div class="ty-card" data-tier="default" id="ty-default">
+    <span class="ty-eyebrow"><span class="ty-check"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5L10 17.5L19 7.5"/></svg></span>Thank You</span>
+    <h1 class="ty-heading">You're <em>all set.</em></h1>
+    <p class="ty-sub">We've received Your order. Check Your email for confirmation and next steps. If something looks off, email <strong>Bek.Zhou@rikathletica.com</strong>.</p>
     <div class="ty-actions">
       <a href="/" class="btn btn-secondary">Back to Home</a>
     </div>
   </div>
+
 </main>
 
-<footer>
-  <img src="https://cdn.jsdelivr.net/gh/bekzhou8455/rik-athletica@main/assets/media/rik-logo.png" alt="RIK Athletica" class="footer-logo-img">
-  <span class="footer-links">Copyright © 2026 Rik Athletic Nutrition Inc. &nbsp;·&nbsp; <a href="/privacy" style="color:rgba(255,255,255,0.38);text-decoration:none;">Privacy</a> &nbsp;·&nbsp; <a href="/terms" style="color:rgba(255,255,255,0.38);text-decoration:none;">Terms</a></span>
+<!-- ═══ Back to top ═══ -->
+<div style="text-align:center;padding:32px 20px;background:#fff;border-top:1px solid rgba(14,14,14,.08);">
+  <a href="#top" aria-label="Back to top of page" style="display:inline-flex;align-items:center;gap:8px;padding:12px 24px;border-radius:999px;border:1px solid #0E0E0E;background:#fff;color:#0E0E0E;font-family:'Outfit',-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif;font-size:13px;font-weight:500;letter-spacing:.02em;text-decoration:none;transition:all .2s ease;">
+    <span aria-hidden="true">↑</span>
+    <span>Back to top</span>
+  </a>
+</div>
+
+
+<!-- ═══ FOOTER ═══ -->
+<footer class="legal">
+  <div class="wrap">
+    <div class="legal-top">
+      <img src="https://cdn.jsdelivr.net/gh/bekzhou8455/rik-athletica@main/assets/media/rik-logo-cropped.png" alt="RIK Athletica" class="legal-logo">
+      <div>
+        <a href="/privacy">Privacy</a> &nbsp;·&nbsp; <a href="/terms">Terms</a>
+      </div>
+    </div>
+    <div style="font-size:12px;color:rgba(255,255,255,.55);letter-spacing:.04em">Copyright &copy; 2026 Rik Athletic Nutrition Inc. All rights reserved.</div>
+    <div class="footer-disclaimer">
+      <strong>&dagger; Service &amp; Supplement Disclaimer</strong>
+      The 4-Week Sprint and Founding Cohort Premium are nutrition-planning services for informational and educational purposes only — they do not constitute medical advice, diagnosis, or treatment. RIK Athletica products are dietary supplements; these statements have not been evaluated by the FDA and are not intended to diagnose, treat, cure, or prevent any disease. Always consult a qualified healthcare professional before starting any new supplement or nutrition programme.
+    </div>
+  </div>
 </footer>
 
+<!-- ═══ TIER SWITCH + GA4 ENHANCED-ECOMMERCE PURCHASE TRACKING ═══ -->
 <script>
-(function() {
+(function(){
   var params = new URLSearchParams(window.location.search);
-  var type = params.get('type');
-  if (type === 'sprint') {
-    document.getElementById('ty-sprint').style.display = 'block';
-  } else if (type === 'bundle') {
-    document.getElementById('ty-bundle').style.display = 'block';
-  } else {
-    document.getElementById('ty-default').style.display = 'block';
+
+  /* Accept both ?tier= (new, Stripe-redirect) and ?type= (legacy, internal links) */
+  var tier = (params.get('tier') || params.get('type') || 'default').toLowerCase();
+  var plan = (params.get('plan') || '').toLowerCase();        // sprint subtier: 703 / full / pro
+  var sessionId = params.get('session_id') || params.get('sid') || '';
+
+  /* Tier → product config (mirrors the items arrays in /bundle, /sprint, /premium) */
+  var TIERS = {
+    premium: {
+      label:  'Founding Cohort Premium',
+      value:  1599,
+      coupon: 'founding-cohort',
+      items: [{
+        item_id:  'premium-founding-cohort',
+        item_name:'Founding Cohort Premium',
+        item_category:'service',
+        item_variant:'race-week-concierge',
+        price:    1599,
+        quantity: 1
+      }]
+    },
+    sprint: {
+      label:  'Sprint Protocol',
+      value:  plan === 'pro'  ? 899 : plan === 'full' ? 659 : 569,
+      items: [{
+        item_id:  'sprint-' + (plan || '703'),
+        item_name:'4-Week Sprint Protocol',
+        item_category:'service',
+        item_variant: plan === 'pro' ? 'pro-elite' : plan === 'full' ? 'full-ironman' : '70-3',
+        price:    plan === 'pro'  ? 899 : plan === 'full' ? 659 : 569,
+        quantity: 1
+      }]
+    },
+    bundle: {
+      label:  'Race-Day Fuel Bundle',
+      value:  119,
+      items: [{
+        item_id:  'bundle-30-gels',
+        item_name:'Race-Day Fuel Bundle (10 Euphoria + 20 Refuel)',
+        item_category:'product',
+        item_variant:'30-pack',
+        price:    119,
+        quantity: 1
+      }]
+    },
+    default: { label: 'Order confirmed', value: 0, items: [] }
+  };
+
+  var cfg = TIERS[tier] || TIERS.default;
+
+  /* ─── 1. Reveal the right tier card ─── */
+  var card = document.querySelector('.ty-card[data-tier="' + tier + '"]') || document.getElementById('ty-default');
+  if (card) card.classList.add('show');
+  var navLabel = document.getElementById('navTierLabel');
+  if (navLabel) navLabel.textContent = cfg.label;
+
+  /* ─── 2. GA4 enhanced-ecommerce purchase event ─── */
+  /* Stripe session IDs are like 'cs_live_a1b2c3...' — safe to use as transaction_id.
+     If no session_id, fallback to a synthesized one so GA4 still records the event. */
+  if (typeof gtag === 'function' && cfg.value > 0) {
+    var transactionId = sessionId || ('rik_' + tier + '_' + Date.now());
+
+    gtag('event', 'purchase', {
+      transaction_id: transactionId,
+      currency: 'USD',
+      value: cfg.value,
+      tax: 0,
+      shipping: 0,
+      coupon: cfg.coupon || undefined,
+      items: cfg.items
+    });
+
+    /* Tier-specific named events for funnel readability */
+    gtag('event', tier + '_purchase_complete', {
+      page: 'thank-you',
+      tier: tier,
+      plan: plan || null,
+      value: cfg.value,
+      currency: 'USD',
+      transaction_id: transactionId
+    });
+
+    /* Phase 1.6 RIK helper */
+    if (window.RIK && typeof window.RIK.cta === 'function') {
+      window.RIK.cta(tier + '_purchase_confirmed');
+    }
+  } else if (typeof gtag === 'function') {
+    /* Default landing — no tier known, fire generic page view */
+    gtag('event', 'thankyou_default_view', { page: 'thank-you' });
+  }
+
+  /* Suppress the exit-intent popup on every future visit — they bought */
+  if (cfg.value > 0) {
+    try { localStorage.setItem('rik_purchased', String(Date.now())); } catch (e) {}
   }
 })();
 </script>
 
+<!-- Rewardful affiliate (closes the loop server-side via Stripe webhook) -->
 <script>(function(w,r){w._rwq=r;w[r]=w[r]||function(){(w[r].q=w[r].q||[]).push(arguments)}})(window,'rewardful');</script>
 <script async src="https://r.wdfl.co/rw.js" data-rewardful="73b07c"></script>
+
+<!-- Phase 1.6 instrumentation helpers -->
+<script defer src="/assets/rik-analytics.js"></script>
+
 </body>
 </html>

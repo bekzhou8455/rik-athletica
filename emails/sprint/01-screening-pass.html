@@ -1,0 +1,95 @@
+<!doctype html>
+<!--
+  Email: Sprint #1 — Cart-abandonment recovery (post-screening, pre-payment)
+  Trigger: 1 hour after on-site screening "pass" if no Stripe payment recorded
+  Subject: You're in window — finish checkout and start.
+
+  Flow context:
+    1. Athlete fills /sprint screening form (captures name + email + race details)
+    2. /api/screen-capture stores result + email
+    3. If "pass" → routed to Stripe via STRIPE_LINKS dispatcher
+    4. If they don't complete payment within 1 hour → THIS EMAIL fires
+    5. ToS already accepted at the screening form; another ToS at Stripe checkout;
+       full agreement display + checkbox at Typeform intake. NO contract step.
+
+  Tokens:
+    {{first_name}}   — From screening form
+    {{race_distance}} {{race_date}} — From screening form
+    {{tier_name}} {{tier_price}}    — Routing result
+    {{stripe_link}}                 — Tier-correct Stripe payment link
+    {{promo_code}}                  — "WELCOME15" — 15% off, first-time customer
+    {{stripe_link_with_promo}}      — Stripe link with ?prefilled_promo_code=WELCOME15
+    {{wa_link}} {{unsubscribe}}
+-->
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Finish checkout — RIK Sprint</title></head>
+<body style="margin:0;padding:0;background:#EEEDEA;font-family:'Outfit',-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif;color:#0E0E0E;-webkit-font-smoothing:antialiased;">
+<div style="display:none;max-height:0;overflow:hidden;">You passed screening — finish checkout to start. 15% off if You haven't redeemed yet.</div>
+
+<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background:#EEEDEA;"><tr><td align="center" style="padding:32px 20px;">
+<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="600" style="max-width:600px;width:100%;background:#FFFFFF;border:1px solid rgba(14,14,14,.10);border-radius:18px;overflow:hidden;">
+
+  <tr><td style="padding:28px 36px;border-bottom:1px solid rgba(14,14,14,.10);"><p style="margin:0;font-family:'Outfit',sans-serif;font-size:13px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:#0E0E0E;">RIK Athletica · 4-Week Sprint</p></td></tr>
+
+  <tr><td style="padding:48px 36px 28px;">
+    <p style="margin:0 0 16px;font-size:11px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:#5A5853;">─── &nbsp;&nbsp;Race-gate cleared&nbsp;&nbsp;───</p>
+    <h1 style="margin:0 0 18px;font-family:'Outfit',sans-serif;font-size:34px;font-weight:700;line-height:1.02;letter-spacing:-.02em;color:#0E0E0E;">You're In. <span style="color:#5A5853;font-weight:700;">One Step From Start.</span></h1>
+    <p style="margin:0 0 14px;font-size:15px;line-height:1.65;color:#5A5853;">{{first_name}} — Your screening passed. Race date inside 28–56 day window, coach confirmed, medical screen clean. <strong style="color:#0E0E0E;font-weight:500;">You're qualified for Sprint.</strong></p>
+    <p style="margin:0 0 14px;font-size:15px;line-height:1.65;color:#5A5853;">Your tier: <strong style="color:#0E0E0E;font-weight:500;">{{tier_name}} — ${{tier_price}}</strong>. Race: <strong style="color:#0E0E0E;font-weight:500;">{{race_distance}} on {{race_date}}</strong>. Checkout was waiting on You — let's finish it.</p>
+  </td></tr>
+
+  <!-- Discount block — only fires for first-time customers who haven't redeemed -->
+  <tr><td style="padding:0 36px 24px;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#0E0E0E;border-radius:14px;"><tr><td style="padding:24px 26px;">
+      <p style="margin:0 0 8px;font-family:'Outfit',sans-serif;font-size:10px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,210,140,.85);">First-time customer · 15% off</p>
+      <p style="margin:0 0 6px;font-family:'Outfit',sans-serif;font-size:32px;font-weight:700;line-height:1;letter-spacing:-.02em;color:#FFFFFF;">{{promo_code}}</p>
+      <p style="margin:0 0 18px;font-family:'Outfit',sans-serif;font-size:13px;line-height:1.6;color:rgba(255,255,255,.78);">Auto-applies if You use the button below — no typing. ${{tier_price}} → about $<span style="color:#FFFFFF;font-weight:500;">{{tier_price_discounted}}</span>. One-time, first-time, valid 48 hours from screening.</p>
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0"><tr><td style="background:#FFFFFF;border-radius:999px;"><a href="{{stripe_link_with_promo}}" style="display:inline-block;padding:13px 26px;font-family:'Outfit',sans-serif;font-size:14px;font-weight:500;color:#0E0E0E;text-decoration:none;">Apply 15% &amp; Complete Checkout &nbsp;↗</a></td></tr></table>
+    </td></tr></table>
+  </td></tr>
+
+  <tr><td style="padding:0 36px 32px;">
+    <p style="margin:0 0 12px;font-family:'Outfit',sans-serif;font-size:11px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:#5A5853;">Or pay full price — same outcome</p>
+    <p style="margin:0 0 14px;font-size:13.5px;line-height:1.65;color:#5A5853;">If You'd rather not use the code, <a href="{{stripe_link}}" style="color:#0E0E0E;text-decoration:none;border-bottom:1px solid rgba(14,14,14,.25);font-weight:500;">complete checkout at full price &nbsp;↗</a>. Same protocol, same shipments, same revision loop.</p>
+  </td></tr>
+
+  <tr><td style="padding:0 36px 32px;">
+    <p style="margin:0 0 12px;font-family:'Outfit',sans-serif;font-size:11px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:#5A5853;">What You're paying for</p>
+    <p style="margin:0 0 8px;font-size:13.5px;line-height:1.65;color:#5A5853;">Personalized 4-week protocol calibrated to Your physiology · two training shipments (Training Box at Day 5, Replenish at Week 2) · weekly revision loop on Your session feedback · RD-reviewed methodology · Race Pack optional add-on at checkout for race-day product mix.</p>
+  </td></tr>
+
+  <tr><td style="padding:0 36px 32px;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#EEEDEA;border-radius:12px;border-left:3px solid #0E0E0E;"><tr><td style="padding:18px 22px;font-family:'Outfit',sans-serif;font-size:13px;line-height:1.6;color:#0E0E0E;">
+      <p style="margin:0 0 6px;font-weight:500;">Three checkbox confirmations, not a contract.</p>
+      <p style="margin:0;color:#5A5853;font-size:12.5px;">You already accepted ToS at the screening form. You'll see it again at Stripe checkout (one-click). The full Service Agreement is displayed inside Your Typeform intake and acknowledged with a final checkbox before the protocol gets built. No PDFs to sign, no Dropbox Sign roundtrip.</p>
+    </td></tr></table>
+  </td></tr>
+
+  <tr><td style="padding:0 36px 32px;">
+    <p style="margin:0 0 12px;font-family:'Outfit',sans-serif;font-size:11px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:#5A5853;">After both clear</p>
+    <p style="margin:0 0 12px;font-size:13.5px;line-height:1.65;color:#5A5853;">Typeform full intake lands in Your inbox. 10 minutes. Then I build the protocol within 48 hours. Shipment 1 (Training Box) ships 5 days from intake.</p>
+    <p style="margin:0;font-size:13.5px;line-height:1.65;color:#5A5853;">Race Pack — Your race-day product mix — is the optional add-on at checkout. If You added it, ships 10 days before race day from finalized protocol.</p>
+  </td></tr>
+
+  <tr><td style="padding:0 36px 32px;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:rgba(37,211,102,.08);border:1px solid rgba(37,211,102,.32);border-radius:12px;"><tr><td style="padding:18px 22px;font-family:'Outfit',sans-serif;color:#0E0E0E;">
+      <p style="margin:0 0 8px;font-size:10px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:#0E5A1F;">RIK on WhatsApp · Sprint help line</p>
+      <p style="margin:0 0 10px;font-size:14px;font-weight:500;line-height:1.45;color:#0E0E0E;">Question before You sign or pay? <strong>Talk to us — same business day, founder-direct.</strong></p>
+      <p style="margin:0 0 14px;font-size:13px;line-height:1.6;color:#5A5853;">Race-date edge case, gut history, medical question, "is the Pro tier actually right for Me" — message us with SPRINT in the thread.</p>
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0"><tr><td style="background:#0E0E0E;border-radius:999px;"><a href="{{wa_link}}" style="display:inline-block;padding:11px 22px;font-family:'Outfit',sans-serif;font-size:13px;font-weight:500;color:#FFFFFF;text-decoration:none;">Open WhatsApp &nbsp;↗</a></td></tr></table>
+    </td></tr></table>
+  </td></tr>
+
+  <tr><td style="padding:0 36px 32px;">
+    <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="margin-top:16px;border-top:1px dashed rgba(14,14,14,.18);padding-top:24px;"><tr><td style="font-family:'Outfit',sans-serif;font-size:11px;line-height:1.65;color:#5A5853;letter-spacing:.04em;">
+      <p style="margin:0 0 12px;font-weight:500;color:#0E0E0E;">— Bek &amp; the RIK team</p>
+      <p style="margin:0 0 14px;"><a href="{{wa_link}}" style="color:#0E0E0E;text-decoration:none;border-bottom:1px solid rgba(14,14,14,.25);">WhatsApp</a> &nbsp;·&nbsp; <a href="mailto:Bek.Zhou@rikathletica.com" style="color:#0E0E0E;text-decoration:none;border-bottom:1px solid rgba(14,14,14,.25);">Bek.Zhou@rikathletica.com</a></p>
+      <p style="margin:0 0 8px;font-size:10px;color:#8A8780;letter-spacing:.06em;">Copyright &copy; 2026 Rik Athletic Nutrition Inc.</p>
+      <p style="margin:0 0 8px;font-size:10px;color:#8A8780;line-height:1.7;"><strong style="color:#5A5853;">&dagger;</strong> The 4-Week Sprint is a nutrition-planning service — not medical advice. RIK Athletica products are dietary supplements; statements have not been evaluated by the FDA. Always consult a qualified healthcare professional.</p>
+      <p style="margin:0 0 8px;font-size:10px;color:#8A8780;line-height:1.6;">{{registered_address}}</p>
+      <p style="margin:0;font-size:10px;color:#8A8780;"><a href="{{unsubscribe}}" style="color:#8A8780;text-decoration:underline;">Unsubscribe</a> &nbsp;·&nbsp; <a href="https://www.rikathletica.com/privacy" style="color:#8A8780;text-decoration:underline;">Privacy</a> &nbsp;·&nbsp; <a href="https://www.rikathletica.com/terms" style="color:#8A8780;text-decoration:underline;">Terms</a></p>
+    </td></tr></table>
+  </td></tr>
+
+</table>
+</td></tr></table>
+</body></html>

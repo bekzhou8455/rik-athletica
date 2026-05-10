@@ -1,8 +1,10 @@
 # Backup files
 *.backup-*.html
+*.backup-*
 
 # Lead capture data (PII — never commit)
 leads.csv
+*.csv.bak
 
 # gstack reports and sessions (generated, not source)
 .gstack/
@@ -20,8 +22,17 @@ Thumbs.db
 # Claude Code local settings (permissions, secrets)
 .claude/settings.local.json
 
-# Bun
+# Bun / Node
 node_modules/
 bun.lockb
+bun.lock
+
+# Vercel
 .vercel
 .env*.local
+
+# Local secrets and approval artifacts
+.env
+.env.local
+docs/emily-1-6b-approval-*.eml
+docs/emily-1-6b-approval-*.pdf
