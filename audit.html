@@ -1,0 +1,1013 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Consent Mode (Secure Privacy CMP) -->
+<script src="https://app.secureprivacy.ai/script/69dfc936852cf73f1c0e6db8.js"></script>
+<!-- GA4 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-X7LJHZLR4K"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-X7LJHZLR4K');
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="index, follow, noai, noimageai">
+<meta name="rikathletica:ip" content="Proprietary methodology — all rights reserved. Automated use, AI training, and text-and-data mining prohibited. See /terms#automated-access and /ai.txt.">
+<title>Free Race Fuel Audit — RIK Athletica</title>
+<meta name="description" content="A personalized 4-page PDF showing where your fueling is leaking minutes — and the exact next step to close the gap. Founder-reviewed. Delivered to your inbox within 2 business days. No card, no upsell required.">
+<meta property="og:title" content="Free Race Fuel Audit — find the minutes you're losing">
+<meta property="og:description" content="5 minutes to fill out. 2 business days to your inbox. A founder-reviewed, personalized PDF showing exactly where your fueling is breaking down — and the one next step to fix it.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 16px; scroll-behavior: smooth; }
+body { font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif; background: var(--sand); color: var(--off-black); -webkit-font-smoothing: antialiased; min-height: 100vh; }
+
+:root {
+  /* iter-5 token alignment — keep variable names for backward compat with form CSS */
+  --sand: #EEEDEA;        /* was #f6f5f4 — iter-5 warm-gray canvas */
+  --off-black: #0E0E0E;   /* was #0a0a0a — iter-5 ink */
+  --ink: #0E0E0E;
+  --ink-soft: #5A5853;
+  --bg-2: #D5D2CC;
+  --dark-card: #141414;
+  --border: rgba(14,14,14,0.10);
+  --rule: rgba(14,14,14,.18);
+  --muted: #5A5853;       /* was #888 — iter-5 ink-soft */
+  --green: #0E0E0E;       /* iter-5 retired green; map to ink for any green-named accents */
+  --green-light: #2a2a2a; /* fallback */
+  --warn: #a82010;
+  --r-card: 18px;         /* was 20px — iter-5 standard */
+  --r-btn: 999px;         /* was 36px — iter-5 pill */
+}
+
+/* ── NAV (compact, focused) ── */
+nav {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(246,245,244,0.96);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 40px; height: 56px;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.logo { font-size: 13px; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; color: var(--off-black); text-decoration: none; }
+nav .nav-meta { font-size: 11px; color: #aaa; letter-spacing: 0.04em; }
+nav .nav-meta strong { color: var(--green); font-weight: 600; }
+
+/* ── PROGRESS BAR (sub-nav) ── */
+.progress-wrap {
+  position: sticky; top: 56px; z-index: 99;
+  background: rgba(246,245,244,0.96);
+  backdrop-filter: blur(16px);
+  padding: 14px 40px 16px;
+  display: flex; justify-content: space-between; align-items: center; gap: 24px;
+  border-bottom: 1px solid var(--border);
+}
+.progress-bar {
+  flex: 1; height: 4px; background: rgba(0,0,0,0.06); border-radius: 4px; overflow: hidden;
+}
+.progress-fill {
+  height: 100%; background: var(--off-black);
+  border-radius: 4px; width: 0%; transition: width 0.4s cubic-bezier(.2,.8,.2,1);
+}
+.progress-text { font-size: 11px; color: #aaa; letter-spacing: 0.06em; text-transform: uppercase; flex-shrink: 0; }
+.progress-text strong { color: var(--off-black); font-weight: 600; }
+.back-btn {
+  background: transparent; border: 1px solid var(--border); border-radius: var(--r-btn);
+  padding: 6px 14px 6px 10px; font-size: 12px; color: #888; cursor: pointer; font-family: inherit;
+  display: inline-flex; align-items: center; gap: 4px; transition: all .2s;
+  flex-shrink: 0;
+}
+.back-btn:hover { background: #fff; color: var(--off-black); border-color: rgba(0,0,0,0.15); }
+.back-btn[disabled] { opacity: 0.3; cursor: not-allowed; }
+
+/* ── MAIN STAGE ── */
+main {
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: flex-start;
+  padding: 56px 40px 80px;
+  min-height: calc(100vh - 56px - 50px);
+}
+
+.stage {
+  width: 100%; max-width: 640px;
+}
+
+.step { display: none; animation: fadeInUp 0.45s cubic-bezier(.2,.8,.2,1) both; }
+.step.active { display: block; }
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@media (prefers-reduced-motion: reduce) { .step { animation: none; } }
+
+.step-eyebrow { font-size: 11px; letter-spacing: 2.5px; text-transform: uppercase; color: #aaa; margin-bottom: 18px; font-weight: 500; }
+.step-question { font-size: clamp(28px, 4vw, 40px); font-weight: 400; line-height: 1.15; letter-spacing: -0.03em; color: var(--off-black); margin-bottom: 12px; }
+.step-question em { font-style: normal; font-weight: 300; color: #bbb; }
+.step-help { font-size: 15px; color: #888; line-height: 1.65; margin-bottom: 32px; letter-spacing: -0.01em; }
+.step-help em { font-style: normal; color: var(--off-black); font-weight: 500; }
+
+/* ── INPUTS ── */
+.field { margin-bottom: 20px; }
+.field-label { display: block; font-size: 12px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; color: #888; margin-bottom: 10px; }
+.field-help { font-size: 12.5px; color: #aaa; margin-top: 6px; line-height: 1.5; letter-spacing: -0.01em; }
+.field-help.warn { color: var(--warn); }
+
+input[type="text"],
+input[type="email"],
+input[type="number"],
+input[type="date"],
+select, textarea {
+  width: 100%; font-family: inherit; font-size: 17px;
+  padding: 16px 18px; border: 1px solid var(--border);
+  border-radius: 14px; background: #fff; color: var(--off-black);
+  letter-spacing: -0.01em; transition: border-color .2s, box-shadow .2s;
+  -webkit-appearance: none; appearance: none;
+}
+input:focus, select:focus, textarea:focus {
+  outline: none; border-color: var(--off-black);
+  box-shadow: 0 0 0 4px rgba(0,0,0,0.04);
+}
+input::placeholder, textarea::placeholder { color: #ccc; }
+textarea { min-height: 120px; resize: vertical; line-height: 1.55; }
+select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8' fill='none'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%23888' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 18px center;
+  padding-right: 44px; cursor: pointer;
+}
+
+/* Pill choices (single-select) */
+.pill-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; }
+.pill {
+  background: #fff; border: 1px solid var(--border);
+  border-radius: 14px; padding: 18px 16px; font-size: 15px;
+  font-weight: 500; color: var(--off-black); letter-spacing: -0.01em;
+  cursor: pointer; text-align: center; transition: all .15s;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;
+  min-height: 64px;
+}
+.pill .pill-meta { font-size: 11px; font-weight: 400; color: #aaa; letter-spacing: 0; }
+.pill:hover { border-color: rgba(0,0,0,0.18); }
+.pill.selected {
+  background: var(--off-black); color: #fff;
+  border-color: var(--off-black);
+}
+.pill.selected .pill-meta { color: rgba(255,255,255,0.5); }
+
+/* Multi-select chips */
+.chip-grid { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip {
+  background: #fff; border: 1px solid var(--border);
+  border-radius: var(--r-btn); padding: 10px 18px; font-size: 14px;
+  font-weight: 500; color: var(--off-black); letter-spacing: -0.01em;
+  cursor: pointer; transition: all .15s;
+  min-height: 40px;
+}
+.chip:hover { border-color: rgba(0,0,0,0.18); }
+.chip.selected {
+  background: var(--off-black); color: #fff;
+  border-color: var(--off-black);
+}
+
+/* Scale (4-point: never / sometimes / often / always) */
+.scale-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+.scale-pill {
+  background: #fff; border: 1px solid var(--border);
+  border-radius: 14px; padding: 16px 8px;
+  cursor: pointer; transition: all .15s;
+  text-align: center;
+  min-height: 64px; display: flex; flex-direction: column; justify-content: center;
+}
+.scale-pill:hover { border-color: rgba(0,0,0,0.18); }
+.scale-pill .label { font-size: 13px; font-weight: 600; color: var(--off-black); letter-spacing: -0.01em; }
+.scale-pill .desc { font-size: 10.5px; color: #aaa; letter-spacing: 0; margin-top: 3px; line-height: 1.3; }
+.scale-pill.selected { background: var(--off-black); border-color: var(--off-black); }
+.scale-pill.selected .label { color: #fff; }
+.scale-pill.selected .desc { color: rgba(255,255,255,0.5); }
+
+/* Yes/No toggle */
+.yn-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+
+/* ── FOOTER ACTIONS ── */
+.actions {
+  display: flex; justify-content: space-between; align-items: center; gap: 16px;
+  margin-top: 32px;
+}
+.actions .skip-link {
+  font-size: 13px; color: #aaa; text-decoration: underline; text-decoration-color: rgba(0,0,0,0.08);
+  cursor: pointer; padding: 8px 0; transition: color .2s;
+}
+.actions .skip-link:hover { color: #666; }
+
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+  padding: 16px 32px; font-size: 15px; font-weight: 500;
+  border-radius: var(--r-btn); cursor: pointer; border: none;
+  font-family: inherit; letter-spacing: -0.01em;
+  transition: opacity .15s, transform .15s;
+  text-decoration: none; min-height: 48px;
+}
+.btn:hover { opacity: 0.86; transform: translateY(-1px); }
+.btn:active { transform: translateY(0); }
+.btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+.btn-primary { background: var(--off-black); color: #fff; }
+.btn-secondary { background: transparent; color: var(--off-black); border: 1px solid var(--border); }
+.btn-large { padding: 18px 40px; font-size: 16px; }
+
+/* ── INTRO STEP (Step 0) ── */
+.intro-card {
+  background: #fff;
+  border-radius: var(--r-card);
+  padding: 56px 48px;
+  border: 1px solid var(--border);
+}
+.intro-card .eyebrow {
+  display: inline-block; font-size: 11px; letter-spacing: 2.5px; text-transform: uppercase;
+  color: #fff; background: var(--green); padding: 5px 14px; border-radius: var(--r-btn);
+  margin-bottom: 24px; font-weight: 600;
+}
+.intro-card h1 {
+  font-size: clamp(36px, 5vw, 56px); font-weight: 400; line-height: 1.0;
+  letter-spacing: -0.04em; margin-bottom: 18px; color: var(--off-black);
+}
+.intro-card h1 em { font-style: normal; font-weight: 300; color: #bbb; }
+.intro-card .sub {
+  font-size: 17px; color: #666; line-height: 1.6; margin-bottom: 32px;
+  letter-spacing: -0.01em;
+}
+.intro-card .sub strong { color: var(--off-black); font-weight: 600; }
+.intro-meta { display: flex; gap: 32px; flex-wrap: wrap; margin-bottom: 36px; padding: 24px 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+.intro-meta-item { font-size: 12px; color: #aaa; letter-spacing: 0.04em; }
+.intro-meta-item strong { display: block; font-size: 22px; color: var(--off-black); font-weight: 500; letter-spacing: -0.03em; margin-bottom: 4px; }
+.intro-list { margin-bottom: 36px; }
+.intro-list li { list-style: none; font-size: 14.5px; color: #555; line-height: 1.65; padding: 8px 0; padding-left: 28px; position: relative; letter-spacing: -0.01em; }
+.intro-list li::before { content: '✓'; position: absolute; left: 0; top: 8px; color: var(--green); font-weight: 700; }
+.intro-list li strong { color: var(--off-black); font-weight: 600; }
+
+.club-tag {
+  display: inline-block; font-size: 11.5px; color: var(--green); background: rgba(74,222,128,0.1);
+  border: 1px solid rgba(74,222,128,0.25); border-radius: var(--r-btn);
+  padding: 5px 14px; margin-bottom: 18px; letter-spacing: 0.02em;
+}
+.club-tag strong { font-weight: 600; }
+
+/* ── DONE STEP ── */
+.done-card {
+  background: #fff;
+  border-radius: var(--r-card);
+  padding: 56px 48px;
+  border: 1px solid var(--border);
+  text-align: center;
+}
+.done-icon {
+  width: 80px; height: 80px; border-radius: 50%;
+  background: rgba(74,222,128,0.1); border: 2px solid rgba(74,222,128,0.3);
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 24px;
+  font-size: 36px; color: var(--green);
+}
+.done-card h1 {
+  font-size: clamp(32px, 4.5vw, 48px); font-weight: 400; line-height: 1.05;
+  letter-spacing: -0.04em; margin-bottom: 14px;
+}
+.done-card .sub {
+  font-size: 16px; color: #666; line-height: 1.65;
+  max-width: 480px; margin: 0 auto 28px; letter-spacing: -0.01em;
+}
+.done-card .sub strong { color: var(--off-black); font-weight: 600; }
+.done-card .email-conf {
+  background: var(--sand); border-radius: 12px; padding: 16px 20px;
+  font-size: 13px; color: #888; margin-bottom: 32px; word-break: break-word;
+}
+.done-card .email-conf strong { color: var(--off-black); display: block; font-weight: 500; font-size: 15px; margin-bottom: 4px; letter-spacing: -0.01em; }
+.done-actions { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+
+/* ── NUMERIC PAIR ── */
+.num-pair { display: grid; grid-template-columns: 1fr auto; gap: 12px; align-items: stretch; }
+.num-pair input { width: 100%; }
+.num-pair select { width: auto; min-width: 90px; }
+
+/* ── ERROR STATE ── */
+.field.has-error input, .field.has-error select, .field.has-error textarea { border-color: var(--warn); }
+.field-error { font-size: 12.5px; color: var(--warn); margin-top: 6px; letter-spacing: -0.01em; display: none; }
+.field.has-error .field-error { display: block; }
+
+/* ── FOOTER (iter-5) ── */
+footer { background: var(--off-black); padding: 48px 36px 64px; display: flex; flex-direction: column; gap: 18px; font-size: 13px; line-height: 1.7; color: rgba(255,255,255,.55); }
+footer .legal-top { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; border-bottom: 1px dashed rgba(255,255,255,.18); padding-bottom: 18px; max-width: 1320px; margin: 0 auto; width: 100%; }
+.footer-logo-img { height: 34px; width: auto; display: block; filter: brightness(0) invert(1); opacity: .92; }
+.footer-links { font-size: 12px; color: rgba(255,255,255,.55); letter-spacing: .06em; }
+.footer-links a { color: rgba(255,255,255,.55); text-decoration: none; }
+.footer-links a:hover { color: #fff; }
+.footer-disclaimer { font-size: 12px; color: rgba(255,255,255,.42); max-width: 920px; line-height: 1.7; margin: 0 auto; width: 100%; }
+.footer-disclaimer strong { color: rgba(255,255,255,.6); display: block; margin-bottom: 6px; font-weight: 500; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 720px) {
+  nav, .progress-wrap, main, footer { padding-left: 20px; padding-right: 20px; }
+  main { padding-top: 32px; padding-bottom: 56px; }
+  .intro-card, .done-card { padding: 36px 28px; }
+  .step-question { font-size: 26px; }
+  .pill-grid { grid-template-columns: 1fr 1fr; }
+  .scale-grid { grid-template-columns: 1fr 1fr; }
+  .actions { flex-direction: column-reverse; align-items: stretch; gap: 12px; }
+  .actions .btn { width: 100%; }
+  .intro-meta { gap: 18px; }
+  .intro-meta-item strong { font-size: 18px; }
+  .progress-wrap { padding: 10px 20px 12px; gap: 14px; }
+  .progress-text { display: none; }
+  .back-btn span { display: none; }
+}
+@media (max-width: 480px) {
+  .pill-grid { grid-template-columns: 1fr; }
+  .scale-grid { grid-template-columns: 1fr 1fr; }
+  .yn-row { grid-template-columns: 1fr 1fr; }
+  footer { padding: 24px 20px; flex-direction: column; text-align: center; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ NAV ═══ -->
+<nav>
+  <a href="/" class="logo" style="display:flex;align-items:center;"><img src="https://cdn.jsdelivr.net/gh/bekzhou8455/rik-athletica@main/assets/media/rik-logo-cropped.png" alt="RIK Athletica" style="height:32px;width:auto;display:block;"></a>
+  <span class="nav-meta">Free Race Fuel Audit &middot; <strong>48-hr delivery</strong></span>
+</nav>
+
+<!-- ═══ PROGRESS BAR ═══ -->
+<div class="progress-wrap" id="progressWrap" style="display:none;">
+  <button class="back-btn" id="backBtn" onclick="goBack()" disabled>
+    <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M10 4L6 8L10 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <span>Back</span>
+  </button>
+  <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+  <div class="progress-text"><strong id="progressNum">1</strong> of <span id="progressTotal">10</span></div>
+</div>
+
+<!-- ═══ MAIN STAGE ═══ -->
+<main>
+  <div class="stage" id="stage">
+
+    <!-- STEP 0: INTRO -->
+    <section class="step active" data-step="0" data-skip-progress="true">
+      <div class="intro-card">
+        <div id="clubTag" class="club-tag" style="display:none;">Sent by <strong id="clubName"></strong></div>
+        <div class="eyebrow">Free Race Fuel Audit</div>
+        <h1>Find the minutes you're losing. <em>In 2 business days, in your inbox.</em></h1>
+        <p class="sub">A 4-page PDF, founder-reviewed, that tells you exactly where your fueling is leaking minutes &mdash; and the <strong>one next step</strong> to close it. Not a sales call. Not a meal plan. <strong>A personalized protocol.</strong></p>
+
+        <div class="intro-meta">
+          <div class="intro-meta-item"><strong>~5 min</strong>to fill out</div>
+          <div class="intro-meta-item"><strong>48 hrs</strong>to your inbox</div>
+          <div class="intro-meta-item"><strong>$0</strong>no card needed</div>
+        </div>
+
+        <ul class="intro-list">
+          <li><strong>Founder-reviewed.</strong> I (Bek) read each one personally &mdash; takes me 30-45 minutes per audit.</li>
+          <li><strong>Actionable, not generic.</strong> One next step, picked for your specific race date and gut.</li>
+          <li><strong>Honest routing.</strong> If your race is too close for the Sprint, the PDF tells you. If you're better off with the Bundle and a fueling guide, the PDF says that.</li>
+          <li><strong>One follow-up email.</strong> No spam. Opt out anytime.</li>
+        </ul>
+
+        <button class="btn btn-primary btn-large" onclick="goNext()">Start the audit &rarr;</button>
+
+        <!-- ═══ RDN TRUST BANNER (per §1.6 — audit page is in §1.2 permitted; placement requires Emily's §1.6(b) written approval BEFORE deploy) ═══ -->
+        <div style="margin-top:48px;padding-top:32px;border-top:1px solid var(--border);">
+          <div class="eyebrow-pill" style="display:block;text-align:center;width:fit-content;margin:0 auto 20px;">Independent Methodology Review</div>
+          <div class="rdn-banner">
+            <img class="rdn-banner-headshot" src="/assets/emily-norman-rdn.jpg" alt="Headshot of Emily Haydon Norman, RDN" width="80" height="102">
+            <div>
+              <div class="rdn-banner-name">Emily Haydon Norman, RDN</div>
+              <div class="rdn-banner-credentials">Commission on Dietetic Registration (USA), reg. #86117608, May 2026</div>
+              <p class="rdn-banner-statement">"Based on my review, the RIK Athletica methodology is consistent with established evidence-based sports nutrition principles for endurance training and competition."</p>
+              <img class="rdn-banner-signature" src="/assets/emily-signature.png" alt="Signature of Emily Haydon Norman" width="180" height="80">
+              <a class="rdn-banner-pdf-link" href="/assets/rd-review-statement.pdf" target="_blank" rel="noopener">Read the full review statement (PDF) &rarr;</a>
+              <p class="ftc-disclosure">Paid independent methodology review. Opinions are Reviewer's own.</p>
+              <p class="scope-clarification">This review reflects a methodology-level assessment. It does not constitute medical advice, individualized nutrition counseling, or endorsement of any specific health, performance, or race outcome. RIK is not a healthcare provider. Reviewer does not provide continuing supervision of RIK's protocol updates.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- STEP 1: RACE DISTANCE + DATE -->
+    <section class="step" data-step="1">
+      <div class="step-eyebrow">01 &middot; Your race</div>
+      <h2 class="step-question">What are you racing, <em>and when?</em></h2>
+      <p class="step-help">Race date drives the protocol. <em>If your race is under 4 weeks out, you'll get a different recommendation than someone with 12 weeks.</em></p>
+
+      <div class="field">
+        <label class="field-label" for="raceDistance">Race distance</label>
+        <div class="pill-grid" data-name="raceDistance">
+          <button type="button" class="pill" data-value="70.3" onclick="selectPill(this)">Half Ironman <span class="pill-meta">70.3</span></button>
+          <button type="button" class="pill" data-value="full" onclick="selectPill(this)">Full Ironman <span class="pill-meta">140.6</span></button>
+          <button type="button" class="pill" data-value="olympic" onclick="selectPill(this)">Olympic <span class="pill-meta">51.5km</span></button>
+          <button type="button" class="pill" data-value="marathon" onclick="selectPill(this)">Marathon <span class="pill-meta">42.2km</span></button>
+          <button type="button" class="pill" data-value="ultra" onclick="selectPill(this)">Ultra / 100k+ <span class="pill-meta">Endurance</span></button>
+          <button type="button" class="pill" data-value="other" onclick="selectPill(this)">Other <span class="pill-meta">Tell me below</span></button>
+        </div>
+        <div class="field-error">Pick the closest distance.</div>
+      </div>
+
+      <div class="field">
+        <label class="field-label" for="raceDate">Race date</label>
+        <input type="date" id="raceDate" data-name="raceDate" required>
+        <div class="field-help" id="raceDateHelper">If you have multiple races, pick the next big one.</div>
+        <div class="field-error">We need your race date to build your protocol.</div>
+      </div>
+
+      <div class="actions">
+        <span></span>
+        <button class="btn btn-primary" onclick="goNext()">Continue &rarr;</button>
+      </div>
+    </section>
+
+    <!-- STEP 2: TARGET TIME + WEEKLY HOURS -->
+    <section class="step" data-step="2">
+      <div class="step-eyebrow">02 &middot; Performance frame</div>
+      <h2 class="step-question">What are you targeting, <em>and how much do you train?</em></h2>
+      <p class="step-help">Goal time tells us how much margin we're working with. Weekly volume tells us how much your body is conditioned to absorb.</p>
+
+      <div class="field">
+        <label class="field-label" for="targetTime">Target finish time <span style="text-transform:none;letter-spacing:0;font-weight:400;color:#bbb;">(optional)</span></label>
+        <input type="text" id="targetTime" data-name="targetTime" placeholder="e.g. 5:15 for a 70.3, or 'sub-4 marathon'">
+        <div class="field-help">If you don't have one, leave blank &mdash; we'll work from your training data.</div>
+      </div>
+
+      <div class="field">
+        <label class="field-label">Weekly training hours</label>
+        <div class="pill-grid" data-name="weeklyHours">
+          <button type="button" class="pill" data-value="under-8" onclick="selectPill(this)">&lt; 8 hr <span class="pill-meta">Maintenance</span></button>
+          <button type="button" class="pill" data-value="8-12" onclick="selectPill(this)">8-12 hr <span class="pill-meta">Building</span></button>
+          <button type="button" class="pill" data-value="12-16" onclick="selectPill(this)">12-16 hr <span class="pill-meta">Race-prep</span></button>
+          <button type="button" class="pill" data-value="16-20" onclick="selectPill(this)">16-20 hr <span class="pill-meta">Peak</span></button>
+          <button type="button" class="pill" data-value="20-plus" onclick="selectPill(this)">20+ hr <span class="pill-meta">Elite block</span></button>
+        </div>
+        <div class="field-error">Roughly &mdash; pick the closest range.</div>
+      </div>
+
+      <div class="actions">
+        <span></span>
+        <button class="btn btn-primary" onclick="goNext()">Continue &rarr;</button>
+      </div>
+    </section>
+
+    <!-- STEP 3: CURRENT FUELING (BRANDS) -->
+    <section class="step" data-step="3">
+      <div class="step-eyebrow">03 &middot; What you fuel with now</div>
+      <h2 class="step-question">What are you currently fueling with?</h2>
+      <p class="step-help">Pick all that apply. <em>If you're using nothing, pick "winging it" &mdash; that's an answer.</em></p>
+
+      <div class="field">
+        <div class="chip-grid" data-name="brands" data-multi="true">
+          <button type="button" class="chip" data-value="maurten" onclick="toggleChip(this)">Maurten</button>
+          <button type="button" class="chip" data-value="sis" onclick="toggleChip(this)">SIS / Beta Fuel</button>
+          <button type="button" class="chip" data-value="precision" onclick="toggleChip(this)">Precision Fuel &amp; Hydration</button>
+          <button type="button" class="chip" data-value="skratch" onclick="toggleChip(this)">Skratch Labs</button>
+          <button type="button" class="chip" data-value="gu" onclick="toggleChip(this)">GU</button>
+          <button type="button" class="chip" data-value="tailwind" onclick="toggleChip(this)">Tailwind</button>
+          <button type="button" class="chip" data-value="huma" onclick="toggleChip(this)">Hüma / Spring</button>
+          <button type="button" class="chip" data-value="gatorade" onclick="toggleChip(this)">Gatorade Endurance</button>
+          <button type="button" class="chip" data-value="real-food" onclick="toggleChip(this)">Real food (rice cakes, dates, banana)</button>
+          <button type="button" class="chip" data-value="nothing" onclick="toggleChip(this)">Winging it &mdash; whatever the aid station has</button>
+          <button type="button" class="chip" data-value="other" onclick="toggleChip(this)">Other</button>
+        </div>
+        <div class="field-error">Pick at least one &mdash; or "winging it" if applicable.</div>
+      </div>
+
+      <div class="actions">
+        <span></span>
+        <button class="btn btn-primary" onclick="goNext()">Continue &rarr;</button>
+      </div>
+    </section>
+
+    <!-- STEP 4: CARBS PER HOUR -->
+    <section class="step" data-step="4">
+      <div class="step-eyebrow">04 &middot; Carb intake</div>
+      <h2 class="step-question">Roughly how many <em>grams of carbs per hour</em> are you taking in race-effort?</h2>
+      <p class="step-help">If you don't know &mdash; <em>that's the answer most people give, and it's a key part of the audit.</em> Take your best guess based on what's in the bottles you finish.</p>
+
+      <div class="field">
+        <label class="field-label">Estimate</label>
+        <div class="pill-grid" data-name="carbsPerHour">
+          <button type="button" class="pill" data-value="under-30" onclick="selectPill(this)">&lt; 30 g/hr <span class="pill-meta">Underfueled</span></button>
+          <button type="button" class="pill" data-value="30-45" onclick="selectPill(this)">30-45 g/hr <span class="pill-meta">Common</span></button>
+          <button type="button" class="pill" data-value="45-60" onclick="selectPill(this)">45-60 g/hr <span class="pill-meta">Solid</span></button>
+          <button type="button" class="pill" data-value="60-90" onclick="selectPill(this)">60-90 g/hr <span class="pill-meta">Performance</span></button>
+          <button type="button" class="pill" data-value="90-plus" onclick="selectPill(this)">90+ g/hr <span class="pill-meta">Elite-trained stomach</span></button>
+          <button type="button" class="pill" data-value="dont-know" onclick="selectPill(this)">Honestly don't know <span class="pill-meta">Most common</span></button>
+        </div>
+        <div class="field-error">Best guess is fine.</div>
+      </div>
+
+      <div class="actions">
+        <span></span>
+        <button class="btn btn-primary" onclick="goNext()">Continue &rarr;</button>
+      </div>
+    </section>
+
+    <!-- STEP 5: GI HISTORY -->
+    <section class="step" data-step="5">
+      <div class="step-eyebrow">05 &middot; Gut history</div>
+      <h2 class="step-question">How often does your <em>gut hold up</em> on long sessions?</h2>
+      <p class="step-help">Be honest. This is the single most predictive answer for what tier of help you actually need.</p>
+
+      <div class="field">
+        <label class="field-label">Frequency of stomach/gut issues at hour 3+</label>
+        <div class="scale-grid" data-name="giHistory">
+          <button type="button" class="scale-pill" data-value="never" onclick="selectScale(this)"><div class="label">Never</div><div class="desc">Iron stomach</div></button>
+          <button type="button" class="scale-pill" data-value="rare" onclick="selectScale(this)"><div class="label">Rarely</div><div class="desc">1 in 5 sessions</div></button>
+          <button type="button" class="scale-pill" data-value="sometimes" onclick="selectScale(this)"><div class="label">Sometimes</div><div class="desc">~half the time</div></button>
+          <button type="button" class="scale-pill" data-value="often" onclick="selectScale(this)"><div class="label">Often</div><div class="desc">Most long days</div></button>
+        </div>
+        <div class="field-error">Pick the closest.</div>
+      </div>
+
+      <div class="field">
+        <label class="field-label" for="giNotes">What kind of stomach/gut issues, specifically? <span style="text-transform:none;letter-spacing:0;font-weight:400;color:#bbb;">(optional)</span></label>
+        <textarea id="giNotes" data-name="giNotes" placeholder="Cramps, nausea, sloshing stomach, urgent bathroom stops, can't eat solids past hour 2 — describe the pattern."></textarea>
+      </div>
+
+      <div class="actions">
+        <span></span>
+        <button class="btn btn-primary" onclick="goNext()">Continue &rarr;</button>
+      </div>
+    </section>
+
+    <!-- STEP 6: BODY DATA -->
+    <section class="step" data-step="6">
+      <div class="step-eyebrow">06 &middot; Body data</div>
+      <h2 class="step-question">A couple of body numbers.</h2>
+      <p class="step-help">We use these to calculate how much you should be taking in. If you don't know your sweat rate, <em>most people don't &mdash; pick "I don't know" and the PDF will tell you how to find it.</em></p>
+
+      <div class="field">
+        <label class="field-label" for="bodyWeight">Race weight</label>
+        <div class="num-pair">
+          <input type="number" id="bodyWeight" data-name="bodyWeight" placeholder="e.g. 165" min="40" max="500" step="0.1">
+          <select id="weightUnit" data-name="weightUnit">
+            <option value="lb">lb</option>
+            <option value="kg">kg</option>
+          </select>
+        </div>
+        <div class="field-error">A number, please.</div>
+      </div>
+
+      <div class="field">
+        <label class="field-label">Sweat rate</label>
+        <div class="pill-grid" data-name="sweatRate">
+          <button type="button" class="pill" data-value="low" onclick="selectPill(this)">Low <span class="pill-meta">&lt; 0.7 L/hr</span></button>
+          <button type="button" class="pill" data-value="medium" onclick="selectPill(this)">Medium <span class="pill-meta">0.7-1.2 L/hr</span></button>
+          <button type="button" class="pill" data-value="high" onclick="selectPill(this)">High <span class="pill-meta">&gt; 1.2 L/hr</span></button>
+          <button type="button" class="pill" data-value="dont-know" onclick="selectPill(this)">Don't know <span class="pill-meta">PDF will help</span></button>
+        </div>
+        <div class="field-error">Pick the closest &mdash; or "don't know" if unsure.</div>
+      </div>
+
+      <div class="actions">
+        <span></span>
+        <button class="btn btn-primary" onclick="goNext()">Continue &rarr;</button>
+      </div>
+    </section>
+
+    <!-- STEP 7: COACH STATUS -->
+    <section class="step" data-step="7">
+      <div class="step-eyebrow">07 &middot; Coaching</div>
+      <h2 class="step-question">Are you working with a coach?</h2>
+      <p class="step-help">If yes, the audit is shaped to slot inside their training plan, not against it.</p>
+
+      <div class="field">
+        <div class="yn-row" data-name="hasCoach">
+          <button type="button" class="pill" data-value="yes" onclick="selectPill(this); document.getElementById('coachNameField').style.display = 'block';">Yes</button>
+          <button type="button" class="pill" data-value="no" onclick="selectPill(this); document.getElementById('coachNameField').style.display = 'none'; document.getElementById('coachName').value = '';">No / self-coached</button>
+        </div>
+        <div class="field-error">Just yes or no.</div>
+      </div>
+
+      <div class="field" id="coachNameField" style="display:none;">
+        <label class="field-label" for="coachName">Coach name <span style="text-transform:none;letter-spacing:0;font-weight:400;color:#bbb;">(optional)</span></label>
+        <input type="text" id="coachName" data-name="coachName" placeholder="So I can frame the audit around their methodology if I know them.">
+      </div>
+
+      <div class="actions">
+        <span></span>
+        <button class="btn btn-primary" onclick="goNext()">Continue &rarr;</button>
+      </div>
+    </section>
+
+    <!-- STEP 8: SPECIFIC CONCERN (FREE TEXT, OPTIONAL) -->
+    <section class="step" data-step="8">
+      <div class="step-eyebrow">08 &middot; Anything specific</div>
+      <h2 class="step-question">Anything you specifically want me to look at?</h2>
+      <p class="step-help">Optional &mdash; but the audits with one focused question almost always come back sharper. <em>"Why does my stomach shut down at hour 4 on the bike?"</em> is the kind of thing that gets a real answer.</p>
+
+      <div class="field">
+        <textarea id="specificConcern" data-name="specificConcern" placeholder="Optional. Examples: 'Race nutrition for hot conditions', 'Stomach shutdown on the bike past 90 minutes', 'How to combine Maurten with real food', 'I'm pregnant — what changes', anything."></textarea>
+      </div>
+
+      <div class="actions">
+        <span class="skip-link" onclick="goNext()">Skip &mdash; nothing specific</span>
+        <button class="btn btn-primary" onclick="goNext()">Continue &rarr;</button>
+      </div>
+    </section>
+
+    <!-- STEP 9: EMAIL + NAME + CONSENT (FINAL FIELD STEP) -->
+    <section class="step" data-step="9">
+      <div class="step-eyebrow">09 &middot; Where to send it</div>
+      <h2 class="step-question">Where can I send your audit?</h2>
+      <p class="step-help"><em>Within 2 business days of submitting</em>, your personalized PDF lands in your inbox. One follow-up email after that, then nothing unless you reply.</p>
+
+      <div class="field">
+        <label class="field-label" for="firstName">First name</label>
+        <input type="text" id="firstName" data-name="firstName" placeholder="What I should call you." required>
+        <div class="field-error">A first name.</div>
+      </div>
+
+      <div class="field">
+        <label class="field-label" for="email">Email</label>
+        <input type="email" id="email" data-name="email" placeholder="you@example.com" required autocomplete="email">
+        <div class="field-help">We use it once for delivery, once for a single follow-up. Never sold.</div>
+        <div class="field-error">A valid email, please.</div>
+      </div>
+
+      <div class="field" style="margin-top: 28px;">
+        <label style="display: flex; gap: 12px; align-items: flex-start; cursor: pointer; font-size: 13.5px; color: #555; line-height: 1.55; letter-spacing: -0.01em;">
+          <input type="checkbox" id="consent" data-name="consent" required style="margin-top: 3px; flex-shrink: 0; transform: scale(1.2);">
+          <span>I'm OK receiving my audit PDF and one follow-up email from RIK Athletica. I can opt out anytime. <a href="/privacy" target="_blank" style="color: var(--green); text-decoration: underline;">Privacy</a>.</span>
+        </label>
+        <div class="field-error" style="margin-left:32px;">We need this consent to email you.</div>
+      </div>
+
+      <div class="actions">
+        <span></span>
+        <button class="btn btn-primary btn-large" onclick="submitAudit()" id="submitBtn">Get my audit &rarr;</button>
+      </div>
+    </section>
+
+    <!-- STEP 10: DONE / THANK YOU -->
+    <section class="step" data-step="10" data-skip-progress="true">
+      <div class="done-card">
+        <div class="done-icon">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none"><path d="M5 12.5L10 17.5L19 7.5" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <h1>Got it. Audit's in motion.</h1>
+        <p class="sub">Within <strong>2 business days</strong>, your personalized PDF lands in your inbox. I personally review every audit &mdash; so it's me reading your responses, not an autoresponder.</p>
+
+        <div class="email-conf">
+          <strong>Sending to: <span id="confirmEmail">your inbox</span></strong>
+          Check your spam folder if it doesn't show up. The sender will be <em>bek@rikathletica.com</em>.
+        </div>
+
+        <p style="font-size:14px;color:#888;line-height:1.7;margin-bottom:32px;letter-spacing:-0.01em;">
+          <strong style="color:var(--off-black);font-weight:600;">While you wait:</strong> if your race is more than 6 weeks out, the PDF will probably route you toward the Bundle to learn your gut first. If it's closer, we'll talk Sprint or urgent-close routing. Either way, you'll have one clear next step.
+        </p>
+
+        <div class="done-actions">
+          <a href="/bundle" class="btn btn-secondary">See the Bundle</a>
+          <a href="/sprint" class="btn btn-primary">See the 4-Week Sprint</a>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</main>
+
+<!-- ═══ FOOTER (iter-5) ═══ -->
+<footer>
+  <div class="legal-top">
+    <img src="https://cdn.jsdelivr.net/gh/bekzhou8455/rik-athletica@main/assets/media/rik-logo-cropped.png" alt="RIK Athletica" class="footer-logo-img">
+    <div class="footer-links"><a href="https://wa.me/16263609822?text=Hi%20RIK%20%E2%80%94%20" target="_blank" rel="noopener" data-track="whatsapp_open" aria-label="Message RIK Athletica on WhatsApp" style="display:inline-flex;align-items:center;gap:5px;vertical-align:middle"><svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor" aria-hidden="true"><path d="M17.5 14.4c-.3-.2-1.7-.8-2-1-.3-.1-.4-.2-.6.1-.2.3-.7.9-.9 1.1-.2.2-.3.2-.6.1-.3-.2-1.2-.5-2.3-1.4-.9-.7-1.4-1.7-1.6-1.9-.2-.3 0-.4.1-.6.1-.1.3-.3.4-.5.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5-.1-.1-.6-1.5-.9-2.1-.2-.5-.5-.5-.6-.5h-.5c-.2 0-.5.1-.7.4-.2.3-.9.9-.9 2.2 0 1.3.9 2.6 1.1 2.7.1.2 1.8 2.7 4.3 3.8.6.3 1.1.4 1.4.5.6.2 1.2.2 1.6.1.5-.1 1.5-.6 1.7-1.1.2-.5.2-1 .1-1.1-.1-.1-.3-.1-.6-.3zM12 0C5.4 0 0 5.4 0 12c0 2.1.5 4.1 1.5 5.8L0 24l6.4-1.4c1.7.9 3.6 1.4 5.6 1.4 6.6 0 12-5.4 12-12S18.6 0 12 0zm0 22c-1.9 0-3.6-.5-5.1-1.4l-3.7.8.8-3.6C3 16.2 2.5 14.1 2.5 12 2.5 6.7 6.7 2.5 12 2.5S21.5 6.7 21.5 12 17.3 22 12 22z"/></svg>WhatsApp</a> &nbsp;·&nbsp; <a href="/privacy">Privacy</a> &nbsp;·&nbsp; <a href="/terms">Terms</a></div>
+  </div>
+  <div style="font-size:12px;color:rgba(255,255,255,.55);letter-spacing:.04em;max-width:1320px;margin:0 auto;width:100%">Copyright &copy; 2026 RIK Athletic Nutrition Inc. All rights reserved.</div>
+  <div class="footer-disclaimer">
+    <strong>&dagger; Audit Disclaimer</strong>
+    The Free Race Fuel Audit is a personalized, educational fueling overview &mdash; not medical advice, diagnosis, or treatment. RIK Athletica is not Your medical provider. The audit is delivered as a PDF for informational purposes only. These statements have not been evaluated by the Food and Drug Administration. RIK Athletica products are dietary supplements and are not intended to diagnose, treat, cure, or prevent any disease. Always consult a qualified healthcare professional before starting any new nutrition plan, especially if You have a medical condition, are pregnant, or are training for an extreme event. Individual results vary based on training history, environmental conditions, and many other factors.
+  </div>
+</footer>
+
+<!-- ═══ AUDIT FORM LOGIC ═══ -->
+<script>
+(function() {
+  // ── State ──
+  var TOTAL_STEPS = 10; // step 0 (intro) and step 10 (done) are excluded from progress count
+  var FIRST_FIELD_STEP = 1;
+  var LAST_FIELD_STEP = 9;
+  var currentStep = 0;
+  var answers = {
+    raceDistance: null, raceDate: null, targetTime: null,
+    weeklyHours: null, brands: [], carbsPerHour: null,
+    giHistory: null, giNotes: null,
+    bodyWeight: null, weightUnit: 'lb', sweatRate: null,
+    hasCoach: null, coachName: null,
+    specificConcern: null,
+    firstName: null, email: null, consent: false,
+    // attribution & meta
+    clubRef: null, utmSource: null, utmMedium: null, utmCampaign: null,
+    submittedAt: null, userAgent: navigator.userAgent
+  };
+
+  // ── URL params: club referral + UTMs ──
+  var urlParams = new URLSearchParams(window.location.search);
+  var clubRef = urlParams.get('club') || urlParams.get('ref');
+  if (clubRef) {
+    answers.clubRef = clubRef;
+    var clubTag = document.getElementById('clubTag');
+    var clubNameEl = document.getElementById('clubName');
+    if (clubNameEl) clubNameEl.textContent = decodeURIComponent(clubRef).replace(/-/g, ' ').replace(/_/g, ' ');
+    if (clubTag) clubTag.style.display = 'inline-block';
+  }
+  ['utm_source', 'utm_medium', 'utm_campaign'].forEach(function(p) {
+    var v = urlParams.get(p);
+    if (v) answers[p.replace('utm_', 'utm').replace(/^utm/, 'utm') === 'utmsource' ? 'utmSource' : (p === 'utm_medium' ? 'utmMedium' : 'utmCampaign')] = v;
+  });
+  // (cleaner — manual mapping above had a bug; explicit map:)
+  if (urlParams.get('utm_source')) answers.utmSource = urlParams.get('utm_source');
+  if (urlParams.get('utm_medium')) answers.utmMedium = urlParams.get('utm_medium');
+  if (urlParams.get('utm_campaign')) answers.utmCampaign = urlParams.get('utm_campaign');
+
+  // ── Restore from localStorage if user comes back ──
+  try {
+    var saved = JSON.parse(localStorage.getItem('rik_audit_draft') || '{}');
+    Object.keys(saved).forEach(function(k) { if (answers.hasOwnProperty(k) && saved[k] != null) answers[k] = saved[k]; });
+  } catch (e) {}
+
+  // ── Helpers ──
+  function setMinRaceDate() {
+    var raceDate = document.getElementById('raceDate');
+    if (raceDate) {
+      var today = new Date();
+      var iso = today.toISOString().split('T')[0];
+      raceDate.min = iso;
+    }
+  }
+  setMinRaceDate();
+
+  // Detect "race is too close" warning on date pick
+  var raceDateEl = document.getElementById('raceDate');
+  if (raceDateEl) {
+    raceDateEl.addEventListener('change', function() {
+      var helper = document.getElementById('raceDateHelper');
+      if (!helper) return;
+      var picked = new Date(raceDateEl.value);
+      var today = new Date();
+      var weeks = Math.round((picked - today) / (1000 * 60 * 60 * 24 * 7));
+      helper.classList.remove('warn');
+      if (isNaN(weeks)) {
+        helper.textContent = 'If you have multiple races, pick the next big one.';
+      } else if (weeks < 3) {
+        helper.textContent = '⚠ Less than 3 weeks out. The audit will route you to a final-week-only protocol — Sprint won\'t fit your timeline.';
+        helper.classList.add('warn');
+      } else if (weeks < 6) {
+        helper.textContent = '~' + weeks + ' weeks out. Tight, but workable. Likely Sprint or urgent-close routing.';
+      } else if (weeks < 12) {
+        helper.textContent = '~' + weeks + ' weeks out. Good window for a Sprint or Premium protocol.';
+      } else {
+        helper.textContent = '~' + weeks + ' weeks out. Plenty of time — likely Bundle-first routing to learn your gut.';
+      }
+    });
+  }
+
+  // Reveal/hide step
+  function showStep(n) {
+    document.querySelectorAll('.step').forEach(function(s) {
+      s.classList.toggle('active', parseInt(s.dataset.step) === n);
+    });
+    currentStep = n;
+
+    // Progress bar visibility & values
+    var progressWrap = document.getElementById('progressWrap');
+    var activeStep = document.querySelector('.step.active');
+    var hideProgress = activeStep && activeStep.dataset.skipProgress === 'true';
+    progressWrap.style.display = hideProgress ? 'none' : 'flex';
+
+    if (!hideProgress) {
+      var pct = ((n - FIRST_FIELD_STEP + 1) / (LAST_FIELD_STEP - FIRST_FIELD_STEP + 1)) * 100;
+      document.getElementById('progressFill').style.width = pct + '%';
+      document.getElementById('progressNum').textContent = n - FIRST_FIELD_STEP + 1;
+      document.getElementById('progressTotal').textContent = LAST_FIELD_STEP - FIRST_FIELD_STEP + 1;
+      document.getElementById('backBtn').disabled = n === FIRST_FIELD_STEP;
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    // GA4 step events
+    if (typeof gtag === 'function') gtag('event', 'audit_step_view', { step: n });
+    // Phase 1.6 RIK analytics — structured event taxonomy + abandon tracking
+    if (window.RIK && window.RIK.audit) window.RIK.audit.stepView(n);
+  }
+
+  // Hydrate any pre-saved answers into UI on each step
+  function hydrate() {
+    // pills
+    document.querySelectorAll('[data-name]').forEach(function(group) {
+      var name = group.dataset.name;
+      var multi = group.dataset.multi === 'true';
+      var saved = answers[name];
+      if (group.tagName === 'INPUT' || group.tagName === 'SELECT' || group.tagName === 'TEXTAREA') {
+        if (saved != null) group.value = saved;
+        if (group.type === 'checkbox') group.checked = !!saved;
+        return;
+      }
+      if (multi && Array.isArray(saved)) {
+        group.querySelectorAll('.chip').forEach(function(c) {
+          c.classList.toggle('selected', saved.indexOf(c.dataset.value) >= 0);
+        });
+      } else if (saved != null) {
+        group.querySelectorAll('.pill, .scale-pill').forEach(function(p) {
+          p.classList.toggle('selected', p.dataset.value === saved);
+        });
+      }
+    });
+    // Coach name field visibility based on hasCoach
+    if (answers.hasCoach === 'yes') {
+      var f = document.getElementById('coachNameField');
+      if (f) f.style.display = 'block';
+    }
+  }
+
+  // ── Pill / scale / chip handlers (exposed globally) ──
+  window.selectPill = function(el) {
+    var group = el.parentElement;
+    group.querySelectorAll('.pill').forEach(function(p) { p.classList.remove('selected'); });
+    el.classList.add('selected');
+    var name = group.dataset.name;
+    answers[name] = el.dataset.value;
+    saveDraft();
+    clearError(group.parentElement);
+  };
+  window.selectScale = function(el) {
+    var group = el.parentElement;
+    group.querySelectorAll('.scale-pill').forEach(function(p) { p.classList.remove('selected'); });
+    el.classList.add('selected');
+    var name = group.dataset.name;
+    answers[name] = el.dataset.value;
+    saveDraft();
+    clearError(group.parentElement);
+  };
+  window.toggleChip = function(el) {
+    el.classList.toggle('selected');
+    var group = el.parentElement;
+    var name = group.dataset.name;
+    var values = [];
+    group.querySelectorAll('.chip.selected').forEach(function(c) { values.push(c.dataset.value); });
+    answers[name] = values;
+    saveDraft();
+    clearError(group.parentElement);
+  };
+
+  // Capture text/number/date inputs on input
+  document.querySelectorAll('input[data-name], textarea[data-name], select[data-name]').forEach(function(el) {
+    el.addEventListener('input', function() {
+      var name = el.dataset.name;
+      var v = el.type === 'checkbox' ? el.checked : el.value;
+      answers[name] = v;
+      saveDraft();
+      clearError(el.closest('.field'));
+    });
+    el.addEventListener('change', function() {
+      var name = el.dataset.name;
+      var v = el.type === 'checkbox' ? el.checked : el.value;
+      answers[name] = v;
+      saveDraft();
+    });
+  });
+
+  // ── Validation ──
+  function validateStep(n) {
+    var ok = true;
+    var firstError = null;
+    function fail(field, msg) {
+      if (!field) return;
+      field.classList.add('has-error');
+      if (msg) {
+        var errEl = field.querySelector('.field-error');
+        if (errEl) errEl.textContent = msg;
+      }
+      if (!firstError) firstError = field;
+      ok = false;
+    }
+    if (n === 1) {
+      if (!answers.raceDistance) fail(document.querySelector('[data-name="raceDistance"]').closest('.field'));
+      if (!answers.raceDate) fail(document.getElementById('raceDate').closest('.field'));
+    } else if (n === 2) {
+      if (!answers.weeklyHours) fail(document.querySelector('[data-name="weeklyHours"]').closest('.field'));
+    } else if (n === 3) {
+      if (!Array.isArray(answers.brands) || answers.brands.length === 0) fail(document.querySelector('[data-name="brands"]').closest('.field'));
+    } else if (n === 4) {
+      if (!answers.carbsPerHour) fail(document.querySelector('[data-name="carbsPerHour"]').closest('.field'));
+    } else if (n === 5) {
+      if (!answers.giHistory) fail(document.querySelector('[data-name="giHistory"]').closest('.field'));
+    } else if (n === 6) {
+      if (!answers.bodyWeight || isNaN(parseFloat(answers.bodyWeight))) fail(document.getElementById('bodyWeight').closest('.field'));
+      if (!answers.sweatRate) fail(document.querySelector('[data-name="sweatRate"]').closest('.field'));
+    } else if (n === 7) {
+      if (!answers.hasCoach) fail(document.querySelector('[data-name="hasCoach"]').closest('.field'));
+    } else if (n === 9) {
+      if (!answers.firstName || !String(answers.firstName).trim()) fail(document.getElementById('firstName').closest('.field'));
+      var emailVal = String(answers.email || '').trim();
+      if (!emailVal || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailVal)) fail(document.getElementById('email').closest('.field'));
+      if (!answers.consent) fail(document.getElementById('consent').closest('.field'));
+    }
+    if (firstError) firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    return ok;
+  }
+  function clearError(el) { if (el) el.classList.remove('has-error'); }
+
+  // ── Persistence ──
+  function saveDraft() {
+    try { localStorage.setItem('rik_audit_draft', JSON.stringify(answers)); } catch(e) {}
+  }
+
+  // ── Navigation ──
+  window.goNext = function() {
+    if (currentStep >= FIRST_FIELD_STEP && currentStep <= LAST_FIELD_STEP) {
+      if (!validateStep(currentStep)) return;
+    }
+    showStep(currentStep + 1);
+    if (currentStep > 0) hydrate();
+  };
+  window.goBack = function() {
+    if (currentStep > FIRST_FIELD_STEP) showStep(currentStep - 1);
+    else if (currentStep === FIRST_FIELD_STEP) showStep(0);
+    hydrate();
+  };
+
+  // ── Submit ──
+  window.submitAudit = function() {
+    if (!validateStep(LAST_FIELD_STEP)) return;
+    var btn = document.getElementById('submitBtn');
+    btn.disabled = true; btn.textContent = 'Submitting…';
+
+    answers.submittedAt = new Date().toISOString();
+    var endpoint = window.RIK_AUDIT_ENDPOINT || '/api/audit/submit';
+
+    var done = function() {
+      try { localStorage.removeItem('rik_audit_draft'); } catch(e) {}
+      var emailEl = document.getElementById('confirmEmail');
+      if (emailEl && answers.email) emailEl.textContent = answers.email;
+      if (typeof gtag === 'function') gtag('event', 'audit_submitted', { has_coach: answers.hasCoach, distance: answers.raceDistance });
+      // Phase 1.6 RIK analytics
+      if (window.RIK && window.RIK.audit) {
+        window.RIK.audit.confirmationViewed();
+      }
+      showStep(10);
+    };
+
+    if (endpoint) {
+      fetch(endpoint, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(answers)
+      }).then(function(r) {
+        if (!r.ok) throw new Error('non-2xx');
+        return r.json().catch(function() { return {}; });
+      }).then(done).catch(function(err) {
+        // Fallback: still mark as done for the user; flag the failure for owner to investigate
+        console.error('Audit submission failed:', err);
+        if (typeof gtag === 'function') gtag('event', 'audit_submit_error', { error: String(err) });
+        // Best-effort fallback: open a mailto with the JSON in body so submission is never silently lost
+        var subject = encodeURIComponent('Audit request — ' + (answers.firstName || 'unknown') + ' (auto-fallback)');
+        var body = encodeURIComponent('Audit submission failed via API. Payload below:\n\n' + JSON.stringify(answers, null, 2));
+        window.location.href = 'mailto:bek@rikathletica.com?subject=' + subject + '&body=' + body;
+        done();
+      });
+    } else {
+      // No endpoint configured yet — fallback to mailto with payload
+      var subject = encodeURIComponent('Free Race Fuel Audit — ' + (answers.firstName || 'unknown'));
+      var body = encodeURIComponent('Audit submission (no API endpoint configured yet — paste this into your CRM):\n\n' + JSON.stringify(answers, null, 2));
+      // Open a new window/tab so user doesn't lose the page
+      var mailWin = window.open('mailto:bek@rikathletica.com?subject=' + subject + '&body=' + body);
+      // Whether or not mailto opens, mark as done locally
+      setTimeout(done, 200);
+    }
+  };
+
+  // ── Allow Enter key to advance most steps ──
+  document.addEventListener('keydown', function(e) {
+    if (e.key !== 'Enter') return;
+    var active = document.querySelector('.step.active');
+    if (!active) return;
+    if (e.target.tagName === 'TEXTAREA') return; // don't intercept newlines in textareas
+    if (currentStep === 0) { e.preventDefault(); goNext(); }
+    else if (currentStep >= FIRST_FIELD_STEP && currentStep <= LAST_FIELD_STEP) {
+      e.preventDefault();
+      if (currentStep === LAST_FIELD_STEP) submitAudit(); else goNext();
+    }
+  });
+
+  // ── Init ──
+  hydrate();
+  showStep(0);
+
+  if (typeof gtag === 'function') gtag('event', 'audit_page_view', { club_ref: answers.clubRef || 'none' });
+})();
+</script>
+
+<!-- Phase 1.6 instrumentation helpers (scroll depth, page exit, audit step tracking, abandon detection) -->
+<script defer src="/assets/rik-analytics.js"></script>
+
+<!-- Warm-lead exit-intent popup with WELCOME15 promo + WhatsApp CTA -->
+<script defer src="/assets/exit-intent.js"></script>
+</body>
+</html>

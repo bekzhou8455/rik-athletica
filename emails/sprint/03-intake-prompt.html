@@ -1,0 +1,80 @@
+<!doctype html>
+<!--
+  Email: Sprint #3 — Intake form prompt
+  Trigger: Stripe webhook checkout.session.completed (Sprint tier match) + Day +1 if no Typeform intake submission
+  Subject: 10 minutes — let's build Your protocol.
+  Tokens: {{first_name}} {{tier_name}} {{intake_link}} {{wa_link}} {{unsubscribe}}
+-->
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Build Your protocol — RIK Sprint</title></head>
+<body style="margin:0;padding:0;background:#EEEDEA;font-family:'Outfit',-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif;color:#0E0E0E;-webkit-font-smoothing:antialiased;">
+<div style="display:none;max-height:0;overflow:hidden;">10-minute intake. Then I build the protocol within 48 hours.</div>
+
+<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background:#EEEDEA;"><tr><td align="center" style="padding:32px 20px;">
+<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="600" style="max-width:600px;width:100%;background:#FFFFFF;border:1px solid rgba(14,14,14,.10);border-radius:18px;overflow:hidden;">
+
+  <tr><td style="padding:28px 36px;border-bottom:1px solid rgba(14,14,14,.10);"><p style="margin:0;font-family:'Outfit',sans-serif;font-size:13px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:#0E0E0E;">RIK Athletica · {{tier_name}}</p></td></tr>
+
+  <tr><td style="padding:48px 36px 28px;">
+    <p style="margin:0 0 16px;font-size:11px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:#5A5853;">─── &nbsp;&nbsp;Sprint enrolled · next step&nbsp;&nbsp;───</p>
+    <h1 style="margin:0 0 18px;font-family:'Outfit',sans-serif;font-size:34px;font-weight:700;line-height:1.02;letter-spacing:-.02em;color:#0E0E0E;">10 Minutes. <span style="color:#5A5853;font-weight:700;">Then We Build.</span></h1>
+    <p style="margin:0 0 14px;font-size:15px;line-height:1.65;color:#5A5853;">{{first_name}} — Payment cleared. Contract signed. Now I need Your numbers to build the protocol.</p>
+    <p style="margin:0 0 28px;font-size:15px;line-height:1.65;color:#5A5853;">10 minutes covers race date, sweat rate baseline, gut tolerance history, current fueling habits, and the medical screen. Saves automatically — close and come back if You need to.</p>
+    <table role="presentation" cellpadding="0" cellspacing="0" border="0"><tr><td style="background:#0E0E0E;border-radius:999px;"><a href="{{intake_link}}" style="display:inline-block;padding:14px 28px;font-family:'Outfit',sans-serif;font-size:14px;font-weight:500;color:#FFFFFF;text-decoration:none;">Complete My Intake &nbsp;↗</a></td></tr></table>
+  </td></tr>
+
+  <tr><td style="padding:0 36px 32px;">
+    <p style="margin:0 0 14px;font-family:'Outfit',sans-serif;font-size:11px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:#5A5853;">What happens after</p>
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+      <tr><td style="padding:12px 0;border-top:1px dashed rgba(14,14,14,.18);"><table width="100%"><tr>
+        <td width="120" style="font-family:'Outfit',sans-serif;font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#5A5853;vertical-align:top;">Within 48 hrs</td>
+        <td style="font-family:'Outfit',sans-serif;font-size:13.5px;line-height:1.6;color:#0E0E0E;font-weight:500;">Your protocol lands. CHO/hr targets, sodium tier, gut-week ceiling, recovery placement.</td>
+      </tr></table></td></tr>
+      <tr><td style="padding:12px 0;border-top:1px dashed rgba(14,14,14,.18);"><table width="100%"><tr>
+        <td width="120" style="font-family:'Outfit',sans-serif;font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#5A5853;vertical-align:top;">Day 5</td>
+        <td style="font-family:'Outfit',sans-serif;font-size:13.5px;line-height:1.6;color:#0E0E0E;font-weight:500;">Shipment 1 (Training Box) arrives — RIK Bundles + Layer 1 for Weeks 1–2.</td>
+      </tr></table></td></tr>
+      <tr><td style="padding:12px 0;border-top:1px dashed rgba(14,14,14,.18);"><table width="100%"><tr>
+        <td width="120" style="font-family:'Outfit',sans-serif;font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#5A5853;vertical-align:top;">Per key session</td>
+        <td style="font-family:'Outfit',sans-serif;font-size:13.5px;line-height:1.6;color:#0E0E0E;font-weight:500;">Async check-in fires on each key-session day (3 min). Same form captures next week's training plan upload — single form, three pillars (protocol adherence + session feedback + plan submission).</td>
+      </tr></table></td></tr>
+      <tr><td style="padding:12px 0;border-top:1px dashed rgba(14,14,14,.18);"><table width="100%"><tr>
+        <td width="120" style="font-family:'Outfit',sans-serif;font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#5A5853;vertical-align:top;">Week 2</td>
+        <td style="font-family:'Outfit',sans-serif;font-size:13.5px;line-height:1.6;color:#0E0E0E;font-weight:500;">Shipment 2 (Replenish) ships — Layer 1 for Weeks 3–4.</td>
+      </tr></table></td></tr>
+      <tr><td style="padding:12px 0;border-top:1px dashed rgba(14,14,14,.18);border-bottom:1px dashed rgba(14,14,14,.18);"><table width="100%"><tr>
+        <td width="120" style="font-family:'Outfit',sans-serif;font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#5A5853;vertical-align:top;">10 days out</td>
+        <td style="font-family:'Outfit',sans-serif;font-size:13.5px;line-height:1.6;color:#0E0E0E;font-weight:500;">Race Pack ships <em>only if You added it at checkout</em> — race-day product mix from finalized protocol.</td>
+      </tr></table></td></tr>
+    </table>
+  </td></tr>
+
+  <tr><td style="padding:0 36px 32px;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#EEEDEA;border-radius:12px;border-left:3px solid #0E0E0E;"><tr><td style="padding:18px 22px;font-family:'Outfit',sans-serif;font-size:13px;line-height:1.6;color:#0E0E0E;">
+      <p style="margin:0 0 6px;font-weight:500;">Honest is more useful than impressive.</p>
+      <p style="margin:0;color:#5A5853;font-size:12.5px;">If Your sweat rate is a guess, say guess. If You don't track CHO/hr, say so. The protocol is calibrated to the body You actually have, not the body You wish You had.</p>
+    </td></tr></table>
+  </td></tr>
+
+  <tr><td style="padding:0 36px 32px;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:rgba(37,211,102,.08);border:1px solid rgba(37,211,102,.32);border-radius:12px;"><tr><td style="padding:18px 22px;font-family:'Outfit',sans-serif;color:#0E0E0E;">
+      <p style="margin:0 0 8px;font-size:10px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:#0E5A1F;">RIK on WhatsApp · Sprint help line</p>
+      <p style="margin:0 0 10px;font-size:14px;font-weight:500;line-height:1.45;color:#0E0E0E;">Stuck on a question in the intake? <strong>We'll work through it with You.</strong></p>
+      <p style="margin:0 0 14px;font-size:13px;line-height:1.6;color:#5A5853;">"What counts as sweat rate baseline?", "Do I include taper week in my training hours?", anything ambiguous — message us with SPRINT in the thread. Same business day.</p>
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0"><tr><td style="background:#0E0E0E;border-radius:999px;"><a href="{{wa_link}}" style="display:inline-block;padding:11px 22px;font-family:'Outfit',sans-serif;font-size:13px;font-weight:500;color:#FFFFFF;text-decoration:none;">Open WhatsApp &nbsp;↗</a></td></tr></table>
+    </td></tr></table>
+  </td></tr>
+
+  <tr><td style="padding:0 36px 32px;">
+    <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="margin-top:16px;border-top:1px dashed rgba(14,14,14,.18);padding-top:24px;"><tr><td style="font-family:'Outfit',sans-serif;font-size:11px;line-height:1.65;color:#5A5853;letter-spacing:.04em;">
+      <p style="margin:0 0 12px;font-weight:500;color:#0E0E0E;">— Bek &amp; the RIK team</p>
+      <p style="margin:0 0 14px;"><a href="{{wa_link}}" style="color:#0E0E0E;text-decoration:none;border-bottom:1px solid rgba(14,14,14,.25);">WhatsApp</a> &nbsp;·&nbsp; <a href="mailto:Bek.Zhou@rikathletica.com" style="color:#0E0E0E;text-decoration:none;border-bottom:1px solid rgba(14,14,14,.25);">Bek.Zhou@rikathletica.com</a></p>
+      <p style="margin:0 0 8px;font-size:10px;color:#8A8780;letter-spacing:.06em;">Copyright &copy; 2026 Rik Athletic Nutrition Inc.</p>
+      <p style="margin:0 0 8px;font-size:10px;color:#8A8780;line-height:1.7;"><strong style="color:#5A5853;">&dagger;</strong> The 4-Week Sprint is a nutrition-planning service — not medical advice. Always consult a qualified healthcare professional.</p>
+      <p style="margin:0 0 8px;font-size:10px;color:#8A8780;line-height:1.6;">{{registered_address}}</p>
+      <p style="margin:0;font-size:10px;color:#8A8780;"><a href="{{unsubscribe}}" style="color:#8A8780;text-decoration:underline;">Unsubscribe</a> &nbsp;·&nbsp; <a href="https://www.rikathletica.com/privacy" style="color:#8A8780;text-decoration:underline;">Privacy</a> &nbsp;·&nbsp; <a href="https://www.rikathletica.com/terms" style="color:#8A8780;text-decoration:underline;">Terms</a></p>
+    </td></tr></table>
+  </td></tr>
+
+</table>
+</td></tr></table>
+</body></html>

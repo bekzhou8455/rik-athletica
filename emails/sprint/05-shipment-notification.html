@@ -1,0 +1,75 @@
+<!doctype html>
+<!--
+  Email: Sprint #5 — Shipment notification (Bek-triggered when carrier label prints)
+  Trigger: Bek manually fires from Resend dashboard or admin panel after ShipWizard prints label
+  Subject: {{shipment_label}} is on its way — tracking inside.
+
+  Tokens:
+    {{first_name}}        — Athlete first name
+    {{shipment_label}}    — "Shipment 1 (Training Box)" / "Shipment 2 (Replenish)" / "Race Pack"
+    {{tracking_number}}   — Carrier tracking ID, e.g. "1Z999AA10123456784"
+    {{tracking_url}}      — Carrier-specific URL
+    {{est_delivery}}      — "Tue, May 14, 2026"
+    {{packing_list}}      — Pre-formatted HTML <ul>/<li> list. Bek pastes raw text in
+                            the dispatcher (one item per line) and the dispatcher's
+                            parser converts it. See README §packing-list-parser.
+                            Athletes use this to verify nothing is missing on arrival.
+    {{wa_link}}           — wa.me link
+    {{unsubscribe}}       — Resend unsubscribe URL
+-->
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>{{shipment_label}} is on its way — RIK Athletica</title></head>
+<body style="margin:0;padding:0;background:#EEEDEA;font-family:'Outfit',-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif;color:#0E0E0E;-webkit-font-smoothing:antialiased;">
+<div style="display:none;max-height:0;overflow:hidden;">{{shipment_label}} dispatched. Tracking number + estimated delivery inside.</div>
+
+<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background:#EEEDEA;"><tr><td align="center" style="padding:32px 20px;">
+<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="600" style="max-width:600px;width:100%;background:#FFFFFF;border:1px solid rgba(14,14,14,.10);border-radius:18px;overflow:hidden;">
+
+  <tr><td style="padding:28px 36px;border-bottom:1px solid rgba(14,14,14,.10);"><p style="margin:0;font-family:'Outfit',sans-serif;font-size:13px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:#0E0E0E;">RIK Athletica · Shipment dispatched</p></td></tr>
+
+  <tr><td style="padding:48px 36px 28px;">
+    <p style="margin:0 0 16px;font-size:11px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:#5A5853;">─── &nbsp;&nbsp;{{shipment_label}}&nbsp;&nbsp;───</p>
+    <h1 style="margin:0 0 18px;font-family:'Outfit',sans-serif;font-size:34px;font-weight:700;line-height:1.02;letter-spacing:-.02em;color:#0E0E0E;">It's On Its Way.</h1>
+    <p style="margin:0 0 14px;font-size:15px;line-height:1.65;color:#5A5853;">{{first_name}} — Your <strong style="color:#0E0E0E;font-weight:500;">{{shipment_label}}</strong> just left the warehouse. Tracking attached below.</p>
+  </td></tr>
+
+  <tr><td style="padding:0 36px 32px;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#EEEDEA;border-radius:12px;border:1px solid rgba(14,14,14,.10);"><tr><td style="padding:22px 24px;font-family:'Outfit',sans-serif;color:#0E0E0E;">
+      <p style="margin:0 0 6px;font-size:10px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:#8A8780;">Tracking</p>
+      <p style="margin:0 0 14px;font-size:18px;font-weight:600;color:#0E0E0E;font-variant-numeric:tabular-nums;letter-spacing:.02em;">{{tracking_number}}</p>
+      <p style="margin:0 0 14px;font-size:12px;line-height:1.6;color:#5A5853;"><strong style="color:#0E0E0E;font-weight:500;">Estimated delivery:</strong> {{est_delivery}}</p>
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0"><tr><td style="background:#0E0E0E;border-radius:999px;"><a href="{{tracking_url}}" style="display:inline-block;padding:11px 22px;font-family:'Outfit',sans-serif;font-size:13px;font-weight:500;color:#FFFFFF;text-decoration:none;">Track Package &nbsp;↗</a></td></tr></table>
+    </td></tr></table>
+  </td></tr>
+
+  <tr><td style="padding:0 36px 32px;">
+    <p style="margin:0 0 14px;font-family:'Outfit',sans-serif;font-size:11px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:#5A5853;">Packing list — verify on arrival</p>
+    <div style="margin:0 0 14px;font-size:13.5px;line-height:1.7;color:#0E0E0E;">{{packing_list}}</div>
+    <p style="margin:0;font-size:12px;line-height:1.55;color:#8A8780;">If anything's short, photograph the package + box contents, and message us within 48 hours of delivery — we'll re-ship at no charge.</p>
+  </td></tr>
+
+  <tr><td style="padding:0 36px 32px;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#EEEDEA;border-radius:12px;border-left:3px solid #0E0E0E;"><tr><td style="padding:18px 22px;font-family:'Outfit',sans-serif;font-size:13px;line-height:1.6;color:#0E0E0E;">
+      <p style="margin:0 0 6px;font-weight:500;">When it arrives.</p>
+      <p style="margin:0;color:#5A5853;font-size:12.5px;">Open it the same day. Photograph the contents if anything looks short, message us within 48 hours and we'll re-ship at no charge. Start training to the protocol on the date the protocol document specifies — not before.</p>
+    </td></tr></table>
+  </td></tr>
+
+  <tr><td style="padding:0 36px 32px;">
+    <p style="margin:0 0 14px;font-family:'Outfit',sans-serif;font-size:11px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:#5A5853;">Carrier issue?</p>
+    <p style="margin:0;font-size:13.5px;line-height:1.65;color:#5A5853;">Lost, late, or damaged — <a href="{{wa_link}}" style="color:#0E0E0E;text-decoration:none;border-bottom:1px solid rgba(14,14,14,.25);font-weight:500;">message us on WhatsApp</a> with the tracking number above. Same business day.</p>
+  </td></tr>
+
+  <tr><td style="padding:0 36px 32px;">
+    <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="margin-top:16px;border-top:1px dashed rgba(14,14,14,.18);padding-top:24px;"><tr><td style="font-family:'Outfit',sans-serif;font-size:11px;line-height:1.65;color:#5A5853;letter-spacing:.04em;">
+      <p style="margin:0 0 12px;font-weight:500;color:#0E0E0E;">— Bek &amp; the RIK team</p>
+      <p style="margin:0 0 14px;"><a href="{{wa_link}}" style="color:#0E0E0E;text-decoration:none;border-bottom:1px solid rgba(14,14,14,.25);">WhatsApp</a> &nbsp;·&nbsp; <a href="mailto:Bek.Zhou@rikathletica.com" style="color:#0E0E0E;text-decoration:none;border-bottom:1px solid rgba(14,14,14,.25);">Bek.Zhou@rikathletica.com</a></p>
+      <p style="margin:0 0 8px;font-size:10px;color:#8A8780;letter-spacing:.06em;">Copyright &copy; 2026 Rik Athletic Nutrition Inc.</p>
+      <p style="margin:0 0 8px;font-size:10px;color:#8A8780;line-height:1.7;"><strong style="color:#5A5853;">&dagger;</strong> RIK Athletica products are dietary supplements. Statements have not been evaluated by the FDA. Not intended to diagnose, treat, cure, or prevent any disease.</p>
+      <p style="margin:0 0 8px;font-size:10px;color:#8A8780;line-height:1.6;">{{registered_address}}</p>
+      <p style="margin:0;font-size:10px;color:#8A8780;"><a href="{{unsubscribe}}" style="color:#8A8780;text-decoration:underline;">Unsubscribe</a> &nbsp;·&nbsp; <a href="https://www.rikathletica.com/privacy" style="color:#8A8780;text-decoration:underline;">Privacy</a> &nbsp;·&nbsp; <a href="https://www.rikathletica.com/terms" style="color:#8A8780;text-decoration:underline;">Terms</a></p>
+    </td></tr></table>
+  </td></tr>
+
+</table>
+</td></tr></table>
+</body></html>

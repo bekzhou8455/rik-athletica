@@ -1,0 +1,87 @@
+<!doctype html>
+<!--
+  Email: Bundle #1 — Order confirmation
+  Trigger: Stripe webhook checkout.session.completed (Bundle line-item match)
+  Subject: Your RIK Bundle{{quantity_suffix}} is on its way.
+  Tokens:
+    {{first_name}}        — Athlete first name
+    {{quantity}}          — Number of Bundles ordered (1, 2, 3...)
+    {{quantity_suffix}}   — "" if 1 Bundle, "s" if multi → controls subject pluralization
+    {{order_total}}       — Final paid amount (after tax/discount), e.g. "119.00" or "238.00"
+    {{unit_price}}        — Per-Bundle price always "119.00"
+    {{stripe_session_id}} — cs_live_xxx for support reference
+    {{shipping_address}}  — Single-line shipping address
+    {{wa_link}}           — wa.me link with prefilled "Hi RIK — "
+    {{unsubscribe}}       — Resend-managed unsubscribe URL
+-->
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Your RIK Bundle is on its way</title></head>
+<body style="margin:0;padding:0;background:#EEEDEA;font-family:'Outfit',-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif;color:#0E0E0E;-webkit-font-smoothing:antialiased;">
+<div style="display:none;max-height:0;overflow:hidden;">10 Euphoria + 20 Refuel. Ships within 5 days. Tracking lands separately.</div>
+
+<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background:#EEEDEA;"><tr><td align="center" style="padding:32px 20px;">
+<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="600" style="max-width:600px;width:100%;background:#FFFFFF;border:1px solid rgba(14,14,14,.10);border-radius:18px;overflow:hidden;">
+
+  <tr><td style="padding:28px 36px;border-bottom:1px solid rgba(14,14,14,.10);"><p style="margin:0;font-family:'Outfit',sans-serif;font-size:13px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:#0E0E0E;">RIK Athletica · Bundle confirmed</p></td></tr>
+
+  <tr><td style="padding:48px 36px 28px;">
+    <p style="margin:0 0 16px;font-size:11px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:#5A5853;">─── &nbsp;&nbsp;Order received&nbsp;&nbsp;───</p>
+    <h1 style="margin:0 0 18px;font-family:'Outfit',sans-serif;font-size:34px;font-weight:700;line-height:1.02;letter-spacing:-.02em;color:#0E0E0E;">More Than Just Carbs. <span style="color:#5A5853;font-weight:700;">On Its Way.</span></h1>
+    <p style="margin:0 0 14px;font-size:15px;line-height:1.65;color:#5A5853;">{{first_name}} — Your RIK Bundle is packed and shipping within 5 business days. Tracking number lands in a separate email when the carrier label prints.</p>
+  </td></tr>
+
+  <tr><td style="padding:0 36px 32px;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#EEEDEA;border-radius:12px;border:1px solid rgba(14,14,14,.10);"><tr><td style="padding:22px 24px;font-family:'Outfit',sans-serif;font-size:13px;line-height:1.6;color:#5A5853;">
+      <p style="margin:0 0 4px;font-size:10px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:#8A8780;">Order summary</p>
+      <p style="margin:0 0 4px;color:#0E0E0E;font-weight:500;">{{quantity}} × RIK Bundle · ${{unit_price}} each</p>
+      <p style="margin:0 0 8px;font-size:12px;color:#5A5853;">Per Bundle: 10 × Euphoria pre-session activator (50ml each) + 20 × Refuel intra/recovery gel (50ml each)</p>
+      <p style="margin:0 0 4px;color:#0E0E0E;font-weight:600;font-size:14px;border-top:1px dashed rgba(14,14,14,.18);padding-top:8px;">Order total · <strong>${{order_total}}</strong></p>
+      <p style="margin:8px 0 4px;font-size:11px;color:#8A8780;">Ships to: {{shipping_address}}</p>
+      <p style="margin:8px 0 0;font-size:11px;color:#8A8780;font-variant-numeric:tabular-nums;">Reference: {{stripe_session_id}}</p>
+    </td></tr></table>
+  </td></tr>
+
+  <tr><td style="padding:0 36px 32px;">
+    <p style="margin:0 0 14px;font-family:'Outfit',sans-serif;font-size:11px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:#5A5853;">When it arrives</p>
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+      <tr><td style="padding:14px 0;border-top:1px dashed rgba(14,14,14,.18);"><table width="100%"><tr>
+        <td width="32" style="font-family:'Outfit',sans-serif;font-size:13px;font-weight:600;color:#5A5853;vertical-align:top;font-variant-numeric:tabular-nums;">01</td>
+        <td style="font-family:'Outfit',sans-serif;font-size:13.5px;line-height:1.6;color:#0E0E0E;font-weight:500;">Start gut training. Take 1 Refuel mid-session every 45–60 min during long efforts. Build tolerance gradually — Your gut adapts faster than You think.</td>
+      </tr></table></td></tr>
+      <tr><td style="padding:14px 0;border-top:1px dashed rgba(14,14,14,.18);"><table width="100%"><tr>
+        <td width="32" style="font-family:'Outfit',sans-serif;font-size:13px;font-weight:600;color:#5A5853;vertical-align:top;font-variant-numeric:tabular-nums;">02</td>
+        <td style="font-family:'Outfit',sans-serif;font-size:13.5px;line-height:1.6;color:#0E0E0E;font-weight:500;">Save Euphoria for high-intensity sessions. 1 Euphoria 25 minutes pre-session — plant caffeine + L-Carnitine + Beta-Alanine prime the body for sustained output.</td>
+      </tr></table></td></tr>
+      <tr><td style="padding:14px 0;border-top:1px dashed rgba(14,14,14,.18);border-bottom:1px dashed rgba(14,14,14,.18);"><table width="100%"><tr>
+        <td width="32" style="font-family:'Outfit',sans-serif;font-size:13px;font-weight:600;color:#5A5853;vertical-align:top;font-variant-numeric:tabular-nums;">03</td>
+        <td style="font-family:'Outfit',sans-serif;font-size:13.5px;line-height:1.6;color:#0E0E0E;font-weight:500;">Use Refuel post-session within 30 min. Tart Cherry + BCAA + L-Glutamine support recovery so You show up fresh tomorrow.&dagger;</td>
+      </tr></table></td></tr>
+    </table>
+  </td></tr>
+
+  <tr><td style="padding:0 36px 32px;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#0E0E0E;border-radius:12px;"><tr><td style="padding:22px 24px;font-family:'Outfit',sans-serif;color:#FFFFFF;">
+      <p style="margin:0 0 8px;font-size:10px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,210,140,.85);">30-day money-back · no questions</p>
+      <p style="margin:0 0 8px;font-size:15px;font-weight:600;line-height:1.3;color:#FFFFFF;">If You don't notice better energy or fewer GI issues than Your current fueling, email us — full refund, keep the gels.</p>
+      <p style="margin:0;font-size:13px;line-height:1.6;color:rgba(255,255,255,.78);">We'll eat the cost. We're that confident.</p>
+    </td></tr></table>
+  </td></tr>
+
+  <tr><td style="padding:0 36px 32px;">
+    <p style="margin:0 0 14px;font-family:'Outfit',sans-serif;font-size:11px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:#5A5853;">Have a race in 4–8 weeks?</p>
+    <p style="margin:0;font-size:13.5px;line-height:1.65;color:#5A5853;">The Bundle works on its own. Inside the <strong style="color:#0E0E0E;font-weight:500;">4-Week Sprint</strong> ($569+), the same products are calibrated to Your sweat rate, body weight, and race distance — with weekly revisions and a finalized race-day protocol. <a href="https://www.rikathletica.com/sprint" style="color:#0E0E0E;text-decoration:none;border-bottom:1px solid rgba(14,14,14,.25);font-weight:500;">See Sprint &nbsp;↗</a></p>
+  </td></tr>
+
+  <tr><td style="padding:0 36px 32px;">
+    <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="margin-top:16px;border-top:1px dashed rgba(14,14,14,.18);padding-top:24px;"><tr><td style="font-family:'Outfit',sans-serif;font-size:11px;line-height:1.65;color:#5A5853;letter-spacing:.04em;">
+      <p style="margin:0 0 12px;font-weight:500;color:#0E0E0E;">— The RIK team</p>
+      <p style="margin:0 0 14px;"><a href="{{wa_link}}" style="color:#0E0E0E;text-decoration:none;border-bottom:1px solid rgba(14,14,14,.25);">WhatsApp</a> &nbsp;·&nbsp; <a href="mailto:Bek.Zhou@rikathletica.com" style="color:#0E0E0E;text-decoration:none;border-bottom:1px solid rgba(14,14,14,.25);">Bek.Zhou@rikathletica.com</a></p>
+      <p style="margin:0 0 8px;font-size:10px;color:#8A8780;letter-spacing:.06em;">Copyright &copy; 2026 Rik Athletic Nutrition Inc.</p>
+      <p style="margin:0 0 8px;font-size:10px;color:#8A8780;line-height:1.7;"><strong style="color:#5A5853;">&dagger;</strong> These statements have not been evaluated by the FDA. RIK Athletica products are dietary supplements and are not intended to diagnose, treat, cure, or prevent any disease. Always consult a qualified healthcare professional before starting any new supplement programme. SGS-tested · GMP-certified · FDA-registered facility.</p>
+      <p style="margin:0 0 8px;font-size:10px;color:#8A8780;line-height:1.6;">{{registered_address}}</p>
+      <p style="margin:0;font-size:10px;color:#8A8780;"><a href="{{unsubscribe}}" style="color:#8A8780;text-decoration:underline;">Unsubscribe</a> &nbsp;·&nbsp; <a href="https://www.rikathletica.com/privacy" style="color:#8A8780;text-decoration:underline;">Privacy</a> &nbsp;·&nbsp; <a href="https://www.rikathletica.com/terms" style="color:#8A8780;text-decoration:underline;">Terms</a></p>
+    </td></tr></table>
+  </td></tr>
+
+</table>
+</td></tr></table>
+</body></html>

@@ -1,0 +1,65 @@
+<!doctype html>
+<!--
+  Sequence: Cart Abandonment · Email 3 of 3 (last touch)
+  Trigger:  Day +3 if no payment after emails 1+2
+  Subject:  WELCOME15 — 15% off if You finish today.
+  Tokens:   {{first_name}} {{tier_in_cart}} {{tier_in_cart_price}} {{tier_in_cart_price_discounted}}
+            {{stripe_resume_url_with_promo}} {{wa_link}} {{kit_profile_url}}
+            {{unsubscribe_url}} {{registered_address}}
+
+  Tone:  Discount activated. Last touch — no email 4. Same WELCOME15 code as the
+         exit-intent popup (Stripe enforces 1-use-per-customer regardless).
+-->
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>15% off — last call — RIK Athletica</title></head>
+<body style="margin:0;padding:0;background:#EEEDEA;font-family:'Outfit',-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif;color:#0E0E0E;-webkit-font-smoothing:antialiased;">
+<div style="display:none;max-height:0;overflow:hidden;">15% off Your {{tier_in_cart}} if You finish checkout in the next 48 hours. WELCOME15 — last call.</div>
+
+<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background:#EEEDEA;"><tr><td align="center" style="padding:32px 20px;">
+<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="600" style="max-width:600px;width:100%;background:#FFFFFF;border:1px solid rgba(14,14,14,.10);border-radius:18px;overflow:hidden;">
+
+  <tr><td style="padding:28px 36px;border-bottom:1px solid rgba(14,14,14,.10);"><p style="margin:0;font-family:'Outfit',sans-serif;font-size:13px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:#0E0E0E;">RIK Athletica · Last touch</p></td></tr>
+
+  <tr><td style="padding:48px 36px 28px;">
+    <p style="margin:0 0 16px;font-size:11px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:#5A5853;">─── &nbsp;Day +3 from Your checkout&nbsp; ───</p>
+    <h1 style="margin:0 0 18px;font-family:'Outfit',sans-serif;font-size:34px;font-weight:700;line-height:1.02;letter-spacing:-.02em;color:#0E0E0E;">15% Off. <span style="color:#5A5853;font-weight:700;">Last Touch.</span></h1>
+    <p style="margin:0 0 14px;font-size:15px;line-height:1.65;color:#5A5853;">{{first_name}} — Final email in this thread, then I stop.</p>
+    <p style="margin:0 0 14px;font-size:15px;line-height:1.65;color:#5A5853;">If price is what's stalling things, here's a one-time first-customer code that takes 15% off the {{tier_in_cart}}. Valid 48 hours from this email.</p>
+  </td></tr>
+
+  <!-- Discount: giant -->
+  <tr><td style="padding:0 36px 24px;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#0E0E0E;border-radius:14px;"><tr><td style="padding:28px 28px;text-align:center;font-family:'Outfit',sans-serif;color:#FFFFFF;">
+      <p style="margin:0 0 12px;font-size:10px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,210,140,.85);">15% off · 48h · first-time</p>
+      <p style="margin:0 0 6px;font-family:'Outfit',sans-serif;font-size:64px;font-weight:700;line-height:.9;letter-spacing:-.04em;color:#FFFFFF;">15<span style="font-size:.45em;color:rgba(255,210,140,.85);">% off</span></p>
+      <p style="margin:0 0 14px;font-family:'Outfit',sans-serif;font-size:15px;font-weight:500;color:#FFFFFF;letter-spacing:.06em;">Code <strong>WELCOME15</strong></p>
+      <p style="margin:0 0 22px;font-family:'Outfit',sans-serif;font-size:14px;line-height:1.5;color:rgba(255,255,255,.78);">${{tier_in_cart_price}} → <strong style="color:#FFFFFF;">${{tier_in_cart_price_discounted}}</strong> on the {{tier_in_cart}}.</p>
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0" align="center" style="margin:0 auto;"><tr><td style="background:#FFFFFF;border-radius:999px;"><a href="{{stripe_resume_url_with_promo}}" style="display:inline-block;padding:14px 30px;font-family:'Outfit',sans-serif;font-size:15px;font-weight:600;color:#0E0E0E;text-decoration:none;">Apply 15% & Finish Checkout &nbsp;↗</a></td></tr></table>
+    </td></tr></table>
+  </td></tr>
+
+  <tr><td style="padding:0 36px 32px;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#EEEDEA;border-radius:12px;border-left:3px solid #0E0E0E;"><tr><td style="padding:18px 22px;font-family:'Outfit',sans-serif;font-size:13px;line-height:1.6;color:#0E0E0E;">
+      <p style="margin:0 0 6px;font-weight:500;">If price wasn't what was stalling You.</p>
+      <p style="margin:0;color:#5A5853;font-size:12.5px;">Discount won't fix the actual question. <a href="{{wa_link}}" style="color:#0E0E0E;text-decoration:none;border-bottom:1px solid rgba(14,14,14,.25);font-weight:500;">Message Me on WhatsApp</a> with what's stuck — same business day, founder-direct, no follow-up email after this one.</p>
+    </td></tr></table>
+  </td></tr>
+
+  <tr><td style="padding:0 36px 32px;">
+    <p style="margin:0 0 14px;font-family:'Outfit',sans-serif;font-size:11px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:#5A5853;">Last touch — no further emails in this thread</p>
+    <p style="margin:0;font-size:13px;line-height:1.65;color:#5A5853;">After 48 hours, the offer expires and this thread closes. You'll still hear from us if You're on the audit list or buy something later, but no more cart-recovery pings. We don't run a 7-email "act now" sequence — feels predatory and undercuts the methodology.</p>
+  </td></tr>
+
+  <tr><td style="padding:0 36px 32px;">
+    <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="margin-top:16px;border-top:1px dashed rgba(14,14,14,.18);padding-top:24px;"><tr><td style="font-family:'Outfit',sans-serif;font-size:11px;line-height:1.65;color:#5A5853;letter-spacing:.04em;">
+      <p style="margin:0 0 12px;font-weight:500;color:#0E0E0E;">— Bek</p>
+      <p style="margin:0 0 14px;"><a href="{{wa_link}}" style="color:#0E0E0E;text-decoration:none;border-bottom:1px solid rgba(14,14,14,.25);">WhatsApp</a> &nbsp;·&nbsp; <a href="mailto:Bek.Zhou@rikathletica.com" style="color:#0E0E0E;text-decoration:none;border-bottom:1px solid rgba(14,14,14,.25);">Bek.Zhou@rikathletica.com</a></p>
+      <p style="margin:0 0 8px;font-size:10px;color:#8A8780;letter-spacing:.06em;">You're receiving this because You started a checkout for {{tier_in_cart}} at rikathletica.com. Copyright &copy; 2026 Rik Athletic Nutrition Inc.</p>
+      <p style="margin:0 0 8px;font-size:10px;color:#8A8780;line-height:1.6;">{{registered_address}}</p>
+      <p style="margin:0 0 8px;font-size:10px;color:#8A8780;line-height:1.7;"><strong style="color:#5A5853;">&dagger;</strong> WELCOME15 is one-time use, first-time customer only, valid 48 hours from this email. RIK Athletica products are dietary supplements; statements have not been evaluated by the FDA. Not intended to diagnose, treat, cure, or prevent any disease.</p>
+      <p style="margin:0;font-size:10px;color:#8A8780;"><a href="{{unsubscribe_url}}" style="color:#8A8780;text-decoration:underline;">Unsubscribe</a> &nbsp;·&nbsp; <a href="{{kit_profile_url}}" style="color:#8A8780;text-decoration:underline;">Update preferences</a> &nbsp;·&nbsp; <a href="https://www.rikathletica.com/privacy" style="color:#8A8780;text-decoration:underline;">Privacy</a></p>
+    </td></tr></table>
+  </td></tr>
+
+</table>
+</td></tr></table>
+</body></html>

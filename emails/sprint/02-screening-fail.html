@@ -1,0 +1,67 @@
+<!doctype html>
+<!--
+  Email: Sprint #2 — Screening fail
+  Trigger: api/screen.js webhook returns "fail" — race date <28d (too rushed) or >56d (drift), OR coach absent, OR medical exclusion
+  Subject: Your race date is outside our 28–56 day window.
+  Tokens: {{first_name}} {{race_date}} {{days_to_race}} {{fail_reason}} {{wa_link}} {{unsubscribe}}
+-->
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Outside our window — RIK Athletica</title></head>
+<body style="margin:0;padding:0;background:#EEEDEA;font-family:'Outfit',-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif;color:#0E0E0E;-webkit-font-smoothing:antialiased;">
+<div style="display:none;max-height:0;overflow:hidden;">Honest gate. Three options for what to do next.</div>
+
+<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background:#EEEDEA;"><tr><td align="center" style="padding:32px 20px;">
+<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="600" style="max-width:600px;width:100%;background:#FFFFFF;border:1px solid rgba(14,14,14,.10);border-radius:18px;overflow:hidden;">
+
+  <tr><td style="padding:28px 36px;border-bottom:1px solid rgba(14,14,14,.10);"><p style="margin:0;font-family:'Outfit',sans-serif;font-size:13px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:#0E0E0E;">RIK Athletica · Sprint Screening</p></td></tr>
+
+  <tr><td style="padding:48px 36px 28px;">
+    <p style="margin:0 0 16px;font-size:11px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:#5A5853;">─── &nbsp;&nbsp;Honest gate&nbsp;&nbsp;───</p>
+    <h1 style="margin:0 0 18px;font-family:'Outfit',sans-serif;font-size:32px;font-weight:700;line-height:1.05;letter-spacing:-.02em;color:#0E0E0E;">Sprint Won't Help You. <span style="color:#5A5853;font-weight:700;">Not Yet.</span></h1>
+    <p style="margin:0 0 14px;font-size:15px;line-height:1.65;color:#5A5853;">{{first_name}} — Your race is <strong style="color:#0E0E0E;font-weight:500;">{{race_date}} ({{days_to_race}} days out).</strong> Sprint is race-gated to 28–56 days, and {{fail_reason}}.</p>
+    <p style="margin:0 0 14px;font-size:15px;line-height:1.65;color:#5A5853;">This is design, not gatekeeping. Closer than 28 days, the gut won't adapt fast enough — You'd buy a protocol and not have time to train it. Further than 8 weeks, the protocol drifts before You race. Either way, You'd pay and not get the result. <strong style="color:#0E0E0E;font-weight:500;">No-go is the right call.</strong></p>
+  </td></tr>
+
+  <tr><td style="padding:0 36px 32px;">
+    <p style="margin:0 0 18px;font-family:'Outfit',sans-serif;font-size:11px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:#5A5853;">Three options that DO help</p>
+
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+      <tr><td style="padding:14px 0;border-top:1px dashed rgba(14,14,14,.18);"><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr>
+        <td style="font-family:'Outfit',sans-serif;font-size:14px;font-weight:600;color:#0E0E0E;line-height:1.3;padding-bottom:6px;">A. Start with the Bundle now ($119)</td>
+      </tr><tr>
+        <td style="font-family:'Outfit',sans-serif;font-size:13px;line-height:1.6;color:#5A5853;">10 Euphoria + 20 Refuel. Train Your gut on the products today, no protocol. Self-directed gut adaptation. <a href="https://www.rikathletica.com/bundle" style="color:#0E0E0E;text-decoration:none;border-bottom:1px solid rgba(14,14,14,.25);">View Bundle &nbsp;↗</a></td>
+      </tr></table></td></tr>
+
+      <tr><td style="padding:14px 0;border-top:1px dashed rgba(14,14,14,.18);"><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr>
+        <td style="font-family:'Outfit',sans-serif;font-size:14px;font-weight:600;color:#0E0E0E;line-height:1.3;padding-bottom:6px;">B. Take the free methodology Audit</td>
+      </tr><tr>
+        <td style="font-family:'Outfit',sans-serif;font-size:13px;line-height:1.6;color:#5A5853;">2-min form. 48-hour turnaround. RD-reviewed audit deliverable showing where minutes leak on Your plan. No purchase, no spam. <a href="https://www.rikathletica.com/audit" style="color:#0E0E0E;text-decoration:none;border-bottom:1px solid rgba(14,14,14,.25);">Take the Audit &nbsp;↗</a></td>
+      </tr></table></td></tr>
+
+      <tr><td style="padding:14px 0;border-top:1px dashed rgba(14,14,14,.18);border-bottom:1px dashed rgba(14,14,14,.18);"><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr>
+        <td style="font-family:'Outfit',sans-serif;font-size:14px;font-weight:600;color:#0E0E0E;line-height:1.3;padding-bottom:6px;">C. Re-screen when You're inside the window</td>
+      </tr><tr>
+        <td style="font-family:'Outfit',sans-serif;font-size:13px;line-height:1.6;color:#5A5853;">If Your race is too far out, mark Your calendar for 8 weeks before race day and re-submit. We'll route You straight to checkout. If too close — pick a future race and re-screen 28–56 days out.</td>
+      </tr></table></td></tr>
+    </table>
+  </td></tr>
+
+  <tr><td style="padding:0 36px 32px;">
+    <p style="margin:0 0 14px;font-family:'Outfit',sans-serif;font-size:11px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:#5A5853;">Edge case?</p>
+    <p style="margin:0 0 14px;font-size:13.5px;line-height:1.65;color:#5A5853;">If You're an experienced athlete and You think the window is too conservative for Your specific case, <a href="{{wa_link}}" style="color:#0E0E0E;text-decoration:none;border-bottom:1px solid rgba(14,14,14,.25);font-weight:500;">message Me on WhatsApp</a>. We'll talk through it. Sometimes the answer is still no — and that's the honest answer.</p>
+    <p style="margin:0;font-size:13.5px;line-height:1.65;color:#5A5853;"><strong style="color:#0E0E0E;font-weight:500;">Medical exclusion?</strong> If Your screening flagged a medical condition, please consult a qualified healthcare professional before beginning any high-intensity nutrition protocol. We are not medical providers and cannot clear athletes with contraindications.</p>
+  </td></tr>
+
+  <tr><td style="padding:0 36px 32px;">
+    <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="margin-top:16px;border-top:1px dashed rgba(14,14,14,.18);padding-top:24px;"><tr><td style="font-family:'Outfit',sans-serif;font-size:11px;line-height:1.65;color:#5A5853;letter-spacing:.04em;">
+      <p style="margin:0 0 12px;font-weight:500;color:#0E0E0E;">— Bek</p>
+      <p style="margin:0 0 14px;"><a href="{{wa_link}}" style="color:#0E0E0E;text-decoration:none;border-bottom:1px solid rgba(14,14,14,.25);">WhatsApp</a> &nbsp;·&nbsp; <a href="mailto:Bek.Zhou@rikathletica.com" style="color:#0E0E0E;text-decoration:none;border-bottom:1px solid rgba(14,14,14,.25);">Bek.Zhou@rikathletica.com</a></p>
+      <p style="margin:0 0 8px;font-size:10px;color:#8A8780;letter-spacing:.06em;">Copyright &copy; 2026 Rik Athletic Nutrition Inc.</p>
+      <p style="margin:0 0 8px;font-size:10px;color:#8A8780;line-height:1.7;"><strong style="color:#5A5853;">&dagger;</strong> RIK Athletica products are dietary supplements. Statements have not been evaluated by the FDA. Not intended to diagnose, treat, cure, or prevent any disease.</p>
+      <p style="margin:0 0 8px;font-size:10px;color:#8A8780;line-height:1.6;">{{registered_address}}</p>
+      <p style="margin:0;font-size:10px;color:#8A8780;"><a href="{{unsubscribe}}" style="color:#8A8780;text-decoration:underline;">Unsubscribe</a> &nbsp;·&nbsp; <a href="https://www.rikathletica.com/privacy" style="color:#8A8780;text-decoration:underline;">Privacy</a> &nbsp;·&nbsp; <a href="https://www.rikathletica.com/terms" style="color:#8A8780;text-decoration:underline;">Terms</a></p>
+    </td></tr></table>
+  </td></tr>
+
+</table>
+</td></tr></table>
+</body></html>
