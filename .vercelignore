@@ -21,3 +21,7 @@ assets/media/originals/
 
 # scripts/ is dev tooling only
 scripts/
+
+# Old design wireframe — not linked from any production page, kept for reference
+wireframe.html
+onboarding-email-preview.html
