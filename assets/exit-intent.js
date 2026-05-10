@@ -41,12 +41,13 @@
 
   // ─── Config
   var STORAGE_KEY = 'rik_exit_popup';
+  var SESSION_KEY = 'rik_exit_popup_seen'; // sessionStorage — fires once per tab session
   var PURCHASE_KEY = 'rik_purchased';
   var PROMO_CODE = 'WELCOME15';
   var COOLDOWN_DAYS = 7;
-  var MIN_TIME_ON_PAGE_MS = 30 * 1000;
-  var MIN_SCROLL_PERCENT = 30;
-  var MOBILE_IDLE_TRIGGER_MS = 90 * 1000;
+  var MIN_TIME_ON_PAGE_MS = 90 * 1000;    // 90s (was 30s) — not triggered by casual reads
+  var MIN_SCROLL_PERCENT = 40;             // 40% (was 30%) — needs real engagement
+  var MOBILE_IDLE_TRIGGER_MS = 150 * 1000; // 2.5 min idle (was 90s)
 
   // Hero photo for the poster — al-DSC00295.jpg is a strong sand-warm action shot.
   // Falls back to a deep ink gradient if the image fails to load.
@@ -96,6 +97,14 @@
   function hasPurchased() {
     try { return !!localStorage.getItem(PURCHASE_KEY); } catch (e) { return false; }
   }
+  // Per-session guard: popup fires at most ONCE per browser tab session, regardless
+  // of how many pages the visitor navigates to. sessionStorage is cleared when the tab closes.
+  function hasSeenThisSession() {
+    try { return !!sessionStorage.getItem(SESSION_KEY); } catch (e) { return false; }
+  }
+  function markSeenThisSession() {
+    try { sessionStorage.setItem(SESSION_KEY, '1'); } catch (e) {}
+  }
   window.__rikMarkPurchased = function () {
     try { localStorage.setItem(PURCHASE_KEY, String(nowMs())); } catch (e) {}
   };
@@ -125,6 +134,7 @@
   function isWarmLead() {
     if (FORCED) return true;
     if (hasPurchased()) return false;
+    if (hasSeenThisSession()) return false;  // once per tab session
     if (nowMs() - startTime < MIN_TIME_ON_PAGE_MS) return false;
     if (maxScrollPct < MIN_SCROLL_PERCENT) return false;
     var s = getState();
@@ -282,7 +292,7 @@
     if (shown) return;
     if (!isWarmLead()) return;
     shown = true;
-    if (!FORCED) setState({ shown_at: nowMs() });
+    if (!FORCED) { markSeenThisSession(); setState({ shown_at: nowMs() }); }
 
     injectStyles();
     var wrap = document.createElement('div');
@@ -364,9 +374,9 @@
       if (y > maxY) maxY = y;
       var dy = y - lastY;
       lastY = y;
-      if (dy < -250 && maxY > window.innerHeight * 0.6) {
+      if (dy < -350 && maxY > window.innerHeight * 0.8) {
         scrollUpAttempts++;
-        if (scrollUpAttempts >= 2) showPopup();
+        if (scrollUpAttempts >= 3) showPopup();
       }
     }, { passive: true });
     setInterval(function () {
