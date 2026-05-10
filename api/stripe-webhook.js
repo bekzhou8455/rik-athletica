@@ -18,6 +18,7 @@
 import crypto from 'crypto';
 import { sendMail, mailerReady } from './mailer.js';
 import { markScreeningPaidByEmail } from '../lib/db.js';
+import { addNurtureTag, removeNurtureTags } from '../lib/kit.js';
 
 // Disable Vercel's automatic body parsing — Stripe signature verification
 // requires the exact raw bytes, not a re-serialised JSON object.
@@ -48,14 +49,30 @@ function verifyStripeSignature(rawBody, sig, secret) {
   }
 }
 
-// ─── Map Stripe amount to tier label ───
-// Uses actual amount_total from Stripe — no hardcoded thresholds needed.
+// ─── Map Stripe amount to tier label + key ───
 function getTierLabel(amountCents) {
   const dollars = Math.round(amountCents / 100);
-  if (dollars <= 560) return '70.3 Sprint';
-  if (dollars <= 660) return 'Full Ironman Sprint';
-  return 'Sprint';
+  if (dollars < 200)  return 'Bundle';
+  if (dollars < 700)  return dollars <= 610 ? '70.3 Sprint' : 'Full Ironman Sprint';
+  if (dollars < 1000) return 'Sprint Pro';
+  return 'Founding Cohort Premium';
 }
+
+// bundle | sprint | premium — used for cart-recovery tag name
+function getTierKey(amountCents) {
+  const dollars = Math.round(amountCents / 100);
+  if (dollars < 200)  return 'bundle';
+  if (dollars < 1000) return 'sprint';
+  return 'premium';
+}
+
+const ALL_NURTURE_TAGS = [
+  'post-audit-nurture',
+  'cart-recovery-bundle',
+  'cart-recovery-sprint',
+  'cart-recovery-premium',
+  'bundle-to-sprint-upsell',
+];
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -77,6 +94,26 @@ export default async function handler(req, res) {
   const event = JSON.parse(rawBody);
   const type  = event?.type;
   console.log(`[stripe-webhook] Event: ${type}`);
+
+  // ─── checkout.session.expired → cart-abandonment tag ───
+  // Fires ~24h after the session was opened without payment.
+  // Requires "checkout.session.expired" added to the Stripe webhook events list.
+  if (type === 'checkout.session.expired') {
+    const session = event.data?.object || {};
+    const email   = session.customer_details?.email || session.customer_email || '';
+    const name    = session.customer_details?.name  || '';
+    if (email) {
+      const amountCents = session.amount_total || 0;
+      const tierKey  = getTierKey(amountCents);
+      const tierLabel = getTierLabel(amountCents);
+      const tagName  = `cart-recovery-${tierKey}`;
+      addNurtureTag(email, name.split(' ')[0] || '', tagName, {
+        tier_in_cart:       tierLabel,
+        tier_in_cart_price: String(Math.round(amountCents / 100)),
+      }).catch(err => console.error(`[stripe-webhook] cart-recovery tag failed: ${err.message}`));
+    }
+    return res.status(200).json({ ok: true });
+  }
 
   if (type !== 'checkout.session.completed') {
     return res.status(200).json({ ok: true, skipped: true });
@@ -207,7 +244,22 @@ export default async function handler(req, res) {
     }
   }
 
-  // ─── 3. Mark Sprint screening as paid → suppresses S1 cart-abandonment ───
+  // ─── 3. Kit kill switch — remove all nurture tags on purchase ───
+  // Exits the subscriber from any running nurture sequence (post-audit, cart-recovery, upsell).
+  if (customerEmail) {
+    removeNurtureTags(customerEmail, ALL_NURTURE_TAGS)
+      .catch(err => console.error('[stripe-webhook] nurture tag removal failed:', err.message));
+  }
+
+  // ─── 4. Bundle → Sprint upsell — tag on Bundle purchase ───
+  // Kit sequence has 14-day delay on email 1, so tagging immediately is correct.
+  if (customerEmail && getTierKey(amountCents) === 'bundle') {
+    addNurtureTag(customerEmail, customerName.split(' ')[0] || '', 'bundle-to-sprint-upsell', {
+      purchase_date_short: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
+    }).catch(err => console.error('[stripe-webhook] bundle-to-sprint-upsell tag failed:', err.message));
+  }
+
+  // ─── 5. Mark Sprint screening as paid → suppresses S1 cart-abandonment ───
   // Best-effort: failures here must NOT 500 the webhook (Stripe will retry).
   if (customerEmail) {
     try {
