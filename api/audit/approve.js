@@ -84,8 +84,15 @@ export default async function handler(req, res) {
     }).catch(err => alertError({ where: 'api/audit/approve (kit.tagAuditDelivered)', error: err, auditId: id })),
 
     // Tag post-audit-nurture → triggers Kit sequence (PA1 → PA3 → PA4)
+    // audit_summary_oneliner: first sentence of what_i_noticed, capped at 120 chars.
+    // This populates the personalised pull-quote in PA1 ("the thing it surfaced — X — isn't unusual").
     addNurtureTag(row.email, row.first_name, 'post-audit-nurture', {
       audit_url: `https://www.rikathletica.com/a/${slug}`,
+      audit_summary_oneliner: draftsFinal.what_i_noticed
+        .replace(/\s+/g, ' ')
+        .split(/[.!?]/)[0]
+        .trim()
+        .slice(0, 120),
     }).catch(err => alertError({ where: 'api/audit/approve (kit.addNurtureTag post-audit-nurture)', error: err, auditId: id })),
 
     alertDelivered({ audit: row, tierLabel, slug })
