@@ -31,7 +31,7 @@ Last updated by /plan-ceo-review on 2026-04-02
 
 ### P1 — Resend domain verification + email activation
 **What:** Complete Resend setup so calculator leads receive the follow-up email.
-**Why:** The /api/leads endpoint is deployed and will call Resend — but Resend can't send from hello@rikathletica.com until the domain is verified. Every calculator completion is currently a warm lead going cold.
+**Why:** The /api/leads endpoint is deployed and will call Resend — but Resend can't send from Bek.Zhou@rikathletica.com until the domain is verified. Every calculator completion is currently a warm lead going cold.
 **How:**
 1. Sign up at resend.com (free: 3,000 emails/month)
 2. Add domain rikathletica.com → copy the 3 DNS records it gives you
@@ -126,6 +126,30 @@ Last updated by /plan-ceo-review on 2026-04-02
 ---
 
 ## PHASE 1 — After First 5 Customers
+
+---
+
+### P0 — Premium Live Dashboard (build when first paid Premium athlete is onboarded)
+**What:** A single private URL per Premium customer that holds Their finalized race-week protocol. One persistent link sent in P4 (RIK Direct Goes Live, Day −7) → athlete bookmarks it → opens it on race day from Their phone for the dialed numbers.
+**Why:** Deferred from Phase 3a email build. Email P4 currently promises this but the URL doesn't exist yet. Right now P4 says "Live dashboard holds Your finalized protocol" — no actual page renders.
+**Minimum viable:**
+- Route: `/p/[slug]` (Vercel serverless, like the existing audit deliverable at `/a/[slug]`)
+- Reuses `lib/render.js` HTML renderer pattern (same iter-5 visual language as audit deliverable)
+- Pulls protocol data from Postgres `premium_protocols` table (new table, modeled on the audit DB pattern)
+- Updates push automatically when Bek edits the protocol (no athlete refresh needed beyond reload)
+- Mobile-first layout — race-morning-on-phone is the primary use case
+- Persistent URL the athlete bookmarks; lives 90 days post-race then auto-archives
+**How:**
+1. Build `/api/premium/render.js` (~80 lines, mirrors `api/audit/render.js`)
+2. Add `lib/premium-render.js` HTML template (extends iter-5 design system)
+3. Add `premium_protocols` Postgres table (id, athlete_email, slug, protocol_json, race_date, archived_at)
+4. Bek edits via admin SPA at `/admin/premium-queue.html` (mirror of existing `/admin/audit-queue.html`)
+5. Wire P4 email's `{{dashboard_url}}` token → `https://www.rikathletica.com/p/{{slug}}`
+6. Update P4 template's "Live dashboard holds Your finalized protocol" line to actually link to the URL
+**Effort:** M (human: 4 hrs to spec + bek decisions / CC: ~2 sessions to implement; ALLOW_BACKEND_TOUCH=1 required)
+**Depends on:** First paid Premium customer signs up. No point building this before you have ≥1 athlete to populate it for.
+**Blocked by:** Premium tier launch + first signup.
+**Source:** Deferred from Phase 3a nurture build, May 2026 (Bek confirmed "we can build this when we have people paid for premium").
 
 ---
 
@@ -276,10 +300,10 @@ Last updated by /plan-ceo-review on 2026-04-02
   - Currently pregnant or breastfeeding
   - Other: (free text)
 **Logic Jump rules:**
-- If race_date < 28 days from today → FAIL ending "Too close" ("We need at least 4 weeks. Email hello@rikathletica.com.")
+- If race_date < 28 days from today → FAIL ending "Too close" ("We need at least 4 weeks. Email Bek.Zhou@rikathletica.com.")
 - If race_date > 56 days from today → FAIL ending "Too far" ("We build programs for races 4-8 weeks out. Come back when you're closer!")
 - If training_plan = NO → FAIL ending "No training plan" ("Our service adds a nutrition layer on top of your training plan. Get one set first.")
-- If any red flag selected → FAIL ending "Medical flag" ("Please consult your doctor before enrolling. Email hello@rikathletica.com if you have questions.")
+- If any red flag selected → FAIL ending "Medical flag" ("Please consult your doctor before enrolling. Email Bek.Zhou@rikathletica.com if you have questions.")
 - All pass → PASS ending → redirect to: `https://www.rikathletica.com/sprint?screen=pass&name={{name}}&email={{email}}&distance={{distance}}&race_date={{race_date}}`
 **Webhook:** All submissions → `https://www.rikathletica.com/api/screen` (FAIL submissions trigger operator notification email)
 **Why:** Without screening, any athlete can pay regardless of fit. The screening catches: too early/late for the service window, athletes without a training plan (service won't help them), and medical red flags that require clinical nutrition (not our service).

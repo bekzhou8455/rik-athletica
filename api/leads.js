@@ -12,8 +12,7 @@
  */
 
 import { E1, E2, E3 } from './email-templates.js';
-
-const FROM = 'RIK Athletica <hello@rikathletica.com>';
+import { sendMail, mailerReady } from './mailer.js';
 
 // ─── E0 template (sent immediately) ───
 const E0_SUBJECT = 'Your IRONMAN nutrition loss — full breakdown';
@@ -75,23 +74,15 @@ const E0_HTML = `<!DOCTYPE html>
 </body>
 </html>`;
 
-// ─── Helper: call Resend API ───
-async function resendFetch(apiKey, path, body) {
-  const r = await fetch(`https://api.resend.com${path}`, {
-    method: 'POST',
-    headers: {
-      'Authorization': `Bearer ${apiKey}`,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(body),
-  });
-  return { ok: r.ok, status: r.status, data: r.ok ? await r.json() : await r.text() };
-}
-
-// ─── Helper: schedule an email for later ───
-function scheduleAt(hoursFromNow) {
-  const d = new Date(Date.now() + hoursFromNow * 60 * 60 * 1000);
-  return d.toISOString();
+// ─── Helper: send email via Gmail ───
+async function gmailSend({ to, subject, html }) {
+  try {
+    await sendMail({ to, subject, html });
+    return { ok: true };
+  } catch (err) {
+    console.error('[lead] Mail error:', err.message);
+    return { ok: false };
+  }
 }
 
 export default async function handler(req, res) {
@@ -115,89 +106,39 @@ export default async function handler(req, res) {
   const ts  = new Date().toISOString();
   console.log(`[lead] ${cleaned} | source=${src} | ts=${ts}`);
 
-  const apiKey = process.env.RESEND_API_KEY;
-  const audienceId = process.env.RESEND_AUDIENCE_ID;
-
-  if (!apiKey) {
-    return res.status(200).json({ ok: true, sent: false, reason: 'no_api_key' });
+  if (!mailerReady()) {
+    return res.status(200).json({ ok: true, sent: false, reason: 'no_gmail_credentials' });
   }
 
-  const results = { contact: false, e0: false, e1: false, e2: false, e3: false };
+  const results = { e0: false, e1: false, e2: false, e3: false };
 
   try {
-    // ─── 1. Add contact to Resend Audience ───
-    if (audienceId) {
-      const contact = await resendFetch(apiKey, '/contacts', {
-        email: cleaned,
-        audience_id: audienceId,
-        unsubscribed: false,
-        properties: { source: src, captured_at: ts },
-      });
-      results.contact = contact.ok;
-      if (!contact.ok) console.error('[lead] Contact creation failed:', contact.data);
-      else console.log('[lead] Contact created:', contact.data);
-    }
-
-    // ─── 2. Send E0 immediately ───
-    const e0 = await resendFetch(apiKey, '/emails', {
-      from: FROM,
-      to: [cleaned],
-      subject: E0_SUBJECT,
-      html: E0_HTML,
-    });
+    // ─── 1. Send E0 immediately ───
+    const e0 = await gmailSend({ to: cleaned, subject: E0_SUBJECT, html: E0_HTML });
     results.e0 = e0.ok;
-    if (!e0.ok) console.error('[lead] E0 send failed:', e0.data);
 
-    // ─── 3. Schedule E1 (Day 2) ───
-    const e1 = await resendFetch(apiKey, '/emails', {
-      from: FROM,
-      to: [cleaned],
-      subject: E1.subject,
-      html: E1.html(),
-      scheduled_at: scheduleAt(E1.delay_hours),
-    });
-    results.e1 = e1.ok;
-    if (!e1.ok) console.error('[lead] E1 schedule failed:', e1.data);
+    // ─── E1/E2/E3 drip sequence ───
+    // Skipped: Gmail SMTP has no scheduling. Sending all 4 at once floods the inbox.
+    // TODO: implement via Vercel Cron Jobs when ready.
+    results.e1 = null;
+    results.e2 = null;
+    results.e3 = null;
 
-    // ─── 4. Schedule E2 (Day 5) ───
-    const e2 = await resendFetch(apiKey, '/emails', {
-      from: FROM,
-      to: [cleaned],
-      subject: E2.subject,
-      html: E2.html(),
-      scheduled_at: scheduleAt(E2.delay_hours),
-    });
-    results.e2 = e2.ok;
-    if (!e2.ok) console.error('[lead] E2 schedule failed:', e2.data);
-
-    // ─── 5. Schedule E3 (Day 7) ───
-    const e3 = await resendFetch(apiKey, '/emails', {
-      from: FROM,
-      to: [cleaned],
-      subject: E3.subject,
-      html: E3.html(),
-      scheduled_at: scheduleAt(E3.delay_hours),
-    });
-    results.e3 = e3.ok;
-    if (!e3.ok) console.error('[lead] E3 schedule failed:', e3.data);
-
-    // ─── 6. Internal notification to founder ───
+    // ─── 5. Internal notification to founder ───
     const alertEmail = process.env.INTERNAL_ALERT_EMAIL;
     if (alertEmail) {
-      await resendFetch(apiKey, '/emails', {
-        from: FROM,
-        to: [alertEmail],
+      await gmailSend({
+        to: alertEmail,
         subject: `New lead: ${cleaned} (${src})`,
         html: `<div style="font-family:sans-serif;padding:20px;">
           <h2 style="margin:0 0 12px;">New Lead Captured</h2>
           <p><strong>Email:</strong> ${cleaned}</p>
           <p><strong>Source:</strong> ${src}</p>
           <p><strong>Time:</strong> ${ts}</p>
-          <p><strong>Sequence:</strong> E0 sent immediately. E1 scheduled Day 2. E2 Day 5. E3 Day 7.</p>
           <hr style="border:none;border-top:1px solid #ddd;margin:16px 0;">
           <p style="font-size:12px;color:#888;">RIK Athletica Lead Notification</p>
         </div>`,
-      }).catch(() => {});
+      });
     }
 
     console.log('[lead] Results:', JSON.stringify(results));

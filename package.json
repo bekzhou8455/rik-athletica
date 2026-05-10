@@ -1,8 +1,24 @@
 {
   "name": "rik-athletica",
-  "version": "1.0.0",
+  "version": "2.0.0",
+  "description": "RIK Athletica unified site (marketing + audit backend)",
   "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "bun serve.ts",
+    "test": "bun test tests/",
+    "migrate": "node scripts/migrate.js",
+    "deploy": "bunx vercel@latest --prod --yes --scope rik-athletica"
+  },
   "dependencies": {
-    "nodemailer": "^6.9.15"
+    "@anthropic-ai/sdk": "^0.30.1",
+    "@vercel/blob": "^0.27.0",
+    "@vercel/postgres": "^0.10.0",
+    "nodemailer": "^6.9.16",
+    "stripe": "^17.5.0",
+    "zod": "^3.23.8"
+  },
+  "engines": {
+    "node": ">=20"
   }
 }

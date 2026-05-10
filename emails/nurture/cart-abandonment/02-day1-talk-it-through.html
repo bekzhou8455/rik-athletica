@@ -1,0 +1,60 @@
+<!doctype html>
+<!--
+  Sequence: Cart Abandonment · Email 2 of 3
+  Trigger:  Day +1 if no payment after email 1
+  Subject:  Want to talk it through?
+  Tokens:   {{first_name}} {{tier_in_cart}} {{tier_in_cart_price}} {{stripe_resume_url}}
+            {{wa_link}} {{kit_profile_url}} {{unsubscribe_url}} {{registered_address}}
+
+  Tone:  WhatsApp-first. Stripe link demoted to secondary. Still no discount.
+-->
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Want to talk it through? — RIK Athletica</title></head>
+<body style="margin:0;padding:0;background:#EEEDEA;font-family:'Outfit',-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif;color:#0E0E0E;-webkit-font-smoothing:antialiased;">
+<div style="display:none;max-height:0;overflow:hidden;">If something's stuck — message Me. Founder-direct, no pitch, just answer the actual question.</div>
+
+<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background:#EEEDEA;"><tr><td align="center" style="padding:32px 20px;">
+<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="600" style="max-width:600px;width:100%;background:#FFFFFF;border:1px solid rgba(14,14,14,.10);border-radius:18px;overflow:hidden;">
+
+  <tr><td style="padding:28px 36px;border-bottom:1px solid rgba(14,14,14,.10);"><p style="margin:0;font-family:'Outfit',sans-serif;font-size:13px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:#0E0E0E;">RIK Athletica · Talk to us</p></td></tr>
+
+  <tr><td style="padding:48px 36px 28px;">
+    <p style="margin:0 0 16px;font-size:11px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:#5A5853;">─── &nbsp;Day +1 from Your checkout&nbsp; ───</p>
+    <h1 style="margin:0 0 18px;font-family:'Outfit',sans-serif;font-size:34px;font-weight:700;line-height:1.02;letter-spacing:-.02em;color:#0E0E0E;">Want to <span style="color:#5A5853;font-weight:700;">Talk it through?</span></h1>
+    <p style="margin:0 0 14px;font-size:15px;line-height:1.65;color:#5A5853;">{{first_name}} — Some checkouts stall because there's a real, specific question that didn't get answered on the page. If that's where You are, the fastest move is to actually ask it.</p>
+    <p style="margin:0 0 14px;font-size:15px;line-height:1.65;color:#5A5853;">Message Me on WhatsApp. <strong style="color:#0E0E0E;font-weight:500;">No pitch on the other end</strong> — just an actual answer to whatever's bothering You. Same business day.</p>
+  </td></tr>
+
+  <!-- WhatsApp PRIMARY (Stripe link is demoted below) -->
+  <tr><td style="padding:0 36px 28px;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:rgba(37,211,102,.08);border:1px solid rgba(37,211,102,.32);border-radius:14px;"><tr><td style="padding:24px 26px;font-family:'Outfit',sans-serif;color:#0E0E0E;">
+      <p style="margin:0 0 8px;font-size:10px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:#0E5A1F;">WhatsApp · founder-direct</p>
+      <p style="margin:0 0 16px;font-size:18px;font-weight:600;line-height:1.3;color:#0E0E0E;">Three questions athletes usually have at checkout:</p>
+      <ol style="margin:0 0 18px 18px;padding:0;font-family:'Outfit',sans-serif;font-size:13.5px;line-height:1.7;color:#5A5853;">
+        <li>"Is this tier actually right for my training volume?"</li>
+        <li>"My race date is X — does that fit?"</li>
+        <li>"What about [my specific medical thing / dietary thing / coach situation]?"</li>
+      </ol>
+      <p style="margin:0 0 14px;font-size:13.5px;line-height:1.6;color:#5A5853;">If any of those (or something else) is stuck — drop it on WhatsApp.</p>
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0"><tr><td style="background:#0E0E0E;border-radius:999px;"><a href="{{wa_link}}" style="display:inline-block;padding:13px 26px;font-family:'Outfit',sans-serif;font-size:14px;font-weight:500;color:#FFFFFF;text-decoration:none;">Open WhatsApp Thread &nbsp;↗</a></td></tr></table>
+    </td></tr></table>
+  </td></tr>
+
+  <tr><td style="padding:0 36px 32px;">
+    <p style="margin:0 0 12px;font-family:'Outfit',sans-serif;font-size:11px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:#5A5853;">Or — if You're ready</p>
+    <p style="margin:0 0 12px;font-size:13.5px;line-height:1.65;color:#5A5853;">The {{tier_in_cart}} checkout is still open at <strong style="color:#0E0E0E;font-weight:500;">${{tier_in_cart_price}}</strong>:</p>
+    <a href="{{stripe_resume_url}}" style="display:inline-block;font-family:'Outfit',sans-serif;font-size:13px;font-weight:500;color:#0E0E0E;text-decoration:none;border-bottom:1px solid rgba(14,14,14,.25);">Resume checkout &nbsp;↗</a>
+  </td></tr>
+
+  <tr><td style="padding:0 36px 32px;">
+    <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="margin-top:16px;border-top:1px dashed rgba(14,14,14,.18);padding-top:24px;"><tr><td style="font-family:'Outfit',sans-serif;font-size:11px;line-height:1.65;color:#5A5853;letter-spacing:.04em;">
+      <p style="margin:0 0 12px;font-weight:500;color:#0E0E0E;">— Bek</p>
+      <p style="margin:0 0 14px;"><a href="{{wa_link}}" style="color:#0E0E0E;text-decoration:none;border-bottom:1px solid rgba(14,14,14,.25);">WhatsApp</a> &nbsp;·&nbsp; <a href="mailto:Bek.Zhou@rikathletica.com" style="color:#0E0E0E;text-decoration:none;border-bottom:1px solid rgba(14,14,14,.25);">Bek.Zhou@rikathletica.com</a></p>
+      <p style="margin:0 0 8px;font-size:10px;color:#8A8780;letter-spacing:.06em;">You're receiving this because You started a checkout for {{tier_in_cart}} at rikathletica.com. Copyright &copy; 2026 Rik Athletic Nutrition Inc.</p>
+      <p style="margin:0 0 8px;font-size:10px;color:#8A8780;line-height:1.6;">{{registered_address}}</p>
+      <p style="margin:0;font-size:10px;color:#8A8780;"><a href="{{unsubscribe_url}}" style="color:#8A8780;text-decoration:underline;">Unsubscribe</a> &nbsp;·&nbsp; <a href="{{kit_profile_url}}" style="color:#8A8780;text-decoration:underline;">Update preferences</a> &nbsp;·&nbsp; <a href="https://www.rikathletica.com/privacy" style="color:#8A8780;text-decoration:underline;">Privacy</a></p>
+    </td></tr></table>
+  </td></tr>
+
+</table>
+</td></tr></table>
+</body></html>

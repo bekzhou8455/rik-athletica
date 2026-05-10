@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Audit Queue — RIK Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300..800&family=JetBrains+Mono:wght@400..700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { font-size: 16px; }
+  body { font-family: 'Plus Jakarta Sans', sans-serif; background: #f6f5f4; color: #0a0a0a; -webkit-font-smoothing: antialiased; min-height: 100vh; }
+
+  :root {
+    --sand: #f6f5f4;
+    --off-black: #0a0a0a;
+    --border: rgba(0,0,0,0.08);
+    --muted: #777;
+    --green: #2D5A3D;
+    --green-light: #4ade80;
+    --warn: #c44;
+    --r-card: 14px;
+    --r-btn: 36px;
+  }
+
+  /* === AUTH === */
+  #auth-screen { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 40px; }
+  .auth-card { background: #fff; border: 1px solid var(--border); border-radius: var(--r-card); padding: 40px; max-width: 360px; width: 100%; text-align: center; }
+  .auth-card h1 { font-size: 20px; font-weight: 600; letter-spacing: -0.02em; margin-bottom: 6px; }
+  .auth-card p { font-size: 13px; color: var(--muted); margin-bottom: 24px; line-height: 1.5; }
+  .auth-input { width: 100%; padding: 12px 14px; border: 1px solid var(--border); border-radius: 10px; font-size: 14px; font-family: inherit; outline: none; margin-bottom: 10px; }
+  .auth-input:focus { border-color: var(--off-black); }
+  .auth-error { font-size: 12px; color: var(--warn); margin-bottom: 10px; min-height: 16px; }
+
+  /* === MAIN === */
+  #main-screen { display: none; }
+  header { background: #fff; border-bottom: 1px solid var(--border); padding: 0 24px; height: 56px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 10; }
+  .brand { font-size: 11px; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; }
+  .badge { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 999px; background: rgba(45,90,61,0.1); color: var(--green); border: 1px solid rgba(45,90,61,0.2); }
+  .btn-icon { background: none; border: 1px solid var(--border); padding: 8px 14px; border-radius: 999px; font-family: inherit; font-size: 12px; cursor: pointer; }
+  .btn-icon:hover { background: var(--sand); }
+
+  .layout { display: grid; grid-template-columns: 1fr; max-width: 1300px; margin: 0 auto; padding: 24px; gap: 24px; }
+
+  /* === STATS === */
+  .stats { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; }
+  .stat { background: #fff; border: 1px solid var(--border); border-radius: var(--r-card); padding: 14px 18px; }
+  .stat .label { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 1.6px; text-transform: uppercase; color: #aaa; margin-bottom: 6px; }
+  .stat .value { font-size: 22px; font-weight: 600; letter-spacing: -0.02em; line-height: 1; }
+  .stat .value.green { color: var(--green); }
+
+  /* === TABS === */
+  .tabs { display: flex; gap: 4px; padding: 4px; background: #fff; border: 1px solid var(--border); border-radius: 999px; width: fit-content; }
+  .tab { background: none; border: none; padding: 8px 18px; border-radius: 999px; font-family: inherit; font-size: 13px; cursor: pointer; color: var(--muted); }
+  .tab.active { background: var(--off-black); color: #fff; }
+  .tab .count { font-family: 'JetBrains Mono', monospace; font-size: 10px; margin-left: 6px; opacity: 0.7; }
+
+  /* === MAIN GRID (queue + detail) === */
+  .work { display: grid; grid-template-columns: 360px 1fr; gap: 16px; }
+  @media (max-width: 1000px) { .work { grid-template-columns: 1fr; } }
+
+  /* === QUEUE LIST === */
+  .queue { background: #fff; border: 1px solid var(--border); border-radius: var(--r-card); overflow: hidden; max-height: calc(100vh - 200px); overflow-y: auto; }
+  .queue-empty { padding: 40px 20px; text-align: center; color: var(--muted); font-size: 13px; }
+  .row { padding: 14px 16px; border-bottom: 1px solid var(--border); cursor: pointer; transition: background 0.1s; }
+  .row:hover { background: var(--sand); }
+  .row.active { background: rgba(45,90,61,0.08); border-left: 3px solid var(--green); padding-left: 13px; }
+  .row .top { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 4px; }
+  .row .name { font-weight: 600; font-size: 14px; }
+  .row .age { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--muted); }
+  .row .meta { font-size: 12px; color: var(--muted); }
+  .row .tier-pill { display: inline-block; padding: 2px 8px; border-radius: 999px; font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 1.4px; text-transform: uppercase; background: rgba(45,90,61,0.1); color: var(--green); margin-top: 6px; }
+  .row.warn .age { color: var(--warn); font-weight: 700; }
+
+  /* === DETAIL PANEL === */
+  .detail { background: #fff; border: 1px solid var(--border); border-radius: var(--r-card); padding: 24px; min-height: 400px; max-height: calc(100vh - 200px); overflow-y: auto; }
+  .detail.empty { display: flex; align-items: center; justify-content: center; color: var(--muted); font-size: 14px; }
+
+  .detail h2 { font-size: 18px; font-weight: 600; margin-bottom: 4px; letter-spacing: -0.01em; }
+  .detail .sub { font-size: 12px; color: var(--muted); margin-bottom: 20px; }
+  .detail h3 { font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--green); margin: 20px 0 10px; }
+
+  .answers-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; font-size: 13px; }
+  .answer-item { background: var(--sand); padding: 10px 12px; border-radius: 8px; }
+  .answer-item .lbl { font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--muted); letter-spacing: 1.4px; text-transform: uppercase; margin-bottom: 3px; }
+  .answer-item .val { font-weight: 500; }
+
+  .draft-block { margin-bottom: 16px; }
+  .draft-label { font-size: 12px; font-weight: 600; margin-bottom: 6px; display: flex; justify-content: space-between; align-items: center; }
+  .draft-label .hint { font-weight: 400; color: var(--muted); font-size: 11px; }
+  .draft-textarea { width: 100%; min-height: 80px; padding: 10px 12px; border: 1px solid var(--border); border-radius: 8px; font-family: inherit; font-size: 13px; line-height: 1.5; resize: vertical; outline: none; }
+  .draft-textarea:focus { border-color: var(--off-black); }
+
+  .ftc-warn { background: #fff5e6; border: 1px solid #f5c97f; border-radius: 8px; padding: 10px 14px; font-size: 12px; color: #92400e; margin: 12px 0; }
+
+  .engine-toggle { background: var(--sand); padding: 10px 14px; border-radius: 8px; font-size: 12px; cursor: pointer; user-select: none; margin-top: 10px; }
+  .engine-json { background: #0a0a0a; color: #cce; padding: 14px; border-radius: 8px; font-family: 'JetBrains Mono', monospace; font-size: 11px; line-height: 1.5; overflow: auto; max-height: 280px; margin-top: 8px; white-space: pre-wrap; }
+
+  .actions { display: flex; gap: 10px; margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--border); position: sticky; bottom: 0; background: #fff; padding-bottom: 4px; }
+  .btn { padding: 12px 20px; border-radius: var(--r-btn); border: none; font-family: inherit; font-size: 13px; font-weight: 600; cursor: pointer; transition: opacity 0.1s; }
+  .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+  .btn-primary { background: var(--green); color: #fff; }
+  .btn-primary:hover:not(:disabled) { background: #234731; }
+  .btn-secondary { background: var(--sand); color: var(--off-black); border: 1px solid var(--border); }
+  .btn-link { background: none; color: var(--off-black); text-decoration: underline; padding: 12px 8px; }
+
+  .preview-iframe { width: 100%; height: 600px; border: 1px solid var(--border); border-radius: 8px; margin-top: 12px; background: #fff; }
+
+  /* === SENT/CONVERTED ROW EXTRA === */
+  .row.sent .age { color: var(--muted); }
+  .row.converted { border-left: 3px solid #f59e0b; padding-left: 13px; }
+  .row.converted .conversion-tag { display: inline-block; padding: 2px 8px; border-radius: 999px; font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 1.4px; text-transform: uppercase; background: rgba(245,158,11,0.15); color: #92400e; margin-top: 6px; }
+
+  .toast { position: fixed; bottom: 24px; right: 24px; padding: 14px 20px; background: var(--off-black); color: #fff; border-radius: 10px; font-size: 13px; opacity: 0; transition: opacity 0.2s; z-index: 100; pointer-events: none; }
+  .toast.show { opacity: 1; }
+  .toast.error { background: var(--warn); }
+</style>
+</head>
+<body>
+
+<!-- AUTH SCREEN -->
+<div id="auth-screen">
+  <div class="auth-card">
+    <h1>Audit Queue</h1>
+    <p>Paste your admin token to continue.</p>
+    <input id="auth-input" class="auth-input" type="password" placeholder="Admin token" autocomplete="off" autofocus>
+    <div class="auth-error" id="auth-error"></div>
+    <button class="btn btn-primary" style="width:100%" onclick="window.RIK_AUTH.tryLogin()">Open queue</button>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div id="main-screen">
+  <header>
+    <div style="display:flex;align-items:center;gap:12px">
+      <span class="brand">RIK · Admin</span>
+      <span class="badge">Audit Queue</span>
+    </div>
+    <button class="btn-icon" onclick="window.RIK_AUTH.logout()">Sign out</button>
+  </header>
+
+  <div class="layout">
+
+    <!-- STATS -->
+    <div class="stats" id="stats-strip">
+      <div class="stat"><div class="label">Pending</div><div class="value" id="s-pending">—</div></div>
+      <div class="stat"><div class="label">Sent today</div><div class="value green" id="s-today">—</div></div>
+      <div class="stat"><div class="label">Sent (7d)</div><div class="value" id="s-7d">—</div></div>
+      <div class="stat"><div class="label">Conv (14d)</div><div class="value green" id="s-conv">—</div></div>
+      <div class="stat"><div class="label">Rev (14d)</div><div class="value green" id="s-rev">—</div></div>
+    </div>
+
+    <!-- TABS -->
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px">
+      <div class="tabs">
+        <button class="tab active" data-tab="drafted" onclick="window.RIK.switchTab('drafted')">Drafts <span class="count" id="c-drafted"></span></button>
+        <button class="tab" data-tab="delivered" onclick="window.RIK.switchTab('delivered')">Sent <span class="count" id="c-delivered"></span></button>
+        <button class="tab" data-tab="converted" onclick="window.RIK.switchTab('converted')">Conversions <span class="count" id="c-converted"></span></button>
+      </div>
+      <button class="btn-icon" onclick="window.RIK.refresh()">↻ Refresh</button>
+    </div>
+
+    <!-- WORK AREA -->
+    <div class="work">
+      <!-- LEFT: queue list -->
+      <div class="queue" id="queue-list">
+        <div class="queue-empty">Loading…</div>
+      </div>
+
+      <!-- RIGHT: detail panel -->
+      <div class="detail empty" id="detail-panel">
+        Select an audit on the left to review.
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+(function() {
+  const $ = (id) => document.getElementById(id);
+
+  // === Auth ===
+  let TOKEN = null;
+  function tokenFromUrl() {
+    const params = new URLSearchParams(window.location.search);
+    return params.get('t') || null;
+  }
+  function saveToken(t) {
+    try { sessionStorage.setItem('rik_admin_token', t); } catch (e) {}
+  }
+  function loadToken() {
+    return tokenFromUrl() || (function() { try { return sessionStorage.getItem('rik_admin_token'); } catch (e) { return null; } })();
+  }
+  async function verifyToken(t) {
+    const r = await fetch(`/api/admin/queue?t=${encodeURIComponent(t)}&status=drafted`, { method: 'GET' });
+    return r.ok;
+  }
+  window.RIK_AUTH = {
+    async tryLogin() {
+      const input = $('auth-input').value.trim();
+      const err = $('auth-error');
+      err.textContent = '';
+      if (!input) { err.textContent = 'Enter a token.'; return; }
+      const ok = await verifyToken(input);
+      if (!ok) { err.textContent = 'Invalid token.'; return; }
+      TOKEN = input;
+      saveToken(input);
+      $('auth-screen').style.display = 'none';
+      $('main-screen').style.display = 'block';
+      window.RIK.boot();
+    },
+    logout() {
+      try { sessionStorage.removeItem('rik_admin_token'); } catch (e) {}
+      TOKEN = null;
+      window.location.search = '';
+    },
+  };
+
+  $('auth-input').addEventListener('keydown', (e) => { if (e.key === 'Enter') window.RIK_AUTH.tryLogin(); });
+
+  // === Toast ===
+  function toast(msg, isError = false) {
+    const t = $('toast');
+    t.textContent = msg;
+    t.classList.toggle('error', isError);
+    t.classList.add('show');
+    clearTimeout(toast._t);
+    toast._t = setTimeout(() => t.classList.remove('show'), 3000);
+  }
+
+  // === API helpers ===
+  async function api(path, options = {}) {
+    const sep = path.includes('?') ? '&' : '?';
+    const url = `${path}${sep}t=${encodeURIComponent(TOKEN)}`;
+    const res = await fetch(url, {
+      ...options,
+      headers: { 'Content-Type': 'application/json', 'x-admin-token': TOKEN, ...(options.headers || {}) },
+    });
+    if (!res.ok) {
+      const text = await res.text();
+      throw new Error(`API ${res.status}: ${text.slice(0, 120)}`);
+    }
+    return res.json();
+  }
+
+  // === State ===
+  let CURRENT_TAB = 'drafted';
+  let CURRENT_ROWS = [];
+  let SELECTED_ID = null;
+
+  function fmtAge(ts) {
+    if (!ts) return '';
+    const ms = Date.now() - new Date(ts).getTime();
+    const hr = ms / (1000 * 60 * 60);
+    if (hr < 1) return `${Math.round(hr * 60)}m`;
+    if (hr < 24) return `${Math.round(hr)}h`;
+    return `${Math.round(hr / 24)}d`;
+  }
+  function fmtDate(ts) { return ts ? new Date(ts).toLocaleString() : ''; }
+
+  function renderStats(stats) {
+    if (!stats) return;
+    $('s-pending').textContent = stats.pending_count ?? '0';
+    $('s-today').textContent = stats.delivered_today ?? '0';
+    $('s-7d').textContent = stats.delivered_7d ?? '0';
+    const convPct = stats.delivered_14d_cohort > 0
+      ? Math.round((stats.conversions_14d / stats.delivered_14d_cohort) * 100)
+      : 0;
+    $('s-conv').textContent = `${stats.conversions_14d ?? '0'} (${convPct}%)`;
+    $('s-rev').textContent = `$${Math.round(stats.revenue_14d ?? 0)}`;
+    $('c-drafted').textContent = stats.pending_count ?? '0';
+  }
+
+  function renderQueue(rows, tab) {
+    const list = $('queue-list');
+    if (!rows || rows.length === 0) {
+      list.innerHTML = `<div class="queue-empty">${tab === 'drafted' ? 'Empty queue. ☕' : tab === 'delivered' ? 'No deliveries yet.' : 'No conversions yet.'}</div>`;
+      return;
+    }
+    list.innerHTML = rows.map(r => {
+      const isWarn = tab === 'drafted' && (Date.now() - new Date(r.submitted_at).getTime()) > 36 * 3600 * 1000;
+      const tier = r.engine?.tier_recommendation?.tier ?? '?';
+      const distance = r.answers?.raceDistance ?? '?';
+      const weeks = r.engine?.inputs_summary?.weeks_out ?? '?';
+      const ageOrConv = tab === 'converted'
+        ? fmtAge(r.converted_at)
+        : tab === 'delivered'
+          ? fmtAge(r.delivered_at)
+          : fmtAge(r.submitted_at);
+      const trailerHtml = tab === 'converted'
+        ? `<span class="conversion-tag">${escapeHtml(r.converted_tier ?? '?')} · $${r.converted_amount ?? 0}</span>`
+        : `<span class="tier-pill">${escapeHtml(tier)}</span>`;
+
+      return `
+      <div class="row ${tab} ${isWarn ? 'warn' : ''} ${r.id == SELECTED_ID ? 'active' : ''}" onclick="window.RIK.openDetail(${r.id})">
+        <div class="top">
+          <span class="name">${escapeHtml(r.first_name)}</span>
+          <span class="age">${ageOrConv}</span>
+        </div>
+        <div class="meta">${escapeHtml(distance)} · ${escapeHtml(String(weeks))}w · ${escapeHtml(r.email)}</div>
+        ${trailerHtml}
+      </div>`;
+    }).join('');
+  }
+
+  function escapeHtml(s) {
+    return String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  }
+
+  // === Render detail panel ===
+  async function openDetail(id) {
+    SELECTED_ID = id;
+    document.querySelectorAll('.row').forEach(r => r.classList.remove('active'));
+    const panel = $('detail-panel');
+    panel.classList.remove('empty');
+    panel.innerHTML = '<div style="padding:40px;text-align:center;color:#888">Loading…</div>';
+
+    let row;
+    try {
+      row = await api(`/api/admin/draft?id=${id}`);
+    } catch (err) {
+      panel.innerHTML = `<div style="color:#c44">Error: ${escapeHtml(err.message)}</div>`;
+      return;
+    }
+
+    const a = row.answers ?? {};
+    const e = row.engine ?? {};
+    const d = row.drafts ?? {};
+    const isDelivered = row.status === 'delivered';
+    const tier = e.tier_recommendation ?? {};
+
+    panel.innerHTML = `
+      <h2>${escapeHtml(row.first_name)}</h2>
+      <div class="sub">${escapeHtml(row.email)} · submitted ${fmtDate(row.submitted_at)} ${isDelivered ? `· delivered ${fmtDate(row.delivered_at)}` : ''}</div>
+
+      <h3>Athlete inputs</h3>
+      <div class="answers-grid">
+        ${ai('Race', `${a.raceDistance ?? '?'} · ${a.raceDate ?? '?'}`)}
+        ${ai('Target', a.targetTime ?? '—')}
+        ${ai('Weeks out', e.inputs_summary?.weeks_out ?? '?')}
+        ${ai('Weekly hours', a.weeklyHours ?? '?')}
+        ${ai('Brands', (a.brands ?? []).join(', ') || '—')}
+        ${ai('Carbs/hr (self)', a.carbsPerHour ?? '?')}
+        ${ai('GI history', a.giHistory ?? '?')}
+        ${ai('Sweat rate', a.sweatRate ?? '?')}
+        ${ai('Body weight', `${a.bodyWeight ?? '?'} ${a.weightUnit ?? ''}`)}
+        ${ai('Coach', a.hasCoach === 'yes' ? (a.coachName ?? 'yes') : 'no')}
+        ${a.giNotes ? ai('GI notes', a.giNotes) : ''}
+        ${a.specificConcern ? ai('Specific question', a.specificConcern) : ''}
+      </div>
+
+      <h3>Engine recommendation</h3>
+      <div style="background:rgba(45,90,61,0.08);padding:14px 18px;border-radius:10px;font-size:13px">
+        <strong style="font-size:14px">${escapeHtml(tier.label ?? '?')}</strong>
+        <div style="color:#555;margin-top:4px">${escapeHtml(tier.explanation ?? '')}</div>
+        <div style="margin-top:8px;font-family:'JetBrains Mono',monospace;font-size:11px;color:#666">
+          carb deficit: ${e.track_b?.carb_deficit_g_per_hour ?? '?'}g/hr ·
+          minutes lost: ${e.track_b?.minutes_lost_estimate?.lo ?? '?'}–${e.track_b?.minutes_lost_estimate?.hi ?? '?'} ·
+          sodium ${e.track_a?.sodium_tier ?? '?'}
+        </div>
+      </div>
+
+      ${d._ftc_warning && d._ftc_warning.length ? `
+        <div class="ftc-warn">
+          <strong>⚠ AI draft contains banned words:</strong> ${d._ftc_warning.join(', ')}. Edit before sending.
+        </div>` : ''}
+
+      <h3>${isDelivered ? 'Delivered text (read-only)' : 'AI-drafted personalization (edit + approve)'}</h3>
+
+      <div class="draft-block">
+        <div class="draft-label">What I noticed (Page 1) <span class="hint">3 sentences</span></div>
+        <textarea id="d-noticed" class="draft-textarea" ${isDelivered ? 'readonly' : ''}>${escapeHtml((row.drafts_final?.what_i_noticed) ?? d.what_i_noticed ?? '')}</textarea>
+      </div>
+
+      <div class="draft-block">
+        <div class="draft-label">Why this tier (Page 3) <span class="hint">3 sentences</span></div>
+        <textarea id="d-tier" class="draft-textarea" ${isDelivered ? 'readonly' : ''}>${escapeHtml((row.drafts_final?.why_this_tier) ?? d.why_this_tier ?? '')}</textarea>
+      </div>
+
+      <div class="draft-block">
+        <div class="draft-label">Specific question answer (Page 4) <span class="hint">4 sentences</span></div>
+        <textarea id="d-question" class="draft-textarea" ${isDelivered ? 'readonly' : ''}>${escapeHtml((row.drafts_final?.specific_question_answer) ?? d.specific_question_answer ?? '')}</textarea>
+      </div>
+
+      <div class="engine-toggle" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'block' ? 'none' : 'block'">
+        ▸ Engine output (raw JSON)
+      </div>
+      <pre class="engine-json" style="display:none">${escapeHtml(JSON.stringify(e, null, 2))}</pre>
+
+      ${isDelivered && row.slug ? `
+        <h3>Delivered links</h3>
+        <div style="font-size:13px">
+          <div>Page: <a href="/a/${row.slug}" target="_blank">/a/${row.slug}</a></div>
+          ${row.pdf_url ? `<div>PDF: <a href="${escapeHtml(row.pdf_url)}" target="_blank">${escapeHtml(row.pdf_url)}</a></div>` : ''}
+        </div>` : ''}
+
+      <div class="actions">
+        ${isDelivered ? `
+          <a href="/a/${row.slug}" target="_blank" class="btn btn-secondary">Open page</a>
+          ${row.pdf_url ? `<a href="${escapeHtml(row.pdf_url)}" target="_blank" class="btn btn-secondary">Open PDF</a>` : ''}
+        ` : `
+          <button class="btn btn-secondary" onclick="window.RIK.saveDraft(${row.id})">Save draft</button>
+          <button class="btn btn-primary" id="approve-btn" onclick="window.RIK.approve(${row.id})">Approve & Send</button>
+        `}
+      </div>
+    `;
+  }
+
+  function ai(label, value) {
+    return `<div class="answer-item"><div class="lbl">${escapeHtml(label)}</div><div class="val">${escapeHtml(value)}</div></div>`;
+  }
+
+  // === Save draft (without sending) ===
+  async function saveDraft(id) {
+    const drafts = collectDrafts();
+    try {
+      await api('/api/admin/draft', { method: 'PATCH', body: JSON.stringify({ id, drafts }) });
+      toast('Draft saved.');
+    } catch (err) {
+      toast(`Save failed: ${err.message}`, true);
+    }
+  }
+
+  // === Approve & Send ===
+  async function approve(id) {
+    const drafts = collectDrafts();
+    if (!drafts.what_i_noticed.trim() || !drafts.why_this_tier.trim() || !drafts.specific_question_answer.trim()) {
+      toast('All 3 blocks must be filled.', true);
+      return;
+    }
+    if (!confirm('Approve and send the audit to the athlete?\nThis will: generate the page + PDF, email them, tag in Kit, and start the A16 nurture.')) return;
+
+    const btn = $('approve-btn');
+    if (btn) { btn.disabled = true; btn.textContent = 'Sending…'; }
+
+    try {
+      const result = await api('/api/audit/approve', { method: 'POST', body: JSON.stringify({ id, drafts }) });
+      toast(`Sent! Page: /a/${result.slug}`);
+      await window.RIK.refresh();
+      window.RIK.openDetail(id);
+    } catch (err) {
+      toast(`Send failed: ${err.message}`, true);
+      if (btn) { btn.disabled = false; btn.textContent = 'Approve & Send'; }
+    }
+  }
+
+  function collectDrafts() {
+    return {
+      what_i_noticed: $('d-noticed')?.value ?? '',
+      why_this_tier: $('d-tier')?.value ?? '',
+      specific_question_answer: $('d-question')?.value ?? '',
+    };
+  }
+
+  // === Tab switching + refresh ===
+  async function loadTab(tab) {
+    document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.tab === tab));
+    CURRENT_TAB = tab;
+    SELECTED_ID = null;
+    $('detail-panel').classList.add('empty');
+    $('detail-panel').innerHTML = 'Select an audit on the left to review.';
+
+    try {
+      const data = await api(`/api/admin/queue?status=${tab}`);
+      CURRENT_ROWS = data.rows ?? [];
+      renderQueue(CURRENT_ROWS, tab);
+      renderStats(data.stats);
+      $('c-drafted').textContent = data.stats?.pending_count ?? '0';
+      // Counts for other tabs aren't returned by stats; leave blank or compute on demand
+    } catch (err) {
+      $('queue-list').innerHTML = `<div class="queue-empty" style="color:#c44">Failed: ${escapeHtml(err.message)}</div>`;
+    }
+  }
+
+  window.RIK = {
+    boot() {
+      const params = new URLSearchParams(window.location.search);
+      const id = params.get('id');
+      loadTab('drafted').then(() => {
+        if (id) openDetail(parseInt(id, 10));
+      });
+    },
+    switchTab(tab) { loadTab(tab); },
+    refresh() { return loadTab(CURRENT_TAB); },
+    openDetail,
+    saveDraft,
+    approve,
+  };
+
+  // === Boot — auto-login if token in URL or sessionStorage ===
+  (async () => {
+    const t = loadToken();
+    if (!t) return; // user must enter manually
+    const ok = await verifyToken(t);
+    if (!ok) return;
+    TOKEN = t;
+    saveToken(t);
+    $('auth-screen').style.display = 'none';
+    $('main-screen').style.display = 'block';
+    window.RIK.boot();
+  })();
+})();
+</script>
+
+</body>
+</html>

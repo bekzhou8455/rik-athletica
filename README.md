@@ -47,10 +47,15 @@ bun test calculator.test.ts
 
 ## Payment links
 
-- **Sprint ($499):** `https://buy.stripe.com/00waEZ6Wq1441uC6ow7Re01`
-- **Bundle ($119):** `https://buy.stripe.com/4gM7sN6Wq3cc7T0fZ67Re00`
+| Tier | Price | URL |
+|---|---|---|
+| Bundle | $119 | `https://buy.stripe.com/4gM7sN6Wq3cc7T0fZ67Re00` |
+| Sprint 70.3 | $569 | `https://buy.stripe.com/7sY9AVdkOdQQ3CKbIQ7Re02` |
+| Sprint Full Ironman | $659 | `https://buy.stripe.com/7sY28tfsW2887T07sA7Re03` |
+| Sprint Pro | $899 | `https://buy.stripe.com/3cI4gB1C65kk1uCdQY7Re04` |
+| Founding Cohort Premium | $1,599 | `https://buy.stripe.com/00waEZ1C68ww2yG0087Re06` |
 
-Stripe redirects to `/thank-you?type=sprint` or `/thank-you?type=bundle` on success.
+Stripe redirects to `/thank-you?tier=<tier>&session_id={CHECKOUT_SESSION_ID}` on success — `/thank-you` reads the params and fires GA4 enhanced-ecommerce `purchase` events with the correct item/value mapping. Sprint subtier passes via `&plan=703|full|pro`. Legacy `?type=sprint`/`?type=bundle` redirects still resolve to the right card for backward compatibility.
 
 ## Affiliate tracking
 
