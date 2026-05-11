@@ -207,16 +207,13 @@ section.warm-atmos .atmos-meta span{font-size:13px;color:rgba(255,255,255,.7);li
 .ing-carousel-head{display:flex;justify-content:space-between;align-items:baseline;padding:0 36px 18px;max-width:var(--maxw);margin:0 auto;border-bottom:1px dashed var(--rule)}
 .ing-carousel-eyebrow{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-soft);font-weight:500}
 .ing-carousel-counter{font-size:11px;letter-spacing:.12em;color:var(--ink-soft);font-variant-numeric:tabular-nums}
-.ing-track-wrap{position:relative;overflow:hidden;padding:24px 0 6px}
+.ing-track-wrap{position:relative;overflow-x:auto;padding:24px 0 6px;scrollbar-width:none;-ms-overflow-style:none;cursor:grab;-webkit-overflow-scrolling:touch}
+.ing-track-wrap::-webkit-scrollbar{display:none}
+.ing-track-wrap.is-dragging{cursor:grabbing}
 .ing-track-wrap::before, .ing-track-wrap::after{content:"";position:absolute;top:0;bottom:0;width:80px;z-index:2;pointer-events:none}
 .ing-track-wrap::before{left:0;background:linear-gradient(90deg, var(--bg) 0%, rgba(238,237,234,0) 100%)}
 .ing-track-wrap::after{right:0;background:linear-gradient(-90deg, var(--bg) 0%, rgba(238,237,234,0) 100%)}
-.ing-track{display:flex;gap:18px;width:max-content;animation:ing-scroll 60s linear infinite;will-change:transform}
-.ing-track:hover{animation-play-state:paused}
-@keyframes ing-scroll{
-  0%{transform:translateX(0)}
-  100%{transform:translateX(calc(-50% - 9px))}
-}
+.ing-track{display:flex;gap:18px;width:max-content}
 .ing-chip{flex-shrink:0;width:240px;background:rgba(255,255,255,.78);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.6);border-radius:14px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 1px 2px rgba(14,14,14,.04), 0 8px 24px -8px rgba(14,14,14,.08)}
 .ing-chip-img{aspect-ratio:5/3;width:100%;background-size:cover;background-position:center;background-color:var(--bg-2)}
 .ing-chip-body{padding:14px 16px 16px;display:flex;flex-direction:column;gap:4px}
@@ -361,7 +358,6 @@ footer.legal .footer-disclaimer strong{color:rgba(255,255,255,.6);display:block;
 
 @media (prefers-reduced-motion: reduce){
   *{transition:none !important;animation:none !important}
-  .ing-track{animation:none !important}
   .tm-cell{opacity:1 !important;transform:none !important}
   .tm-connectors path{animation:none !important;opacity:.6 !important;stroke-dashoffset:0 !important}
 }
@@ -378,7 +374,7 @@ footer.legal .footer-disclaimer strong{color:rgba(255,255,255,.6);display:block;
   section.warm-atmos{padding-top:80px;padding-bottom:80px}
   section.refund-banner{padding-top:64px;padding-bottom:64px}
   .closing{padding-top:96px;padding-bottom:96px;min-height:auto}
-  .closing-row{grid-template-columns:1fr;align-items:flex-start;gap:32px}
+  .closing > .closing-row{grid-template-columns:1fr;align-items:flex-start;gap:32px}
   .s-head{grid-template-columns:1fr;gap:14px;margin-bottom:36px}
   .icon-list{grid-template-columns:1fr;gap:36px}
   .icon-list-card{padding:28px}
@@ -423,7 +419,14 @@ footer.legal .footer-disclaimer strong{color:rgba(255,255,255,.6);display:block;
   section.warm-atmos h2{font-size:clamp(32px, 9vw, 48px);max-width:16ch;margin-bottom:24px}
   section.warm-atmos .atmos-meta{padding-top:24px;margin-top:32px;gap:18px}
   section.warm-atmos .atmos-meta strong{font-size:24px}
-  .pd-tab{padding:14px 12px;font-size:11.5px;letter-spacing:.06em}
+  /* Tabs: scrollable strip on small screens — prevents 3-tab text from being clipped */
+  .pd-tabs{overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none}
+  .pd-tabs::-webkit-scrollbar{display:none}
+  .pd-tab{flex:0 0 auto;white-space:nowrap;padding:13px 14px;font-size:11px;letter-spacing:.04em}
+  /* Gallery: tighter on small screens */
+  .pd-gallery{min-height:360px}
+  .pd-gallery-main{min-height:260px;padding:20px}
+  .pd-gallery-main img{max-height:260px}
   .pd-gallery-main{padding:32px}
   .pd-info{padding:28px 22px;gap:18px}
   .pd-info h3{font-size:clamp(26px, 7vw, 34px)}
@@ -455,13 +458,13 @@ footer.legal .footer-disclaimer strong{color:rgba(255,255,255,.6);display:block;
   .cta-cell h3{font-size:26px;line-height:1.05}
   .cta-cell p{font-size:13.5px}
   .closing h2{font-size:clamp(36px, 10vw, 56px);max-width:14ch;line-height:.96}
-  .closing-row{gap:24px}
+  .closing > .closing-row{gap:24px}
   .closing-meta p{font-size:13px}
   .closing-meta .closing-cta{flex-direction:column;align-items:stretch;gap:12px}
-  footer.legal{padding:40px 20px 56px}
+  footer.legal{padding:40px 20px calc(72px + env(safe-area-inset-bottom, 0px))}
   footer.legal .footer-disclaimer{font-size:11px}
   footer.legal .legal-logo{height:28px}
-  .float-cta{padding:12px 18px;font-size:12px;right:14px;bottom:14px}
+  .float-cta{padding:12px 18px;font-size:12px;right:14px;bottom:calc(14px + env(safe-area-inset-bottom, 0px))}
   .float-cta .float-arrow{width:20px;height:20px;font-size:11px}
 }
 @media (max-width:480px){
@@ -755,9 +758,9 @@ footer.legal .footer-disclaimer strong{color:rgba(255,255,255,.6);display:block;
     <div class="ing-carousel" id="ing-carousel">
       <div class="ing-carousel-head">
         <span class="ing-carousel-eyebrow">10 functional ingredients</span>
-        <span class="ing-carousel-counter">Hover to pause · scrolls continuously</span>
+        <span class="ing-carousel-counter">Drag to scroll · hover to pause</span>
       </div>
-      <div class="ing-track-wrap">
+      <div class="ing-track-wrap" id="ing-track-wrap">
         <div class="ing-track" id="ing-track">
           <!-- Track set 1 -->
           <div class="ing-chip">
@@ -1216,6 +1219,67 @@ document.querySelectorAll('a[href="/sprint"]').forEach(function(el){
     if (window.RIK && window.RIK.cta) window.RIK.cta('bundle_to_sprint_upgrade');
   });
 });
+</script>
+
+<!-- Ingredient carousel — rAF auto-scroll + mouse/touch drag -->
+<script>
+(function(){
+  var wrap = document.getElementById('ing-track-wrap');
+  var track = document.getElementById('ing-track');
+  if (!wrap || !track) return;
+
+  // Respect prefers-reduced-motion
+  var reducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+  var SPEED = 1.5; // px per rAF frame ≈ 90px/s at 60fps (~2.7s per 240px chip)
+  var paused = reducedMotion;
+
+  function loop(){
+    if (!paused){
+      wrap.scrollLeft += SPEED;
+      var half = track.scrollWidth / 2;
+      if (half > 0 && wrap.scrollLeft >= half) wrap.scrollLeft = 0;
+    }
+    requestAnimationFrame(loop);
+  }
+  requestAnimationFrame(loop);
+
+  // Hover pause (desktop)
+  wrap.addEventListener('mouseenter', function(){ paused = true; });
+  wrap.addEventListener('mouseleave', function(){ if (!isDragging) paused = false; });
+
+  // Mouse drag
+  var isDragging = false, mX, mScroll, resumeT;
+  wrap.addEventListener('mousedown', function(e){
+    isDragging = true; paused = true;
+    mX = e.clientX; mScroll = wrap.scrollLeft;
+    wrap.classList.add('is-dragging');
+    e.preventDefault();
+  });
+  document.addEventListener('mousemove', function(e){
+    if (!isDragging) return;
+    wrap.scrollLeft = mScroll - (e.clientX - mX);
+  });
+  document.addEventListener('mouseup', function(){
+    if (!isDragging) return;
+    isDragging = false;
+    wrap.classList.remove('is-dragging');
+    clearTimeout(resumeT);
+    resumeT = setTimeout(function(){ paused = false; }, 800);
+  });
+
+  // Touch drag
+  var tX, tScroll;
+  wrap.addEventListener('touchstart', function(e){
+    paused = true; clearTimeout(resumeT);
+    tX = e.touches[0].clientX; tScroll = wrap.scrollLeft;
+  }, {passive:true});
+  wrap.addEventListener('touchmove', function(e){
+    wrap.scrollLeft = tScroll - (e.touches[0].clientX - tX);
+  }, {passive:true});
+  wrap.addEventListener('touchend', function(){
+    resumeT = setTimeout(function(){ paused = false; }, 1200);
+  }, {passive:true});
+})();
 </script>
 
 <!-- Rewardful affiliate -->

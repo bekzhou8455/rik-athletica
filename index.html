@@ -892,6 +892,9 @@ footer.legal .footer-disclaimer strong{color:rgba(255,255,255,.6);display:block;
 
   /* --- Split-2 (Delivery) — tighter on mobile --- */
   .split-2{gap:24px}
+  /* iOS Safari: aspect-ratio inside grid sometimes collapses absolute-positioned video.
+     Explicit min-height ensures the video container always has renderable height. */
+  .split-2 .split-photo.video{min-height:280px}
   .split-2 .split-text h3{font-size:clamp(26px, 6.8vw, 36px)}
   .split-2 .split-list li{padding:14px 0;font-size:13.5px}
   .split-2 .split-list li strong{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:4px;display:block}
@@ -965,12 +968,12 @@ footer.legal .footer-disclaimer strong{color:rgba(255,255,255,.6);display:block;
   .closing-meta .closing-cta{flex-direction:column;align-items:stretch;gap:12px}
 
   /* --- Footer: less aggressive padding, slightly smaller disclaimer --- */
-  footer.legal{padding:40px 20px 56px}
+  footer.legal{padding:40px 20px calc(72px + env(safe-area-inset-bottom, 0px))}
   footer.legal .footer-disclaimer{font-size:11px;line-height:1.65}
   footer.legal .legal-logo{height:28px}
 
-  /* --- Sticky float CTA: a hair smaller on mobile --- */
-  .float-cta{padding:12px 18px;font-size:12px;right:14px;bottom:14px}
+  /* --- Sticky float CTA: a hair smaller on mobile; honour iOS home-indicator area --- */
+  .float-cta{padding:12px 18px;font-size:12px;right:14px;bottom:calc(14px + env(safe-area-inset-bottom, 0px))}
   .float-cta .float-arrow{width:20px;height:20px;font-size:11px}
 
   /* --- Mobile nav drawer: ensure sane padding --- */
@@ -1636,7 +1639,7 @@ function toggleMobileNav(){
   }
 
   var idx = 0;
-  var INTERVAL = 4500;
+  var INTERVAL = 1750;
   var timer = null;
   var userPaused = false;
   var inView = true;        /* assume visible until IO says otherwise */

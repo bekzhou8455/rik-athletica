@@ -310,7 +310,7 @@ footer.legal .footer-disclaimer strong{color:rgba(255,255,255,.6);display:block;
   section.s{padding-top:64px;padding-bottom:64px}
   section.warm-atmos{padding-top:80px;padding-bottom:80px}
   .closing{padding-top:96px;padding-bottom:96px;min-height:auto}
-  .closing-row{grid-template-columns:1fr;align-items:flex-start;gap:32px}
+  .closing > .closing-row{grid-template-columns:1fr;align-items:flex-start;gap:32px}
   .s-head{grid-template-columns:1fr;gap:14px;margin-bottom:36px}
   .icon-list{grid-template-columns:1fr;gap:36px}
   .icon-list-card{padding:28px}
@@ -376,13 +376,13 @@ footer.legal .footer-disclaimer strong{color:rgba(255,255,255,.6);display:block;
   .cta-cell{padding:28px 24px;min-height:auto;gap:14px}
   .cta-cell h3{font-size:26px;line-height:1.05}
   .closing h2{font-size:clamp(36px,10vw,56px);max-width:14ch;line-height:.96}
-  .closing-row{gap:24px}
+  .closing > .closing-row{gap:24px}
   .closing-meta p{font-size:13px}
   .closing-meta .closing-cta{flex-direction:column;align-items:stretch;gap:12px}
-  footer.legal{padding:40px 20px 56px}
+  footer.legal{padding:40px 20px calc(72px + env(safe-area-inset-bottom, 0px))}
   footer.legal .footer-disclaimer{font-size:11px}
   footer.legal .legal-logo{height:28px}
-  .float-cta{padding:12px 18px;font-size:12px;right:14px;bottom:14px}
+  .float-cta{padding:12px 18px;font-size:12px;right:14px;bottom:calc(14px + env(safe-area-inset-bottom, 0px))}
   .float-cta .float-arrow{width:20px;height:20px;font-size:11px}
 }
 
@@ -1015,7 +1015,7 @@ document.querySelectorAll('input[type="radio"]').forEach(function(r){
     var active = Math.floor(idx / VOICES.length * DOT_COUNT);
     Array.prototype.forEach.call(dotsEl.children, function(el, i){ el.classList.toggle('active', i === active); });
   }
-  var idx = 0, INTERVAL = 4500, timer = null, userPaused = false, inView = true;
+  var idx = 0, INTERVAL = 1750, timer = null, userPaused = false, inView = true;
   function setActive(newIdx){
     Array.prototype.forEach.call(cycleEl.children, function(el, i){ el.classList.toggle('active', i === newIdx); });
     if (counterEl) counterEl.textContent = String(newIdx + 1).padStart(2, '0');
