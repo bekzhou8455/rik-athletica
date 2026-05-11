@@ -216,15 +216,11 @@ section.warm-atmos .atmos-meta span{font-size:13px;color:rgba(255,255,255,.7);li
    L-Carnitine. Native overflow-x scroll already communicates the affordance. */
 .ing-track{display:flex;gap:18px;width:max-content}
 .ing-chip{flex-shrink:0;width:240px;background:#fff;border:1px solid rgba(14,14,14,.06);border-radius:14px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 1px 2px rgba(14,14,14,.04), 0 8px 24px -8px rgba(14,14,14,.08)}
-/* Source images are portrait (800×1201). Use a 1:1 crop with position 35%
-   so we see the brighter upper-middle of each powder shot, not the natural
-   shadow at the bottom of the pile. Divider below the image defines the edge. */
-.ing-chip-img{aspect-ratio:1/1;width:100%;background-size:cover;background-position:center 35%;background-color:var(--bg-2);border-bottom:1px solid rgba(14,14,14,.06)}
-/* L-Carnitine specifically has a dark vignette baked into the source photo's
-   bottom-right corner. Zoom past cover (135%) and shift focus to upper-left
-   of the source so we crop the vignette out; brightness lift normalises the
-   subtle gradient that remains. */
-.ing-chip-img[style*="l-carnitine.jpg"]{background-size:135% auto;background-position:18% 28%;filter:brightness(1.05)}
+/* Ingredient images: clean 800×800 square crops re-exported from high-res
+   sources (RIK_VIsual_Assets/ingredients/). Every photo now uses a
+   handpicked uniform region — no shadows, clumps, or vignettes — so we
+   can simply use background-size:cover with no per-image overrides. */
+.ing-chip-img{aspect-ratio:1/1;width:100%;background-size:cover;background-position:center;background-color:var(--bg-2);border-bottom:1px solid rgba(14,14,14,.06)}
 .ing-chip-body{padding:14px 16px 16px;display:flex;flex-direction:column;gap:4px}
 .ing-chip-tag{font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-soft);font-weight:500}
 .ing-chip-name{font-family:var(--display);font-size:15px;font-weight:600;letter-spacing:-.005em;color:var(--ink);line-height:1.2}
