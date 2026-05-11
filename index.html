@@ -60,6 +60,7 @@ body{
   -webkit-font-smoothing:antialiased;
   text-rendering:optimizeLegibility;
 }
+html,body{max-width:100%;overflow-x:hidden}
 a{color:inherit;text-decoration:none}
 img{display:block;max-width:100%}
 button{font-family:inherit}
@@ -772,10 +773,10 @@ section.voices{background:var(--bg-2)}
    on the photo's natural dark zone. */
 .closing{
   position:relative;color:#fff;
-  padding:160px 36px;
+  padding:128px 36px;
   border-bottom:1px solid var(--rule);
   isolation:isolate;overflow:hidden;
-  min-height:88vh;display:flex;align-items:center;
+  min-height:62vh;display:flex;align-items:center;justify-content:center;
 }
 .closing::before{
   content:"";position:absolute;inset:0;z-index:0;
@@ -810,6 +811,23 @@ section.voices{background:var(--bg-2)}
 .closing-meta{display:flex;flex-direction:column;gap:14px;text-align:left}
 .closing-meta .eyebrow{color:rgba(255,255,255,.6)}
 .closing-meta .closing-cta{display:flex;flex-wrap:wrap;gap:14px;margin-top:8px}
+
+/* ─── Closing banner (NEW — copy on light section ABOVE photo) ─── */
+section.closing-banner{padding:88px 36px;background:var(--bg);border-bottom:1px dashed var(--rule);text-align:center}
+section.closing-banner .cb-inner{max-width:880px;margin:0 auto}
+section.closing-banner .cb-eyebrow{display:block;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-soft);font-weight:500;margin-bottom:18px}
+section.closing-banner h2{font-family:var(--display);font-size:clamp(36px,5.5vw,72px);font-weight:700;line-height:1.0;letter-spacing:-.02em;color:var(--ink);max-width:20ch;margin:0 auto 20px}
+section.closing-banner h2 em{font-style:normal;color:var(--ink-soft);font-weight:700}
+section.closing-banner p{font-size:16px;line-height:1.6;color:var(--ink-soft);max-width:56ch;margin:0 auto}
+.closing-cta-only{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;width:100%}
+.closing-cta-only .cta{filter:drop-shadow(0 8px 24px rgba(0,0,0,.40))}
+@media (max-width:640px){
+  section.closing-banner{padding:56px 20px}
+  section.closing-banner h2{font-size:clamp(28px,7.5vw,40px);margin-bottom:14px}
+  section.closing-banner p{font-size:14.5px;line-height:1.55}
+  section.closing-banner .cb-eyebrow{margin-bottom:12px;font-size:10px}
+  .closing-cta-only{flex-direction:column;align-items:stretch;max-width:340px;margin:0 auto;gap:10px}
+}
 
 /* ─── Footer (legal) ─── */
 footer.legal{
@@ -890,11 +908,21 @@ footer.legal .footer-disclaimer strong{color:rgba(255,255,255,.6);display:block;
   .il-row strong{font-size:15px}
   .il-row p{font-size:13px}
 
-  /* --- Split-2 (Delivery) — tighter on mobile --- */
-  .split-2{gap:24px}
-  /* iOS Safari: aspect-ratio inside grid sometimes collapses absolute-positioned video.
-     Explicit min-height ensures the video container always has renderable height. */
-  .split-2 .split-photo.video{min-height:280px}
+  /* --- Split-2 (Delivery) — full-bleed video, then padded text below on mobile --- */
+  .split-2{gap:0}
+  /* Video escapes the section's 20px horizontal padding and becomes edge-to-edge.
+     Portrait 3/4 aspect-ratio so the subject reads at full height — true "vertical video" feel. */
+  .split-2 .split-photo.video{
+    width:100vw;
+    margin-left:calc(50% - 50vw);
+    margin-right:calc(50% - 50vw);
+    border-radius:0;
+    aspect-ratio:3/4;
+    min-height:auto;
+  }
+  .split-2 .split-photo.video video{object-position:center 40%}
+  /* Re-pad the text section under the full-bleed video */
+  .split-2 .split-text{padding-top:32px}
   .split-2 .split-text h3{font-size:clamp(26px, 6.8vw, 36px)}
   .split-2 .split-list li{padding:14px 0;font-size:13.5px}
   .split-2 .split-list li strong{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:4px;display:block}
@@ -1392,17 +1420,20 @@ footer.legal .footer-disclaimer strong{color:rgba(255,255,255,.6);display:block;
 
 
 <!-- ═══ CLOSING — full-bleed dramatic finale (period-stacked, MHP-style) ═══ -->
-<section class="closing">
-  <div class="closing-row">
+<!-- Closing banner: copy on its own light section -->
+<section class="closing-banner">
+  <div class="cb-inner">
+    <span class="cb-eyebrow">For athletes who race</span>
     <h2>Recover the Minutes. <em>Win Your Race.</em> Built on Your Physiology.</h2>
-    <div class="closing-meta">
-      <span class="eyebrow">For athletes who race</span>
-      <p style="font-size:14px;color:rgba(255,255,255,.85);max-width:42ch;line-height:1.6">Race in 4–8 weeks → Sprint. More time → Bundle. Not sure → free audit.</p>
-      <div class="closing-cta">
-        <a href="/sprint" class="cta invert" data-track="sprint_cta_click"><span class="pill">Start the Sprint</span><span class="arrow">↗</span></a>
-        <a href="/bundle" class="cta" data-track="bundle_cta_click"><span class="pill" style="background:transparent;border-color:rgba(255,255,255,.5);color:#fff">Or get the Bundle</span><span class="arrow" style="background:transparent;border-color:rgba(255,255,255,.5);color:#fff">↗</span></a>
-      </div>
-    </div>
+    <p>Race in 4–8 weeks → Sprint. More time → Bundle. Not sure → free audit.</p>
+  </div>
+</section>
+
+<!-- Closing: photo + CTAs only -->
+<section class="closing">
+  <div class="closing-cta-only">
+    <a href="/sprint" class="cta invert lg" data-track="sprint_cta_click"><span class="pill">Start the Sprint</span><span class="arrow">↗</span></a>
+    <a href="/bundle" class="cta lg" data-track="bundle_cta_click"><span class="pill" style="background:transparent;border-color:rgba(255,255,255,.5);color:#fff">Or get the Bundle</span><span class="arrow" style="background:transparent;border-color:rgba(255,255,255,.5);color:#fff">↗</span></a>
   </div>
 </section>
 

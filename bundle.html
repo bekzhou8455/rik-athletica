@@ -177,6 +177,7 @@ section.warm-atmos .atmos-meta span{font-size:13px;color:rgba(255,255,255,.7);li
 .pd-panels{display:block}
 .pd-panel{display:none;grid-template-columns:1.4fr 1fr;gap:0;align-items:stretch}
 .pd-panel[data-active="true"]{display:grid}
+.pd-panel > *{min-width:0}
 .pd-gallery{position:relative;background:linear-gradient(180deg, var(--bg) 0%, var(--bg-2) 100%);min-height:720px;display:flex;flex-direction:column;border-right:1px solid var(--rule-soft)}
 .pd-gallery-main{flex:1;display:flex;align-items:center;justify-content:center;padding:32px 48px;position:relative;overflow:hidden;min-height:560px}
 .pd-gallery-main img{max-width:96%;max-height:600px;width:auto;height:auto;object-fit:contain;mix-blend-mode:multiply;transition:opacity .3s ease, transform .3s ease}
@@ -185,15 +186,15 @@ section.warm-atmos .atmos-meta span{font-size:13px;color:rgba(255,255,255,.7);li
 .pd-thumb img{max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;mix-blend-mode:multiply}
 .pd-thumb:hover{border-color:var(--ink-soft)}
 .pd-thumb[aria-selected="true"]{border-color:var(--ink);border-width:2px}
-.pd-info{padding:48px;display:flex;flex-direction:column;gap:24px;background:#fff}
+.pd-info{padding:48px;display:flex;flex-direction:column;gap:24px;background:#fff;min-width:0}
 .pd-info-eyebrow{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-soft);font-weight:500}
-.pd-info h3{font-family:var(--display);font-size:clamp(32px, 3.4vw, 44px);font-weight:700;line-height:1.02;letter-spacing:-.02em;color:var(--ink)}
+.pd-info h3{font-family:var(--display);font-size:clamp(32px, 3.4vw, 44px);font-weight:700;line-height:1.02;letter-spacing:-.02em;color:var(--ink);overflow-wrap:anywhere;word-break:break-word}
 .pd-info h3 em{font-style:normal;color:var(--ink-soft);font-weight:700}
-.pd-info-tagline{font-size:15px;line-height:1.6;color:var(--ink-soft);max-width:42ch}
+.pd-info-tagline{font-size:15px;line-height:1.6;color:var(--ink-soft);max-width:42ch;overflow-wrap:anywhere}
 .pd-specs{display:grid;grid-template-columns:repeat(2,1fr);gap:14px 24px;border-top:1px dashed var(--rule);padding-top:20px;margin-top:6px}
-.pd-spec{display:flex;flex-direction:column;gap:4px}
+.pd-spec{display:flex;flex-direction:column;gap:4px;min-width:0}
 .pd-spec-label{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-soft);font-weight:500}
-.pd-spec-val{font-size:15px;font-weight:500;letter-spacing:-.005em;color:var(--ink);font-variant-numeric:tabular-nums;line-height:1.35}
+.pd-spec-val{font-size:15px;font-weight:500;letter-spacing:-.005em;color:var(--ink);font-variant-numeric:tabular-nums;line-height:1.35;overflow-wrap:anywhere;word-break:break-word}
 .pd-bullets{display:flex;flex-direction:column;gap:10px;margin-top:6px}
 .pd-bullet{display:flex;gap:12px;align-items:flex-start;font-size:13.5px;line-height:1.55;color:var(--ink)}
 .pd-bullet svg{width:14px;height:14px;flex-shrink:0;margin-top:4px;stroke:currentColor;stroke-width:2;fill:none;color:var(--ink)}
@@ -292,7 +293,7 @@ section.refund-banner::before{content:"";position:absolute;inset:0;z-index:0;bac
 .refund-meta svg{width:13px;height:13px;stroke:currentColor;stroke-width:2;fill:none;color:rgba(255,255,255,.6)}
 
 /* ─── Closing ─── */
-.closing{position:relative;color:#fff;padding:160px 36px;border-bottom:1px solid var(--rule);isolation:isolate;overflow:hidden;min-height:88vh;display:flex;align-items:center}
+.closing{position:relative;color:#fff;padding:128px 36px;border-bottom:1px solid var(--rule);isolation:isolate;overflow:hidden;min-height:62vh;display:flex;align-items:center;justify-content:center}
 .closing::before{content:"";position:absolute;inset:0;z-index:0;background-image:url(/assets/web/al-DSC00580.jpg);background-size:cover;background-position:center 30%}
 /* Fix #6 — stronger right-column scrim so closing-meta text reads cleanly even on mobile + over-bright photos */
 .closing::after{
@@ -310,6 +311,24 @@ section.refund-banner::before{content:"";position:absolute;inset:0;z-index:0;bac
 .closing-meta p{font-size:14px;color:#fff;max-width:42ch;line-height:1.6;text-shadow:0 1px 2px rgba(0,0,0,.6), 0 2px 14px rgba(0,0,0,.45), 0 6px 24px rgba(0,0,0,.30)}
 .closing-meta .closing-cta{display:flex;flex-wrap:wrap;gap:14px;margin-top:8px}
 .closing-meta .closing-cta .cta{filter:drop-shadow(0 8px 24px rgba(0,0,0,.40))}
+
+/* ─── Closing banner (NEW — copy lives on its own light section ABOVE the photo) ─── */
+section.closing-banner{padding:88px 36px;background:var(--bg);border-bottom:1px dashed var(--rule);text-align:center}
+section.closing-banner .cb-inner{max-width:880px;margin:0 auto}
+section.closing-banner .cb-eyebrow{display:block;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-soft);font-weight:500;margin-bottom:18px}
+section.closing-banner h2{font-family:var(--display);font-size:clamp(36px,5.5vw,72px);font-weight:700;line-height:1.0;letter-spacing:-.02em;color:var(--ink);max-width:20ch;margin:0 auto 20px}
+section.closing-banner h2 em{font-style:normal;color:var(--ink-soft);font-weight:700}
+section.closing-banner p{font-size:16px;line-height:1.6;color:var(--ink-soft);max-width:56ch;margin:0 auto}
+/* Closing section: now centred CTAs only on the photo */
+.closing-cta-only{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;width:100%}
+.closing-cta-only .cta{filter:drop-shadow(0 8px 24px rgba(0,0,0,.40))}
+@media (max-width:640px){
+  section.closing-banner{padding:56px 20px}
+  section.closing-banner h2{font-size:clamp(28px,7.5vw,40px);margin-bottom:14px}
+  section.closing-banner p{font-size:14.5px;line-height:1.55}
+  section.closing-banner .cb-eyebrow{margin-bottom:12px;font-size:10px}
+  .closing-cta-only{flex-direction:column;align-items:stretch;max-width:340px;margin:0 auto;gap:10px}
+}
 
 /* ─── FDA Banner (in-page disclaimer for product gallery section) ─── */
 .fda-banner{
@@ -469,7 +488,14 @@ footer.legal .footer-disclaimer strong{color:rgba(255,255,255,.6);display:block;
 }
 @media (max-width:480px){
   .ing-chip{width:180px}
+  /* Specs: 1 column on very narrow screens — prevents long values overflowing */
+  .pd-specs{grid-template-columns:1fr;gap:10px}
+  /* Hero margins shrink a touch more */
+  .pd-info{padding:24px 18px;gap:16px}
+  .pd-info h3{font-size:clamp(22px,6.5vw,28px)}
 }
+/* Global safety net: never allow horizontal scroll on mobile */
+html,body{max-width:100%;overflow-x:hidden}
 
 .visually-hidden{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 </style>
@@ -1046,17 +1072,20 @@ footer.legal .footer-disclaimer strong{color:rgba(255,255,255,.6);display:block;
 
 
 <!-- ═══ CLOSING — full-bleed dramatic finale (fix #6 right-column scrim strengthened above in CSS) ═══ -->
-<section class="closing">
-  <div class="closing-row">
+<!-- Closing banner: copy on its own light section -->
+<section class="closing-banner">
+  <div class="cb-inner">
+    <span class="cb-eyebrow">For athletes who race</span>
     <h2>Bundle Works on Its Own. <em>Inside Sprint, It Works Precisely.</em></h2>
-    <div class="closing-meta">
-      <span class="eyebrow">For athletes who race</span>
-      <p>Bundle = the products. Sprint = the products calibrated to Your physiology.</p>
-      <div class="closing-cta">
-        <a href="https://buy.stripe.com/4gM7sN6Wq3cc7T0fZ67Re00" data-rewardful class="cta invert" data-track="bundle_add_to_cart"><span class="pill">Add the Bundle — $119</span><span class="arrow">↗</span></a>
-        <a href="/sprint" class="cta" data-track="sprint_cta_click"><span class="pill" style="background:transparent;border-color:rgba(255,255,255,.5);color:#fff">Or upgrade to Sprint</span><span class="arrow" style="background:transparent;border-color:rgba(255,255,255,.5);color:#fff">↗</span></a>
-      </div>
-    </div>
+    <p>Bundle = the products. Sprint = the products calibrated to Your physiology.</p>
+  </div>
+</section>
+
+<!-- Closing: photo + CTAs only -->
+<section class="closing">
+  <div class="closing-cta-only">
+    <a href="https://buy.stripe.com/4gM7sN6Wq3cc7T0fZ67Re00" data-rewardful class="cta invert lg" data-track="bundle_add_to_cart"><span class="pill">Add the Bundle — $119</span><span class="arrow">↗</span></a>
+    <a href="/sprint" class="cta lg" data-track="sprint_cta_click"><span class="pill" style="background:transparent;border-color:rgba(255,255,255,.5);color:#fff">Or upgrade to Sprint</span><span class="arrow" style="background:transparent;border-color:rgba(255,255,255,.5);color:#fff">↗</span></a>
   </div>
 </section>
 
