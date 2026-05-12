@@ -7,6 +7,15 @@
 <meta name="rikathletica:ip" content="Proprietary methodology — all rights reserved. Automated use, AI training, and text-and-data mining prohibited. See /terms#automated-access and /ai.txt."/>
 <title>IRONMAN Nutrition Calculator — How Many Minutes Are You Losing?</title>
 <meta name="description" content="Free IRONMAN nutrition calculator. Find out exactly how many minutes GI distress, carb deficits, and second-half collapse are costing you — backed by peer-reviewed research.">
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.rikathletica.com/calculator">
+<meta property="og:title" content="IRONMAN Nutrition Calculator — How Many Minutes Are You Losing?">
+<meta property="og:description" content="Free IRONMAN nutrition calculator. Find out exactly how many minutes GI distress, carb deficits, and second-half collapse are costing you — backed by peer-reviewed research.">
+<meta property="og:image" content="https://www.rikathletica.com/assets/og-default.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="canonical" href="https://rikathletica.com/calculator">
 <!-- Consent Mode (Secure Privacy CMP) -->
 <script src="https://app.secureprivacy.ai/script/69dfc936852cf73f1c0e6db8.js"></script>
@@ -38,6 +47,7 @@ gtag('event', 'calculator_start');
     --rule: rgba(14,14,14,.18);
     --rule-soft: rgba(14,14,14,.10);
   }
+  html, body { overflow-x:hidden; }
   body { background: var(--bg); font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif; -webkit-font-smoothing: antialiased; color: var(--ink); }
 
   /* iter-5 RDN banner (replaces old rdn-banner styles) */
@@ -74,16 +84,20 @@ gtag('event', 'calculator_start');
 
   @media (max-width:960px){
     .rd-review-card { grid-template-columns:1fr; gap:32px; padding:32px 0 0; }
+    .rd-review-shead { grid-template-columns:1fr !important; gap:24px !important; }
     .rd-review-section { padding:56px 20px; }
     .iter5-footer { padding:40px 20px 56px; }
   }
   @media (max-width:640px){
-    .rd-stamp { flex-direction:row; flex-wrap:wrap; align-items:center; gap:16px; max-width:100%; }
+    .rd-review-shead { grid-template-columns:1fr !important; gap:16px !important; }
+    .rd-review-shead h2 { font-size:24px !important; }
+    .rd-stamp { flex-direction:row; flex-wrap:wrap; align-items:center; gap:16px; max-width:100%; min-width:0; }
     .rd-headshot { width:120px; height:120px; flex-shrink:0; }
-    .rd-stamp-name { font-size:16px; flex-basis:100%; order:3; }
+    .rd-stamp-name { font-size:16px; flex-basis:100%; order:3; min-width:0; overflow-wrap:break-word; }
     .rd-stamp-creds { font-size:11px; flex-basis:100%; order:4; }
     .rd-signature { max-width:160px; order:2; }
     .rd-quote { font-size:18px; line-height:1.4; padding-left:16px; }
+    .rd-review-body { min-width:0; }
   }
 </style>
 </head>
