@@ -80,38 +80,38 @@
 ```
 
 - Rectangular pill (1px hairline border, 14×22 padding, 999 radius) flush to a separate circular arrow button (42px, 1px border).
-- Variants: `cta` (ink-fill pill, white circle) · `cta invert` (white pill, ink circle for use on photos) · `cta sm` (10×16 / 34px).
-- One sticky floating CTA in viewport bottom-right ("Get My Protocol") on every page — `position: fixed`, never disappears.
+- Variants: `cta` (ink-fill pill, white circle) · `cta invert` (white pill, ink circle for use on photos) · `cta ghost` (transparent pill, translucent border for use on photos) · `cta sm` (10×16 / 34px) · `cta lg` (18×28 / 50px).
+- One sticky floating CTA in viewport bottom-right on every page — `position: fixed`, never disappears. Homepage: "Find Your Fit ↓" scrolls to #ladder. Inner pages: "Get My Protocol" links to /sprint.
 
-### Pattern A — Biomarker tile (`.bio`)
+### Stats Row (`.stats-row`)
 
-3:4 portrait athlete photo (warm sepia register), big number top-left with sup unit, 5-bar meter, dashed mid-rule, name+sublabel bottom-left. Used in the "Numbers" section. **Photos must be portraits, not detail shots.** Source from Ariana Luterman web-optimized bank.
+3-column inline grid with dashed vertical dividers. Each stat: big tabular number (`clamp(32px, 4vw, 52px)` weight 700) with `<sup>` unit/dagger, one-line label in `--ink-soft`, italic citation below. Stacks to single column on mobile with dashed horizontal dividers. Used on homepage for the 3 key data points (GI distress, performance loss, recoverable minutes).
+
+### Ladder — Tier Comparison (`.ladder`)
+
+4-column grid on white card (`border-radius: 18px`, `1px solid --rule-soft`). Each column (`.ladder-col`): price (`clamp(28px, 3.2vw, 40px)` weight 700), tagline (16px weight 600), persona quote (14px italic `--ink-soft`), description (14px `--ink-soft`), CTA at bottom (auto-pushed via `margin-top: auto`). Columns separated by dashed vertical borders. Responsive: 4-col → 2-col (tablet) → 1-col (mobile). Used on homepage as the primary routing mechanism.
+
+### Why Cards (`.why-rik-grid`)
+
+3-column grid of white cards (`border-radius: 18px`). Each card: outlined circle icon (52px, 1.5px stroke), h3 title (20px weight 600), body paragraph (14px `--ink-soft`). Icons are inline SVG Lucide icons inside the circle. Stacks to single column on tablet/mobile.
 
 ### Pattern B — Title-left, icon-list-right (`.icon-list`)
 
-Asymmetric `1fr / 1.4fr`. Display headline + lead + CTA on left. 4–6 outlined-circle icon rows on right (48px circles, 1.5px stroke). Icons live inside a circle — single weight throughout the system.
-
-### Pattern C — Feature quad (`.quad`)
-
-4 columns, dashed verticals, outlined circle icon at top, big vertical breathing space, copy at bottom. Used for the router section. Cells include `arrow-mini` cell-cta.
+Asymmetric `1fr / 1.4fr`. Display headline + lead + CTA on left. 4–6 outlined-circle icon rows on right (48px circles, 1.5px stroke). Icons live inside a circle — single weight throughout the system. Used on inner pages (bundle, sprint, premium).
 
 ### Asymmetric photo-text split (`.split-2`)
 
-`1.1fr / 1fr` photo + text columns. Photo at 4:5 aspect with `border-radius: 22px`. **Variant `.split-photo.product`** for non-lifestyle assets (no sepia filter, sand background, `background-size: contain`). **Variant `.split-photo.video`** for short campaign clips (autoplay+muted+loop+playsinline, `preload="metadata"`).
+`1.1fr / 1fr` photo + text columns. Photo at 4:5 aspect with `border-radius: 22px`. **Variant `.split-photo.product`** for non-lifestyle assets (no sepia filter, sand background, `background-size: contain`). **Variant `.split-photo.video`** for short campaign clips (autoplay+muted+loop+playsinline, `preload="metadata"`). Used on inner pages.
 
 ### Hero composition
 
-Full-bleed photo with **portrait crop pushed via `background-size: 180% auto` + `background-position: 0% 30%`** so the subject lands at ~76% horizontal and the natural dark zone holds text on the left. Text strictly capped at `min(540px, 44%)` of viewport width. Multi-layer text-shadow stack on h1: `1px tight + 6px medium + 24px wide + 48px ambient`. Soft edgeless radial halo behind text — no card chrome, no boxed isolation.
+Full-bleed photo with **portrait crop pushed via `background-size: 180% auto` + `background-position: 0% 30%`** so the subject lands at ~76% horizontal and the natural dark zone holds text on the left. Text strictly capped at `min(580px, 48%)` of viewport width. Multi-layer text-shadow stack on h1: `1px tight + 6px medium + 24px wide + 48px ambient`. Soft edgeless radial halo behind text — no card chrome, no boxed isolation. Dual CTAs: primary `cta invert lg` + secondary `cta ghost lg`.
 
-### Voices rotator (`section.voices`)
+### Founder Note (`.founder-note`)
 
-`bg-2` warm-sand surface. Big decorative serif quote-mark at 7% opacity. 25-card cross-fade (700ms cubic-bezier, 6.5s interval, opacity-only — no visibility transition). Counter `01 / 25` + 5 progress dots + manual pause button. IntersectionObserver pauses out-of-view. Quotes are real Reddit excerpts attributed by subreddit, lightly trimmed for UI fit.
+Centered section. Eyebrow label ("— From the founder"), blockquote (`clamp(18px, 2.2vw, 22px)` weight 400, line-height 1.55), signature line (14px `--ink-soft` weight 500). Used as the penultimate section before footer on homepage.
 
-### Warm-amber atmospheric break (`section.warm-atmos`)
-
-Pure typography on `--warm-img` gradient. Used once per page mid-rhythm to break white/sand monotony. Period-stacked headline `clamp(40px, 6.5vw, 96px)` weight 700 + 3-column meta row with tabular-nums numeric labels.
-
-### RD review banner (`section.rd-review`) — Emily Norman, MS, RDN
+### RD review card (`section.rd-review-section`) — Emily Norman, MS, RDN
 
 **Strict compliance with Citation Rights & Endorsement Agreement** (signed 2026-05-07, 6-month term):
 
@@ -126,7 +126,7 @@ Pure typography on `--warm-img` gradient. Used once per page mid-rhythm to break
 - **§1.5 EXCLUDED**: paid advertising, performance-marketing, testimonial framing, founder-authored social posts naming Reviewer, cold outbound, individualized Sprint deliverables.
 - **§5.3**: Reviewer may revoke at any time; remove from all live materials within 7 days.
 - **§6.1**: Material protocol changes trigger 14-day notice; may require paid re-review.
-- **§1.2(a)**: Permitted website locations include the methodology-overview homepage, bundle, calculator, Sprint, Premium, Free Race Fuel Audit PDF.
+- **§1.2(a)**: Named citation with photo is permitted on most website pages (homepage, bundle, calculator, Sprint, Premium, Audit, Free Race Fuel Audit PDF). Restriction is specifically about placement directly adjacent to sales offerings (buy buttons/checkout) or on individualized customer protocol deliverables — not about specific pages.
 
 ---
 
@@ -179,22 +179,22 @@ Every page that ships under iter-5 must satisfy:
 
 ---
 
-## 10. Section Inventory — `/home` (iter-5 locked)
+## 10. Section Inventory — `/home` (v6 router — updated 2026-05-13)
+
+Homepage is a **router page**: visitors self-route to the right product tier within 20 seconds. 6 content sections + nav + footer. Primary CTA scrolls to #ladder, secondary routes to /calculator.
 
 | # | Section | Pattern | Background | Photo? |
 |---|---|---|---|---|
-| Nav | Fixed transparent nav, fade-on-scroll | — | Transparent | — |
-| Hero | Full-bleed photo + lifted text panel | Hero composition | Photo (`al-DSC00489`) | Yes |
-| 01 | How it works | Pattern B (icon-list-right) | White card on `--bg` | — |
-| 02 | Delivery | Asymmetric split-photo + dashed list | `--bg-2` | Yes (`bundle-box-open` OR `delivery-loop.mp4`) |
-| 02.5 | Atmospheric break | `warm-atmos` typography only | `--warm-img` gradient | — |
-| 03 | The numbers | Biomarker tiles ×3 | `--bg` | Yes (3 portraits) |
-| 03.5 | Voices in the wild | Voices rotator (25 quotes) | `--bg-2` | — |
-| 03.6 | Independent RDN review | RD banner (Emily, §1.1+§1.6) | White | Headshot + signature |
-| 04 | Find your fit | Feature quad (router) | `--bg-2` | — |
-| 05 | Two ways to start | CTA wall (calc + audit) | `--bg` | — |
-| Closing | Final CTA | Full-bleed photo + period-stacked headline | Photo (`al-DSC00863`) | Yes |
-| Footer | Legal + disclaimer | Solid `--ink` | — | — |
+| Nav | Fixed transparent nav, fade-on-scroll | — | Transparent over hero | — |
+| Hero | Full-bleed photo + dual CTAs | Hero composition | Photo (`al-DSC00489`) | Yes |
+| 01 | Stats Row | Stats Row (3 cited data points) | `--bg` | — |
+| 02 | The Ladder | Ladder 4-col comparison ($0→$1,599) | `--bg-2` (sand) | — |
+| 03 | Why RIK | Why Cards ×3 (differentiators) | `--bg` | — |
+| 04 | Independent RD Review | Full RD card (Emily, headshot+sig+quote+FTC+scope) | `#fff` (white, contrast) | Headshot + signature |
+| 05 | Founder Note | Centered blockquote + signature | `--bg` | — |
+| Footer | Legal + FDA disclaimer | Solid `--ink` | — | — |
+
+**Removed from prior version** (iter-5 v5): How It Works, Delivery split-photo, Warm-amber atmospheric break, Biomarker tiles ×3, Voices rotator (25 quotes), Feature quad (router), CTA wall, Closing hero. These patterns still exist in the design system for use on inner pages.
 
 ---
 
@@ -334,9 +334,17 @@ Two consecutive identical surfaces = a missed beat. Always alternate.
 
 ### RD review placement
 
-- Always after voices, always before the final CTA
-- Authority validation: "real athletes feel this → an independent RDN says we address it correctly"
-- Full §1.1 banner with all four compliance hooks (citation form, FTC §2 disclosure, §4.3 scope, §1.6(f) PDF link)
+- On homepage: after Why RIK differentiators, before Founder Note — authority validation after the value proposition
+- On inner pages: after product detail, before the final CTA
+- Full §1.1 card with all four compliance hooks (citation form, FTC §2 disclosure, §4.3 scope, §1.6(f) PDF link)
+- White background mandatory — creates visual contrast against sand/gray surrounding sections
+
+### Ladder placement (homepage only)
+
+- Immediately after Stats Row — the data creates urgency, the Ladder provides the action
+- The primary hero CTA scrolls to #ladder — this is the core routing mechanism
+- 4 tiers left-to-right in ascending price: $0 Audit → $119 Bundle → $569+ Sprint → $1,599 Premium
+- Each column includes a persona quote ("I'm not sure what's wrong...") so visitors self-identify
 
 ---
 
@@ -469,6 +477,8 @@ Iter-5 visual system still applies (same Outfit, same warm-amber atmospheric, sa
 | 2026-05-08 | RD banner uses Emily Norman, MS, RDN sign-off form | Her own approved form per §1.1's "substantially similar wording" clause. |
 | 2026-05-09 | All 6 pages migrated to iter-5: /home, /bundle, /sprint, /premium, /audit, /calculator | Iter-5.5 → 5.8 sequence. Self-contained marketing pages, light treatment on form/calculator pages preserving working flows (Stripe + race-gate + form validation + React app). |
 | 2026-05-09 | Voice + IA + cross-medium application locked in DESIGN.md (§11–§13) | Visual tokens alone don't produce coherent output. Period-stacked headlines, capital "You", em-dash voice, banned vocabulary list, section rhythm, pattern selection, and cross-medium application (email, audit PDF, Sprint deliverables, packaging, brand decks) are now part of the locked source of truth. |
+| 2026-05-13 | **Homepage restructured to v6 router page** | Reduced from 12 sections to 6. New structure: Hero → Stats Row → Ladder (4-tier comparison) → Why RIK → RD Review → Founder Note. Removed: How It Works, Delivery, Atmospheric break, Biomarker tiles, Voices rotator, Router quad, CTA wall, Closing hero. Goal: visitor self-routes to right tier within 20s. Primary CTA scrolls to #ladder, secondary routes to /calculator. |
+| 2026-05-13 | §1.2 citation scope clarified by founder | Emily has granted named citation with photo on most website pages. Restriction is adjacent to sales offerings or on customer protocol deliverables — not page-specific. Homepage naming is explicitly permitted. |
 
 ---
 
