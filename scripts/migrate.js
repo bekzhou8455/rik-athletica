@@ -87,6 +87,10 @@ const STATEMENTS = [
   `ALTER TABLE sprint_screenings DROP CONSTRAINT IF EXISTS sprint_screenings_result_check`,
   `ALTER TABLE sprint_screenings ADD CONSTRAINT sprint_screenings_result_check
     CHECK (result IN ('pass', 'fail'))`,
+
+  // ─── Referral tracking (May 2026 — wires ?ref= param to audits table) ───
+  `ALTER TABLE audits ADD COLUMN IF NOT EXISTS referred_by_slug TEXT`,
+  `CREATE INDEX IF NOT EXISTS audits_referred_by_idx ON audits (referred_by_slug) WHERE referred_by_slug IS NOT NULL`,
 ];
 
 async function run() {

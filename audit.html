@@ -721,13 +721,13 @@ footer .legal-top { display: flex; justify-content: space-between; align-items: 
     specificConcern: null,
     firstName: null, email: null, consent: false,
     // attribution & meta
-    clubRef: null, utmSource: null, utmMedium: null, utmCampaign: null,
+    clubRef: null, referredBySlug: null, utmSource: null, utmMedium: null, utmCampaign: null,
     submittedAt: null, userAgent: navigator.userAgent
   };
 
   // ── URL params: club referral + UTMs ──
   var urlParams = new URLSearchParams(window.location.search);
-  var clubRef = urlParams.get('club') || urlParams.get('ref');
+  var clubRef = urlParams.get('club');
   if (clubRef) {
     answers.clubRef = clubRef;
     var clubTag = document.getElementById('clubTag');
@@ -735,6 +735,12 @@ footer .legal-top { display: flex; justify-content: space-between; align-items: 
     if (clubNameEl) clubNameEl.textContent = decodeURIComponent(clubRef).replace(/-/g, ' ').replace(/_/g, ' ');
     if (clubTag) clubTag.style.display = 'inline-block';
   }
+  // ── Referral slug (?ref=XXXXXXXX) — distinct from club referrals ──
+  var refParam = urlParams.get('ref');
+  if (refParam && /^[A-Za-z0-9_-]{6,12}$/.test(refParam)) {
+    answers.referredBySlug = refParam;
+  }
+
   ['utm_source', 'utm_medium', 'utm_campaign'].forEach(function(p) {
     var v = urlParams.get(p);
     if (v) answers[p.replace('utm_', 'utm').replace(/^utm/, 'utm') === 'utmsource' ? 'utmSource' : (p === 'utm_medium' ? 'utmMedium' : 'utmCampaign')] = v;

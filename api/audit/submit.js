@@ -34,6 +34,7 @@ const AnswersSchema = z.object({
   email: z.string().email('Invalid email'),
   consent: z.boolean(),
   clubRef: z.string().nullable().optional(),
+  referredBySlug: z.string().regex(/^[A-Za-z0-9_-]{6,12}$/).nullable().optional(),
   utmSource: z.string().nullable().optional(),
   utmMedium: z.string().nullable().optional(),
   utmCampaign: z.string().nullable().optional(),
@@ -95,6 +96,7 @@ export default async function handler(req, res) {
       utmMedium: answers.utmMedium ?? null,
       utmCampaign: answers.utmCampaign ?? null,
       clubRef: answers.clubRef ?? null,
+      referredBySlug: answers.referredBySlug ?? null,
     });
   } catch (err) {
     console.error('[submit] db insert failed:', err);
