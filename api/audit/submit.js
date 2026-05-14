@@ -32,6 +32,7 @@ const AnswersSchema = z.object({
   specificConcern: z.string().nullable().optional(),
   firstName: z.string().min(1, 'First name required'),
   email: z.string().email('Invalid email'),
+  referredBy: z.string().max(120).nullable().optional(),
   consent: z.boolean(),
   clubRef: z.string().nullable().optional(),
   referredBySlug: z.string().regex(/^[A-Za-z0-9_-]{6,12}$/).nullable().optional(),
@@ -116,7 +117,7 @@ export default async function handler(req, res) {
     emailE0Confirmation({ to: answers.email, firstName: answers.firstName })
       .catch(err => alertError({ where: 'api/audit/submit (E0 email)', error: err, auditId: row.id })),
 
-    alertNewDraft({ audit: row, engine, drafts })
+    alertNewDraft({ audit: row, engine, drafts, answers })
       .catch(err => alertError({ where: 'api/audit/submit (alertNewDraft)', error: err, auditId: row.id })),
   ]);
 

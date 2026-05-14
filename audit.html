@@ -640,6 +640,12 @@ footer .legal-top { display: flex; justify-content: space-between; align-items: 
         <div class="field-error">A valid email, please.</div>
       </div>
 
+      <div class="field">
+        <label class="field-label" for="referredBy">Who referred you? <span style="color:#999;font-weight:400;">(optional)</span></label>
+        <input type="text" id="referredBy" data-name="referredBy" placeholder="Coach name, club, or how you heard about us" autocomplete="off" maxlength="120">
+        <div class="field-help">If a coach or training partner sent you, drop their name — helps me say thanks.</div>
+      </div>
+
       <div class="field" style="margin-top: 28px;">
         <label style="display: flex; gap: 12px; align-items: flex-start; cursor: pointer; font-size: 13.5px; color: #555; line-height: 1.55; letter-spacing: -0.01em;">
           <input type="checkbox" id="consent" data-name="consent" required style="margin-top: 3px; flex-shrink: 0; transform: scale(1.2);">
@@ -719,7 +725,7 @@ footer .legal-top { display: flex; justify-content: space-between; align-items: 
     bodyWeight: null, weightUnit: 'lb', sweatRate: null,
     hasCoach: null, coachName: null,
     specificConcern: null,
-    firstName: null, email: null, consent: false,
+    firstName: null, email: null, referredBy: null, consent: false,
     // attribution & meta
     clubRef: null, referredBySlug: null, utmSource: null, utmMedium: null, utmCampaign: null,
     submittedAt: null, userAgent: navigator.userAgent
