@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Analytics — RIK Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300..800&family=JetBrains+Mono:wght@400..700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { font-size: 16px; }
+  body { font-family: 'Plus Jakarta Sans', sans-serif; background: #0c0c0e; color: #e8e8ec; -webkit-font-smoothing: antialiased; min-height: 100vh; }
+
+  :root {
+    --bg: #0c0c0e;
+    --card: #161618;
+    --card-hover: #1c1c1f;
+    --border: rgba(255,255,255,0.06);
+    --border-hover: rgba(255,255,255,0.12);
+    --muted: #737380;
+    --green: #4ade80;
+    --green-dim: rgba(74,222,128,0.12);
+    --amber: #fbbf24;
+    --amber-dim: rgba(251,191,36,0.12);
+    --blue: #60a5fa;
+    --blue-dim: rgba(96,165,250,0.12);
+    --red: #f87171;
+    --red-dim: rgba(248,113,113,0.12);
+    --white: #e8e8ec;
+    --mono: 'JetBrains Mono', monospace;
+    --sans: 'Plus Jakarta Sans', sans-serif;
+    --r: 14px;
+  }
+
+  /* ── Auth ──────────────────────────────────────────────────── */
+  #auth { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 40px; }
+  .auth-box { background: var(--card); border: 1px solid var(--border); border-radius: var(--r); padding: 40px; max-width: 340px; width: 100%; text-align: center; }
+  .auth-box h1 { font-size: 11px; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; margin-bottom: 4px; }
+  .auth-box p { font-size: 13px; color: var(--muted); margin-bottom: 24px; }
+  .auth-input { width: 100%; padding: 12px 14px; border: 1px solid var(--border); border-radius: 10px; font-size: 14px; font-family: var(--sans); outline: none; background: var(--bg); color: var(--white); }
+  .auth-input:focus { border-color: var(--green); }
+  .auth-btn { width: 100%; padding: 12px; border: none; border-radius: 10px; font-size: 13px; font-weight: 600; font-family: var(--sans); background: var(--white); color: var(--bg); cursor: pointer; margin-top: 10px; }
+  .auth-err { font-size: 12px; color: var(--red); margin-top: 10px; min-height: 16px; }
+
+  /* ── Dashboard ─────────────────────────────────────────────── */
+  #dash { display: none; }
+  header { background: var(--card); border-bottom: 1px solid var(--border); padding: 0 24px; height: 56px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 10; }
+  .brand { font-size: 11px; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; }
+  .brand span { color: var(--muted); font-weight: 400; }
+  .hdr-right { display: flex; align-items: center; gap: 12px; }
+  .live-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
+  .refresh-label { font-family: var(--mono); font-size: 10px; color: var(--muted); letter-spacing: 1px; text-transform: uppercase; }
+
+  .container { max-width: 1280px; margin: 0 auto; padding: 24px; }
+
+  /* ── KPI Row ───────────────────────────────────────────────── */
+  .kpis { display: grid; grid-template-columns: repeat(6, 1fr); gap: 12px; margin-bottom: 24px; }
+  .kpi { background: var(--card); border: 1px solid var(--border); border-radius: var(--r); padding: 18px 20px; transition: border-color .2s; }
+  .kpi:hover { border-color: var(--border-hover); }
+  .kpi-label { font-family: var(--mono); font-size: 9px; letter-spacing: 1.6px; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+  .kpi-value { font-size: 28px; font-weight: 700; letter-spacing: -0.03em; line-height: 1; }
+  .kpi-sub { font-size: 11px; color: var(--muted); margin-top: 4px; }
+  .kpi.live .kpi-value { color: var(--green); }
+
+  /* ── Section grid ──────────────────────────────────────────── */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-bottom: 24px; }
+  .full { margin-bottom: 24px; }
+
+  /* ── Card ───────────────────────────────────────────────────── */
+  .card { background: var(--card); border: 1px solid var(--border); border-radius: var(--r); overflow: hidden; }
+  .card-hdr { padding: 16px 20px 12px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border); }
+  .card-title { font-size: 12px; font-weight: 600; letter-spacing: -0.01em; }
+  .card-badge { font-family: var(--mono); font-size: 9px; padding: 3px 8px; border-radius: 999px; letter-spacing: 1px; text-transform: uppercase; }
+  .badge-7d { background: var(--blue-dim); color: var(--blue); }
+  .badge-30d { background: var(--amber-dim); color: var(--amber); }
+  .card-body { padding: 0; }
+
+  /* ── Table ──────────────────────────────────────────────────── */
+  table { width: 100%; border-collapse: collapse; }
+  th { font-family: var(--mono); font-size: 9px; letter-spacing: 1.4px; text-transform: uppercase; color: var(--muted); padding: 10px 20px; text-align: left; font-weight: 500; }
+  th.r { text-align: right; }
+  td { padding: 10px 20px; font-size: 13px; border-top: 1px solid var(--border); }
+  td.r { text-align: right; font-family: var(--mono); font-size: 12px; }
+  td.path { font-family: var(--mono); font-size: 12px; color: var(--blue); }
+  tr:hover td { background: var(--card-hover); }
+  .bar-cell { position: relative; }
+  .bar-fill { position: absolute; left: 0; top: 0; bottom: 0; background: rgba(96,165,250,0.06); border-radius: 0; pointer-events: none; }
+
+  /* ── Chart ──────────────────────────────────────────────────── */
+  .chart-wrap { padding: 20px; height: 200px; position: relative; }
+  canvas { width: 100% !important; height: 100% !important; }
+
+  /* ── Funnel ─────────────────────────────────────────────────── */
+  .funnel { display: flex; align-items: stretch; gap: 0; padding: 24px 20px; }
+  .funnel-step { flex: 1; text-align: center; position: relative; padding: 16px 12px; }
+  .funnel-step + .funnel-step::before {
+    content: '';
+    position: absolute; left: 0; top: 50%; transform: translateY(-50%);
+    width: 0; height: 0;
+    border-top: 10px solid transparent; border-bottom: 10px solid transparent;
+    border-left: 8px solid var(--border);
+  }
+  .funnel-num { font-size: 24px; font-weight: 700; letter-spacing: -0.02em; color: var(--white); }
+  .funnel-label { font-size: 11px; color: var(--muted); margin-top: 4px; }
+  .funnel-pct { font-family: var(--mono); font-size: 10px; color: var(--green); margin-top: 4px; }
+
+  /* ── Event pills ────────────────────────────────────────────── */
+  .event-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 8px; padding: 16px 20px; }
+  .event-pill { display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; background: var(--bg); border-radius: 10px; border: 1px solid var(--border); }
+  .event-name { font-size: 11px; color: var(--muted); }
+  .event-count { font-family: var(--mono); font-size: 13px; font-weight: 600; }
+
+  /* ── Device bars ────────────────────────────────────────────── */
+  .device-bars { padding: 20px; }
+  .device-row { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+  .device-label { font-size: 12px; width: 70px; text-transform: capitalize; }
+  .device-bar-track { flex: 1; height: 28px; background: var(--bg); border-radius: 6px; overflow: hidden; position: relative; }
+  .device-bar-fill { height: 100%; border-radius: 6px; display: flex; align-items: center; padding-left: 10px; font-family: var(--mono); font-size: 11px; font-weight: 600; min-width: 40px; }
+  .device-bar-fill.desktop { background: var(--blue-dim); color: var(--blue); }
+  .device-bar-fill.mobile { background: var(--green-dim); color: var(--green); }
+  .device-bar-fill.tablet { background: var(--amber-dim); color: var(--amber); }
+
+  /* ── Loading ────────────────────────────────────────────────── */
+  .loading { text-align: center; padding: 60px 20px; }
+  .loading-spinner { width: 24px; height: 24px; border: 2px solid var(--border); border-top-color: var(--green); border-radius: 50%; animation: spin .6s linear infinite; margin: 0 auto 12px; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .loading-text { font-size: 12px; color: var(--muted); }
+
+  /* ── Error ──────────────────────────────────────────────────── */
+  .error-box { background: var(--red-dim); border: 1px solid rgba(248,113,113,0.2); border-radius: var(--r); padding: 16px 20px; margin-bottom: 24px; font-size: 13px; color: var(--red); display: none; }
+
+  /* ── Responsive ─────────────────────────────────────────────── */
+  @media (max-width: 900px) {
+    .kpis { grid-template-columns: repeat(3, 1fr); }
+    .grid-2, .grid-3 { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 600px) {
+    .kpis { grid-template-columns: repeat(2, 1fr); }
+    .container { padding: 16px; }
+    .kpi-value { font-size: 22px; }
+    .funnel { flex-direction: column; }
+    .funnel-step + .funnel-step::before { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- AUTH SCREEN -->
+<div id="auth">
+  <div class="auth-box">
+    <h1>RIK Athletica</h1>
+    <p>Analytics Dashboard</p>
+    <input class="auth-input" type="password" id="pw" placeholder="Admin token" autofocus>
+    <button class="auth-btn" onclick="doAuth()">Enter</button>
+    <div class="auth-err" id="auth-err"></div>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div id="dash">
+  <header>
+    <div class="brand">RIK Athletica <span>· Analytics</span></div>
+    <div class="hdr-right">
+      <div class="live-dot" id="live-dot"></div>
+      <span class="refresh-label" id="refresh-label">Loading…</span>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="error-box" id="error-box"></div>
+
+    <!-- Loading state -->
+    <div class="loading" id="loading">
+      <div class="loading-spinner"></div>
+      <div class="loading-text">Pulling analytics from GA4…</div>
+    </div>
+
+    <!-- Content (hidden until loaded) -->
+    <div id="content" style="display:none">
+
+      <!-- KPIs -->
+      <div class="kpis">
+        <div class="kpi live">
+          <div class="kpi-label">Active now</div>
+          <div class="kpi-value" id="k-active">—</div>
+          <div class="kpi-sub">real-time</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">Today visitors</div>
+          <div class="kpi-value" id="k-today-v">—</div>
+          <div class="kpi-sub" id="k-today-pv"></div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">Bounce rate</div>
+          <div class="kpi-value" id="k-bounce">—</div>
+          <div class="kpi-sub">today</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">Avg. duration</div>
+          <div class="kpi-value" id="k-duration">—</div>
+          <div class="kpi-sub">today</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">7-day visitors</div>
+          <div class="kpi-value" id="k-week-v">—</div>
+          <div class="kpi-sub" id="k-week-pv"></div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">30-day visitors</div>
+          <div class="kpi-value" id="k-month-v">—</div>
+          <div class="kpi-sub" id="k-month-pv"></div>
+        </div>
+      </div>
+
+      <!-- Trend chart -->
+      <div class="full">
+        <div class="card">
+          <div class="card-hdr">
+            <span class="card-title">Visitors &amp; Page Views</span>
+            <span class="card-badge badge-30d">30 days</span>
+          </div>
+          <div class="chart-wrap">
+            <canvas id="trend-chart"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- Funnel -->
+      <div class="full">
+        <div class="card">
+          <div class="card-hdr">
+            <span class="card-title">Conversion Funnel</span>
+            <span class="card-badge badge-7d">7 days</span>
+          </div>
+          <div class="funnel" id="funnel"></div>
+        </div>
+      </div>
+
+      <!-- Top Pages + Sources -->
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-hdr">
+            <span class="card-title">Top Pages</span>
+            <span class="card-badge badge-7d">7 days</span>
+          </div>
+          <div class="card-body"><table id="t-pages"><thead><tr><th>Path</th><th class="r">Views</th><th class="r">Users</th></tr></thead><tbody></tbody></table></div>
+        </div>
+        <div class="card">
+          <div class="card-hdr">
+            <span class="card-title">Traffic Sources</span>
+            <span class="card-badge badge-7d">7 days</span>
+          </div>
+          <div class="card-body"><table id="t-sources"><thead><tr><th>Source / Medium</th><th class="r">Sessions</th><th class="r">Users</th></tr></thead><tbody></tbody></table></div>
+        </div>
+      </div>
+
+      <!-- Countries + Devices -->
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-hdr">
+            <span class="card-title">Countries</span>
+            <span class="card-badge badge-7d">7 days</span>
+          </div>
+          <div class="card-body"><table id="t-countries"><thead><tr><th>Country</th><th class="r">Users</th><th class="r">Sessions</th></tr></thead><tbody></tbody></table></div>
+        </div>
+        <div class="card">
+          <div class="card-hdr">
+            <span class="card-title">Devices</span>
+            <span class="card-badge badge-7d">7 days</span>
+          </div>
+          <div class="device-bars" id="devices"></div>
+        </div>
+      </div>
+
+      <!-- Events -->
+      <div class="full">
+        <div class="card">
+          <div class="card-hdr">
+            <span class="card-title">Custom Events</span>
+            <span class="card-badge badge-7d">7 days</span>
+          </div>
+          <div class="event-grid" id="events"></div>
+        </div>
+      </div>
+
+    </div><!-- /content -->
+  </div><!-- /container -->
+</div><!-- /dash -->
+
+<script>
+(function() {
+  'use strict';
+
+  var TOKEN = '';
+  var REFRESH_SEC = 60;
+  var timer = null;
+
+  /* ── Auth ─────────────────────────────────────────────────── */
+
+  window.doAuth = function() {
+    TOKEN = document.getElementById('pw').value.trim();
+    if (!TOKEN) { document.getElementById('auth-err').textContent = 'Enter admin token'; return; }
+    document.getElementById('auth').style.display = 'none';
+    document.getElementById('dash').style.display = 'block';
+    fetchData();
+    timer = setInterval(fetchData, REFRESH_SEC * 1000);
+  };
+
+  document.getElementById('pw').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') window.doAuth();
+  });
+
+  /* ── Fetch ────────────────────────────────────────────────── */
+
+  function fetchData() {
+    document.getElementById('refresh-label').textContent = 'Refreshing…';
+    fetch('/api/analytics?t=' + encodeURIComponent(TOKEN))
+      .then(function(r) {
+        if (r.status === 401) { alert('Invalid token'); location.reload(); throw new Error('auth'); }
+        return r.json();
+      })
+      .then(function(d) {
+        if (d.error) { showError(d.error); return; }
+        hideError();
+        render(d);
+        document.getElementById('loading').style.display = 'none';
+        document.getElementById('content').style.display = 'block';
+        var now = new Date();
+        document.getElementById('refresh-label').textContent =
+          'Updated ' + now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      })
+      .catch(function(err) {
+        if (err.message !== 'auth') showError(err.message);
+      });
+  }
+
+  function showError(msg) {
+    var el = document.getElementById('error-box');
+    el.textContent = msg;
+    el.style.display = 'block';
+  }
+  function hideError() {
+    document.getElementById('error-box').style.display = 'none';
+  }
+
+  /* ── Render ───────────────────────────────────────────────── */
+
+  function render(d) {
+    // KPIs
+    setText('k-active', num(d.realtime.activeUsers));
+    setText('k-today-v', num(d.today.visitors));
+    setText('k-today-pv', num(d.today.pageViews) + ' page views');
+    setText('k-bounce', d.today.bounceRate + '%');
+    setText('k-duration', fmtDuration(d.today.avgDuration));
+    setText('k-week-v', num(d.week.visitors));
+    setText('k-week-pv', num(d.week.pageViews) + ' page views');
+    setText('k-month-v', num(d.month.visitors));
+    setText('k-month-pv', num(d.month.pageViews) + ' page views');
+
+    // Top pages
+    fillTable('t-pages', d.topPages, function(r) {
+      return '<td class="path">' + esc(r.path) + '</td><td class="r">' + num(r.views) + '</td><td class="r">' + num(r.users) + '</td>';
+    });
+
+    // Sources
+    fillTable('t-sources', d.sources, function(r) {
+      var label = (r.source || '(direct)') + ' / ' + (r.medium || '(none)');
+      return '<td>' + esc(label) + '</td><td class="r">' + num(r.sessions) + '</td><td class="r">' + num(r.users) + '</td>';
+    });
+
+    // Countries
+    fillTable('t-countries', d.countries, function(r) {
+      return '<td>' + esc(r.country) + '</td><td class="r">' + num(r.users) + '</td><td class="r">' + num(r.sessions) + '</td>';
+    });
+
+    // Devices
+    renderDevices(d.devices);
+
+    // Events
+    renderEvents(d.events);
+
+    // Funnel
+    renderFunnel(d.funnel);
+
+    // Trend chart
+    renderChart(d.trend);
+  }
+
+  /* ── Table helper ─────────────────────────────────────────── */
+
+  function fillTable(id, rows, rowFn) {
+    var tbody = document.querySelector('#' + id + ' tbody');
+    tbody.innerHTML = rows.map(function(r) { return '<tr>' + rowFn(r) + '</tr>'; }).join('');
+  }
+
+  /* ── Devices ──────────────────────────────────────────────── */
+
+  function renderDevices(devices) {
+    var el = document.getElementById('devices');
+    var total = devices.reduce(function(s, d) { return s + d.users; }, 0) || 1;
+    var colors = { desktop: 'desktop', mobile: 'mobile', tablet: 'tablet' };
+    el.innerHTML = devices.map(function(d) {
+      var pct = Math.round((d.users / total) * 100);
+      var cls = colors[d.device] || 'desktop';
+      return '<div class="device-row">' +
+        '<span class="device-label">' + esc(d.device) + '</span>' +
+        '<div class="device-bar-track"><div class="device-bar-fill ' + cls + '" style="width:' + Math.max(pct, 5) + '%">' + pct + '%</div></div>' +
+        '<span style="font-family:var(--mono);font-size:12px;color:var(--muted);min-width:50px;text-align:right">' + num(d.users) + '</span>' +
+        '</div>';
+    }).join('');
+  }
+
+  /* ── Events ───────────────────────────────────────────────── */
+
+  function renderEvents(events) {
+    var el = document.getElementById('events');
+    el.innerHTML = events.map(function(e) {
+      var label = e.event.replace(/_/g, ' ');
+      return '<div class="event-pill"><span class="event-name">' + esc(label) + '</span><span class="event-count">' + num(e.count) + '</span></div>';
+    }).join('');
+  }
+
+  /* ── Funnel ───────────────────────────────────────────────── */
+
+  function renderFunnel(funnel) {
+    var el = document.getElementById('funnel');
+    var steps = [
+      { path: '/', label: 'Homepage' },
+      { path: '/calculator', label: 'Calculator' },
+      { path: '/audit', label: 'Free Audit' },
+      { path: '/bundle', label: 'Bundle' },
+      { path: '/sprint', label: 'Sprint' },
+      { path: '/premium', label: 'Premium' },
+      { path: '/thank-you', label: 'Purchase' },
+    ];
+    var map = {};
+    funnel.forEach(function(f) { map[f.path] = f.users; });
+    var homeUsers = map['/'] || 1;
+
+    el.innerHTML = steps.map(function(s) {
+      var users = map[s.path] || 0;
+      var pct = homeUsers > 0 ? Math.round((users / homeUsers) * 100) : 0;
+      return '<div class="funnel-step">' +
+        '<div class="funnel-num">' + num(users) + '</div>' +
+        '<div class="funnel-label">' + esc(s.label) + '</div>' +
+        (s.path !== '/' ? '<div class="funnel-pct">' + pct + '% of home</div>' : '<div class="funnel-pct">entry</div>') +
+        '</div>';
+    }).join('');
+  }
+
+  /* ── Chart (canvas, no library) ───────────────────────────── */
+
+  function renderChart(trend) {
+    var canvas = document.getElementById('trend-chart');
+    var ctx = canvas.getContext('2d');
+    var wrap = canvas.parentElement;
+    var dpr = window.devicePixelRatio || 1;
+    var w = wrap.clientWidth;
+    var h = wrap.clientHeight;
+    canvas.width = w * dpr;
+    canvas.height = h * dpr;
+    ctx.scale(dpr, dpr);
+
+    if (!trend.length) return;
+
+    var pad = { top: 20, right: 20, bottom: 30, left: 45 };
+    var cw = w - pad.left - pad.right;
+    var ch = h - pad.top - pad.bottom;
+
+    var maxV = Math.max.apply(null, trend.map(function(t) { return Math.max(t.users, t.pageViews); })) || 1;
+    maxV = Math.ceil(maxV * 1.1);
+
+    function x(i) { return pad.left + (i / (trend.length - 1)) * cw; }
+    function y(v) { return pad.top + ch - (v / maxV) * ch; }
+
+    // Grid lines
+    ctx.strokeStyle = 'rgba(255,255,255,0.04)';
+    ctx.lineWidth = 1;
+    for (var g = 0; g <= 4; g++) {
+      var gy = pad.top + (ch / 4) * g;
+      ctx.beginPath(); ctx.moveTo(pad.left, gy); ctx.lineTo(w - pad.right, gy); ctx.stroke();
+      ctx.fillStyle = '#737380';
+      ctx.font = '10px JetBrains Mono';
+      ctx.textAlign = 'right';
+      ctx.fillText(num(Math.round(maxV - (maxV / 4) * g)), pad.left - 8, gy + 3);
+    }
+
+    // X labels (every ~5 days)
+    ctx.fillStyle = '#737380';
+    ctx.font = '10px JetBrains Mono';
+    ctx.textAlign = 'center';
+    var step = Math.max(1, Math.floor(trend.length / 6));
+    for (var xi = 0; xi < trend.length; xi += step) {
+      var dateStr = trend[xi].date;
+      var label = dateStr.substring(4, 6) + '/' + dateStr.substring(6, 8);
+      ctx.fillText(label, x(xi), h - 8);
+    }
+
+    // Page views line (blue, filled)
+    ctx.beginPath();
+    ctx.moveTo(x(0), y(trend[0].pageViews));
+    for (var p = 1; p < trend.length; p++) ctx.lineTo(x(p), y(trend[p].pageViews));
+    ctx.strokeStyle = 'rgba(96,165,250,0.7)';
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+    // Fill
+    ctx.lineTo(x(trend.length - 1), y(0));
+    ctx.lineTo(x(0), y(0));
+    ctx.closePath();
+    ctx.fillStyle = 'rgba(96,165,250,0.06)';
+    ctx.fill();
+
+    // Visitors line (green)
+    ctx.beginPath();
+    ctx.moveTo(x(0), y(trend[0].users));
+    for (var u = 1; u < trend.length; u++) ctx.lineTo(x(u), y(trend[u].users));
+    ctx.strokeStyle = 'rgba(74,222,128,0.8)';
+    ctx.lineWidth = 2;
+    ctx.stroke();
+    // Fill
+    ctx.lineTo(x(trend.length - 1), y(0));
+    ctx.lineTo(x(0), y(0));
+    ctx.closePath();
+    ctx.fillStyle = 'rgba(74,222,128,0.06)';
+    ctx.fill();
+
+    // Legend
+    ctx.fillStyle = 'rgba(74,222,128,0.8)';
+    ctx.fillRect(w - 180, 6, 10, 3);
+    ctx.fillStyle = '#737380';
+    ctx.font = '10px JetBrains Mono';
+    ctx.textAlign = 'left';
+    ctx.fillText('VISITORS', w - 166, 11);
+    ctx.fillStyle = 'rgba(96,165,250,0.7)';
+    ctx.fillRect(w - 90, 6, 10, 3);
+    ctx.fillStyle = '#737380';
+    ctx.fillText('VIEWS', w - 76, 11);
+  }
+
+  /* ── Helpers ──────────────────────────────────────────────── */
+
+  function setText(id, v) { document.getElementById(id).textContent = v; }
+  function num(n) { return (n || 0).toLocaleString(); }
+  function esc(s) { var d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+  function fmtDuration(sec) {
+    if (sec < 60) return sec + 's';
+    var m = Math.floor(sec / 60);
+    var s = sec % 60;
+    return m + 'm ' + (s < 10 ? '0' : '') + s + 's';
+  }
+
+  // Resize chart on window resize
+  window.addEventListener('resize', function() {
+    if (window._lastTrend) renderChart(window._lastTrend);
+  });
+
+  // Store trend data for resize
+  var origRender = render;
+  // noop — trend stored in renderChart
+
+})();
+</script>
+
+</body>
+</html>
