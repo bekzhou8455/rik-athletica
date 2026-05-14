@@ -9,145 +9,187 @@
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html { font-size: 16px; }
-  body { font-family: 'Plus Jakarta Sans', sans-serif; background: #0c0c0e; color: #e8e8ec; -webkit-font-smoothing: antialiased; min-height: 100vh; }
+  body { font-family: 'Plus Jakarta Sans', sans-serif; background: #08080a; color: #f0f0f4; -webkit-font-smoothing: antialiased; min-height: 100vh; line-height: 1.5; }
 
   :root {
-    --bg: #0c0c0e;
-    --card: #161618;
-    --card-hover: #1c1c1f;
-    --border: rgba(255,255,255,0.06);
-    --border-hover: rgba(255,255,255,0.12);
-    --muted: #737380;
+    --bg: #08080a;
+    --bg-2: #101013;
+    --card: #16161a;
+    --card-hover: #1c1c22;
+    --border: rgba(255,255,255,0.07);
+    --border-strong: rgba(255,255,255,0.14);
+    --muted: #8a8a96;
+    --muted-2: #b3b3bd;
+    --white: #f0f0f4;
     --green: #4ade80;
     --green-dim: rgba(74,222,128,0.12);
     --amber: #fbbf24;
     --amber-dim: rgba(251,191,36,0.12);
     --blue: #60a5fa;
-    --blue-dim: rgba(96,165,250,0.12);
+    --blue-dim: rgba(96,165,250,0.14);
+    --purple: #a78bfa;
+    --purple-dim: rgba(167,139,250,0.14);
     --red: #f87171;
-    --red-dim: rgba(248,113,113,0.12);
-    --white: #e8e8ec;
+    --red-dim: rgba(248,113,113,0.14);
     --mono: 'JetBrains Mono', monospace;
     --sans: 'Plus Jakarta Sans', sans-serif;
-    --r: 14px;
+    --r: 16px;
+    --r-sm: 10px;
   }
 
   /* ── Auth ──────────────────────────────────────────────────── */
   #auth { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 40px; }
-  .auth-box { background: var(--card); border: 1px solid var(--border); border-radius: var(--r); padding: 40px; max-width: 340px; width: 100%; text-align: center; }
-  .auth-box h1 { font-size: 11px; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; margin-bottom: 4px; }
-  .auth-box p { font-size: 13px; color: var(--muted); margin-bottom: 24px; }
-  .auth-input { width: 100%; padding: 12px 14px; border: 1px solid var(--border); border-radius: 10px; font-size: 14px; font-family: var(--sans); outline: none; background: var(--bg); color: var(--white); }
+  .auth-box { background: var(--card); border: 1px solid var(--border); border-radius: var(--r); padding: 44px; max-width: 380px; width: 100%; text-align: center; }
+  .auth-box h1 { font-size: 11px; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; margin-bottom: 6px; }
+  .auth-box p { font-size: 14px; color: var(--muted); margin-bottom: 28px; }
+  .auth-input { width: 100%; padding: 14px 16px; border: 1px solid var(--border); border-radius: var(--r-sm); font-size: 15px; font-family: var(--sans); outline: none; background: var(--bg); color: var(--white); }
   .auth-input:focus { border-color: var(--green); }
-  .auth-btn { width: 100%; padding: 12px; border: none; border-radius: 10px; font-size: 13px; font-weight: 600; font-family: var(--sans); background: var(--white); color: var(--bg); cursor: pointer; margin-top: 10px; }
-  .auth-err { font-size: 12px; color: var(--red); margin-top: 10px; min-height: 16px; }
+  .auth-btn { width: 100%; padding: 14px; border: none; border-radius: var(--r-sm); font-size: 14px; font-weight: 600; font-family: var(--sans); background: var(--white); color: var(--bg); cursor: pointer; margin-top: 12px; }
+  .auth-err { font-size: 13px; color: var(--red); margin-top: 12px; min-height: 18px; }
 
   /* ── Dashboard ─────────────────────────────────────────────── */
   #dash { display: none; }
-  header { background: var(--card); border-bottom: 1px solid var(--border); padding: 0 24px; height: 56px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 10; }
-  .brand { font-size: 11px; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; }
-  .brand span { color: var(--muted); font-weight: 400; }
-  .hdr-right { display: flex; align-items: center; gap: 12px; }
-  .live-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); animation: pulse 2s infinite; }
+  header { background: var(--bg-2); border-bottom: 1px solid var(--border); padding: 0 32px; height: 64px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 10; }
+  .brand { font-size: 12px; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; }
+  .brand span { color: var(--muted); font-weight: 400; margin-left: 6px; }
+  .hdr-right { display: flex; align-items: center; gap: 16px; }
+  .range-toggle { display: flex; background: var(--card); border: 1px solid var(--border); border-radius: var(--r-sm); overflow: hidden; }
+  .range-toggle button { padding: 8px 16px; font-size: 12px; font-family: var(--sans); font-weight: 500; background: transparent; color: var(--muted); border: none; cursor: pointer; transition: all .15s; }
+  .range-toggle button.active { background: var(--white); color: var(--bg); }
+  .live-status { display: flex; align-items: center; gap: 8px; }
+  .live-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); animation: pulse 2s infinite; }
   @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
-  .refresh-label { font-family: var(--mono); font-size: 10px; color: var(--muted); letter-spacing: 1px; text-transform: uppercase; }
+  .refresh-label { font-family: var(--mono); font-size: 11px; color: var(--muted); letter-spacing: 0.5px; }
 
-  .container { max-width: 1280px; margin: 0 auto; padding: 24px; }
+  .container { max-width: 1400px; margin: 0 auto; padding: 32px; }
 
-  /* ── KPI Row ───────────────────────────────────────────────── */
-  .kpis { display: grid; grid-template-columns: repeat(6, 1fr); gap: 12px; margin-bottom: 24px; }
-  .kpi { background: var(--card); border: 1px solid var(--border); border-radius: var(--r); padding: 18px 20px; transition: border-color .2s; }
-  .kpi:hover { border-color: var(--border-hover); }
-  .kpi-label { font-family: var(--mono); font-size: 9px; letter-spacing: 1.6px; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
-  .kpi-value { font-size: 28px; font-weight: 700; letter-spacing: -0.03em; line-height: 1; }
-  .kpi-sub { font-size: 11px; color: var(--muted); margin-top: 4px; }
+  /* ── Section ──────────────────────────────────────────────── */
+  .section-title { font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin: 32px 0 16px; padding-left: 4px; }
+  .section-title:first-child { margin-top: 0; }
+
+  /* ── KPI Row ──────────────────────────────────────────────── */
+  .kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 8px; }
+  .kpi { background: var(--card); border: 1px solid var(--border); border-radius: var(--r); padding: 24px 26px; transition: border-color .2s; }
+  .kpi:hover { border-color: var(--border-strong); }
+  .kpi-label { font-family: var(--mono); font-size: 10px; letter-spacing: 1.6px; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; }
+  .kpi-value { font-size: 38px; font-weight: 700; letter-spacing: -0.03em; line-height: 1; }
+  .kpi-sub { font-size: 13px; color: var(--muted-2); margin-top: 8px; font-weight: 500; }
   .kpi.live .kpi-value { color: var(--green); }
-
-  /* ── Section grid ──────────────────────────────────────────── */
-  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px; }
-  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-bottom: 24px; }
-  .full { margin-bottom: 24px; }
+  .kpi.live .kpi-label::before { content: '● '; color: var(--green); animation: pulse 2s infinite; }
 
   /* ── Card ───────────────────────────────────────────────────── */
   .card { background: var(--card); border: 1px solid var(--border); border-radius: var(--r); overflow: hidden; }
-  .card-hdr { padding: 16px 20px 12px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border); }
-  .card-title { font-size: 12px; font-weight: 600; letter-spacing: -0.01em; }
-  .card-badge { font-family: var(--mono); font-size: 9px; padding: 3px 8px; border-radius: 999px; letter-spacing: 1px; text-transform: uppercase; }
-  .badge-7d { background: var(--blue-dim); color: var(--blue); }
-  .badge-30d { background: var(--amber-dim); color: var(--amber); }
+  .card-hdr { padding: 20px 24px 16px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border); }
+  .card-title { font-size: 14px; font-weight: 600; letter-spacing: -0.01em; }
+  .card-hint { font-size: 12px; color: var(--muted); margin-top: 2px; }
+  .card-badge { font-family: var(--mono); font-size: 10px; padding: 4px 10px; border-radius: 999px; letter-spacing: 1px; text-transform: uppercase; font-weight: 600; }
+  .badge-range { background: var(--blue-dim); color: var(--blue); }
+  .badge-live { background: var(--green-dim); color: var(--green); }
   .card-body { padding: 0; }
+
+  /* ── Grid layouts ──────────────────────────────────────────── */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+  .full { margin-bottom: 0; }
 
   /* ── Table ──────────────────────────────────────────────────── */
   table { width: 100%; border-collapse: collapse; }
-  th { font-family: var(--mono); font-size: 9px; letter-spacing: 1.4px; text-transform: uppercase; color: var(--muted); padding: 10px 20px; text-align: left; font-weight: 500; }
+  th { font-family: var(--mono); font-size: 10px; letter-spacing: 1.4px; text-transform: uppercase; color: var(--muted); padding: 14px 24px; text-align: left; font-weight: 600; }
   th.r { text-align: right; }
-  td { padding: 10px 20px; font-size: 13px; border-top: 1px solid var(--border); }
-  td.r { text-align: right; font-family: var(--mono); font-size: 12px; }
-  td.path { font-family: var(--mono); font-size: 12px; color: var(--blue); }
+  td { padding: 14px 24px; font-size: 14px; border-top: 1px solid var(--border); vertical-align: middle; }
+  td.r { text-align: right; font-family: var(--mono); font-size: 13px; font-weight: 600; }
+  td.path { font-family: var(--mono); font-size: 13px; color: var(--blue); }
+  td.label { font-weight: 500; }
+  td.sub { font-size: 12px; color: var(--muted); margin-top: 2px; }
+  td .src-label { font-weight: 500; }
+  td .src-sub { font-size: 11px; color: var(--muted); margin-top: 2px; font-family: var(--mono); letter-spacing: 0.5px; }
   tr:hover td { background: var(--card-hover); }
-  .bar-cell { position: relative; }
-  .bar-fill { position: absolute; left: 0; top: 0; bottom: 0; background: rgba(96,165,250,0.06); border-radius: 0; pointer-events: none; }
 
   /* ── Chart ──────────────────────────────────────────────────── */
-  .chart-wrap { padding: 20px; height: 200px; position: relative; }
+  .chart-wrap { padding: 24px; height: 220px; position: relative; }
   canvas { width: 100% !important; height: 100% !important; }
 
-  /* ── Funnel ─────────────────────────────────────────────────── */
-  .funnel { display: flex; align-items: stretch; gap: 0; padding: 24px 20px; }
-  .funnel-step { flex: 1; text-align: center; position: relative; padding: 16px 12px; }
+  /* ── Funnel (page-based) ────────────────────────────────────── */
+  .funnel { display: flex; align-items: stretch; gap: 0; padding: 24px; overflow-x: auto; }
+  .funnel-step { flex: 1; min-width: 100px; text-align: center; position: relative; padding: 16px 12px; }
   .funnel-step + .funnel-step::before {
     content: '';
     position: absolute; left: 0; top: 50%; transform: translateY(-50%);
     width: 0; height: 0;
     border-top: 10px solid transparent; border-bottom: 10px solid transparent;
-    border-left: 8px solid var(--border);
+    border-left: 8px solid var(--border-strong);
   }
-  .funnel-num { font-size: 24px; font-weight: 700; letter-spacing: -0.02em; color: var(--white); }
-  .funnel-label { font-size: 11px; color: var(--muted); margin-top: 4px; }
-  .funnel-pct { font-family: var(--mono); font-size: 10px; color: var(--green); margin-top: 4px; }
+  .funnel-num { font-size: 28px; font-weight: 700; letter-spacing: -0.02em; color: var(--white); }
+  .funnel-label { font-size: 12px; color: var(--muted-2); margin-top: 6px; font-weight: 500; }
+  .funnel-pct { font-family: var(--mono); font-size: 11px; color: var(--green); margin-top: 4px; }
 
-  /* ── Event pills ────────────────────────────────────────────── */
-  .event-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 8px; padding: 16px 20px; }
-  .event-pill { display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; background: var(--bg); border-radius: 10px; border: 1px solid var(--border); }
-  .event-name { font-size: 11px; color: var(--muted); }
-  .event-count { font-family: var(--mono); font-size: 13px; font-weight: 600; }
+  /* ── Behavior funnel (event-based) ──────────────────────────── */
+  .bfunnel { padding: 24px; }
+  .bfunnel-row { display: flex; align-items: center; gap: 16px; margin-bottom: 14px; }
+  .bfunnel-row:last-child { margin-bottom: 0; }
+  .bfunnel-label { flex: 0 0 140px; font-size: 13px; font-weight: 500; }
+  .bfunnel-sub { font-size: 11px; color: var(--muted); margin-top: 2px; }
+  .bfunnel-bar { flex: 1; height: 36px; background: var(--bg); border-radius: 8px; overflow: hidden; position: relative; }
+  .bfunnel-fill { height: 100%; display: flex; align-items: center; padding-left: 14px; font-family: var(--mono); font-size: 13px; font-weight: 600; min-width: 50px; transition: width .4s ease; }
+  .bfunnel-fill.s1 { background: linear-gradient(90deg, rgba(74,222,128,0.25), rgba(74,222,128,0.08)); color: var(--green); }
+  .bfunnel-fill.s2 { background: linear-gradient(90deg, rgba(96,165,250,0.25), rgba(96,165,250,0.08)); color: var(--blue); }
+  .bfunnel-fill.s3 { background: linear-gradient(90deg, rgba(167,139,250,0.25), rgba(167,139,250,0.08)); color: var(--purple); }
+  .bfunnel-fill.s4 { background: linear-gradient(90deg, rgba(251,191,36,0.25), rgba(251,191,36,0.08)); color: var(--amber); }
 
   /* ── Device bars ────────────────────────────────────────────── */
-  .device-bars { padding: 20px; }
-  .device-row { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
-  .device-label { font-size: 12px; width: 70px; text-transform: capitalize; }
-  .device-bar-track { flex: 1; height: 28px; background: var(--bg); border-radius: 6px; overflow: hidden; position: relative; }
-  .device-bar-fill { height: 100%; border-radius: 6px; display: flex; align-items: center; padding-left: 10px; font-family: var(--mono); font-size: 11px; font-weight: 600; min-width: 40px; }
+  .device-bars { padding: 24px; }
+  .device-row { display: flex; align-items: center; gap: 16px; margin-bottom: 16px; }
+  .device-row:last-child { margin-bottom: 0; }
+  .device-label { font-size: 13px; width: 80px; text-transform: capitalize; font-weight: 500; }
+  .device-bar-track { flex: 1; height: 32px; background: var(--bg); border-radius: 8px; overflow: hidden; position: relative; }
+  .device-bar-fill { height: 100%; border-radius: 8px; display: flex; align-items: center; padding-left: 14px; font-family: var(--mono); font-size: 12px; font-weight: 600; min-width: 50px; }
   .device-bar-fill.desktop { background: var(--blue-dim); color: var(--blue); }
   .device-bar-fill.mobile { background: var(--green-dim); color: var(--green); }
   .device-bar-fill.tablet { background: var(--amber-dim); color: var(--amber); }
+  .device-count { font-family: var(--mono); font-size: 13px; color: var(--muted-2); min-width: 60px; text-align: right; font-weight: 600; }
 
-  /* ── Loading ────────────────────────────────────────────────── */
-  .loading { text-align: center; padding: 60px 20px; }
-  .loading-spinner { width: 24px; height: 24px; border: 2px solid var(--border); border-top-color: var(--green); border-radius: 50%; animation: spin .6s linear infinite; margin: 0 auto 12px; }
+  /* ── Scroll depth bars ──────────────────────────────────────── */
+  .scroll-bars { padding: 24px; display: flex; flex-direction: column; gap: 12px; }
+  .scroll-row { display: flex; align-items: center; gap: 14px; }
+  .scroll-label { font-family: var(--mono); font-size: 11px; color: var(--muted-2); width: 56px; font-weight: 600; }
+  .scroll-bar { flex: 1; height: 28px; background: var(--bg); border-radius: 8px; overflow: hidden; }
+  .scroll-fill { height: 100%; background: linear-gradient(90deg, rgba(74,222,128,0.35), rgba(74,222,128,0.1)); display: flex; align-items: center; padding-left: 12px; font-family: var(--mono); font-size: 12px; font-weight: 600; color: var(--green); }
+  .scroll-pct { font-family: var(--mono); font-size: 11px; color: var(--muted); width: 50px; text-align: right; font-weight: 600; }
+
+  /* ── Stat tile (mini-kpi inside card) ──────────────────────── */
+  .tiles { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--border); padding: 0; }
+  .tile { background: var(--card); padding: 20px 22px; }
+  .tile-label { font-family: var(--mono); font-size: 9px; letter-spacing: 1.4px; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+  .tile-value { font-size: 24px; font-weight: 700; letter-spacing: -0.02em; line-height: 1; }
+  .tile-sub { font-size: 11px; color: var(--muted); margin-top: 4px; }
+
+  /* ── Loading & error ────────────────────────────────────────── */
+  .loading { text-align: center; padding: 80px 20px; }
+  .loading-spinner { width: 28px; height: 28px; border: 2px solid var(--border); border-top-color: var(--green); border-radius: 50%; animation: spin .6s linear infinite; margin: 0 auto 16px; }
   @keyframes spin { to { transform: rotate(360deg); } }
-  .loading-text { font-size: 12px; color: var(--muted); }
-
-  /* ── Error ──────────────────────────────────────────────────── */
-  .error-box { background: var(--red-dim); border: 1px solid rgba(248,113,113,0.2); border-radius: var(--r); padding: 16px 20px; margin-bottom: 24px; font-size: 13px; color: var(--red); display: none; }
+  .loading-text { font-size: 13px; color: var(--muted); }
+  .error-box { background: var(--red-dim); border: 1px solid rgba(248,113,113,0.25); border-radius: var(--r); padding: 18px 22px; margin-bottom: 24px; font-size: 13px; color: var(--red); display: none; word-break: break-word; }
 
   /* ── Responsive ─────────────────────────────────────────────── */
-  @media (max-width: 900px) {
-    .kpis { grid-template-columns: repeat(3, 1fr); }
+  @media (max-width: 1100px) {
+    .kpis { grid-template-columns: repeat(2, 1fr); }
     .grid-2, .grid-3 { grid-template-columns: 1fr; }
+    .tiles { grid-template-columns: repeat(2, 1fr); }
   }
   @media (max-width: 600px) {
-    .kpis { grid-template-columns: repeat(2, 1fr); }
-    .container { padding: 16px; }
-    .kpi-value { font-size: 22px; }
+    header { padding: 0 16px; }
+    .container { padding: 20px 16px; }
+    .kpi-value { font-size: 28px; }
+    .kpi { padding: 18px 20px; }
     .funnel { flex-direction: column; }
     .funnel-step + .funnel-step::before { display: none; }
+    .bfunnel-label { flex: 0 0 110px; font-size: 12px; }
   }
 </style>
 </head>
 <body>
 
-<!-- AUTH SCREEN -->
+<!-- AUTH -->
 <div id="auth">
   <div class="auth-box">
     <h1>RIK Athletica</h1>
@@ -163,24 +205,29 @@
   <header>
     <div class="brand">RIK Athletica <span>· Analytics</span></div>
     <div class="hdr-right">
-      <div class="live-dot" id="live-dot"></div>
-      <span class="refresh-label" id="refresh-label">Loading…</span>
+      <div class="range-toggle" id="range-toggle">
+        <button data-range="7d" class="active">7 days</button>
+        <button data-range="30d">30 days</button>
+      </div>
+      <div class="live-status">
+        <div class="live-dot"></div>
+        <span class="refresh-label" id="refresh-label">loading…</span>
+      </div>
     </div>
   </header>
 
   <div class="container">
     <div class="error-box" id="error-box"></div>
 
-    <!-- Loading state -->
     <div class="loading" id="loading">
       <div class="loading-spinner"></div>
       <div class="loading-text">Pulling analytics from GA4…</div>
     </div>
 
-    <!-- Content (hidden until loaded) -->
     <div id="content" style="display:none">
 
-      <!-- KPIs -->
+      <!-- ─── Top-line KPIs ─────────────────────────────────────── -->
+      <div class="section-title">Live · Today</div>
       <div class="kpis">
         <div class="kpi live">
           <div class="kpi-label">Active now</div>
@@ -193,109 +240,283 @@
           <div class="kpi-sub" id="k-today-pv"></div>
         </div>
         <div class="kpi">
-          <div class="kpi-label">Bounce rate</div>
+          <div class="kpi-label">Today bounce</div>
           <div class="kpi-value" id="k-bounce">—</div>
-          <div class="kpi-sub">today</div>
+          <div class="kpi-sub">% left after 1 page</div>
         </div>
         <div class="kpi">
-          <div class="kpi-label">Avg. duration</div>
+          <div class="kpi-label">Avg session</div>
           <div class="kpi-value" id="k-duration">—</div>
           <div class="kpi-sub">today</div>
         </div>
+      </div>
+
+      <!-- ─── Range KPIs ────────────────────────────────────────── -->
+      <div class="section-title" id="range-section-title">Range · 7 days</div>
+      <div class="kpis">
         <div class="kpi">
-          <div class="kpi-label">7-day visitors</div>
-          <div class="kpi-value" id="k-week-v">—</div>
-          <div class="kpi-sub" id="k-week-pv"></div>
+          <div class="kpi-label">Visitors</div>
+          <div class="kpi-value" id="k-range-v">—</div>
+          <div class="kpi-sub" id="k-range-v-sub">unique users</div>
         </div>
         <div class="kpi">
-          <div class="kpi-label">30-day visitors</div>
-          <div class="kpi-value" id="k-month-v">—</div>
-          <div class="kpi-sub" id="k-month-pv"></div>
+          <div class="kpi-label">Page views</div>
+          <div class="kpi-value" id="k-range-pv">—</div>
+          <div class="kpi-sub" id="k-range-pv-sub"></div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">Sessions</div>
+          <div class="kpi-value" id="k-range-s">—</div>
+          <div class="kpi-sub" id="k-range-s-sub"></div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">Bounce rate</div>
+          <div class="kpi-value" id="k-range-b">—</div>
+          <div class="kpi-sub" id="k-range-b-sub"></div>
         </div>
       </div>
 
-      <!-- Trend chart -->
-      <div class="full">
-        <div class="card">
-          <div class="card-hdr">
-            <span class="card-title">Visitors &amp; Page Views</span>
-            <span class="card-badge badge-30d">30 days</span>
-          </div>
-          <div class="chart-wrap">
-            <canvas id="trend-chart"></canvas>
+      <!-- ─── Trend ─────────────────────────────────────────────── -->
+      <div class="section-title">Trend · last 30 days</div>
+      <div class="card">
+        <div class="card-hdr">
+          <div>
+            <div class="card-title">Daily Visitors &amp; Page Views</div>
+            <div class="card-hint">Green = visitors · Blue = page views</div>
           </div>
         </div>
+        <div class="chart-wrap"><canvas id="trend-chart"></canvas></div>
       </div>
 
-      <!-- Funnel -->
-      <div class="full">
-        <div class="card">
-          <div class="card-hdr">
-            <span class="card-title">Conversion Funnel</span>
-            <span class="card-badge badge-7d">7 days</span>
+      <!-- ─── Conversion funnel ─────────────────────────────────── -->
+      <div class="section-title" id="funnel-title">Conversion funnel · 7 days</div>
+      <div class="card">
+        <div class="card-hdr">
+          <div>
+            <div class="card-title">Page-Level Funnel</div>
+            <div class="card-hint">Visitors who landed on each page · % relative to home</div>
           </div>
-          <div class="funnel" id="funnel"></div>
         </div>
+        <div class="funnel" id="funnel"></div>
       </div>
 
-      <!-- Top Pages + Sources -->
+      <!-- ─── Behavior funnels ─────────────────────────────────── -->
+      <div class="section-title" id="behavior-title">Visitor behavior · 7 days</div>
       <div class="grid-2">
         <div class="card">
           <div class="card-hdr">
-            <span class="card-title">Top Pages</span>
-            <span class="card-badge badge-7d">7 days</span>
+            <div>
+              <div class="card-title">Calculator engagement</div>
+              <div class="card-hint">From input → result → next step</div>
+            </div>
           </div>
-          <div class="card-body"><table id="t-pages"><thead><tr><th>Path</th><th class="r">Views</th><th class="r">Users</th></tr></thead><tbody></tbody></table></div>
+          <div class="bfunnel" id="calc-funnel"></div>
         </div>
         <div class="card">
           <div class="card-hdr">
-            <span class="card-title">Traffic Sources</span>
-            <span class="card-badge badge-7d">7 days</span>
+            <div>
+              <div class="card-title">Audit form engagement</div>
+              <div class="card-hint">From start → submit → confirm</div>
+            </div>
           </div>
-          <div class="card-body"><table id="t-sources"><thead><tr><th>Source / Medium</th><th class="r">Sessions</th><th class="r">Users</th></tr></thead><tbody></tbody></table></div>
+          <div class="bfunnel" id="audit-funnel"></div>
         </div>
       </div>
 
-      <!-- Countries + Devices -->
+      <div style="height:16px"></div>
+
       <div class="grid-2">
         <div class="card">
           <div class="card-hdr">
-            <span class="card-title">Countries</span>
-            <span class="card-badge badge-7d">7 days</span>
+            <div>
+              <div class="card-title">Scroll depth</div>
+              <div class="card-hint">How far visitors scroll · % vs visitors</div>
+            </div>
+          </div>
+          <div class="scroll-bars" id="scroll-bars"></div>
+        </div>
+
+        <div class="card">
+          <div class="card-hdr">
+            <div>
+              <div class="card-title">Key event totals</div>
+              <div class="card-hint">All custom events from rik-analytics.js</div>
+            </div>
+          </div>
+          <div class="tiles">
+            <div class="tile">
+              <div class="tile-label">CTA clicks</div>
+              <div class="tile-value" id="tile-cta">—</div>
+              <div class="tile-sub">across all pages</div>
+            </div>
+            <div class="tile">
+              <div class="tile-label">Calc CTAs</div>
+              <div class="tile-value" id="tile-calc-cta">—</div>
+              <div class="tile-sub">after seeing result</div>
+            </div>
+            <div class="tile">
+              <div class="tile-label">Audit submits</div>
+              <div class="tile-value" id="tile-audit-sub">—</div>
+              <div class="tile-sub">completed forms</div>
+            </div>
+            <div class="tile">
+              <div class="tile-label">Page exits</div>
+              <div class="tile-value" id="tile-exits">—</div>
+              <div class="tile-sub">with dwell time</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ─── Top pages + Traffic sources ───────────────────────── -->
+      <div class="section-title" id="acq-title">Acquisition · 7 days</div>
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-hdr">
+            <div>
+              <div class="card-title">Top Pages</div>
+              <div class="card-hint">By views</div>
+            </div>
+          </div>
+          <div class="card-body"><table id="t-pages"><thead><tr><th>Page</th><th class="r">Views</th><th class="r">Visitors</th></tr></thead><tbody></tbody></table></div>
+        </div>
+        <div class="card">
+          <div class="card-hdr">
+            <div>
+              <div class="card-title">Traffic Sources</div>
+              <div class="card-hint">Where visitors come from</div>
+            </div>
+          </div>
+          <div class="card-body"><table id="t-sources"><thead><tr><th>Source</th><th class="r">Sessions</th><th class="r">Users</th></tr></thead><tbody></tbody></table></div>
+        </div>
+      </div>
+
+      <div style="height:16px"></div>
+
+      <!-- ─── Geo + Devices ─────────────────────────────────────── -->
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-hdr">
+            <div>
+              <div class="card-title">Countries</div>
+              <div class="card-hint">Where visitors are based</div>
+            </div>
           </div>
           <div class="card-body"><table id="t-countries"><thead><tr><th>Country</th><th class="r">Users</th><th class="r">Sessions</th></tr></thead><tbody></tbody></table></div>
         </div>
         <div class="card">
           <div class="card-hdr">
-            <span class="card-title">Devices</span>
-            <span class="card-badge badge-7d">7 days</span>
+            <div>
+              <div class="card-title">Devices</div>
+              <div class="card-hint">Desktop / mobile / tablet split</div>
+            </div>
           </div>
           <div class="device-bars" id="devices"></div>
         </div>
       </div>
 
-      <!-- Events -->
-      <div class="full">
-        <div class="card">
-          <div class="card-hdr">
-            <span class="card-title">Custom Events</span>
-            <span class="card-badge badge-7d">7 days</span>
-          </div>
-          <div class="event-grid" id="events"></div>
-        </div>
-      </div>
-
-    </div><!-- /content -->
-  </div><!-- /container -->
-</div><!-- /dash -->
+    </div>
+  </div>
+</div>
 
 <script>
 (function() {
   'use strict';
 
   var TOKEN = '';
+  var RANGE = '7d';
   var REFRESH_SEC = 60;
   var timer = null;
+  var lastTrend = null;
+
+  /* ── Friendly source mapping ──────────────────────────────── */
+
+  function friendlySource(source, medium) {
+    var s = (source || '').toLowerCase();
+    var m = (medium || '').toLowerCase();
+
+    // Direct
+    if (s === '(direct)') return { label: 'Direct', sub: 'Typed URL or bookmark' };
+
+    // Instagram variants
+    if (s === 'ig' && m === 'social') return { label: 'Instagram', sub: 'Bio link / posts' };
+    if (s === 'l.instagram.com') return { label: 'Instagram', sub: 'In-app link tap' };
+    if (s.indexOf('instagram') >= 0) return { label: 'Instagram', sub: s };
+
+    // Facebook
+    if (s === 'm.facebook.com' || s === 'l.facebook.com' || s.indexOf('facebook') >= 0) return { label: 'Facebook', sub: s };
+
+    // TikTok
+    if (s.indexOf('tiktok') >= 0) return { label: 'TikTok', sub: s };
+
+    // X / Twitter
+    if (s.indexOf('twitter') >= 0 || s === 't.co' || s === 'x.com') return { label: 'X / Twitter', sub: s };
+
+    // LinkedIn
+    if (s.indexOf('linkedin') >= 0) return { label: 'LinkedIn', sub: s };
+
+    // YouTube
+    if (s.indexOf('youtube') >= 0) return { label: 'YouTube', sub: s };
+
+    // Reddit
+    if (s.indexOf('reddit') >= 0) return { label: 'Reddit', sub: s };
+
+    // Search engines
+    if (s === 'google' && m === 'organic') return { label: 'Google Search', sub: 'Organic search' };
+    if (s === 'bing' && m === 'organic') return { label: 'Bing Search', sub: 'Organic search' };
+    if (s === 'duckduckgo') return { label: 'DuckDuckGo', sub: 'Organic search' };
+    if (s === 'yahoo') return { label: 'Yahoo', sub: 'Organic search' };
+    if (s === 'baidu') return { label: 'Baidu', sub: 'Organic search' };
+
+    // AI engines
+    if (s.indexOf('chatgpt') >= 0 || s.indexOf('openai') >= 0) return { label: 'ChatGPT', sub: 'AI citation referral' };
+    if (s.indexOf('perplexity') >= 0) return { label: 'Perplexity', sub: 'AI citation referral' };
+    if (s.indexOf('claude.ai') >= 0 || s.indexOf('anthropic') >= 0) return { label: 'Claude.ai', sub: 'AI citation referral' };
+    if (s.indexOf('gemini') >= 0 || s.indexOf('bard') >= 0) return { label: 'Gemini', sub: 'AI citation referral' };
+
+    // Internal / admin
+    if (s.indexOf('vercel.com') >= 0) return { label: 'Vercel Dashboard', sub: 'Internal (admin preview clicks)' };
+
+    // Custom UTMs we use
+    if (s === 'upgrade_hook') return { label: 'Audit upgrade hook', sub: 'Audit deliverable → Sprint CTA' };
+    if (s === 'audit_email') return { label: 'Audit email link', sub: 'Email click-through' };
+    if (s === 'kit' || s.indexOf('convertkit') >= 0) return { label: 'Kit (email)', sub: s };
+
+    // Paid
+    if (m === 'cpc' || m === 'paid' || m === 'ppc') return { label: s + ' (paid)', sub: 'Paid ads · ' + m };
+
+    // Email generic
+    if (m === 'email') return { label: 'Email — ' + s, sub: 'Email link' };
+
+    // Unknown
+    if ((s === '(not set)' || !s) && (m === '(not set)' || !m)) {
+      return { label: 'Unknown / untagged', sub: 'No UTM or referrer' };
+    }
+
+    // Default
+    return {
+      label: s.charAt(0).toUpperCase() + s.slice(1) || '(unknown)',
+      sub: m || '(no medium)',
+    };
+  }
+
+  /* ── Friendly page-path labels ────────────────────────────── */
+
+  function friendlyPage(path) {
+    var map = {
+      '/': 'Homepage',
+      '/calculator': 'Fueling Calculator',
+      '/audit': 'Free Audit',
+      '/bundle': 'Bundle ($119)',
+      '/sprint': 'Sprint 4-week',
+      '/premium': 'Premium 1:1',
+      '/thank-you': 'Thank-You',
+      '/terms': 'Terms',
+      '/privacy': 'Privacy',
+      '/checkin': 'Check-in',
+    };
+    return map[path] || path;
+  }
 
   /* ── Auth ─────────────────────────────────────────────────── */
 
@@ -312,11 +533,32 @@
     if (e.key === 'Enter') window.doAuth();
   });
 
+  /* ── Range toggle ─────────────────────────────────────────── */
+
+  document.getElementById('range-toggle').addEventListener('click', function(e) {
+    var btn = e.target.closest('button');
+    if (!btn) return;
+    RANGE = btn.getAttribute('data-range');
+    document.querySelectorAll('#range-toggle button').forEach(function(b) {
+      b.classList.toggle('active', b.getAttribute('data-range') === RANGE);
+    });
+    updateRangeTitles();
+    fetchData();
+  });
+
+  function updateRangeTitles() {
+    var label = RANGE === '30d' ? '30 days' : '7 days';
+    document.getElementById('range-section-title').textContent = 'Range · ' + label;
+    document.getElementById('funnel-title').textContent = 'Conversion funnel · ' + label;
+    document.getElementById('behavior-title').textContent = 'Visitor behavior · ' + label;
+    document.getElementById('acq-title').textContent = 'Acquisition · ' + label;
+  }
+
   /* ── Fetch ────────────────────────────────────────────────── */
 
   function fetchData() {
-    document.getElementById('refresh-label').textContent = 'Refreshing…';
-    fetch('/api/analytics?t=' + encodeURIComponent(TOKEN))
+    document.getElementById('refresh-label').textContent = 'refreshing…';
+    fetch('/api/analytics?range=' + RANGE + '&t=' + encodeURIComponent(TOKEN))
       .then(function(r) {
         if (r.status === 401) { alert('Invalid token'); location.reload(); throw new Error('auth'); }
         return r.json();
@@ -329,62 +571,81 @@
         document.getElementById('content').style.display = 'block';
         var now = new Date();
         document.getElementById('refresh-label').textContent =
-          'Updated ' + now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+          'updated ' + now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
       })
       .catch(function(err) {
         if (err.message !== 'auth') showError(err.message);
       });
   }
 
-  function showError(msg) {
-    var el = document.getElementById('error-box');
-    el.textContent = msg;
-    el.style.display = 'block';
-  }
-  function hideError() {
-    document.getElementById('error-box').style.display = 'none';
-  }
+  function showError(msg) { var el = document.getElementById('error-box'); el.textContent = msg; el.style.display = 'block'; }
+  function hideError() { document.getElementById('error-box').style.display = 'none'; }
 
   /* ── Render ───────────────────────────────────────────────── */
 
   function render(d) {
-    // KPIs
+    // Today KPIs
     setText('k-active', num(d.realtime.activeUsers));
     setText('k-today-v', num(d.today.visitors));
     setText('k-today-pv', num(d.today.pageViews) + ' page views');
     setText('k-bounce', d.today.bounceRate + '%');
     setText('k-duration', fmtDuration(d.today.avgDuration));
-    setText('k-week-v', num(d.week.visitors));
-    setText('k-week-pv', num(d.week.pageViews) + ' page views');
-    setText('k-month-v', num(d.month.visitors));
-    setText('k-month-pv', num(d.month.pageViews) + ' page views');
 
-    // Top pages
-    fillTable('t-pages', d.topPages, function(r) {
-      return '<td class="path">' + esc(r.path) + '</td><td class="r">' + num(r.views) + '</td><td class="r">' + num(r.users) + '</td>';
+    // Range KPIs
+    setText('k-range-v', num(d.rangeStats.visitors));
+    setText('k-range-pv', num(d.rangeStats.pageViews));
+    setText('k-range-s', num(d.rangeStats.sessions));
+    setText('k-range-b', d.rangeStats.bounceRate + '%');
+    var perVisitor = d.rangeStats.visitors > 0 ? (d.rangeStats.pageViews / d.rangeStats.visitors).toFixed(1) : '0';
+    setText('k-range-pv-sub', perVisitor + ' pages/visitor');
+    var sessPerUser = d.rangeStats.visitors > 0 ? (d.rangeStats.sessions / d.rangeStats.visitors).toFixed(1) : '0';
+    setText('k-range-s-sub', sessPerUser + ' sessions/visitor');
+    setText('k-range-b-sub', 'avg ' + fmtDuration(d.rangeStats.avgDuration) + '/session');
+
+    // Top pages — friendly name + raw path
+    fillTable('t-pages', d.topPages.slice(0, 12), function(r) {
+      var label = friendlyPage(r.path);
+      var raw = r.path === label ? '' : '<div class="src-sub">' + esc(r.path) + '</div>';
+      return '<td><div class="src-label">' + esc(label) + '</div>' + raw + '</td>' +
+        '<td class="r">' + num(r.views) + '</td><td class="r">' + num(r.users) + '</td>';
     });
 
-    // Sources
-    fillTable('t-sources', d.sources, function(r) {
-      var label = (r.source || '(direct)') + ' / ' + (r.medium || '(none)');
-      return '<td>' + esc(label) + '</td><td class="r">' + num(r.sessions) + '</td><td class="r">' + num(r.users) + '</td>';
+    // Sources — friendly mapping
+    fillTable('t-sources', d.sources.slice(0, 12), function(r) {
+      var f = friendlySource(r.source, r.medium);
+      return '<td><div class="src-label">' + esc(f.label) + '</div><div class="src-sub">' + esc(f.sub) + '</div></td>' +
+        '<td class="r">' + num(r.sessions) + '</td><td class="r">' + num(r.users) + '</td>';
     });
 
     // Countries
-    fillTable('t-countries', d.countries, function(r) {
-      return '<td>' + esc(r.country) + '</td><td class="r">' + num(r.users) + '</td><td class="r">' + num(r.sessions) + '</td>';
+    fillTable('t-countries', d.countries.slice(0, 10), function(r) {
+      var name = r.country || '(unknown)';
+      return '<td class="label">' + esc(name) + '</td><td class="r">' + num(r.users) + '</td><td class="r">' + num(r.sessions) + '</td>';
     });
 
     // Devices
     renderDevices(d.devices);
 
-    // Events
-    renderEvents(d.events);
-
     // Funnel
     renderFunnel(d.funnel);
 
+    // Calculator funnel
+    renderCalcFunnel(d.behavior.calc, d.funnel);
+
+    // Audit funnel
+    renderAuditFunnel(d.behavior.audit, d.funnel);
+
+    // Scroll depth
+    renderScroll(d.behavior.scroll, d.rangeStats.visitors);
+
+    // Behavior tiles
+    setText('tile-cta', num(d.behavior.ctaClicks));
+    setText('tile-calc-cta', num(d.behavior.calc.ctaClicks));
+    setText('tile-audit-sub', num(d.behavior.audit.submit));
+    setText('tile-exits', num(d.behavior.pageExits));
+
     // Trend chart
+    lastTrend = d.trend;
     renderChart(d.trend);
   }
 
@@ -392,6 +653,7 @@
 
   function fillTable(id, rows, rowFn) {
     var tbody = document.querySelector('#' + id + ' tbody');
+    if (!rows.length) { tbody.innerHTML = '<tr><td colspan="3" style="text-align:center;color:var(--muted);padding:32px">No data yet</td></tr>'; return; }
     tbody.innerHTML = rows.map(function(r) { return '<tr>' + rowFn(r) + '</tr>'; }).join('');
   }
 
@@ -399,30 +661,20 @@
 
   function renderDevices(devices) {
     var el = document.getElementById('devices');
+    if (!devices.length) { el.innerHTML = '<div style="color:var(--muted);text-align:center;padding:32px">No data yet</div>'; return; }
     var total = devices.reduce(function(s, d) { return s + d.users; }, 0) || 1;
-    var colors = { desktop: 'desktop', mobile: 'mobile', tablet: 'tablet' };
     el.innerHTML = devices.map(function(d) {
       var pct = Math.round((d.users / total) * 100);
-      var cls = colors[d.device] || 'desktop';
+      var cls = ({ desktop: 'desktop', mobile: 'mobile', tablet: 'tablet' })[d.device] || 'desktop';
       return '<div class="device-row">' +
         '<span class="device-label">' + esc(d.device) + '</span>' +
-        '<div class="device-bar-track"><div class="device-bar-fill ' + cls + '" style="width:' + Math.max(pct, 5) + '%">' + pct + '%</div></div>' +
-        '<span style="font-family:var(--mono);font-size:12px;color:var(--muted);min-width:50px;text-align:right">' + num(d.users) + '</span>' +
+        '<div class="device-bar-track"><div class="device-bar-fill ' + cls + '" style="width:' + Math.max(pct, 6) + '%">' + pct + '%</div></div>' +
+        '<span class="device-count">' + num(d.users) + '</span>' +
         '</div>';
     }).join('');
   }
 
-  /* ── Events ───────────────────────────────────────────────── */
-
-  function renderEvents(events) {
-    var el = document.getElementById('events');
-    el.innerHTML = events.map(function(e) {
-      var label = e.event.replace(/_/g, ' ');
-      return '<div class="event-pill"><span class="event-name">' + esc(label) + '</span><span class="event-count">' + num(e.count) + '</span></div>';
-    }).join('');
-  }
-
-  /* ── Funnel ───────────────────────────────────────────────── */
+  /* ── Page funnel ──────────────────────────────────────────── */
 
   function renderFunnel(funnel) {
     var el = document.getElementById('funnel');
@@ -437,16 +689,75 @@
     ];
     var map = {};
     funnel.forEach(function(f) { map[f.path] = f.users; });
-    var homeUsers = map['/'] || 1;
-
+    var home = map['/'] || 1;
     el.innerHTML = steps.map(function(s) {
-      var users = map[s.path] || 0;
-      var pct = homeUsers > 0 ? Math.round((users / homeUsers) * 100) : 0;
+      var u = map[s.path] || 0;
+      var pct = home > 0 ? Math.round((u / home) * 100) : 0;
       return '<div class="funnel-step">' +
-        '<div class="funnel-num">' + num(users) + '</div>' +
+        '<div class="funnel-num">' + num(u) + '</div>' +
         '<div class="funnel-label">' + esc(s.label) + '</div>' +
         (s.path !== '/' ? '<div class="funnel-pct">' + pct + '% of home</div>' : '<div class="funnel-pct">entry</div>') +
         '</div>';
+    }).join('');
+  }
+
+  /* ── Behavior funnels ─────────────────────────────────────── */
+
+  function bfunnelRow(label, sub, count, max, style) {
+    var pct = max > 0 ? Math.round((count / max) * 100) : 0;
+    return '<div class="bfunnel-row">' +
+      '<div class="bfunnel-label">' + esc(label) + '<div class="bfunnel-sub">' + esc(sub) + '</div></div>' +
+      '<div class="bfunnel-bar"><div class="bfunnel-fill ' + style + '" style="width:' + Math.max(pct, 4) + '%">' + num(count) + '</div></div>' +
+    '</div>';
+  }
+
+  function renderCalcFunnel(c, funnel) {
+    var fmap = {}; funnel.forEach(function(f) { fmap[f.path] = f.users; });
+    var pageVisitors = fmap['/calculator'] || 0;
+    var max = Math.max(pageVisitors, c.fieldFocus, c.submit, c.resultView, c.ctaClicks);
+    var el = document.getElementById('calc-funnel');
+    el.innerHTML =
+      bfunnelRow('Page visitors', 'reached /calculator', pageVisitors, max, 's1') +
+      bfunnelRow('Engaged form', 'focused any field', c.fieldFocus, max, 's2') +
+      bfunnelRow('Submitted', 'clicked calculate', c.submit, max, 's3') +
+      bfunnelRow('Viewed result', 'saw their numbers', c.resultView, max, 's4') +
+      bfunnelRow('Clicked CTA', 'next step from result', c.ctaClicks, max, 's4');
+  }
+
+  function renderAuditFunnel(a, funnel) {
+    var fmap = {}; funnel.forEach(function(f) { fmap[f.path] = f.users; });
+    var pageVisitors = fmap['/audit'] || 0;
+    // step_view is per-step. To approximate "started", use field_focus or stepView/N
+    var started = a.fieldFocus || a.stepView; // engaged with any field
+    var max = Math.max(pageVisitors, started, a.stepAdvance, a.submit, a.confirmation, a.abandon);
+    var el = document.getElementById('audit-funnel');
+    el.innerHTML =
+      bfunnelRow('Page visitors', 'reached /audit', pageVisitors, max, 's1') +
+      bfunnelRow('Started form', 'focused any field', started, max, 's2') +
+      bfunnelRow('Step advances', 'moved forward', a.stepAdvance, max, 's3') +
+      bfunnelRow('Submitted', 'completed all steps', a.submit, max, 's4') +
+      bfunnelRow('Confirmation', 'saw success page', a.confirmation, max, 's4') +
+      bfunnelRow('Abandoned', 'left mid-form', a.abandon, max, 's1');
+  }
+
+  /* ── Scroll depth ─────────────────────────────────────────── */
+
+  function renderScroll(s, visitors) {
+    var el = document.getElementById('scroll-bars');
+    var max = visitors || s.d25 || 1;
+    var rows = [
+      { label: '25%', count: s.d25 },
+      { label: '50%', count: s.d50 },
+      { label: '75%', count: s.d75 },
+      { label: '100%', count: s.d100 },
+    ];
+    el.innerHTML = rows.map(function(r) {
+      var pct = max > 0 ? Math.round((r.count / max) * 100) : 0;
+      return '<div class="scroll-row">' +
+        '<span class="scroll-label">' + r.label + '</span>' +
+        '<div class="scroll-bar"><div class="scroll-fill" style="width:' + Math.max(pct, 4) + '%">' + num(r.count) + '</div></div>' +
+        '<span class="scroll-pct">' + pct + '%</span>' +
+      '</div>';
     }).join('');
   }
 
@@ -462,10 +773,11 @@
     canvas.width = w * dpr;
     canvas.height = h * dpr;
     ctx.scale(dpr, dpr);
+    ctx.clearRect(0, 0, w, h);
 
-    if (!trend.length) return;
+    if (!trend || !trend.length) return;
 
-    var pad = { top: 20, right: 20, bottom: 30, left: 45 };
+    var pad = { top: 24, right: 24, bottom: 36, left: 52 };
     var cw = w - pad.left - pad.right;
     var ch = h - pad.top - pad.bottom;
 
@@ -475,76 +787,55 @@
     function x(i) { return pad.left + (i / (trend.length - 1)) * cw; }
     function y(v) { return pad.top + ch - (v / maxV) * ch; }
 
-    // Grid lines
-    ctx.strokeStyle = 'rgba(255,255,255,0.04)';
+    // Grid
+    ctx.strokeStyle = 'rgba(255,255,255,0.05)';
     ctx.lineWidth = 1;
+    ctx.fillStyle = '#8a8a96';
+    ctx.font = '10px JetBrains Mono';
+    ctx.textAlign = 'right';
     for (var g = 0; g <= 4; g++) {
       var gy = pad.top + (ch / 4) * g;
       ctx.beginPath(); ctx.moveTo(pad.left, gy); ctx.lineTo(w - pad.right, gy); ctx.stroke();
-      ctx.fillStyle = '#737380';
-      ctx.font = '10px JetBrains Mono';
-      ctx.textAlign = 'right';
-      ctx.fillText(num(Math.round(maxV - (maxV / 4) * g)), pad.left - 8, gy + 3);
+      ctx.fillText(num(Math.round(maxV - (maxV / 4) * g)), pad.left - 10, gy + 3);
     }
 
-    // X labels (every ~5 days)
-    ctx.fillStyle = '#737380';
-    ctx.font = '10px JetBrains Mono';
+    // X labels
     ctx.textAlign = 'center';
     var step = Math.max(1, Math.floor(trend.length / 6));
     for (var xi = 0; xi < trend.length; xi += step) {
-      var dateStr = trend[xi].date;
-      var label = dateStr.substring(4, 6) + '/' + dateStr.substring(6, 8);
-      ctx.fillText(label, x(xi), h - 8);
+      var d = trend[xi].date;
+      var label = d.substring(4, 6) + '/' + d.substring(6, 8);
+      ctx.fillText(label, x(xi), h - 12);
     }
 
-    // Page views line (blue, filled)
+    // Page views (blue, filled)
     ctx.beginPath();
     ctx.moveTo(x(0), y(trend[0].pageViews));
     for (var p = 1; p < trend.length; p++) ctx.lineTo(x(p), y(trend[p].pageViews));
-    ctx.strokeStyle = 'rgba(96,165,250,0.7)';
+    ctx.strokeStyle = 'rgba(96,165,250,0.8)';
     ctx.lineWidth = 1.5;
     ctx.stroke();
-    // Fill
-    ctx.lineTo(x(trend.length - 1), y(0));
-    ctx.lineTo(x(0), y(0));
-    ctx.closePath();
-    ctx.fillStyle = 'rgba(96,165,250,0.06)';
-    ctx.fill();
+    ctx.lineTo(x(trend.length - 1), y(0)); ctx.lineTo(x(0), y(0)); ctx.closePath();
+    ctx.fillStyle = 'rgba(96,165,250,0.08)'; ctx.fill();
 
-    // Visitors line (green)
+    // Visitors (green)
     ctx.beginPath();
     ctx.moveTo(x(0), y(trend[0].users));
     for (var u = 1; u < trend.length; u++) ctx.lineTo(x(u), y(trend[u].users));
-    ctx.strokeStyle = 'rgba(74,222,128,0.8)';
-    ctx.lineWidth = 2;
+    ctx.strokeStyle = 'rgba(74,222,128,0.9)';
+    ctx.lineWidth = 2.5;
     ctx.stroke();
-    // Fill
-    ctx.lineTo(x(trend.length - 1), y(0));
-    ctx.lineTo(x(0), y(0));
-    ctx.closePath();
-    ctx.fillStyle = 'rgba(74,222,128,0.06)';
-    ctx.fill();
-
-    // Legend
-    ctx.fillStyle = 'rgba(74,222,128,0.8)';
-    ctx.fillRect(w - 180, 6, 10, 3);
-    ctx.fillStyle = '#737380';
-    ctx.font = '10px JetBrains Mono';
-    ctx.textAlign = 'left';
-    ctx.fillText('VISITORS', w - 166, 11);
-    ctx.fillStyle = 'rgba(96,165,250,0.7)';
-    ctx.fillRect(w - 90, 6, 10, 3);
-    ctx.fillStyle = '#737380';
-    ctx.fillText('VIEWS', w - 76, 11);
+    ctx.lineTo(x(trend.length - 1), y(0)); ctx.lineTo(x(0), y(0)); ctx.closePath();
+    ctx.fillStyle = 'rgba(74,222,128,0.08)'; ctx.fill();
   }
 
   /* ── Helpers ──────────────────────────────────────────────── */
 
-  function setText(id, v) { document.getElementById(id).textContent = v; }
+  function setText(id, v) { var el = document.getElementById(id); if (el) el.textContent = v; }
   function num(n) { return (n || 0).toLocaleString(); }
   function esc(s) { var d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
   function fmtDuration(sec) {
+    if (!sec || sec < 1) return '0s';
     if (sec < 60) return sec + 's';
     var m = Math.floor(sec / 60);
     var s = sec % 60;
@@ -553,12 +844,8 @@
 
   // Resize chart on window resize
   window.addEventListener('resize', function() {
-    if (window._lastTrend) renderChart(window._lastTrend);
+    if (lastTrend) renderChart(lastTrend);
   });
-
-  // Store trend data for resize
-  var origRender = render;
-  // noop — trend stored in renderChart
 
 })();
 </script>
