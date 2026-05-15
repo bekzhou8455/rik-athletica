@@ -232,6 +232,131 @@ select {
   padding: 56px 48px;
   border: 1px solid var(--border);
 }
+
+/* ─── Audit Preview Gallery (full-bleed auto-scroll) ─── */
+.audit-preview-strip {
+  position: relative;
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  margin-top: 56px;
+  margin-bottom: 12px;
+  padding: 56px 0 48px;
+  background: linear-gradient(180deg, transparent 0%, rgba(238,237,234,0.85) 14%, rgba(238,237,234,0.85) 86%, transparent 100%);
+  overflow: hidden;
+}
+.audit-preview-strip .strip-eyebrow {
+  text-align: center;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #5a5853;
+  font-weight: 600;
+  margin-bottom: 12px;
+  padding: 0 24px;
+}
+.audit-preview-strip .strip-title {
+  text-align: center;
+  font-size: clamp(28px, 3.4vw, 38px);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+  color: var(--off-black);
+  margin-bottom: 36px;
+  padding: 0 24px;
+}
+.audit-preview-strip .strip-title em {
+  font-style: normal;
+  font-weight: 300;
+  color: #8a8780;
+}
+.audit-preview-strip .strip-foot {
+  text-align: center;
+  font-size: 14px;
+  color: #5a5853;
+  margin-top: 32px;
+  padding: 0 24px;
+  max-width: 56ch;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.55;
+}
+.strip-viewport {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  /* Soft fade at edges */
+  -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 6%, #000 94%, transparent 100%);
+          mask-image: linear-gradient(90deg, transparent 0%, #000 6%, #000 94%, transparent 100%);
+}
+.strip-track {
+  display: flex;
+  gap: 24px;
+  width: max-content;
+  padding: 12px 0;
+  animation: strip-scroll 70s linear infinite;
+  will-change: transform;
+}
+.strip-viewport:hover .strip-track,
+.strip-viewport:focus-within .strip-track { animation-play-state: paused; }
+.strip-card {
+  flex: 0 0 auto;
+  height: 480px;
+  border-radius: 16px;
+  overflow: hidden;
+  background: #fff;
+  position: relative;
+  box-shadow: 0 24px 56px rgba(14,14,14,0.10), 0 1px 0 rgba(14,14,14,0.04);
+}
+.strip-card img {
+  display: block;
+  height: 100%;
+  width: auto;
+  user-select: none;
+  -webkit-user-drag: none;
+  pointer-events: none;
+}
+/* Subtle bottom shade on each card for a "matte" finish */
+.strip-card::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg, transparent 72%, rgba(14,14,14,0.06) 100%);
+  pointer-events: none;
+}
+/* Matte-glass haze panels at the viewport edges */
+.strip-viewport::before, .strip-viewport::after {
+  content: '';
+  position: absolute;
+  top: 0; bottom: 0;
+  width: 96px;
+  z-index: 2;
+  pointer-events: none;
+  -webkit-backdrop-filter: blur(10px) saturate(108%);
+          backdrop-filter: blur(10px) saturate(108%);
+}
+.strip-viewport::before {
+  left: 0;
+  background: linear-gradient(90deg, rgba(238,237,234,0.85) 0%, rgba(238,237,234,0.35) 60%, transparent 100%);
+}
+.strip-viewport::after {
+  right: 0;
+  background: linear-gradient(270deg, rgba(238,237,234,0.85) 0%, rgba(238,237,234,0.35) 60%, transparent 100%);
+}
+@keyframes strip-scroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); } /* duplicated set → seamless loop */
+}
+@media (prefers-reduced-motion: reduce) {
+  .strip-track { animation: none; }
+  .strip-viewport { overflow-x: auto; -webkit-overflow-scrolling: touch; -webkit-mask-image: none; mask-image: none; }
+  .strip-viewport::before, .strip-viewport::after { display: none; }
+}
+@media (max-width: 720px) {
+  .audit-preview-strip { padding: 40px 0 36px; margin-top: 36px; }
+  .strip-card { height: 320px; border-radius: 12px; }
+  .strip-track { gap: 16px; animation-duration: 50s; }
+  .strip-viewport::before, .strip-viewport::after { width: 56px; }
+}
 .intro-card .eyebrow {
   display: inline-block; font-size: 11px; letter-spacing: 2.5px; text-transform: uppercase;
   color: #fff; background: var(--green); padding: 5px 14px; border-radius: var(--r-btn);
@@ -381,6 +506,30 @@ footer .legal-top { display: flex; justify-content: space-between; align-items: 
         </ul>
 
         <button class="btn btn-primary btn-large" onclick="goNext()">Start the audit &rarr;</button>
+
+        <!-- ═══ AUDIT PREVIEW GALLERY (anonymized "what you'll get" auto-scroll) ═══ -->
+        <section class="audit-preview-strip" aria-label="Audit preview gallery">
+          <div class="strip-eyebrow">A six-page personalized audit</div>
+          <h3 class="strip-title">Here's what <em>You</em> get.</h3>
+          <div class="strip-viewport">
+            <div class="strip-track">
+              <div class="strip-card"><img src="/assets/audit-preview/01-cover.png" alt="Audit cover with athlete name and race details" loading="lazy"></div>
+              <div class="strip-card"><img src="/assets/audit-preview/02-timeline.png" alt="Two Futures timeline showing the fueling gap" loading="lazy"></div>
+              <div class="strip-card"><img src="/assets/audit-preview/03-gap.png" alt="The gap in three numbers — current, target, recoverable" loading="lazy"></div>
+              <div class="strip-card"><img src="/assets/audit-preview/04-risk.png" alt="Risk window heatmap showing where the race falls apart" loading="lazy"></div>
+              <div class="strip-card"><img src="/assets/audit-preview/05-card.png" alt="Race-day card with pre-race, bike and run skeleton" loading="lazy"></div>
+              <div class="strip-card"><img src="/assets/audit-preview/06-trust.png" alt="Trust and sources page with RD review note" loading="lazy"></div>
+              <!-- Duplicate set for seamless infinite loop -->
+              <div class="strip-card" aria-hidden="true"><img src="/assets/audit-preview/01-cover.png" alt="" loading="lazy"></div>
+              <div class="strip-card" aria-hidden="true"><img src="/assets/audit-preview/02-timeline.png" alt="" loading="lazy"></div>
+              <div class="strip-card" aria-hidden="true"><img src="/assets/audit-preview/03-gap.png" alt="" loading="lazy"></div>
+              <div class="strip-card" aria-hidden="true"><img src="/assets/audit-preview/04-risk.png" alt="" loading="lazy"></div>
+              <div class="strip-card" aria-hidden="true"><img src="/assets/audit-preview/05-card.png" alt="" loading="lazy"></div>
+              <div class="strip-card" aria-hidden="true"><img src="/assets/audit-preview/06-trust.png" alt="" loading="lazy"></div>
+            </div>
+          </div>
+          <p class="strip-foot">Real anonymized example. Yours is computed from your race date, gut history, sweat rate, and current intake — no two audits are the same.</p>
+        </section>
 
         <!-- ═══ RDN TRUST BANNER (per §1.6 — audit page is in §1.2 permitted; placement requires Emily's §1.6(b) written approval BEFORE deploy) ═══ -->
         <div style="margin-top:48px;padding-top:32px;border-top:1px solid var(--border);">
