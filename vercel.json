@@ -14,7 +14,8 @@
     "api/stripe-webhook.js": { "maxDuration": 15 },
     "api/cron/daily-sweep.js": { "maxDuration": 90 },
     "api/screen-capture.js": { "maxDuration": 10 },
-    "api/analytics.js": { "maxDuration": 30 }
+    "api/analytics.js": { "maxDuration": 30 },
+    "api/analytics-report.js": { "maxDuration": 60 }
   },
   "crons": [
     { "path": "/api/cron/daily-sweep", "schedule": "0 9 * * *" }
