@@ -10,6 +10,7 @@
 
 import { z } from 'zod';
 import { runEngine } from '../../lib/routing.js';
+import { identifyPrimaryGap } from '../../lib/audit-gaps.js';
 import { draftBlocks, fallbackDrafts } from '../../lib/ai-drafter.js';
 import { insertAudit } from '../../lib/db.js';
 import { tagAuditSubmitted } from '../../lib/kit.js';
@@ -70,6 +71,16 @@ export default async function handler(req, res) {
     console.error('[submit] engine error:', err);
     await alertError({ where: 'api/audit/submit (engine)', error: err }).catch(() => {});
     return res.status(500).json({ error: 'engine failure' });
+  }
+
+  // Run gap analysis (new audit format — primary gap + tactics + routing)
+  // Attach to engine so the admin queue + render layer see it.
+  try {
+    engine.audit_gap = identifyPrimaryGap(answers);
+  } catch (err) {
+    console.error('[submit] audit-gaps error (non-blocking):', err);
+    alertError({ where: 'api/audit/submit (audit-gaps)', error: err }).catch(() => {});
+    // Don't block submission — render layer will re-derive at render time
   }
 
   // AI drafts (with fallback so the queue is never blocked)

@@ -114,14 +114,13 @@ await page.addStyleTag({
   `,
 });
 
-// === Sections to capture (curated 6) ===
+// === Sections to capture (new 4-section template + dark hero) ===
 const sections = [
-  { selector: '.doc-cover',                  name: '01-cover.png',    label: 'Cover' },
-  { selector: '.page-block:nth-of-type(1)',  name: '02-timeline.png', label: 'Page 01 — Two Futures Timeline' },
-  { selector: '.page-block:nth-of-type(2)',  name: '03-gap.png',      label: 'Page 02 — The Gap' },
-  { selector: '.page-block:nth-of-type(3)',  name: '04-risk.png',     label: 'Page 03 — Risk Window' },
-  { selector: '.page-block:nth-of-type(4)',  name: '05-card.png',     label: 'Page 04 — Race Card' },
-  { selector: '.page-block:nth-of-type(5)',  name: '06-trust.png',    label: 'Page 05 — Trust & Sources' },
+  { selector: '.hero',                       name: '01-hero.png',     label: 'Dark hero (athlete + big number)' },
+  { selector: '.page .section:nth-of-type(1)', name: '02-gap.png',     label: 'Section 1 — Primary Gap' },
+  { selector: '.page .section:nth-of-type(2)', name: '03-impact.png',  label: 'Section 2 — Estimated Impact' },
+  { selector: '.page .section:nth-of-type(3)', name: '04-tactics.png', label: 'Section 3 — The Fix (tactic cards)' },
+  { selector: '.page .section:nth-of-type(4)', name: '05-next.png',    label: 'Section 4 — Next Step (routing)' },
 ];
 
 for (const s of sections) {
