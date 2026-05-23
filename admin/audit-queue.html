@@ -352,14 +352,25 @@
         ${a.specificConcern ? ai('Specific question', a.specificConcern) : ''}
       </div>
 
-      <h3>Engine recommendation</h3>
-      <div style="background:rgba(45,90,61,0.08);padding:14px 18px;border-radius:10px;font-size:13px">
-        <strong style="font-size:14px">${escapeHtml(tier.label ?? '?')}</strong>
-        <div style="color:#555;margin-top:4px">${escapeHtml(tier.explanation ?? '')}</div>
+      <h3>Primary gap (deterministic)</h3>
+      <div style="background:rgba(14,14,14,0.05);padding:14px 18px;border-radius:10px;font-size:13px;border-left:3px solid #c98b5a">
+        <strong style="font-size:14px">${escapeHtml(e.audit_gap?.gap_title ?? 'No gap analysis yet')}</strong>
+        <div style="color:#555;margin-top:4px">${escapeHtml(e.audit_gap?.gap_description ?? '')}</div>
         <div style="margin-top:8px;font-family:'JetBrains Mono',monospace;font-size:11px;color:#666">
-          carb deficit: ${e.track_b?.carb_deficit_g_per_hour ?? '?'}g/hr ·
-          minutes lost: ${e.track_b?.minutes_lost_estimate?.lo ?? '?'}–${e.track_b?.minutes_lost_estimate?.hi ?? '?'} ·
-          sodium ${e.track_a?.sodium_tier ?? '?'}
+          gap type: ${escapeHtml(e.audit_gap?.gap_type ?? '?')} ·
+          minute cost: ${e.audit_gap?.minute_cost?.min ?? '?'}–${e.audit_gap?.minute_cost?.max ?? '?'} ·
+          intake: ${e.audit_gap?.athleteGhr ?? '?'}g/hr · target: ${e.audit_gap?.targetGhr ?? '?'}g/hr ·
+          weeks out: ${e.audit_gap?.weeksOut ?? '?'}
+        </div>
+      </div>
+
+      <h3 style="margin-top:24px">Routing recommendation</h3>
+      <div style="background:rgba(14,14,14,0.05);padding:14px 18px;border-radius:10px;font-size:13px">
+        <strong style="font-size:14px">${escapeHtml(e.audit_gap?.routing?.cta_text ?? tier.label ?? '?')}</strong>
+        <div style="color:#555;margin-top:4px">${escapeHtml(e.audit_gap?.routing?.explanation ?? tier.explanation ?? '')}</div>
+        <div style="margin-top:8px;font-family:'JetBrains Mono',monospace;font-size:11px;color:#666">
+          tier: ${escapeHtml(e.audit_gap?.routing?.tier ?? tier.tier ?? '?')} ·
+          reason: ${escapeHtml(e.audit_gap?.routing?.reason ?? tier.reason ?? '?')}
         </div>
       </div>
 
@@ -368,21 +379,26 @@
           <strong>⚠ AI draft contains banned words:</strong> ${d._ftc_warning.join(', ')}. Edit before sending.
         </div>` : ''}
 
-      <h3>${isDelivered ? 'Delivered text (read-only)' : 'AI-drafted personalization (edit + approve)'}</h3>
+      <h3>${isDelivered ? 'Delivered text (read-only)' : 'AI-drafted prose (edit + approve)'}</h3>
 
       <div class="draft-block">
-        <div class="draft-label">What I noticed (Page 1) <span class="hint">3 sentences</span></div>
-        <textarea id="d-noticed" class="draft-textarea" ${isDelivered ? 'readonly' : ''}>${escapeHtml((row.drafts_final?.what_i_noticed) ?? d.what_i_noticed ?? '')}</textarea>
+        <div class="draft-label">Section 1 — Primary Gap expansion <span class="hint">60–90 words · references their data</span></div>
+        <textarea id="d-section1" class="draft-textarea" ${isDelivered ? 'readonly' : ''}>${escapeHtml((row.drafts_final?.section_1_gap) ?? d.section_1_gap ?? '')}</textarea>
       </div>
 
       <div class="draft-block">
-        <div class="draft-label">Why this tier (Page 3) <span class="hint">3 sentences</span></div>
-        <textarea id="d-tier" class="draft-textarea" ${isDelivered ? 'readonly' : ''}>${escapeHtml((row.drafts_final?.why_this_tier) ?? d.why_this_tier ?? '')}</textarea>
+        <div class="draft-label">Section 2 — Estimated Impact context <span class="hint">50–80 words · ties to their goal_time if provided</span></div>
+        <textarea id="d-section2" class="draft-textarea" ${isDelivered ? 'readonly' : ''}>${escapeHtml((row.drafts_final?.section_2_impact) ?? d.section_2_impact ?? '')}</textarea>
       </div>
 
       <div class="draft-block">
-        <div class="draft-label">Specific question answer (Page 4) <span class="hint">4 sentences</span></div>
-        <textarea id="d-question" class="draft-textarea" ${isDelivered ? 'readonly' : ''}>${escapeHtml((row.drafts_final?.specific_question_answer) ?? d.specific_question_answer ?? '')}</textarea>
+        <div class="draft-label">Section 3 — Lead-in to tactics <span class="hint">20–40 words · short bridge before the deterministic tactic cards</span></div>
+        <textarea id="d-section3" class="draft-textarea" ${isDelivered ? 'readonly' : ''}>${escapeHtml((row.drafts_final?.section_3_lead) ?? d.section_3_lead ?? '')}</textarea>
+      </div>
+
+      <div class="draft-block">
+        <div class="draft-label">Section 4 — Honest routing recommendation <span class="hint">50–80 words · single next step, no result promises</span></div>
+        <textarea id="d-section4" class="draft-textarea" ${isDelivered ? 'readonly' : ''}>${escapeHtml((row.drafts_final?.section_4_routing) ?? d.section_4_routing ?? '')}</textarea>
       </div>
 
       <div class="engine-toggle" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'block' ? 'none' : 'block'">
@@ -427,8 +443,8 @@
   // === Approve & Send ===
   async function approve(id) {
     const drafts = collectDrafts();
-    if (!drafts.what_i_noticed.trim() || !drafts.why_this_tier.trim() || !drafts.specific_question_answer.trim()) {
-      toast('All 3 blocks must be filled.', true);
+    if (!drafts.section_1_gap.trim() || !drafts.section_2_impact.trim() || !drafts.section_3_lead.trim() || !drafts.section_4_routing.trim()) {
+      toast('All 4 sections must be filled.', true);
       return;
     }
     if (!confirm('Approve and send the audit to the athlete?\nThis will: generate the page + PDF, email them, tag in Kit, and start the A16 nurture.')) return;
@@ -449,9 +465,10 @@
 
   function collectDrafts() {
     return {
-      what_i_noticed: $('d-noticed')?.value ?? '',
-      why_this_tier: $('d-tier')?.value ?? '',
-      specific_question_answer: $('d-question')?.value ?? '',
+      section_1_gap:     $('d-section1')?.value ?? '',
+      section_2_impact:  $('d-section2')?.value ?? '',
+      section_3_lead:    $('d-section3')?.value ?? '',
+      section_4_routing: $('d-section4')?.value ?? '',
     };
   }
 

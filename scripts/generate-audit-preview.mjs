@@ -66,13 +66,20 @@ const mockAnswers = {
 };
 
 const engine = runEngine(mockAnswers);
+// Also attach the audit_gap so the render layer sees it (matches submit.js)
+const { identifyPrimaryGap } = await import('../lib/audit-gaps.js');
+engine.audit_gap = identifyPrimaryGap(mockAnswers);
+
+// Mock AI-drafted prose for the 4 new sections (matches what ai-drafter outputs)
 const drafts = {
-  what_i_noticed:
-    "You're at ~52 g/hr with a 70.3 in 8 weeks — exactly the gap most age-groupers don't realize they have. Your gut tolerates moderate intake but isn't trained for race-day load. With 8 weeks, you have the full Sprint window to ramp safely.",
-  why_this_tier:
-    "Sprint is built for your exact situation: real deficit, enough runway for the 4-week gut ramp, no coach managing the math. The structured weekly progression removes the guesswork on how fast to push intake.",
-  specific_question_answer:
-    "Bonk at mile 8 of the run is almost always a bike-leg shortfall catching up. Your bike at 70.3 pace runs ~2:45 — at 52 g/hr that's a ~75 g deficit by T2. The fix isn't more on the run — it's getting bike intake to 75-85 g/hr so you arrive at the run with reserves.",
+  section_1_gap:
+    "You're taking in around 52 g/hr on a half Ironman — solid for the long run, short for race day. The trained-gut range for 70.3 sits at 70–90 g/hr. With 8 weeks of runway, You have the full window to ramp safely without bonking the experiment.",
+  section_2_impact:
+    "8–18 minutes is the gap most age-groupers underestimate. That's the difference between Your 5:15 goal and a 5:33 finish — usually shows up in the back half of the run, when glycogen runs ahead of intake.",
+  section_3_lead:
+    "Four tactics You can act on this week. Pick one. Don't try all at once.",
+  section_4_routing:
+    "Your timeline lands right inside Sprint's sweet spot — 8 weeks gives the full 4-week gut ramp, then a 2-week race-week protocol. You've seen the gap in Section 1; Sprint is the system that closes it without guesswork.",
   _meta: { model: 'preview-mock' },
 };
 
