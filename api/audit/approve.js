@@ -1,6 +1,6 @@
 // POST /api/audit/approve
 // Admin-only. Called by admin queue when Bek clicks "Approve & Send".
-// Body: { id, drafts: { what_i_noticed, why_this_tier, specific_question_answer } }
+// Body: { id, drafts: { section_1_gap, section_2_impact, section_3_lead, section_4_routing } }
 // 1. Verify admin token
 // 2. Fetch audit row
 // 3. Generate slug
@@ -36,16 +36,17 @@ export default async function handler(req, res) {
     return res.status(409).json({ error: 'already delivered', slug: row.slug });
   }
 
-  // Use admin's edited drafts as drafts_final
+  // Use admin's edited drafts as drafts_final (new 4-section schema)
   const draftsFinal = {
-    what_i_noticed: String(drafts.what_i_noticed ?? '').trim(),
-    why_this_tier: String(drafts.why_this_tier ?? '').trim(),
-    specific_question_answer: String(drafts.specific_question_answer ?? '').trim(),
+    section_1_gap:     String(drafts.section_1_gap     ?? '').trim(),
+    section_2_impact:  String(drafts.section_2_impact  ?? '').trim(),
+    section_3_lead:    String(drafts.section_3_lead    ?? '').trim(),
+    section_4_routing: String(drafts.section_4_routing ?? '').trim(),
     _approved_at: new Date().toISOString(),
   };
 
-  if (!draftsFinal.what_i_noticed || !draftsFinal.why_this_tier || !draftsFinal.specific_question_answer) {
-    return res.status(400).json({ error: 'all 3 personalization blocks required' });
+  if (!draftsFinal.section_1_gap || !draftsFinal.section_2_impact || !draftsFinal.section_3_lead || !draftsFinal.section_4_routing) {
+    return res.status(400).json({ error: 'all 4 sections required' });
   }
 
   const slug = newSlug();
@@ -84,11 +85,11 @@ export default async function handler(req, res) {
     }).catch(err => alertError({ where: 'api/audit/approve (kit.tagAuditDelivered)', error: err, auditId: id })),
 
     // Tag post-audit-nurture → triggers Kit sequence (PA1 → PA3 → PA4)
-    // audit_summary_oneliner: first sentence of what_i_noticed, capped at 120 chars.
-    // This populates the personalised pull-quote in PA1 ("the thing it surfaced — X — isn't unusual").
+    // audit_summary_oneliner: first sentence of section_1_gap, capped at 120 chars.
+    // Populates the personalised pull-quote in PA1 ("the thing it surfaced — X — isn't unusual").
     addNurtureTag(row.email, row.first_name, 'post-audit-nurture', {
       audit_url: `https://www.rikathletica.com/a/${slug}`,
-      audit_summary_oneliner: draftsFinal.what_i_noticed
+      audit_summary_oneliner: draftsFinal.section_1_gap
         .replace(/\s+/g, ' ')
         .split(/[.!?]/)[0]
         .trim()
