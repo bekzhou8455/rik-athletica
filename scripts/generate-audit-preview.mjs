@@ -70,16 +70,17 @@ const engine = runEngine(mockAnswers);
 const { identifyPrimaryGap } = await import('../lib/audit-gaps.js');
 engine.audit_gap = identifyPrimaryGap(mockAnswers);
 
-// Mock AI-drafted prose for the 4 new sections (matches what ai-drafter outputs)
+// Mock AI-drafted prose for the 4 new sections — written per the tightened
+// prompt rules (Add-a-layer, no stealth-sell, no fabricated quantities).
 const drafts = {
   section_1_gap:
-    "You're taking in around 52 g/hr on a half Ironman — solid for the long run, short for race day. The trained-gut range for 70.3 sits at 70–90 g/hr. With 8 weeks of runway, You have the full window to ramp safely without bonking the experiment.",
+    "Your liver banks about 80g of glycogen and Your blood holds ~5g of glucose. At 52 g/hr against an exercise demand near 75 g/hr, You're drawing the bank down every hour. By T2, the account's low; on the run, it goes negative — and pace responds before You feel it.",
   section_2_impact:
-    "8–18 minutes is the gap most age-groupers underestimate. That's the difference between Your 5:15 goal and a 5:33 finish — usually shows up in the back half of the run, when glycogen runs ahead of intake.",
+    "The collapse isn't a wall, it's a fog. Aid stations stop registering. The bottle hand-off slips. You're still moving, but Your splits drift 30–45 seconds per mile and You won't notice for two miles. That's where most age-group time losses live — not in fitness, in the late-race executive function carbs protect.",
   section_3_lead:
     "Four tactics You can act on this week. Pick one. Don't try all at once.",
   section_4_routing:
-    "Your timeline lands right inside Sprint's sweet spot — 8 weeks gives the full 4-week gut ramp, then a 2-week race-week protocol. You've seen the gap in Section 1; Sprint is the system that closes it without guesswork.",
+    "Your race lands in the Sprint sweet spot — 8 weeks gives the full 4-week gut ramp plus 2 weeks of consolidation before race week. Sprint runs the iteration on Your data each week, so the protocol You take to the start line is one You've already executed.",
   _meta: { model: 'preview-mock' },
 };
 
