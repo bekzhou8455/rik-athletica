@@ -5,6 +5,14 @@
     { "source": "/ai.txt", "destination": "/.well-known/ai.txt" },
     { "source": "/a/:slug", "destination": "/api/audit/render?slug=:slug" }
   ],
+  "redirects": [
+    { "source": "/bundle", "destination": "/", "statusCode": 301 },
+    { "source": "/bundle.html", "destination": "/", "statusCode": 301 },
+    { "source": "/calculator", "destination": "/audit", "statusCode": 301 },
+    { "source": "/calculator.html", "destination": "/audit", "statusCode": 301 },
+    { "source": "/premium", "destination": "/sprint", "statusCode": 301 },
+    { "source": "/premium.html", "destination": "/sprint", "statusCode": 301 }
+  ],
   "functions": {
     "api/audit/submit.js": { "maxDuration": 30 },
     "api/audit/approve.js": { "maxDuration": 60 },

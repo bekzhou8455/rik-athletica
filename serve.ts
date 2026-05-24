@@ -8,17 +8,27 @@ const LEADS_FILE = join(DIR, "leads.csv");
 const REWARDFUL_KEY = process.env.REWARDFUL_KEY || "";
 
 // Named page routes → static files
+// Per v3 brief: Bundle IS the homepage at /. No separate bundle page.
 const ROUTES: Record<string, string> = {
   "/": "/index.html",
   "/sprint": "/sprint.html",
-  "/bundle": "/bundle.html",
-  "/premium": "/premium.html",
-  "/calculator": "/calculator.html",
   "/audit": "/audit.html",
+  "/why-you-bonked": "/why-you-bonked.html",
+  "/race-review": "/race-review.html",
   "/checkin": "/checkin.html",
   "/thank-you": "/thank-you.html",
   "/privacy": "/privacy.html",
   "/terms": "/terms.html",
+};
+
+// 301 redirects — deprecated URLs route to canonical destinations
+const REDIRECTS: Record<string, string> = {
+  "/bundle": "/",
+  "/bundle.html": "/",
+  "/calculator": "/audit",
+  "/calculator.html": "/audit",
+  "/premium": "/sprint",
+  "/premium.html": "/sprint",
 };
 
 // Serves a tiny redirect page that sets the Rewardful attribution cookie
@@ -359,6 +369,11 @@ Bun.serve({
         });
       }
       return new Response("Email template not found", { status: 404 });
+    }
+
+    // 301 redirects for deprecated URLs
+    if (REDIRECTS[pathname]) {
+      return Response.redirect(REDIRECTS[pathname], 301);
     }
 
     // Resolve named routes; fall through to raw path for /assets/* etc.

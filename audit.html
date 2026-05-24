@@ -52,18 +52,34 @@ body { font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif; bac
   --r-btn: 999px;         /* was 36px — iter-5 pill */
 }
 
-/* ── NAV (compact, focused) ── */
+/* ── NAV (v3 — global nav across all 3 pages) ── */
 nav {
   position: sticky; top: 0; z-index: 100;
-  background: rgba(246,245,244,0.96);
-  backdrop-filter: blur(16px);
+  background: rgba(238,237,234,0.92);
+  backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
   border-bottom: 1px solid var(--border);
-  padding: 0 40px; height: 56px;
+  padding: 0 40px; height: 62px;
   display: flex; justify-content: space-between; align-items: center;
 }
-.logo { font-size: 13px; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; color: var(--off-black); text-decoration: none; }
-nav .nav-meta { font-size: 11px; color: #aaa; letter-spacing: 0.04em; }
-nav .nav-meta strong { color: var(--green); font-weight: 600; }
+.logo { display: flex; align-items: center; }
+.logo img { height: 26px; width: auto; }
+.nav-links { display: flex; align-items: center; gap: 28px; list-style: none; margin: 0; padding: 0; }
+.nav-links a { font-size: 13.5px; font-weight: 500; color: #5A5853; letter-spacing: -0.005em; text-decoration: none; transition: color .2s; padding: 6px 0; }
+.nav-links a:hover { color: var(--off-black); }
+.nav-links a.active { color: var(--off-black); border-bottom: 1.5px solid var(--off-black); padding-bottom: 4px; }
+.nav-cta { display: inline-flex; align-items: center; background: var(--off-black); color: #fff; font-size: 13.5px; font-weight: 500; padding: 10px 20px; border-radius: 36px; text-decoration: none; transition: opacity .2s; min-height: 40px; }
+.nav-cta:hover { opacity: .85; }
+.nav-toggle { display: none; padding: 10px; min-width: 44px; min-height: 44px; align-items: center; justify-content: center; color: var(--off-black); background: none; border: none; cursor: pointer; }
+.nav-mobile { display: none; position: fixed; top: 62px; left: 0; right: 0; bottom: 0; background: var(--sand); z-index: 99; padding: 32px 24px; flex-direction: column; border-top: 1px solid var(--border); }
+.nav-mobile.open { display: flex; }
+.nav-mobile a { padding: 18px 0; font-size: 17px; font-weight: 500; border-bottom: 1px solid var(--border); color: var(--off-black); text-decoration: none; }
+.nav-mobile a:last-of-type { border-bottom: none; }
+.nav-mobile .nav-cta { margin-top: 28px; justify-content: center; min-height: 52px; }
+@media (max-width: 768px) {
+  nav { padding: 0 20px; }
+  .nav-links, nav > .nav-cta { display: none; }
+  .nav-toggle { display: flex; }
+}
 
 /* ── PROGRESS BAR (sub-nav) ── */
 .progress-wrap {
@@ -464,11 +480,43 @@ footer .legal-top { display: flex; justify-content: space-between; align-items: 
 </head>
 <body id="top">
 
-<!-- ═══ NAV ═══ -->
-<nav>
-  <a href="/" class="logo" style="display:flex;align-items:center;"><img src="https://cdn.jsdelivr.net/gh/bekzhou8455/rik-athletica@main/assets/media/rik-logo-cropped.png" alt="RIK Athletica" style="height:32px;width:auto;display:block;"></a>
-  <span class="nav-meta">Free Race Fuel Audit &middot; <strong>48-hr delivery</strong></span>
+<!-- ═══ NAV (v3 — global nav) ═══ -->
+<nav role="navigation" aria-label="Main navigation">
+  <a href="/" class="logo" aria-label="RIK Athletica home">
+    <img src="https://cdn.jsdelivr.net/gh/bekzhou8455/rik-athletica@main/assets/media/rik-logo-cropped.png" alt="RIK Athletica">
+  </a>
+  <ul class="nav-links">
+    <li><a href="/">Bundle</a></li>
+    <li><a href="/sprint">4-Week Sprint</a></li>
+    <li><a href="/audit" class="active">Free Audit</a></li>
+  </ul>
+  <a href="/" class="nav-cta" onclick="gtag('event','founding_50_cta_click',{location:'nav'})">Get the Bundle →</a>
+  <button class="nav-toggle" onclick="toggleAuditNav()" aria-label="Open menu" aria-expanded="false">
+    <svg width="20" height="14" viewBox="0 0 20 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M0 1h20M0 7h20M0 13h20"/></svg>
+  </button>
 </nav>
+<div class="nav-mobile" id="audit-nav-mobile">
+  <a href="/">Bundle</a>
+  <a href="/sprint">4-Week Sprint</a>
+  <a href="/audit" class="active">Free Audit</a>
+  <a href="/" class="nav-cta" onclick="gtag('event','founding_50_cta_click',{location:'mobile_nav'})">Get the Bundle →</a>
+</div>
+<script>
+function toggleAuditNav(){
+  var m=document.getElementById('audit-nav-mobile');
+  var o=m.classList.toggle('open');
+  document.querySelector('.nav-toggle').setAttribute('aria-expanded',o);
+  document.body.style.overflow=o?'hidden':'';
+}
+document.addEventListener('click',function(e){
+  var m=document.getElementById('audit-nav-mobile');
+  if(m.classList.contains('open')&&!m.contains(e.target)&&!e.target.closest('.nav-toggle')){
+    m.classList.remove('open');
+    document.querySelector('.nav-toggle').setAttribute('aria-expanded','false');
+    document.body.style.overflow='';
+  }
+});
+</script>
 
 <!-- ═══ PROGRESS BAR ═══ -->
 <div class="progress-wrap" id="progressWrap" style="display:none;">
@@ -827,7 +875,7 @@ footer .legal-top { display: flex; justify-content: space-between; align-items: 
 
         <div class="done-actions">
           <!-- TODO: Update Stripe link with Founding 50 coupon -->
-          <a href="/bundle" class="btn btn-primary">See the Bundle — $83 (Founding 50) &rarr;</a>
+          <a href="/" class="btn btn-primary">See the Bundle — $83 (Founding 50) &rarr;</a>
           <a href="/sprint" class="btn btn-secondary">See the 4-Week Sprint &rarr;</a>
         </div>
       </div>
