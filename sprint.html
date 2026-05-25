@@ -58,7 +58,13 @@ button{font-family:inherit}
 .wrap{max-width:var(--maxw);margin:0 auto}
 
 /* ─── NAV ─── */
-nav.site-nav{position:fixed;top:0;left:0;right:0;z-index:30;background:transparent;border-bottom:1px solid rgba(255,255,255,.08);padding:22px 36px;display:flex;justify-content:space-between;align-items:center;color:#fff;transition:opacity .28s ease,transform .28s ease}
+/* Founding 50 promo bar — persistent above nav */
+.promo-bar{position:fixed;top:0;left:0;right:0;z-index:40;background:var(--ink);color:rgba(255,255,255,.92);font-size:12px;font-weight:500;letter-spacing:.04em;text-align:center;padding:9px 24px;line-height:1.4;border-bottom:1px solid rgba(255,255,255,.08)}
+.promo-bar strong{color:#fff;font-weight:600}
+.promo-bar .pb-sep{display:inline-block;margin:0 10px;color:rgba(255,255,255,.4)}
+@media (max-width:720px){.promo-bar{font-size:11px;padding:7px 14px;letter-spacing:.02em}.promo-bar .pb-sep{margin:0 6px}.promo-bar .pb-mob-hide{display:none}}
+nav.site-nav{position:fixed;top:36px;left:0;right:0;z-index:30;background:transparent;border-bottom:1px solid rgba(255,255,255,.08);padding:22px 36px;display:flex;justify-content:space-between;align-items:center;color:#fff;transition:opacity .28s ease,transform .28s ease}
+@media (max-width:720px){nav.site-nav{top:32px}}
 nav.site-nav[data-state="hidden"]{opacity:0;pointer-events:none;transform:translateY(-6px)}
 .nav-mark{display:flex;align-items:center;gap:10px;font-weight:700;font-size:15px;letter-spacing:-.005em;color:#fff}
 .nav-mark img{height:26px;width:auto;filter:brightness(0) invert(1)}
@@ -69,7 +75,8 @@ nav.site-nav[data-state="hidden"]{opacity:0;pointer-events:none;transform:transl
 nav.site-nav .nav-toggle{color:#fff;display:none;background:none;border:none;cursor:pointer;padding:10px;min-width:44px;min-height:44px}
 nav.site-nav .cta .pill{background:#fff;color:var(--ink);border-color:#fff}
 nav.site-nav .cta .arrow{background:var(--ink);color:#fff;border-color:#fff}
-.nav-mobile{display:none;position:fixed;top:60px;left:0;right:0;bottom:0;background:var(--bg);z-index:25;padding:32px 20px;flex-direction:column}
+.nav-mobile{display:none;position:fixed;top:96px;left:0;right:0;bottom:0;background:var(--bg);z-index:25;padding:32px 20px;flex-direction:column}
+@media (max-width:720px){.nav-mobile{top:88px}}
 .nav-mobile.open{display:flex}
 .nav-mobile a{padding:18px 0;font-size:18px;font-weight:500;border-bottom:1px dashed var(--rule);color:var(--ink)}
 .nav-mobile a:last-of-type{border-bottom:0}
@@ -509,8 +516,37 @@ footer.legal .footer-disclaimer strong{color:rgba(255,255,255,.6);display:block;
 
 .visually-hidden{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 </style>
+<!-- Meta Pixel -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '1931883264260254');
+fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=1931883264260254&ev=PageView&noscript=1"
+/></noscript>
+<!-- End Meta Pixel -->
 </head>
 <body id="top">
+
+<!-- ═══ FOUNDING 50 PROMO BAR ═══ -->
+<div class="promo-bar" role="region" aria-label="Limited time offer">
+  <strong>Founding 50</strong>
+  <span class="pb-sep">·</span>
+  <span>Bundle $83 <span style="text-decoration:line-through;color:rgba(255,255,255,.5);margin-left:4px">$119</span></span>
+  <span class="pb-sep">·</span>
+  <span class="pb-mob-hide">Free US shipping</span>
+  <span class="pb-sep pb-mob-hide">·</span>
+  <span>30-day money-back, no questions</span>
+</div>
+
 
 <!-- ═══ NAV ═══ -->
 <nav class="site-nav">
@@ -581,39 +617,57 @@ footer.legal .footer-disclaimer strong{color:rgba(255,255,255,.6);display:block;
 </div>
 
 
-<!-- ═══ §2.5 — THREE PILLARS (Personal · Iterated · Delivered) ═══ -->
-<section class="s" id="pillars">
-  <div class="s-head" style="grid-template-columns:1fr;max-width:880px;text-align:center;margin-bottom:48px">
+<!-- ═══ §2.5 — THREE PILLARS (Personal · Iterated · Delivered) — editorial v2 ═══ -->
+<section class="s pillars-section" id="pillars">
+  <div class="pillars-head">
+    <div class="s-num">The thesis</div>
     <div>
-      <h2 style="max-width:18ch;margin:0 auto 18px">Personal. Iterated. <em>Delivered.</em></h2>
-      <p style="margin:0 auto;font-size:15.5px;line-height:1.6;color:var(--ink-soft);max-width:54ch">What every other fueling tool gets one of. What Sprint is the only one to do all three.</p>
+      <h2 class="pillars-h2">Personal. Iterated. <em>Delivered.</em></h2>
+      <p class="pillars-sub">What every other fueling tool gets one of. What Sprint is the only one to do all three.</p>
     </div>
   </div>
 
-  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0;background:#fff;border:1px solid var(--rule-soft);border-radius:18px;overflow:hidden;max-width:var(--maxw);margin:0 auto" class="pillars-grid">
-    <div style="padding:40px 32px;border-right:1px dashed var(--rule)" class="pillar-cell">
-      <div style="font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-soft);font-weight:500;margin-bottom:14px">01 — Pillar one</div>
-      <h3 style="font-family:var(--display);font-size:24px;font-weight:700;letter-spacing:-.02em;color:var(--ink);margin-bottom:14px">Personal.</h3>
-      <p style="font-size:15px;line-height:1.65;color:var(--ink-soft);max-width:34ch">Different metabolism. Different gut. Different sex. Different fitness. A static plan can't fit every body — and calculators are static plans in math costume.</p>
+  <div class="pillars-grid">
+    <div class="pillar-card">
+      <span class="pillar-num">01</span>
+      <h3 class="pillar-h3">Personal.</h3>
+      <p class="pillar-body">Different metabolism. Different gut. Different sex. Different fitness. A static plan can't fit every body — and calculators are static plans in math costume.</p>
     </div>
-    <div style="padding:40px 32px;border-right:1px dashed var(--rule)" class="pillar-cell">
-      <div style="font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-soft);font-weight:500;margin-bottom:14px">02 — Pillar two</div>
-      <h3 style="font-family:var(--display);font-size:24px;font-weight:700;letter-spacing:-.02em;color:var(--ink);margin-bottom:14px">Iterated.</h3>
-      <p style="font-size:15px;line-height:1.65;color:var(--ink-soft);max-width:34ch">Sports RDs give one-shots. Coaches skip fueling. We loop weekly for 4 weeks — until the protocol fits Your body, not the median body.</p>
+    <div class="pillar-card">
+      <span class="pillar-num">02</span>
+      <h3 class="pillar-h3">Iterated.</h3>
+      <p class="pillar-body">Sports RDs give one-shots. Coaches skip fueling. We loop weekly for 4 weeks — until the protocol fits Your body, not the median body.</p>
     </div>
-    <div style="padding:40px 32px" class="pillar-cell">
-      <div style="font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-soft);font-weight:500;margin-bottom:14px">03 — Pillar three</div>
-      <h3 style="font-family:var(--display);font-size:24px;font-weight:700;letter-spacing:-.02em;color:var(--ink);margin-bottom:14px">Delivered.</h3>
-      <p style="font-size:15px;line-height:1.65;color:var(--ink-soft);max-width:34ch">Others hand You a number. We send the box. Euphoria. Refuel. Maurten. PF&amp;H. SaltStick. Whatever Your protocol calls for — sourced and shipped.</p>
+    <div class="pillar-card">
+      <span class="pillar-num">03</span>
+      <h3 class="pillar-h3">Delivered.</h3>
+      <p class="pillar-body">Others hand You a number. We send the box. Euphoria. Refuel. Maurten. PF&amp;H. SaltStick. Whatever Your protocol calls for — sourced and shipped.</p>
     </div>
   </div>
 </section>
 
 <style>
-@media (max-width:860px){
-  .pillars-grid{grid-template-columns:1fr !important}
-  .pillar-cell{border-right:0 !important;border-bottom:1px dashed var(--rule)}
-  .pillar-cell:last-child{border-bottom:0}
+/* Three Pillars editorial v2 — sand bg, white cards lift off, big JetBrains Mono numbers */
+.pillars-section{background:var(--bg-2);padding:120px 36px}
+.pillars-head{display:grid;grid-template-columns:240px 1fr;gap:48px;margin:0 auto 64px;max-width:var(--maxw);align-items:baseline}
+.pillars-head .s-num{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-soft);font-weight:500}
+.pillars-h2{font-family:var(--display);font-size:clamp(36px,5.5vw,72px);font-weight:700;line-height:.98;letter-spacing:-.02em;color:var(--ink);max-width:14ch;margin-bottom:18px}
+.pillars-h2 em{font-style:normal;color:var(--ink-soft);font-weight:700}
+.pillars-sub{font-size:16px;line-height:1.6;color:var(--ink-soft);max-width:54ch}
+.pillars-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;max-width:var(--maxw);margin:0 auto}
+.pillar-card{background:#fff;border-radius:20px;padding:48px 40px 52px;position:relative;border:1px solid var(--rule-soft);transition:transform .25s ease,box-shadow .25s ease}
+.pillar-card:hover{transform:translateY(-3px);box-shadow:0 12px 32px -12px rgba(14,14,14,.12)}
+.pillar-num{font-family:'JetBrains Mono','SF Mono',Menlo,monospace;font-size:64px;font-weight:300;letter-spacing:-.04em;line-height:1;color:var(--ink-soft);opacity:.45;display:block;margin-bottom:28px;font-variant-numeric:tabular-nums}
+.pillar-h3{font-family:var(--display);font-size:32px;font-weight:600;letter-spacing:-.02em;line-height:1.1;color:var(--ink);margin-bottom:18px}
+.pillar-body{font-size:16px;line-height:1.7;color:var(--ink-soft);max-width:32ch}
+@media (max-width:960px){
+  .pillars-section{padding:80px 24px}
+  .pillars-head{grid-template-columns:1fr;gap:18px;margin-bottom:48px}
+  .pillars-grid{grid-template-columns:1fr;gap:14px}
+  .pillar-card{padding:36px 28px 40px}
+  .pillar-num{font-size:52px;margin-bottom:20px}
+  .pillar-h3{font-size:26px;margin-bottom:14px}
+  .pillar-body{font-size:15.5px}
 }
 </style>
 
@@ -621,7 +675,7 @@ footer.legal .footer-disclaimer strong{color:rgba(255,255,255,.6);display:block;
 <!-- ═══ §3 — HOW THE 4-WEEK SPRINT WORKS (interactive journey on black bg) ═══ -->
 <section class="sprint-journey" id="how">
   <div class="s-head">
-    <div class="s-num">01 — The 4-week sprint</div>
+    <div class="s-num">The 4-week sprint</div>
     <div>
       <h2>Screening to Race Day. <em>Every Checkpoint.</em></h2>
     </div>
@@ -712,7 +766,7 @@ footer.legal .footer-disclaimer strong{color:rgba(255,255,255,.6);display:block;
 <!-- ═══ §4a — WHAT'S INCLUDED: 3 Deliverable Cards ═══ -->
 <section class="s" id="deliverables">
   <div class="s-head">
-    <div class="s-num">02 — What You get</div>
+    <div class="s-num">What You get</div>
     <div>
       <h2>Three Deliverables. <em>Built on Your Numbers.</em></h2>
       <p>Every Sprint athlete gets a Week Grid, a Session Protocol, and a Performance Report — built around Your body, revised weekly.</p>
@@ -862,7 +916,7 @@ footer.legal .footer-disclaimer strong{color:rgba(255,255,255,.6);display:block;
 <!-- ═══ §5 — TIER COMPARISON (3-col matrix) ═══ -->
 <section class="s" id="pricing">
   <div class="s-head">
-    <div class="s-num">03 — Pricing</div>
+    <div class="s-num">Pricing</div>
     <div>
       <h2>Pick by Hours. <em>Not by Race Distance.</em></h2>
       <p style="margin-top:18px;font-size:15px;line-height:1.6;color:var(--ink-soft);max-width:62ch">A 70.3 athlete training 16 hrs/wk needs Ironman Sprint, not 70.3 Sprint. We route by training load, not by what's on Your race kit.</p>
@@ -985,7 +1039,7 @@ footer.legal .footer-disclaimer strong{color:rgba(255,255,255,.6);display:block;
 <!-- ═══ §8b — SCREENING + CHECKOUT (form preserved + restyled) ═══ -->
 <section class="s" id="start">
   <div class="s-head">
-    <div class="s-num">04 — Start Your Sprint</div>
+    <div class="s-num">Start Your Sprint</div>
     <div>
       <h2>Eligibility Check. <em>Two Minutes.</em></h2>
       <p>Race date 28–56 days out. Active coach or training plan required.</p>
@@ -1503,6 +1557,19 @@ window.switchGal = function(tab, btn){
       gtag('event', 'sprint_checkout_redirect', { tier: hours.value, page: 'sprint' });
       gtag('event', 'sprint_screen_pass',       { tier: hours.value, has_email: screenPayload.email ? 1 : 0 });
     }
+    if (typeof fbq === 'function') {
+      var _sprintValues = { low: 569, mid: 659, high: 899 };
+      var _sprintLabels = { low: '4-Week Sprint 70.3', mid: '4-Week Sprint Full Ironman', high: '4-Week Sprint Pro' };
+      var _sprintIds    = { low: 'sprint-703', mid: 'sprint-full', high: 'sprint-pro' };
+      fbq('track', 'InitiateCheckout', {
+        content_name: _sprintLabels[hours.value] || 'Sprint Protocol',
+        content_category: 'Service',
+        content_ids: [_sprintIds[hours.value] || 'sprint'],
+        value: _sprintValues[hours.value] || 569,
+        currency: 'USD',
+        num_items: 1
+      });
+    }
     window.location.href = stripeUrl;
   });
 })();
@@ -1597,6 +1664,10 @@ document.querySelectorAll('a[href*="buy.stripe.com/4gM7sN"]').forEach(function(e
   el.addEventListener('click', function(){
     gtag('event', 'bundle_add_to_cart', { page: 'sprint', value: 119 });
     if (window.RIK && window.RIK.cta) window.RIK.cta('sprint_to_bundle_fallback');
+    if (typeof fbq === 'function') {
+      fbq('track', 'AddToCart', { content_name: 'RIK Bundle', content_category: 'Bundle', content_ids: ['bundle-30-gels'], value: 119.00, currency: 'USD' });
+      fbq('track', 'InitiateCheckout', { content_name: 'RIK Bundle', content_ids: ['bundle-30-gels'], value: 119.00, currency: 'USD', num_items: 1 });
+    }
   });
 });
 </script>
@@ -1614,7 +1685,5 @@ document.querySelectorAll('a[href*="buy.stripe.com/4gM7sN"]').forEach(function(e
   <span class="float-arrow" aria-hidden="true">↗</span>
 </a>
 
-<!-- Warm-lead exit-intent popup with WELCOME15 promo + WhatsApp CTA -->
-<script defer src="/assets/exit-intent.js"></script>
 </body>
 </html>

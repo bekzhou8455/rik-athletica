@@ -532,6 +532,23 @@ html,body{max-width:100%;overflow-x:hidden}
 
 .visually-hidden{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 </style>
+<!-- Meta Pixel -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '1931883264260254');
+fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=1931883264260254&ev=PageView&noscript=1"
+/></noscript>
+<!-- End Meta Pixel -->
 </head>
 <body id="top">
 
@@ -583,9 +600,9 @@ html,body{max-width:100%;overflow-x:hidden}
         <a href="https://buy.stripe.com/4gM7sN6Wq3cc7T0fZ67Re00?prefilled_promo_code=FOUNDING50" data-rewardful class="cta invert lg" data-track="bundle_add_to_cart">
           <span class="pill">Add to Cart — $83</span><span class="arrow">↗</span>
         </a>
-        <a href="/audit" class="cta lg" data-track="audit_cta_click">
-          <span class="pill" style="background:transparent;border-color:rgba(255,255,255,.5);color:#fff">Or take the free audit first</span>
-          <span class="arrow" style="background:transparent;border-color:rgba(255,255,255,.5);color:#fff">↗</span>
+        <a href="#whats-inside" class="hero-chevron" data-track="hero_scroll_to_inside">
+          <span class="hero-chevron-text">See what&rsquo;s in the box</span>
+          <span class="hero-chevron-arrow" aria-hidden="true">&darr;</span>
         </a>
       </div>
     </div>
@@ -596,7 +613,7 @@ html,body{max-width:100%;overflow-x:hidden}
 <!-- ═══ 01 — WHAT'S INSIDE THE BUNDLE (Pattern B icon-list) ═══ -->
 <section class="s" id="whats-inside">
   <div class="s-head">
-    <div class="s-num">01 — What's inside</div>
+    <div class="s-num">What's inside</div>
     <div>
       <h2>30 Gels. <em>One System.</em></h2>
     </div>
@@ -668,7 +685,7 @@ html,body{max-width:100%;overflow-x:hidden}
 <!-- ═══ 03 — THE PRODUCTS (NEW MERGED — fix #3) ═══ -->
 <section class="s" id="products">
   <div class="s-head">
-    <div class="s-num">03 — The products</div>
+    <div class="s-num">The products</div>
     <div>
       <h2>10 Functional Ingredients. <em>Six That Endurance Gels Skip.</em></h2>
     </div>
@@ -971,7 +988,7 @@ html,body{max-width:100%;overflow-x:hidden}
 <!-- ═══ 04 — THREE MOMENTS (REVAMPED — fix #4 dynamic illustration) ═══ -->
 <section class="s alt" id="three-moments">
   <div class="s-head">
-    <div class="s-num">04 — Three moments</div>
+    <div class="s-num">The rhythm</div>
     <div>
       <h2>Three Moments. <em>One Simple Rhythm.</em></h2>
     </div>
@@ -1047,7 +1064,7 @@ html,body{max-width:100%;overflow-x:hidden}
 <!-- ═══ 06 — ADD TO CART (cta-wall) ═══ -->
 <section class="s alt" id="add-to-cart">
   <div class="s-head">
-    <div class="s-num">06 — Get the bundle</div>
+    <div class="s-num">Get the bundle</div>
     <div>
       <h2>Add the Bundle. <em>Or upgrade to Sprint.</em></h2>
     </div>
@@ -1278,6 +1295,10 @@ document.querySelectorAll('a[href*="buy.stripe.com"]').forEach(function(el){
     gtag('event', 'bundle_add_to_cart', { page: 'bundle', value: 83, promo: 'founding_50' });
     gtag('event', 'founding_50_cta_click', { page: 'bundle' });
     if (window.RIK && window.RIK.cta) window.RIK.cta('bundle_stripe_checkout');
+    if (typeof fbq === 'function') {
+      fbq('track', 'AddToCart', { content_name: 'RIK Bundle', content_category: 'Bundle', content_ids: ['bundle-30-gels'], value: 83.00, currency: 'USD' });
+      fbq('track', 'InitiateCheckout', { content_name: 'RIK Bundle', content_ids: ['bundle-30-gels'], value: 83.00, currency: 'USD', num_items: 1 });
+    }
   });
 });
 
@@ -1364,7 +1385,5 @@ document.querySelectorAll('a[href="/sprint"]').forEach(function(el){
   <span class="float-arrow" aria-hidden="true">↗</span>
 </a>
 
-<!-- Warm-lead exit-intent popup with WELCOME15 promo + WhatsApp CTA -->
-<script defer src="/assets/exit-intent.js"></script>
 </body>
 </html>

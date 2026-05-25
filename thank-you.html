@@ -150,6 +150,23 @@ footer.legal .footer-disclaimer strong{color:rgba(255,255,255,.6);display:block;
 .ty-card[data-tier]{display:none}
 .ty-card[data-tier].show{display:block}
 </style>
+<!-- Meta Pixel -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '1931883264260254');
+fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=1931883264260254&ev=PageView&noscript=1"
+/></noscript>
+<!-- End Meta Pixel -->
 </head>
 <body id="top">
 
@@ -363,13 +380,14 @@ footer.legal .footer-disclaimer strong{color:rgba(255,255,255,.6);display:block;
     },
     bundle: {
       label:  'Race-Day Fuel Bundle',
-      value:  119,
+      value:  83,
+      coupon: 'FOUNDING50',
       items: [{
         item_id:  'bundle-30-gels',
         item_name:'Race-Day Fuel Bundle (10 Euphoria + 20 Refuel)',
         item_category:'product',
         item_variant:'30-pack',
-        price:    119,
+        price:    83,
         quantity: 1
       }]
     },
@@ -399,6 +417,18 @@ footer.legal .footer-disclaimer strong{color:rgba(255,255,255,.6);display:block;
       coupon: cfg.coupon || undefined,
       items: cfg.items
     });
+
+    /* Meta Pixel Purchase — eventID matches GA4 transaction_id so future server-side CAPI Purchase can dedup */
+    if (typeof fbq === 'function') {
+      fbq('track', 'Purchase', {
+        value: cfg.value,
+        currency: 'USD',
+        content_ids: cfg.items.map(function(i){ return i.item_id; }),
+        content_type: 'product',
+        content_name: cfg.label,
+        num_items: cfg.items.reduce(function(sum, i){ return sum + i.quantity; }, 0)
+      }, { eventID: transactionId });
+    }
 
     /* Tier-specific named events for funnel readability */
     gtag('event', tier + '_purchase_complete', {

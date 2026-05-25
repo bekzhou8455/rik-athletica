@@ -52,15 +52,29 @@ body { font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif; bac
   --r-btn: 999px;         /* was 36px — iter-5 pill */
 }
 
-/* ── NAV (v3 — global nav across all 3 pages) ── */
+/* Founding 50 promo bar — persistent above nav */
+.promo-bar { position: fixed; top: 0; left: 0; right: 0; z-index: 101; background: var(--off-black); color: rgba(255,255,255,0.92); font-size: 12px; font-weight: 500; letter-spacing: 0.04em; text-align: center; padding: 9px 24px; line-height: 1.4; border-bottom: 1px solid rgba(255,255,255,0.08); }
+.promo-bar strong { color: #fff; font-weight: 600; }
+.promo-bar .pb-sep { display: inline-block; margin: 0 10px; color: rgba(255,255,255,0.4); }
+@media (max-width: 720px) {
+  .promo-bar { font-size: 11px; padding: 7px 14px; letter-spacing: 0.02em; }
+  .promo-bar .pb-sep { margin: 0 6px; }
+  .promo-bar .pb-mob-hide { display: none; }
+}
+
+/* ── NAV (v3 — global nav, below promo bar) ── */
 nav {
-  position: sticky; top: 0; z-index: 100;
+  position: fixed; top: 36px; left: 0; right: 0; z-index: 100;
   background: rgba(238,237,234,0.92);
   backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
   border-bottom: 1px solid var(--border);
   padding: 0 40px; height: 62px;
   display: flex; justify-content: space-between; align-items: center;
 }
+@media (max-width: 720px) { nav { top: 32px; } }
+/* Push main content below fixed promo+nav (audit was sticky before, now fixed) */
+body { padding-top: 98px; }
+@media (max-width: 720px) { body { padding-top: 94px; } }
 .logo { display: flex; align-items: center; }
 .logo img { height: 26px; width: auto; }
 .nav-links { display: flex; align-items: center; gap: 28px; list-style: none; margin: 0; padding: 0; }
@@ -70,7 +84,8 @@ nav {
 .nav-cta { display: inline-flex; align-items: center; background: var(--off-black); color: #fff; font-size: 13.5px; font-weight: 500; padding: 10px 20px; border-radius: 36px; text-decoration: none; transition: opacity .2s; min-height: 40px; }
 .nav-cta:hover { opacity: .85; }
 .nav-toggle { display: none; padding: 10px; min-width: 44px; min-height: 44px; align-items: center; justify-content: center; color: var(--off-black); background: none; border: none; cursor: pointer; }
-.nav-mobile { display: none; position: fixed; top: 62px; left: 0; right: 0; bottom: 0; background: var(--sand); z-index: 99; padding: 32px 24px; flex-direction: column; border-top: 1px solid var(--border); }
+.nav-mobile { display: none; position: fixed; top: 98px; left: 0; right: 0; bottom: 0; background: var(--sand); z-index: 99; padding: 32px 24px; flex-direction: column; border-top: 1px solid var(--border); }
+@media (max-width: 720px) { .nav-mobile { top: 94px; } }
 .nav-mobile.open { display: flex; }
 .nav-mobile a { padding: 18px 0; font-size: 17px; font-weight: 500; border-bottom: 1px solid var(--border); color: var(--off-black); text-decoration: none; }
 .nav-mobile a:last-of-type { border-bottom: none; }
@@ -477,8 +492,37 @@ footer .legal-top { display: flex; justify-content: space-between; align-items: 
   footer { padding: 24px 20px; flex-direction: column; text-align: center; }
 }
 </style>
+<!-- Meta Pixel -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '1931883264260254');
+fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=1931883264260254&ev=PageView&noscript=1"
+/></noscript>
+<!-- End Meta Pixel -->
 </head>
 <body id="top">
+
+<!-- ═══ FOUNDING 50 PROMO BAR ═══ -->
+<div class="promo-bar" role="region" aria-label="Limited time offer">
+  <strong>Founding 50</strong>
+  <span class="pb-sep">·</span>
+  <span>Bundle $83 <span style="text-decoration:line-through;color:rgba(255,255,255,0.5);margin-left:4px">$119</span></span>
+  <span class="pb-sep">·</span>
+  <span class="pb-mob-hide">Free US shipping</span>
+  <span class="pb-sep pb-mob-hide">·</span>
+  <span>30-day money-back, no questions</span>
+</div>
+
 
 <!-- ═══ NAV (v3 — global nav) ═══ -->
 <nav role="navigation" aria-label="Main navigation">
@@ -873,10 +917,9 @@ document.addEventListener('click',function(e){
           <strong style="color:var(--off-black);font-weight:600;">While you wait:</strong> if your race is more than 6 weeks out, the PDF will probably route you toward the Bundle to learn your gut first. If it's closer, we'll talk Sprint or urgent-close routing. Either way, you'll have one clear next step.
         </p>
 
-        <div class="done-actions">
-          <!-- TODO: Update Stripe link with Founding 50 coupon -->
-          <a href="/" class="btn btn-primary">See the Bundle — $83 (Founding 50) &rarr;</a>
-          <a href="/sprint" class="btn btn-secondary">See the 4-Week Sprint &rarr;</a>
+        <div class="done-actions" style="flex-direction:column;align-items:center;gap:18px">
+          <a href="/" class="btn btn-primary" style="font-size:15px;padding:16px 32px;min-height:52px">See the Bundle &mdash; $83 (Founding 50) &rarr;</a>
+          <a href="/sprint" style="font-size:14px;color:var(--ink-soft);text-decoration:underline;text-decoration-color:rgba(14,14,14,0.25);text-underline-offset:4px;padding:6px 0">Racing in 4&ndash;8 weeks? See the 4-Week Sprint &rarr;</a>
         </div>
       </div>
     </section>
@@ -1231,7 +1274,5 @@ document.addEventListener('click',function(e){
 <!-- Phase 1.6 instrumentation helpers (scroll depth, page exit, audit step tracking, abandon detection) -->
 <script defer src="/assets/rik-analytics.js"></script>
 
-<!-- Warm-lead exit-intent popup with WELCOME15 promo + WhatsApp CTA -->
-<script defer src="/assets/exit-intent.js"></script>
 </body>
 </html>
