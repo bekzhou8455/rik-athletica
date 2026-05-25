@@ -66,11 +66,14 @@ function getTierKey(amountCents) {
   return 'premium';
 }
 
+// Kill-switch: tags removed on any successful purchase.
+// Includes retired sequences (post-audit-nurture, bundle-to-sprint-upsell) so
+// existing subscribers with those tags get cleaned up on their next purchase.
 const ALL_NURTURE_TAGS = [
-  'post-audit-nurture',
   'cart-recovery-bundle',
   'cart-recovery-sprint',
   'cart-recovery-premium',
+  'post-audit-nurture',
   'bundle-to-sprint-upsell',
 ];
 
@@ -251,12 +254,18 @@ export default async function handler(req, res) {
       .catch(err => console.error('[stripe-webhook] nurture tag removal failed:', err.message));
   }
 
-  // ─── 4. Bundle → Sprint upsell — tag on Bundle purchase ───
-  // Kit sequence has 14-day delay on email 1, so tagging immediately is correct.
-  if (customerEmail && getTierKey(amountCents) === 'bundle') {
-    addNurtureTag(customerEmail, customerName.split(' ')[0] || '', 'bundle-to-sprint-upsell', {
+  // ─── 4. Conversion tag — drives RIK_Email_Sequences_v2.md ───
+  // Bundle purchase → STRIPE_CONVERSION_BUNDLE → triggers Sequence 1 (B1/B2/B3).
+  // Sprint/Premium → STRIPE_CONVERSION_SPRINT → exit signal for Sequence 1
+  // (and entry hook for future Sprint-side nurture if added).
+  if (customerEmail) {
+    const tierKey = getTierKey(amountCents);
+    const conversionTag = tierKey === 'bundle'
+      ? 'STRIPE_CONVERSION_BUNDLE'
+      : 'STRIPE_CONVERSION_SPRINT';
+    addNurtureTag(customerEmail, customerName.split(' ')[0] || '', conversionTag, {
       purchase_date_short: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
-    }).catch(err => console.error('[stripe-webhook] bundle-to-sprint-upsell tag failed:', err.message));
+    }).catch(err => console.error(`[stripe-webhook] ${conversionTag} tag failed:`, err.message));
   }
 
   // ─── 5. Mark Sprint screening as paid → suppresses S1 cart-abandonment ───

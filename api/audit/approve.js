@@ -11,7 +11,7 @@
 // 8. Send Bek alert (✉️ delivered)
 
 import { getAuditById, markDelivered, newSlug } from '../../lib/db.js';
-import { tagAuditDelivered, tierTagIdFor, addNurtureTag } from '../../lib/kit.js';
+import { tagAuditDelivered, tierTagIdFor } from '../../lib/kit.js';
 import { alertDelivered, alertError, emailAuditToAthlete } from '../../lib/email-alerts.js';
 
 function checkAdmin(req) {
@@ -83,18 +83,6 @@ export default async function handler(req, res) {
         audit_tier: tierKey,
       },
     }).catch(err => alertError({ where: 'api/audit/approve (kit.tagAuditDelivered)', error: err, auditId: id })),
-
-    // Tag post-audit-nurture → triggers Kit sequence (PA1 → PA3 → PA4)
-    // audit_summary_oneliner: first sentence of section_1_gap, capped at 120 chars.
-    // Populates the personalised pull-quote in PA1 ("the thing it surfaced — X — isn't unusual").
-    addNurtureTag(row.email, row.first_name, 'post-audit-nurture', {
-      audit_url: `https://www.rikathletica.com/a/${slug}`,
-      audit_summary_oneliner: draftsFinal.section_1_gap
-        .replace(/\s+/g, ' ')
-        .split(/[.!?]/)[0]
-        .trim()
-        .slice(0, 120),
-    }).catch(err => alertError({ where: 'api/audit/approve (kit.addNurtureTag post-audit-nurture)', error: err, auditId: id })),
 
     alertDelivered({ audit: row, tierLabel, slug })
       .catch(err => alertError({ where: 'api/audit/approve (alertDelivered)', error: err, auditId: id })),

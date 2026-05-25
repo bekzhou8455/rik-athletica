@@ -36,3 +36,6 @@ bun.lock
 .env.local
 docs/emily-1-6b-approval-*.eml
 docs/emily-1-6b-approval-*.pdf
+
+# Analytics reports (may contain PII from audit submissions)
+reports/
