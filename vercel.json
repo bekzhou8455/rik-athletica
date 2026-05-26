@@ -11,7 +11,9 @@
     { "source": "/calculator", "destination": "/audit", "statusCode": 301 },
     { "source": "/calculator.html", "destination": "/audit", "statusCode": 301 },
     { "source": "/premium", "destination": "/sprint", "statusCode": 301 },
-    { "source": "/premium.html", "destination": "/sprint", "statusCode": 301 }
+    { "source": "/premium.html", "destination": "/sprint", "statusCode": 301 },
+    { "source": "/race-review", "destination": "/audit", "statusCode": 301 },
+    { "source": "/race-review.html", "destination": "/audit", "statusCode": 301 }
   ],
   "functions": {
     "api/audit/submit.js": { "maxDuration": 30 },

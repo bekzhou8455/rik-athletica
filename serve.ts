@@ -14,7 +14,6 @@ const ROUTES: Record<string, string> = {
   "/sprint": "/sprint.html",
   "/audit": "/audit.html",
   "/why-you-bonked": "/why-you-bonked.html",
-  "/race-review": "/race-review.html",
   "/checkin": "/checkin.html",
   "/thank-you": "/thank-you.html",
   "/privacy": "/privacy.html",
@@ -29,6 +28,8 @@ const REDIRECTS: Record<string, string> = {
   "/calculator.html": "/audit",
   "/premium": "/sprint",
   "/premium.html": "/sprint",
+  "/race-review": "/audit",
+  "/race-review.html": "/audit",
 };
 
 // Serves a tiny redirect page that sets the Rewardful attribution cookie

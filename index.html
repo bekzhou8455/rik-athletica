@@ -154,7 +154,12 @@ nav.site-nav .cta .arrow{background:var(--ink);color:#fff;border-color:#fff}
 }
 .hero .lead{font-size:16px;line-height:1.55;margin-bottom:32px;color:#fff;max-width:50ch}
 .hero .eyebrow{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.85);font-weight:600}
-.hero-cta{display:flex;flex-wrap:wrap;gap:14px;margin-top:36px}
+.hero-cta{display:flex;flex-wrap:wrap;gap:14px;margin-top:36px;align-items:center}
+.hero-chevron{display:inline-flex;align-items:center;gap:10px;font-size:13px;font-weight:500;color:rgba(255,255,255,.85);letter-spacing:-.005em;padding:14px 18px;border-bottom:1px solid rgba(255,255,255,.3);transition:color .2s ease,border-color .2s ease;text-shadow:0 1px 2px rgba(0,0,0,.5)}
+.hero-chevron:hover{color:#fff;border-bottom-color:#fff}
+.hero-chevron-arrow{display:inline-flex;width:22px;height:22px;border-radius:999px;border:1px solid rgba(255,255,255,.4);align-items:center;justify-content:center;font-size:12px;animation:chev-bounce 1.8s ease-in-out infinite}
+@keyframes chev-bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(3px)}}
+@media (prefers-reduced-motion:reduce){.hero-chevron-arrow{animation:none}}
 .hero .h1, .hero .lead, .hero .eyebrow{
   text-shadow:0 1px 0 rgba(0,0,0,.6), 0 2px 6px rgba(0,0,0,.55), 0 8px 24px rgba(0,0,0,.45), 0 16px 48px rgba(0,0,0,.30);
 }
@@ -652,7 +657,7 @@ src="https://www.facebook.com/tr?id=1931883264260254&ev=PageView&noscript=1"
           </div>
           <div>
             <strong>Free Shipping — First 50 Customers</strong>
-            <p>Founding pricing. Free US shipping for the first 50 bundles. Ships in 3 business days.</p>
+            <p>Founding pricing. Free US shipping for the first 50 bundles. Ships in 1 business day.</p>
           </div>
         </div>
         <div class="il-row">
@@ -730,19 +735,19 @@ src="https://www.facebook.com/tr?id=1931883264260254&ev=PageView&noscript=1"
           <p class="pd-info-tagline">10 Euphoria + 20 Refuel. One box. Pre-session activation, mid-effort fuel, post-session recovery — the work of six separate supplements, in the format You already carry.&dagger;</p>
           <div class="pd-specs">
             <div class="pd-spec"><span class="pd-spec-label">Box contents</span><span class="pd-spec-val">10 Euphoria + 20 Refuel</span></div>
-            <div class="pd-spec"><span class="pd-spec-label">Sachet size</span><span class="pd-spec-val">50ml each</span></div>
+            <div class="pd-spec"><span class="pd-spec-label">Sachet size</span><span class="pd-spec-val">50ml liquid gel each</span></div>
             <div class="pd-spec"><span class="pd-spec-label">Total carbs</span><span class="pd-spec-val">460g across 20 Refuel</span></div>
             <div class="pd-spec"><span class="pd-spec-label">Plant caffeine</span><span class="pd-spec-val">1,000mg across 10 Euphoria</span></div>
           </div>
           <div class="pd-bullets">
-            <div class="pd-bullet"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5L10 17.5L19 7.5"/></svg><span>3rd party lab-tested · GMP-certified · FDA-registered facility</span></div>
+            <div class="pd-bullet"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5L10 17.5L19 7.5"/></svg><span>3rd party lab-tested · GMP-certified · Manufactured in a FDA-registered facility</span></div>
             <div class="pd-bullet"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5L10 17.5L19 7.5"/></svg><span>30-day money-back. Full refund. No questions.</span></div>
             <div class="pd-bullet"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5L10 17.5L19 7.5"/></svg><span>Free shipping for the first 50 customers</span></div>
           </div>
           <div class="pd-price">
             <s style="font-size:18px;color:var(--ink-soft);margin-right:10px;font-family:var(--display);font-weight:400;letter-spacing:-.02em">$119</s>
             <span class="pd-price-num">$83</span>
-            <span class="pd-price-meta">Founding 50 · 30% off · bundle (10 + 20 sachets) · free shipping</span>
+            <span class="pd-price-meta">Founding 50 · 30% off · bundle (10 + 20 sachets) · free shipping<br><span style="font-size:11px;letter-spacing:.04em;color:var(--ink-dim);text-transform:uppercase;font-weight:500">Discount auto-applied at checkout</span></span>
           </div>
           <div class="pd-cta-row">
             <a href="https://buy.stripe.com/4gM7sN6Wq3cc7T0fZ67Re00?prefilled_promo_code=FOUNDING50" data-rewardful class="cta" data-track="bundle_add_to_cart"><span class="pill">Add to Cart — $83</span><span class="arrow">↗</span></a>
@@ -770,7 +775,7 @@ src="https://www.facebook.com/tr?id=1931883264260254&ev=PageView&noscript=1"
           <h3>25 Minutes Before. <em>Lights On.</em></h3>
           <p class="pd-info-tagline">Plant caffeine from Yerba Maté. Beta-alanine for muscular pH buffering. L-carnitine for fatty acid transport. Taurine and electrolytes. The activator stack You'd otherwise build from five bottles.&dagger;</p>
           <div class="pd-specs">
-            <div class="pd-spec"><span class="pd-spec-label">Format</span><span class="pd-spec-val">50ml sachet</span></div>
+            <div class="pd-spec"><span class="pd-spec-label">Format</span><span class="pd-spec-val">50ml liquid gel sachet</span></div>
             <div class="pd-spec"><span class="pd-spec-label">Plant caffeine</span><span class="pd-spec-val">100mg (Yerba Maté)</span></div>
             <div class="pd-spec"><span class="pd-spec-label">Sugar</span><span class="pd-spec-val">0g</span></div>
             <div class="pd-spec"><span class="pd-spec-label">Use</span><span class="pd-spec-val">25 min pre-session</span></div>
@@ -812,7 +817,7 @@ src="https://www.facebook.com/tr?id=1931883264260254&ev=PageView&noscript=1"
           <h3>Mid-Effort Fuel. <em>Recovery Built-In.</em></h3>
           <p class="pd-info-tagline">23g fast carbs in a 1:0.8 glucose-fructose ratio. Stacked with citrulline, BCAAs (2:1:1), glutamine, tart cherry, curcumin. Mid-effort fuel that handles recovery, too — the same sachet, two roles.&dagger;</p>
           <div class="pd-specs">
-            <div class="pd-spec"><span class="pd-spec-label">Format</span><span class="pd-spec-val">50ml sachet</span></div>
+            <div class="pd-spec"><span class="pd-spec-label">Format</span><span class="pd-spec-val">50ml liquid gel sachet</span></div>
             <div class="pd-spec"><span class="pd-spec-label">Carbs</span><span class="pd-spec-val">23g (1:0.8 ratio)</span></div>
             <div class="pd-spec"><span class="pd-spec-label">L-Glutamine</span><span class="pd-spec-val">1g per sachet</span></div>
             <div class="pd-spec"><span class="pd-spec-label">Use</span><span class="pd-spec-val">Every 45–60 min · post-session</span></div>
@@ -1073,15 +1078,16 @@ src="https://www.facebook.com/tr?id=1931883264260254&ev=PageView&noscript=1"
   <div class="cta-wall">
     <div class="cta-cell">
       <span class="cell-eyebrow">The Bundle · 30 gels</span>
-      <h3>The Bundle. <em>In Stock. Ships in 3 Days.</em></h3>
-      <p>10 Euphoria + 20 Refuel. Free shipping for the first 50 customers. Ships in 3 business days.</p>
+      <h3>The Bundle. <em>Ships in 1 Business Day.</em></h3>
+      <p>10 Euphoria + 20 Refuel. Free shipping for the first 50 customers. Ships in 1 business day.</p>
       <div class="cell-trust">
         <span><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5L10 17.5L19 7.5"/></svg> 30-day money-back · no questions</span>
         <span><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5L10 17.5L19 7.5"/></svg> 3rd party lab-tested · GMP-certified</span>
-        <span><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5L10 17.5L19 7.5"/></svg> FDA-registered facility</span>
+        <span><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5L10 17.5L19 7.5"/></svg> Manufactured in a FDA-registered facility</span>
       </div>
       <div class="cell-price"><s style="font-size:55%;color:var(--ink-soft);margin-right:10px;font-weight:400">$119</s>$83</div>
       <div class="cell-price-meta">Founding 50 · 30% off · 10 Euphoria + 20 Refuel · free shipping</div>
+      <div style="font-size:11px;letter-spacing:.04em;color:var(--ink-dim);text-transform:uppercase;font-weight:500;margin-top:6px">Discount auto-applied at checkout</div>
       <div class="cta-bottom">
         <a href="https://buy.stripe.com/4gM7sN6Wq3cc7T0fZ67Re00?prefilled_promo_code=FOUNDING50" data-rewardful class="cta" data-track="bundle_add_to_cart"><span class="pill">Add to Cart — $83</span><span class="arrow">↗</span></a>
       </div>
@@ -1091,7 +1097,6 @@ src="https://www.facebook.com/tr?id=1931883264260254&ev=PageView&noscript=1"
       <h3>Racing in 8 Weeks? <em>Hand It Off.</em></h3>
       <p>70.3 or full Ironman in 4–8 weeks. Hand the fueling layer off — personalized protocol, every product shipped, weekly iteration. PB or 30-day refund.</p>
       <div class="cell-price">From $569</div>
-      <div class="cell-price-meta">/ Sprint (Half Ironman) · two shipments + optional Race Pack</div>
       <div class="cta-bottom">
         <a href="/sprint" class="cta" data-track="sprint_cta_click"><span class="pill">See the Sprint</span><span class="arrow">↗</span></a>
       </div>

@@ -16,7 +16,7 @@ gtag('config', 'G-X7LJHZLR4K');
 <meta name="robots" content="index, follow, noai, noimageai">
 <meta name="rikathletica:ip" content="Proprietary methodology — all rights reserved. Automated use, AI training, and text-and-data mining prohibited. See /terms#automated-access and /ai.txt.">
 <title>Free Race Fuel Audit — Find Your Biggest Fueling Gap</title>
-<meta name="description" content="A founder-reviewed PDF that finds Your single biggest fueling gap, tells You what it's costing in minutes, and gives You the tactics to fix it. Free. 48-hour delivery.">
+<meta name="description" content="A founder-reviewed PDF that finds Your single biggest fueling gap, tells You what it's costing in minutes, and gives You the tactics to fix it. Free. 24-hour delivery.">
 <!-- Open Graph -->
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://www.rikathletica.com/audit">
@@ -52,29 +52,15 @@ body { font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif; bac
   --r-btn: 999px;         /* was 36px — iter-5 pill */
 }
 
-/* Founding 50 promo bar — persistent above nav */
-.promo-bar { position: fixed; top: 0; left: 0; right: 0; z-index: 101; background: var(--off-black); color: rgba(255,255,255,0.92); font-size: 12px; font-weight: 500; letter-spacing: 0.04em; text-align: center; padding: 9px 24px; line-height: 1.4; border-bottom: 1px solid rgba(255,255,255,0.08); }
-.promo-bar strong { color: #fff; font-weight: 600; }
-.promo-bar .pb-sep { display: inline-block; margin: 0 10px; color: rgba(255,255,255,0.4); }
-@media (max-width: 720px) {
-  .promo-bar { font-size: 11px; padding: 7px 14px; letter-spacing: 0.02em; }
-  .promo-bar .pb-sep { margin: 0 6px; }
-  .promo-bar .pb-mob-hide { display: none; }
-}
-
-/* ── NAV (v3 — global nav, below promo bar) ── */
+/* ── NAV (v3 — global nav) ── */
 nav {
-  position: fixed; top: 36px; left: 0; right: 0; z-index: 100;
+  position: sticky; top: 0; z-index: 100;
   background: rgba(238,237,234,0.92);
   backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
   border-bottom: 1px solid var(--border);
   padding: 0 40px; height: 62px;
   display: flex; justify-content: space-between; align-items: center;
 }
-@media (max-width: 720px) { nav { top: 32px; } }
-/* Push main content below fixed promo+nav (audit was sticky before, now fixed) */
-body { padding-top: 98px; }
-@media (max-width: 720px) { body { padding-top: 94px; } }
 .logo { display: flex; align-items: center; }
 .logo img { height: 26px; width: auto; }
 .nav-links { display: flex; align-items: center; gap: 28px; list-style: none; margin: 0; padding: 0; }
@@ -84,8 +70,7 @@ body { padding-top: 98px; }
 .nav-cta { display: inline-flex; align-items: center; background: var(--off-black); color: #fff; font-size: 13.5px; font-weight: 500; padding: 10px 20px; border-radius: 36px; text-decoration: none; transition: opacity .2s; min-height: 40px; }
 .nav-cta:hover { opacity: .85; }
 .nav-toggle { display: none; padding: 10px; min-width: 44px; min-height: 44px; align-items: center; justify-content: center; color: var(--off-black); background: none; border: none; cursor: pointer; }
-.nav-mobile { display: none; position: fixed; top: 98px; left: 0; right: 0; bottom: 0; background: var(--sand); z-index: 99; padding: 32px 24px; flex-direction: column; border-top: 1px solid var(--border); }
-@media (max-width: 720px) { .nav-mobile { top: 94px; } }
+.nav-mobile { display: none; position: fixed; top: 62px; left: 0; right: 0; bottom: 0; background: var(--sand); z-index: 99; padding: 32px 24px; flex-direction: column; border-top: 1px solid var(--border); }
 .nav-mobile.open { display: flex; }
 .nav-mobile a { padding: 18px 0; font-size: 17px; font-weight: 500; border-bottom: 1px solid var(--border); color: var(--off-black); text-decoration: none; }
 .nav-mobile a:last-of-type { border-bottom: none; }
@@ -256,137 +241,262 @@ select {
 .btn-secondary { background: transparent; color: var(--off-black); border: 1px solid var(--border); }
 .btn-large { padding: 18px 40px; font-size: 16px; }
 
-/* ── INTRO STEP (Step 0) ── */
-.intro-card {
-  background: #fff;
-  border-radius: var(--r-card);
-  padding: 56px 48px;
-  border: 1px solid var(--border);
+/* ── INTRO STEP (Step 0) — split-layout v2 ── */
+.intro-split { display: grid; grid-template-columns: 1.25fr 1fr; gap: 48px; align-items: start; max-width: 1100px; margin: 0 auto; }
+.intro-pitch { padding: 8px 0; }
+.intro-pitch .eyebrow-pill { display: inline-block; font-size: 11px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; padding: 8px 16px; border-radius: 999px; background: var(--off-black); color: #fff; margin-bottom: 28px; }
+.intro-pitch h1 { font-size: clamp(34px, 4.4vw, 56px); font-weight: 400; line-height: 1.04; letter-spacing: -0.035em; color: var(--off-black); margin-bottom: 22px; }
+.intro-pitch .sub { font-size: 17px; line-height: 1.65; color: var(--ink-soft, #5A5853); margin-bottom: 28px; max-width: 56ch; }
+.intro-pitch .sub strong { color: var(--off-black); font-weight: 600; }
+.intro-pitch .intro-meta { display: flex; gap: 28px; flex-wrap: wrap; margin-bottom: 32px; padding: 22px 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+.intro-pitch .intro-meta-item { font-size: 11px; color: var(--muted, #aaa); letter-spacing: 0.06em; text-transform: uppercase; }
+.intro-pitch .intro-meta-item strong { display: block; font-size: 22px; color: var(--off-black); letter-spacing: -0.01em; text-transform: none; margin-bottom: 4px; font-family: 'JetBrains Mono', monospace; font-weight: 500; font-variant-numeric: tabular-nums; }
+.intro-pitch .intro-list { list-style: none; padding: 0; margin: 0; }
+.intro-pitch .intro-list li { padding: 14px 0 14px 28px; border-bottom: 1px solid var(--border); font-size: 15px; line-height: 1.55; color: var(--ink-soft, #5A5853); position: relative; }
+.intro-pitch .intro-list li::before { content: "✓"; position: absolute; left: 0; top: 14px; color: var(--off-black); font-weight: 600; }
+.intro-pitch .intro-list li:last-child { border-bottom: none; }
+.intro-pitch .intro-list li strong { color: var(--off-black); font-weight: 600; }
+
+/* Right column — sticky start card */
+.intro-start-card { background: #fff; border-radius: var(--r-card); padding: 36px 32px; border: 1px solid var(--border); box-shadow: 0 1px 3px rgba(14,14,14,0.04); position: sticky; top: 116px; }
+.intro-start-card .start-eyebrow { font-size: 11px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-soft, #5A5853); margin-bottom: 18px; display: block; }
+.intro-start-card .start-h2 { font-size: 24px; font-weight: 500; letter-spacing: -0.02em; color: var(--off-black); margin-bottom: 18px; line-height: 1.2; }
+.founder-strip { display: flex; align-items: center; gap: 14px; padding: 18px 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); margin-bottom: 24px; }
+.founder-avatar { width: 48px; height: 48px; border-radius: 999px; background: var(--off-black); color: #fff; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 600; letter-spacing: -0.02em; }
+.founder-avatar img { width: 100%; height: 100%; object-fit: cover; border-radius: 999px; }
+.founder-text { font-size: 13px; line-height: 1.4; }
+.founder-text strong { display: block; font-size: 14px; color: var(--off-black); margin-bottom: 2px; font-weight: 600; }
+.founder-text span { color: var(--ink-soft, #5A5853); }
+.start-trust { list-style: none; padding: 0; margin: 0 0 28px; }
+.start-trust li { padding: 9px 0 9px 24px; font-size: 13.5px; color: var(--ink-soft, #5A5853); position: relative; line-height: 1.45; }
+.start-trust li::before { content: "★"; position: absolute; left: 0; top: 9px; color: var(--off-black); font-size: 11px; }
+.intro-start-card .btn-primary { width: 100%; justify-content: center; font-size: 15px; padding: 16px 24px; min-height: 54px; }
+.start-fine { font-size: 12px; color: var(--muted, #888); text-align: center; margin-top: 14px; line-height: 1.45; }
+@media (max-width: 900px) {
+  .intro-split { grid-template-columns: 1fr; gap: 28px; }
+  .intro-start-card { position: static; padding: 28px 22px; }
+  .intro-pitch h1 { font-size: clamp(30px, 7vw, 42px); }
+}
+
+/* Legacy intro-card kept for fallback (audit preview gallery still uses .intro-card .strip-foot etc.) */
+.intro-card { background: #fff; border-radius: var(--r-card); padding: 56px 48px; border: 1px solid var(--border); }
+
+/* RDN trust banner — editorial layout matching Sprint's rd-trust pattern */
+.rdn-wrap { max-width: 1100px; margin: 56px auto 0; padding: 48px 0 8px; border-top: 1px solid var(--border); }
+.rdn-eyebrow { display: block; text-align: center; font-size: 11px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-soft, #5A5853); margin-bottom: 32px; }
+.rdn-card { background: #fff; border: 1px solid var(--border); border-radius: var(--r-card); padding: 40px 44px; display: grid; grid-template-columns: 200px 1fr; gap: 40px; align-items: start; }
+.rdn-stamp { display: flex; flex-direction: column; gap: 14px; align-items: flex-start; }
+.rdn-headshot { width: 140px; height: 140px; border-radius: 999px; background: var(--bg-2, #D5D2CC); border: 1px solid var(--border); overflow: hidden; }
+.rdn-headshot img { width: 100%; height: 100%; object-fit: cover; object-position: center 28%; display: block; }
+.rdn-name { font-size: 15px; font-weight: 600; letter-spacing: -0.005em; color: var(--off-black); line-height: 1.3; }
+.rdn-creds { font-size: 11px; color: var(--ink-soft, #5A5853); line-height: 1.55; display: flex; flex-direction: column; gap: 2px; }
+.rdn-sig { width: 160px; margin-top: 6px; }
+.rdn-sig img { width: 100%; height: auto; display: block; opacity: 0.8; }
+.rdn-body { display: flex; flex-direction: column; gap: 18px; }
+.rdn-quote { font-size: clamp(17px, 1.8vw, 22px); font-weight: 500; line-height: 1.4; letter-spacing: -0.015em; color: var(--off-black); margin: 0; padding: 0 0 0 20px; border-left: 2px solid var(--off-black); font-style: normal; }
+.rdn-pdf-link { display: inline-flex; align-items: center; font-size: 13px; color: var(--off-black); text-decoration: underline; text-decoration-color: rgba(14,14,14,0.25); text-underline-offset: 3px; font-weight: 500; width: fit-content; }
+.rdn-pdf-link:hover { text-decoration-color: var(--off-black); }
+.rdn-disclosure { display: flex; align-items: flex-start; gap: 10px; padding: 14px 16px; border-radius: 10px; background: rgba(14,14,14,0.04); border-left: 3px solid var(--off-black); font-size: 12.5px; line-height: 1.55; color: var(--off-black); }
+.rdn-disclosure strong { font-weight: 600; }
+.rdn-scope { font-size: 12px; line-height: 1.6; color: var(--ink-soft, #5A5853); padding-top: 14px; border-top: 1px dashed var(--border); font-style: italic; margin: 0; }
+@media (max-width: 720px) {
+  .rdn-card { grid-template-columns: 1fr; gap: 24px; padding: 28px 24px; }
+  .rdn-stamp { flex-direction: row; flex-wrap: wrap; gap: 16px; align-items: center; }
+  .rdn-headshot { width: 96px; height: 96px; flex-shrink: 0; }
+  .rdn-sig { max-width: 140px; }
+  .rdn-quote { font-size: 16px; padding-left: 14px; }
 }
 
 /* ─── Audit Preview Gallery (full-bleed auto-scroll) ─── */
-.audit-preview-strip {
+/* Audit preview v3 — single anonymized cover (Pattern A) matching deliverable's hero band */
+.audit-preview-v2 {
   position: relative;
-  width: 100vw;
-  margin-left: calc(50% - 50vw);
-  margin-right: calc(50% - 50vw);
-  margin-top: 56px;
-  margin-bottom: 12px;
-  padding: 56px 0 48px;
-  background: linear-gradient(180deg, transparent 0%, rgba(238,237,234,0.85) 14%, rgba(238,237,234,0.85) 86%, transparent 100%);
-  overflow: hidden;
-}
-.audit-preview-strip .strip-eyebrow {
+  max-width: 880px;
+  margin: 72px auto 12px;
+  padding: 0 24px;
   text-align: center;
+}
+.audit-preview-v2 .cover-eyebrow {
   font-size: 11px;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: #5a5853;
+  color: var(--ink-soft, #5A5853);
   font-weight: 600;
-  margin-bottom: 12px;
-  padding: 0 24px;
+  margin-bottom: 14px;
 }
-.audit-preview-strip .strip-title {
-  text-align: center;
-  font-size: clamp(28px, 3.4vw, 38px);
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  line-height: 1.05;
+.audit-preview-v2 .cover-title {
+  font-size: clamp(28px, 3.4vw, 40px);
+  font-weight: 500;
+  letter-spacing: -0.025em;
+  line-height: 1.08;
   color: var(--off-black);
-  margin-bottom: 36px;
-  padding: 0 24px;
+  margin-bottom: 44px;
 }
-.audit-preview-strip .strip-title em {
+.audit-preview-v2 .cover-title em {
   font-style: normal;
-  font-weight: 300;
-  color: #8a8780;
+  font-weight: 400;
+  color: var(--ink-soft, #5A5853);
 }
-.audit-preview-strip .strip-foot {
-  text-align: center;
-  font-size: 14px;
-  color: #5a5853;
+.audit-preview-v2 .cover-foot {
+  font-size: 13.5px;
+  color: var(--ink-soft, #5A5853);
   margin-top: 32px;
-  padding: 0 24px;
   max-width: 56ch;
   margin-left: auto;
   margin-right: auto;
-  line-height: 1.55;
+  line-height: 1.6;
 }
-.strip-viewport {
+
+/* The anonymized cover artifact — recreates the dark hero band of the live deliverable */
+.audit-cover {
   position: relative;
-  width: 100%;
-  overflow: hidden;
-  /* Soft fade at edges */
-  -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 6%, #000 94%, transparent 100%);
-          mask-image: linear-gradient(90deg, transparent 0%, #000 6%, #000 94%, transparent 100%);
+  max-width: 640px;
+  margin: 0 auto;
+  transform: rotate(-1.2deg);
+  transition: transform 0.6s cubic-bezier(.4,0,.2,1);
 }
-.strip-track {
-  display: flex;
-  gap: 24px;
-  width: max-content;
-  padding: 12px 0;
-  animation: strip-scroll 70s linear infinite;
-  will-change: transform;
+.audit-cover:hover { transform: rotate(0deg); }
+.cover-frame-shadow {
+  position: absolute;
+  inset: 18px 0 -10px 0;
+  background: rgba(14,14,14,0.16);
+  border-radius: 14px;
+  filter: blur(24px);
+  z-index: 0;
+  transform: rotate(1.5deg);
 }
-.strip-viewport:hover .strip-track,
-.strip-viewport:focus-within .strip-track { animation-play-state: paused; }
-.strip-card {
-  flex: 0 0 auto;
-  height: 480px;
-  border-radius: 16px;
-  overflow: hidden;
-  background: #fff;
+.cover-frame {
   position: relative;
-  box-shadow: 0 24px 56px rgba(14,14,14,0.10), 0 1px 0 rgba(14,14,14,0.04);
+  z-index: 1;
+  background: #0E0E0E;
+  color: #fff;
+  border-radius: 14px;
+  padding: 48px 44px 44px;
+  text-align: left;
+  overflow: hidden;
+  box-shadow: 0 1px 0 rgba(255,255,255,0.05) inset, 0 30px 60px -22px rgba(14,14,14,0.45);
 }
-.strip-card img {
-  display: block;
-  height: 100%;
-  width: auto;
-  user-select: none;
-  -webkit-user-drag: none;
-  pointer-events: none;
-}
-/* Subtle bottom shade on each card for a "matte" finish */
-.strip-card::after {
-  content: '';
-  position: absolute; inset: 0;
-  background: linear-gradient(180deg, transparent 72%, rgba(14,14,14,0.06) 100%);
-  pointer-events: none;
-}
-/* Matte-glass haze panels at the viewport edges */
-.strip-viewport::before, .strip-viewport::after {
+.cover-frame::before {
+  /* subtle warm radial accent in the bottom-right, matches the deliverable's amber */
   content: '';
   position: absolute;
-  top: 0; bottom: 0;
-  width: 96px;
-  z-index: 2;
+  inset: auto -10% -30% auto;
+  width: 70%;
+  height: 70%;
+  background: radial-gradient(ellipse at center, rgba(255,165,80,0.18) 0%, rgba(14,14,14,0) 65%);
   pointer-events: none;
-  -webkit-backdrop-filter: blur(10px) saturate(108%);
-          backdrop-filter: blur(10px) saturate(108%);
+  z-index: 0;
 }
-.strip-viewport::before {
-  left: 0;
-  background: linear-gradient(90deg, rgba(238,237,234,0.85) 0%, rgba(238,237,234,0.35) 60%, transparent 100%);
+.cover-frame > * { position: relative; z-index: 1; }
+.cover-brand {
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.55);
+  font-weight: 600;
+  margin-bottom: 28px;
 }
-.strip-viewport::after {
-  right: 0;
-  background: linear-gradient(270deg, rgba(238,237,234,0.85) 0%, rgba(238,237,234,0.35) 60%, transparent 100%);
+.cover-h1 {
+  font-size: clamp(28px, 3.4vw, 36px);
+  font-weight: 700;
+  letter-spacing: -0.028em;
+  line-height: 1.05;
+  color: rgba(255,255,255,0.85);
+  margin: 0 0 18px;
 }
-@keyframes strip-scroll {
-  from { transform: translateX(0); }
-  to   { transform: translateX(-50%); } /* duplicated set → seamless loop */
+.cover-h1 .cover-name {
+  color: #fff;
+  background: linear-gradient(180deg, transparent 75%, rgba(255,165,80,0.5) 75%);
+  padding: 0 2px;
 }
-@media (prefers-reduced-motion: reduce) {
-  .strip-track { animation: none; }
-  .strip-viewport { overflow-x: auto; -webkit-overflow-scrolling: touch; -webkit-mask-image: none; mask-image: none; }
-  .strip-viewport::before, .strip-viewport::after { display: none; }
+.cover-race {
+  font-size: 13px;
+  color: rgba(255,255,255,0.65);
+  letter-spacing: 0.04em;
+  margin-bottom: 36px;
+  font-variant-numeric: tabular-nums;
 }
+.cover-race .cover-dot {
+  color: rgba(255,165,80,0.85);
+  margin: 0 10px;
+}
+.cover-impact-label {
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.45);
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+.cover-impact-num {
+  font-size: clamp(64px, 9vw, 92px);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 0.9;
+  color: #fff;
+  font-variant-numeric: tabular-nums;
+  margin-bottom: 4px;
+}
+.cover-impact-num .cover-unit {
+  font-size: 0.32em;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: rgba(255,255,255,0.65);
+  margin-left: 8px;
+  vertical-align: middle;
+}
+.cover-tagline {
+  font-size: 14.5px;
+  color: rgba(255,255,255,0.72);
+  max-width: 44ch;
+  margin: 18px 0 0;
+  line-height: 1.5;
+}
+
+/* 4-section TOC strip below the cover */
+.cover-toc {
+  list-style: none;
+  margin: 36px auto 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  max-width: 720px;
+}
+.cover-toc li {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  text-align: left;
+}
+.cover-toc .toc-num {
+  font-family: 'JetBrains Mono', 'SF Mono', Menlo, monospace;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--ink-soft, #5A5853);
+  letter-spacing: -0.005em;
+}
+.cover-toc .toc-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--off-black);
+  letter-spacing: -0.01em;
+  line-height: 1.3;
+}
+
 @media (max-width: 720px) {
-  .audit-preview-strip { padding: 40px 0 36px; margin-top: 36px; }
-  .strip-card { height: 320px; border-radius: 12px; }
-  .strip-track { gap: 16px; animation-duration: 50s; }
-  .strip-viewport::before, .strip-viewport::after { width: 56px; }
+  .audit-preview-v2 { margin-top: 48px; padding: 0 16px; }
+  .audit-cover { transform: rotate(-0.8deg); }
+  .cover-frame { padding: 32px 26px 30px; border-radius: 12px; }
+  .cover-h1 { font-size: clamp(24px, 6vw, 30px); }
+  .cover-impact-num { font-size: clamp(52px, 14vw, 72px); }
+  .cover-toc { grid-template-columns: 1fr 1fr; gap: 10px; }
+  .cover-toc li { padding: 12px; }
 }
 .intro-card .eyebrow {
   display: inline-block; font-size: 11px; letter-spacing: 2.5px; text-transform: uppercase;
@@ -512,18 +622,6 @@ src="https://www.facebook.com/tr?id=1931883264260254&ev=PageView&noscript=1"
 </head>
 <body id="top">
 
-<!-- ═══ FOUNDING 50 PROMO BAR ═══ -->
-<div class="promo-bar" role="region" aria-label="Limited time offer">
-  <strong>Founding 50</strong>
-  <span class="pb-sep">·</span>
-  <span>Bundle $83 <span style="text-decoration:line-through;color:rgba(255,255,255,0.5);margin-left:4px">$119</span></span>
-  <span class="pb-sep">·</span>
-  <span class="pb-mob-hide">Free US shipping</span>
-  <span class="pb-sep pb-mob-hide">·</span>
-  <span>30-day money-back, no questions</span>
-</div>
-
-
 <!-- ═══ NAV (v3 — global nav) ═══ -->
 <nav role="navigation" aria-label="Main navigation">
   <a href="/" class="logo" aria-label="RIK Athletica home">
@@ -578,66 +676,99 @@ document.addEventListener('click',function(e){
 
     <!-- STEP 0: INTRO -->
     <section class="step active" data-step="0" data-skip-progress="true">
-      <div class="intro-card">
-        <div id="clubTag" class="club-tag" style="display:none;">Sent by <strong id="clubName"></strong></div>
-        <div class="eyebrow">Free Race Fuel Audit</div>
-        <h1>Find the one thing that's costing You the most minutes.</h1>
-        <p class="sub">A founder-reviewed PDF that identifies Your single biggest fueling gap, quantifies what it's costing You, and gives You the real tactics to fix it. Not a sales call. Not a meal plan. <strong>A straight answer.</strong></p>
+      <div class="intro-split">
+        <!-- LEFT: pitch + bullets + meta -->
+        <div class="intro-pitch">
+          <div id="clubTag" class="club-tag" style="display:none;">Sent by <strong id="clubName"></strong></div>
+          <span class="eyebrow-pill">Free Race Fuel Audit</span>
+          <h1>Find the one thing that's costing You the most minutes.</h1>
+          <p class="sub">A founder-reviewed PDF that identifies Your single biggest fueling gap, quantifies what it's costing You, and gives You the real tactics to fix it.</p>
 
-        <div class="intro-meta">
-          <div class="intro-meta-item"><strong>~5 min</strong>to fill out</div>
-          <div class="intro-meta-item"><strong>48 hrs</strong>to your inbox</div>
-          <div class="intro-meta-item"><strong>$0</strong>no card needed</div>
+          <div class="intro-meta">
+            <div class="intro-meta-item"><strong>~5 min</strong>to fill out</div>
+            <div class="intro-meta-item"><strong>24 hrs</strong>to your inbox</div>
+            <div class="intro-meta-item"><strong>$0</strong>no card needed</div>
+          </div>
+
+          <ul class="intro-list">
+            <li><strong>One problem, with depth.</strong> Not a generic overview. The PDF identifies Your single biggest gap and goes deep &mdash; what's causing it, what it's costing, and how to fix it with specific tactics You can execute this week.</li>
+            <li><strong>Honest routing.</strong> If Your race is far out, the PDF says start with the Bundle and train Your gut. If it's close and You're racing Ironman, it'll mention Sprint. If You don't need either, it says that too.</li>
+            <li><strong>One follow-up email.</strong> No spam. Opt out anytime.</li>
+          </ul>
         </div>
 
-        <ul class="intro-list">
-          <li><strong>Founder-reviewed.</strong> I (Bek) read every one personally. Takes me 30–45 minutes per audit.</li>
-          <li><strong>One problem, with depth.</strong> Not a generic overview. The PDF identifies Your single biggest gap and goes deep — what's causing it, what it's costing, and how to fix it with specific tactics You can execute this week.</li>
-          <li><strong>Honest routing.</strong> If Your race is far out, the PDF says start with the Bundle and train Your gut. If it's close and You're racing Ironman, it'll mention Sprint. If You don't need either, it says that too.</li>
-          <li><strong>One follow-up email.</strong> No spam. Opt out anytime.</li>
-        </ul>
+        <!-- RIGHT: sticky start card with founder credibility + primary CTA -->
+        <aside class="intro-start-card" aria-label="Begin the audit">
+          <span class="start-eyebrow">Get your audit</span>
+          <h2 class="start-h2">10 questions. <em style="font-style:normal;color:var(--ink-soft,#5A5853)">One straight answer.</em></h2>
 
-        <button class="btn btn-primary btn-large" onclick="goNext()">Start the audit &rarr;</button>
+          <ul class="start-trust">
+            <li>~5 min to fill, 24h to inbox</li>
+            <li>Free. No card needed. Opt out anytime.</li>
+            <li>Honest routing &mdash; no upsell, no spam</li>
+          </ul>
 
-        <!-- ═══ AUDIT PREVIEW GALLERY (anonymized "what you'll get" auto-scroll) ═══ -->
-        <section class="audit-preview-strip" aria-label="Audit preview gallery">
-          <div class="strip-eyebrow">A focused 4-section diagnostic</div>
-          <h3 class="strip-title">Here's what <em>You</em> get.</h3>
-          <div class="strip-viewport">
-            <div class="strip-track">
-              <div class="strip-card"><img src="/assets/audit-preview/01-hero.png" alt="Audit cover — athlete name, race, and estimated impact in minutes" loading="lazy"></div>
-              <div class="strip-card"><img src="/assets/audit-preview/02-gap.png" alt="Section 1 — Your primary fueling gap identified" loading="lazy"></div>
-              <div class="strip-card"><img src="/assets/audit-preview/03-impact.png" alt="Section 2 — Estimated minute cost" loading="lazy"></div>
-              <div class="strip-card"><img src="/assets/audit-preview/04-tactics.png" alt="Section 3 — Four specific tactics you can do this week" loading="lazy"></div>
-              <div class="strip-card"><img src="/assets/audit-preview/05-next.png" alt="Section 4 — Single honest next-step recommendation" loading="lazy"></div>
-              <!-- Duplicate set for seamless infinite loop -->
-              <div class="strip-card" aria-hidden="true"><img src="/assets/audit-preview/01-hero.png" alt="" loading="lazy"></div>
-              <div class="strip-card" aria-hidden="true"><img src="/assets/audit-preview/02-gap.png" alt="" loading="lazy"></div>
-              <div class="strip-card" aria-hidden="true"><img src="/assets/audit-preview/03-impact.png" alt="" loading="lazy"></div>
-              <div class="strip-card" aria-hidden="true"><img src="/assets/audit-preview/04-tactics.png" alt="" loading="lazy"></div>
-              <div class="strip-card" aria-hidden="true"><img src="/assets/audit-preview/05-next.png" alt="" loading="lazy"></div>
+          <button class="btn btn-primary btn-large" onclick="goNext()">Start the audit &rarr;</button>
+          <p class="start-fine">By starting, you agree to receive Your audit + one follow-up email.</p>
+        </aside>
+      </div>
+      <!-- /.intro-split -->
+
+      <!-- ═══ AUDIT PREVIEW — single anonymized cover (Pattern A) ═══ -->
+        <section class="audit-preview-v2" aria-label="Audit preview">
+          <div class="cover-eyebrow">A focused 4-section diagnostic</div>
+          <h3 class="cover-title">Here's what <em>You</em> get.</h3>
+
+          <div class="audit-cover" aria-hidden="false" role="img" aria-label="Sample audit cover for an anonymized athlete named Alex, Half Ironman on September 14 2026, estimated impact 12 to 18 minutes.">
+            <div class="cover-frame-shadow"></div>
+            <div class="cover-frame">
+              <div class="cover-brand">RIK Athletica &middot; Free Race Fuel Audit</div>
+              <h4 class="cover-h1">Hi <span class="cover-name">Alex</span>.<br>Here's Your audit.</h4>
+              <div class="cover-race">Half IRONMAN<span class="cover-dot">&middot;</span>September 14, 2026</div>
+              <div class="cover-impact-label">Estimated impact</div>
+              <div class="cover-impact-num">12&ndash;18<span class="cover-unit">min</span></div>
+              <p class="cover-tagline">Your single biggest fueling gap &mdash; and how to close it before race day.</p>
             </div>
           </div>
-          <p class="strip-foot">Real anonymized example. Yours is computed from your race distance, gut history, sweat rate, and current intake — no two audits are the same.</p>
+
+          <ol class="cover-toc" aria-label="Four diagnostic sections">
+            <li><span class="toc-num">01</span><span class="toc-label">Primary Gap</span></li>
+            <li><span class="toc-num">02</span><span class="toc-label">Estimated Impact</span></li>
+            <li><span class="toc-num">03</span><span class="toc-label">4 Tactics This Week</span></li>
+            <li><span class="toc-num">04</span><span class="toc-label">Honest Next Step</span></li>
+          </ol>
+
+          <p class="cover-foot">Anonymized example. Yours is computed from Your race distance, gut history, sweat rate, and current intake &mdash; no two audits are the same.</p>
         </section>
 
         <!-- ═══ RDN TRUST BANNER (per §1.6 — audit page is in §1.2 permitted; placement requires Emily's §1.6(b) written approval BEFORE deploy) ═══ -->
-        <div style="margin-top:48px;padding-top:32px;border-top:1px solid var(--border);">
-          <div class="eyebrow-pill" style="display:block;text-align:center;width:fit-content;margin:0 auto 20px;">Independent Methodology Review</div>
-          <div class="rdn-banner">
-            <img class="rdn-banner-headshot" src="/assets/emily-norman-rdn.jpg" alt="Headshot of Emily Haydon Norman, RDN" width="80" height="102">
-            <div>
-              <div class="rdn-banner-name">Emily Haydon Norman, RDN</div>
-              <div class="rdn-banner-credentials">Commission on Dietetic Registration (USA), reg. #86117608, May 2026</div>
-              <p class="rdn-banner-statement">"Based on my review, the RIK Athletica methodology is consistent with established evidence-based sports nutrition principles for endurance training and competition."</p>
-              <img class="rdn-banner-signature" src="/assets/emily-signature.png" alt="Signature of Emily Haydon Norman" width="180" height="80">
-              <a class="rdn-banner-pdf-link" href="/assets/rd-review-statement.pdf" target="_blank" rel="noopener">Read the full review statement (PDF) &rarr;</a>
-              <p class="ftc-disclosure">Paid independent methodology review. Opinions are Reviewer's own.</p>
-              <p class="scope-clarification">This review reflects a methodology-level assessment. It does not constitute medical advice, individualized nutrition counseling, or endorsement of any specific health, performance, or race outcome. RIK is not a healthcare provider. Reviewer does not provide continuing supervision of RIK's protocol updates.</p>
+        <div class="rdn-wrap">
+          <span class="rdn-eyebrow">Independent Methodology Review</span>
+          <div class="rdn-card">
+            <div class="rdn-stamp">
+              <div class="rdn-headshot">
+                <img src="/assets/emily-norman-rdn.jpg" alt="Headshot of Emily Haydon Norman, RDN" loading="lazy">
+              </div>
+              <div class="rdn-name">Emily Haydon Norman, RDN</div>
+              <div class="rdn-creds">
+                <span>Commission on Dietetic Registration (USA)</span>
+                <span>Registration #86117608</span>
+                <span>Reviewed May 2026</span>
+              </div>
+              <div class="rdn-sig">
+                <img src="/assets/emily-signature.png" alt="Signature of Emily Haydon Norman" loading="lazy">
+              </div>
+            </div>
+            <div class="rdn-body">
+              <blockquote class="rdn-quote">"Based on my review, the RIK Athletica methodology is consistent with established evidence-based sports nutrition principles for endurance training and competition."</blockquote>
+              <a class="rdn-pdf-link" href="/assets/rd-review-statement.pdf" target="_blank" rel="noopener">Read the full review statement (PDF) &rarr;</a>
+              <div class="rdn-disclosure">
+                <span><strong>Paid independent methodology review.</strong> RIK Athletica paid Reviewer a one-time fee. Opinions are Reviewer's own.</span>
+              </div>
+              <p class="rdn-scope">This review reflects a methodology-level assessment. It does not constitute medical advice, individualized nutrition counseling, or endorsement of any specific health, performance, or race outcome. RIK is not a healthcare provider. Reviewer does not provide continuing supervision of RIK's protocol updates.</p>
             </div>
           </div>
         </div>
-      </div>
     </section>
 
     <!-- STEP 1: RACE DISTANCE + DATE -->
