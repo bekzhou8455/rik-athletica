@@ -1024,6 +1024,7 @@ src="https://www.facebook.com/tr?id=1931883264260254&ev=PageView&noscript=1"
   </div>
 
   <form id="screening-form" class="form-card">
+
     <!-- Athlete identity -->
     <div class="form-row">
       <label class="form-label" for="athlete-name">Your name</label>
@@ -1035,29 +1036,184 @@ src="https://www.facebook.com/tr?id=1931883264260254&ev=PageView&noscript=1"
       <p class="form-hint">We'll email Your screening result + send Sprint enrollment if You qualify. No marketing list.</p>
     </div>
 
-    <!-- Race distance -->
+    <!-- NEW: Sex -->
     <div class="form-row">
-      <label class="form-label">Race distance</label>
+      <label class="form-label">Sex</label>
       <div class="radio-grid cols-2">
-        <label class="radio-card">
-          <input type="radio" name="distance" value="703">
-          <span>Ironman 70.3</span>
-        </label>
-        <label class="radio-card">
-          <input type="radio" name="distance" value="full">
-          <span>Full Ironman</span>
-        </label>
+        <label class="radio-card"><input type="radio" name="sex" value="male"><span>Male</span></label>
+        <label class="radio-card"><input type="radio" name="sex" value="female"><span>Female</span></label>
       </div>
     </div>
 
-    <!-- Race date -->
+    <!-- NEW: Age -->
     <div class="form-row">
-      <label class="form-label" for="race-date">Race date</label>
-      <input type="date" id="race-date" class="date-input" required>
-      <p id="date-msg" class="date-msg"></p>
+      <label class="form-label" for="athlete-age">Age</label>
+      <input type="number" id="athlete-age" name="age" min="18" max="80" required class="text-input" placeholder="e.g. 34">
     </div>
 
-    <!-- Training hours / tier -->
+    <!-- NEW: Target race autocomplete (replaces distance + date) -->
+    <div class="form-row race-search-row">
+      <label class="form-label" for="target-race-input">Your race</label>
+      <input type="text" id="target-race-input" autocomplete="off" class="text-input" placeholder="Start typing — e.g. Mallorca, Kona, Nice...">
+      <div id="target-race-results" class="race-results"></div>
+      <div id="target-race-meta" class="race-meta" style="display:none">
+        <span class="meta-badge" id="trm-distance"></span>
+        <span class="meta-badge" id="trm-date"></span>
+        <span class="meta-badge" id="trm-location"></span>
+        <span class="meta-badge" id="trm-course"></span>
+        <span class="meta-badge" id="trm-temp"></span>
+      </div>
+      <p id="target-race-msg" class="form-hint"></p>
+
+      <!-- Manual fallback toggle -->
+      <button type="button" id="target-manual-toggle" class="manual-toggle">Don't see Your race? Enter it manually →</button>
+
+      <!-- Manual fallback block (hidden by default) -->
+      <div id="target-manual-block" class="manual-block" style="display:none">
+        <div class="manual-header">
+          <strong>Enter Your race details</strong>
+          <button type="button" id="target-manual-close" class="manual-close">× Use autocomplete</button>
+        </div>
+        <p class="manual-explain">Not in our database — we'll verify Your race conditions within 24 hours of payment. Full refund if our records show a meaningfully different profile.</p>
+        <div class="manual-grid">
+          <div class="manual-field full">
+            <label for="trm-name-in">Race name</label>
+            <input type="text" id="trm-name-in" class="text-input" placeholder="e.g. Local Championship Triathlon">
+          </div>
+          <div class="manual-field">
+            <label>Distance</label>
+            <div class="radio-grid cols-2">
+              <label class="radio-card"><input type="radio" name="trm-distance-in" value="half"><span>IRONMAN 70.3</span></label>
+              <label class="radio-card"><input type="radio" name="trm-distance-in" value="full"><span>Full IRONMAN</span></label>
+            </div>
+          </div>
+          <div class="manual-field">
+            <label for="trm-date-in">Race date</label>
+            <input type="date" id="trm-date-in" class="text-input">
+            <span class="opt-hint">Must be 4–8 weeks from today.</span>
+          </div>
+          <div class="manual-field full">
+            <label>Course profile <span class="opt-hint">— pick the closest analog</span></label>
+            <div class="radio-grid cols-2 anchored">
+              <label class="radio-card"><input type="radio" name="trm-course-in" value="flat"><span><strong>Flat</strong><small>like IM Florida 70.3</small></span></label>
+              <label class="radio-card"><input type="radio" name="trm-course-in" value="rolling"><span><strong>Rolling</strong><small>like IM 70.3 Mallorca</small></span></label>
+              <label class="radio-card"><input type="radio" name="trm-course-in" value="hilly"><span><strong>Hilly</strong><small>like IM Lake Placid</small></span></label>
+              <label class="radio-card"><input type="radio" name="trm-course-in" value="mountainous"><span><strong>Mountainous</strong><small>like IM Nice / Norseman</small></span></label>
+            </div>
+          </div>
+          <div class="manual-field full">
+            <label>Expected race-day temperature <span class="opt-hint">— pick the closest</span></label>
+            <div class="radio-grid cols-2 anchored">
+              <label class="radio-card"><input type="radio" name="trm-temp-in" value="cool"><span><strong>Cool</strong><small>&lt;18°C · like IM Wales Sept</small></span></label>
+              <label class="radio-card"><input type="radio" name="trm-temp-in" value="mild"><span><strong>Mild</strong><small>18–25°C · like IM Mallorca May</small></span></label>
+              <label class="radio-card"><input type="radio" name="trm-temp-in" value="warm"><span><strong>Warm</strong><small>25–30°C · like IM 70.3 St. George</small></span></label>
+              <label class="radio-card"><input type="radio" name="trm-temp-in" value="hot"><span><strong>Hot</strong><small>&gt;30°C · like Kona / Malaysia</small></span></label>
+            </div>
+          </div>
+          <div class="manual-field full">
+            <label for="trm-altitude-in">Altitude <span class="opt-hint">— optional, only matters if &gt;500m</span></label>
+            <select id="trm-altitude-in" class="text-input">
+              <option value="0">Sea level / under 500m (default)</option>
+              <option value="1000">500–1500 m (low)</option>
+              <option value="2000">1500–2500 m (moderate)</option>
+              <option value="3000">Above 2500 m (high)</option>
+            </select>
+          </div>
+        </div>
+        <p id="target-manual-msg" class="form-hint"></p>
+      </div>
+    </div>
+
+    <!-- NEW: Desired finish time -->
+    <div class="form-row">
+      <label class="form-label" for="desired-finish">Your desired finish time</label>
+      <input type="text" id="desired-finish" pattern="[0-9]{1,2}:[0-9]{2}:[0-9]{2}" required class="text-input" placeholder="HH:MM:SS — e.g. 4:30:00">
+      <p class="form-hint">Be honest. We tell You in 30 seconds if it's realistic.</p>
+    </div>
+
+    <!-- NEW: Prior race autocomplete -->
+    <div class="form-row race-search-row">
+      <label class="form-label" for="prior-race-input">Your most recent race at this distance</label>
+      <input type="text" id="prior-race-input" autocomplete="off" class="text-input" placeholder="Same distance. Select Your target race first." disabled>
+      <div id="prior-race-results" class="race-results"></div>
+      <div id="prior-race-meta" class="race-meta" style="display:none">
+        <span class="meta-badge" id="prm-date"></span>
+        <span class="meta-badge" id="prm-location"></span>
+        <span class="meta-badge" id="prm-course"></span>
+        <span class="meta-badge" id="prm-temp"></span>
+      </div>
+
+      <!-- Manual fallback toggle -->
+      <button type="button" id="prior-manual-toggle" class="manual-toggle" disabled>Don't see Your race? Enter it manually →</button>
+
+      <!-- Manual fallback block (hidden by default) -->
+      <div id="prior-manual-block" class="manual-block" style="display:none">
+        <div class="manual-header">
+          <strong>Enter Your prior race details</strong>
+          <button type="button" id="prior-manual-close" class="manual-close">× Use autocomplete</button>
+        </div>
+        <p class="manual-explain">Best memory is fine — we use prior race for relative pacing, not absolute calibration.</p>
+        <div class="manual-grid">
+          <div class="manual-field full">
+            <label for="prm-name-in">Race name</label>
+            <input type="text" id="prm-name-in" class="text-input" placeholder="e.g. Local 70.3 in 2024">
+          </div>
+          <div class="manual-field">
+            <label for="prm-month-in">When (month + year)</label>
+            <input type="month" id="prm-month-in" class="text-input">
+          </div>
+          <div class="manual-field">
+            <label for="prm-altitude-in">Altitude <span class="opt-hint">— optional</span></label>
+            <select id="prm-altitude-in" class="text-input">
+              <option value="0">Sea level (default)</option>
+              <option value="1000">500–1500 m</option>
+              <option value="2000">1500–2500 m</option>
+              <option value="3000">Above 2500 m</option>
+            </select>
+          </div>
+          <div class="manual-field full">
+            <label>Course profile <span class="opt-hint">— pick the closest analog</span></label>
+            <div class="radio-grid cols-2 anchored">
+              <label class="radio-card"><input type="radio" name="prm-course-in" value="flat"><span><strong>Flat</strong><small>like IM Florida 70.3</small></span></label>
+              <label class="radio-card"><input type="radio" name="prm-course-in" value="rolling"><span><strong>Rolling</strong><small>like IM 70.3 Mallorca</small></span></label>
+              <label class="radio-card"><input type="radio" name="prm-course-in" value="hilly"><span><strong>Hilly</strong><small>like IM Lake Placid</small></span></label>
+              <label class="radio-card"><input type="radio" name="prm-course-in" value="mountainous"><span><strong>Mountainous</strong><small>like IM Nice / Norseman</small></span></label>
+            </div>
+          </div>
+          <div class="manual-field full">
+            <label>Race-day temperature <span class="opt-hint">— what You actually raced in</span></label>
+            <div class="radio-grid cols-2 anchored">
+              <label class="radio-card"><input type="radio" name="prm-temp-in" value="cool"><span><strong>Cool</strong><small>&lt;18°C / 64°F</small></span></label>
+              <label class="radio-card"><input type="radio" name="prm-temp-in" value="mild"><span><strong>Mild</strong><small>18–25°C / 64–77°F</small></span></label>
+              <label class="radio-card"><input type="radio" name="prm-temp-in" value="warm"><span><strong>Warm</strong><small>25–30°C / 77–86°F</small></span></label>
+              <label class="radio-card"><input type="radio" name="prm-temp-in" value="hot"><span><strong>Hot</strong><small>&gt;30°C / &gt;86°F</small></span></label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- NEW: Prior race splits -->
+    <div class="form-row">
+      <label class="form-label">Your splits from that race</label>
+      <div class="splits-grid">
+        <div>
+          <input type="text" id="prior-total" pattern="[0-9]{1,2}:[0-9]{2}:[0-9]{2}" required class="text-input" placeholder="Total HH:MM:SS">
+          <span class="split-label">Total finish</span>
+        </div>
+        <div>
+          <input type="text" id="prior-bike" pattern="[0-9]{1,2}:[0-9]{2}:[0-9]{2}" required class="text-input" placeholder="Bike HH:MM:SS">
+          <span class="split-label">Bike split</span>
+        </div>
+        <div>
+          <input type="text" id="prior-run" pattern="[0-9]{1,2}:[0-9]{2}:[0-9]{2}" required class="text-input" placeholder="Run HH:MM:SS">
+          <span class="split-label">Run split</span>
+        </div>
+      </div>
+      <p class="form-hint">Required: total + bike + run. Bike + run must leave at least 4 minutes for swim and transitions.</p>
+    </div>
+
+    <!-- Training hours / tier (UNCHANGED) -->
     <div class="form-row">
       <label class="form-label">Weekly training hours</label>
       <div class="radio-grid cols-3">
@@ -1079,23 +1235,40 @@ src="https://www.facebook.com/tr?id=1931883264260254&ev=PageView&noscript=1"
       </div>
     </div>
 
-    <!-- Active coach -->
+    <!-- Coach gate (UNCHANGED) -->
     <div class="form-row">
       <label class="form-label">Do You have an active coach or structured training plan?</label>
       <div class="radio-grid cols-2">
-        <label class="radio-card">
-          <input type="radio" name="coach" value="yes">
-          <span>Yes</span>
-        </label>
-        <label class="radio-card">
-          <input type="radio" name="coach" value="no">
-          <span>No</span>
-        </label>
+        <label class="radio-card"><input type="radio" name="coach" value="yes"><span>Yes</span></label>
+        <label class="radio-card"><input type="radio" name="coach" value="no"><span>No</span></label>
       </div>
       <p id="coach-msg" class="coach-msg"></p>
     </div>
 
-    <!-- Medical exclusion -->
+    <!-- NEW: Verdict panel -->
+    <div id="verdict-panel" class="verdict-panel" style="display:none">
+      <p class="ve-label">Your verdict</p>
+      <div class="ve-row">
+        <span>Our model projects</span>
+        <strong id="ve-central">—</strong>
+      </div>
+      <div class="ve-row ve-range-row">
+        <span>Expected range</span>
+        <span id="ve-range" class="ve-range">—</span>
+      </div>
+      <div class="ve-row">
+        <span>Your goal</span>
+        <strong id="ve-goal">—</strong>
+      </div>
+      <div class="ve-row ve-likelihood">
+        <span>Likelihood of meeting Your goal</span>
+        <strong id="ve-likelihood">—</strong>
+      </div>
+      <p id="ve-message" class="ve-message"></p>
+      <button type="button" id="ve-adjust" class="ve-adjust" style="display:none">Adjust to recommended goal</button>
+    </div>
+
+    <!-- Medical exclusion (UNCHANGED — verbatim) -->
     <div class="form-row">
       <div class="consent-card">
         <label>
@@ -1118,7 +1291,7 @@ src="https://www.facebook.com/tr?id=1931883264260254&ev=PageView&noscript=1"
       </div>
     </div>
 
-    <!-- Refund/termination consent -->
+    <!-- Refund/termination consent (UNCHANGED — verbatim) -->
     <div class="form-row">
       <div class="consent-card">
         <label>
@@ -1128,24 +1301,24 @@ src="https://www.facebook.com/tr?id=1931883264260254&ev=PageView&noscript=1"
       </div>
     </div>
 
-    <!-- Terms -->
+    <!-- Terms (UNCHANGED — verbatim) -->
     <div class="form-row">
       <label style="display:flex;gap:12px;align-items:flex-start;cursor:pointer">
-        <input type="checkbox" id="terms-check" required style="accent-color:var(--ink);width:20px;height:20px;flex-shrink:0;margin-top:2px">
+        <input type="checkbox" id="terms-check" required style="accent-color: var(--ink); width: 20px; height: 20px; flex-shrink: 0; margin-top: 2px;">
         <span style="font-size:13px;color:var(--ink-soft);line-height:1.6">I agree to the <a href="/terms" target="_blank" style="color:var(--ink);text-decoration:underline">Terms of Service</a> and <a href="/privacy" target="_blank" style="color:var(--ink);text-decoration:underline">Privacy Policy</a>. I understand Sprint is a fueling protocol service and does not include meal planning, coaching, training plan writing, or medical advice.</span>
       </label>
     </div>
 
-    <!-- Tier display -->
+    <!-- Tier display (UNCHANGED) -->
     <div id="tier-display" class="tier-display">
       <p class="te-label">Your tier</p>
       <p id="tier-name" class="te-name"></p>
       <p id="tier-price" class="te-price"></p>
     </div>
 
-    <!-- Submit -->
+    <!-- Submit (text dynamically updates) -->
     <button type="submit" id="screen-submit" class="form-submit" disabled>
-      Select Your tier to continue
+      Complete all fields to continue
     </button>
     <p class="form-disclaimer">Secure checkout via Stripe. Full refund if You complete the protocol and don't get the value.</p>
   </form>
@@ -1383,70 +1556,466 @@ window.switchGal = function(tab, btn){
 <!-- ═══ SCREENING FORM LOGIC (preserved verbatim from iter-3, only msg classes updated) ═══ -->
 <script>
 (function() {
+  // ============ STRIPE / TIERS (preserved from live) ============
   var STRIPE_LINKS = {
-    low:  'https://buy.stripe.com/7sY9AVdkOdQQ3CKbIQ7Re02',   // 70.3 Sprint $569
-    mid:  'https://buy.stripe.com/7sY28tfsW2887T07sA7Re03',   // Ironman Sprint $659
-    high: 'https://buy.stripe.com/3cI4gB1C65kk1uCdQY7Re04'    // Pro Sprint $899
+    low:  'https://buy.stripe.com/7sY9AVdkOdQQ3CKbIQ7Re02',
+    mid:  'https://buy.stripe.com/7sY28tfsW2887T07sA7Re03',
+    high: 'https://buy.stripe.com/3cI4gB1C65kk1uCdQY7Re04'
   };
   var TIERS = {
-    low:  { name: '70.3 Sprint',      price: '$569' },
-    mid:  { name: 'Ironman Sprint',   price: '$659' },
-    high: { name: 'Pro Sprint',       price: '$899' }
+    low:  { name: '70.3 Sprint',    price: '$569' },
+    mid:  { name: 'Ironman Sprint', price: '$659' },
+    high: { name: 'Pro Sprint',     price: '$899' }
   };
 
+  // ============ RACES DB ============
+  var RACES_DB = [];
+  fetch('/static/races.json', { cache: 'force-cache' })
+    .then(function(r) { return r.ok ? r.json() : []; })
+    .then(function(data) { RACES_DB = Array.isArray(data) ? data : []; })
+    .catch(function() { /* DB unavailable — manual entry still works as full fallback */ });
+  function dbReady() { return Array.isArray(RACES_DB) && RACES_DB.length > 0; }
+
+  // ============ ALGORITHM CONSTANTS ============
+  var AGE_DECLINE = {
+    swim: { male: 0.0030, female: 0.0035 },
+    bike: { male: 0.0040, female: 0.0045 },
+    run:  { male: 0.0050, female: 0.0060 }
+  };
+  var TEMP_NUM = { cool: 0, mild: 1, warm: 2, hot: 3 };
+  var TEMP_DELTA_RUN = { '-3':0.95, '-2':0.97, '-1':0.99, '0':1.00, '1':1.03, '2':1.06, '3':1.10 };
+  var COURSE_FACTOR_BIKE = {
+    'flat-flat':1.00,'flat-rolling':0.98,'flat-hilly':0.95,'flat-mountainous':0.90,
+    'rolling-flat':1.02,'rolling-rolling':1.00,'rolling-hilly':0.97,'rolling-mountainous':0.93,
+    'hilly-flat':1.05,'hilly-rolling':1.03,'hilly-hilly':1.00,'hilly-mountainous':0.96,
+    'mountainous-flat':1.10,'mountainous-rolling':1.08,'mountainous-hilly':1.04,'mountainous-mountainous':1.00
+  };
+  var COURSE_FACTOR_RUN = {
+    'flat-flat':1.00,'flat-rolling':0.99,'flat-hilly':0.97,'flat-mountainous':0.94,
+    'rolling-flat':1.01,'rolling-rolling':1.00,'rolling-hilly':0.98,'rolling-mountainous':0.95,
+    'hilly-flat':1.03,'hilly-rolling':1.02,'hilly-hilly':1.00,'hilly-mountainous':0.97,
+    'mountainous-flat':1.06,'mountainous-rolling':1.05,'mountainous-hilly':1.03,'mountainous-mountainous':1.00
+  };
+  var SWIM_DEFAULTS = { half: { male:1980, female:2280 }, full: { male:4200, female:4800 } };
+  var T1_DEFAULTS   = { half: 150, full: 300 };
+  var T2_DEFAULTS   = { half: 120, full: 210 };
+  var FUELING_SAVINGS = { half: 240, full: 480 };
+  var DISCIPLINE_VARIANCE = { swim: 0.025, bike: 0.035, run: 0.045 };
+
+  // ============ UTILITIES ============
+  function parseHMS(s) {
+    if (!s) return null;
+    var parts = s.split(':').map(function(x){ return parseInt(x, 10); });
+    if (parts.length === 3) return parts[0]*3600 + parts[1]*60 + parts[2];
+    if (parts.length === 2) return parts[0]*60 + parts[1];
+    return null;
+  }
+  function formatHMS(sec) {
+    if (sec == null || isNaN(sec)) return '—';
+    sec = Math.round(sec);
+    var h = Math.floor(sec/3600), m = Math.floor((sec%3600)/60), s = sec%60;
+    return h + ':' + (m<10?'0':'') + m + ':' + (s<10?'0':'') + s;
+  }
+  function normalCDF(z) {
+    if (z < -6) return 0; if (z > 6) return 1;
+    var t = 1/(1+0.2316419*Math.abs(z));
+    var d = 0.3989422804*Math.exp(-z*z/2);
+    var p = d*t*(0.31938153+t*(-0.356563782+t*(1.781477937+t*(-1.821255978+t*1.330274429))));
+    return z > 0 ? 1-p : p;
+  }
+  function monthsAgo(iso) {
+    var d = new Date(iso), now = new Date();
+    return (now.getFullYear()-d.getFullYear())*12 + (now.getMonth()-d.getMonth());
+  }
+  function timeDecay(iso) {
+    var m = monthsAgo(iso);
+    if (m <= 3) return 1.00; if (m <= 6) return 1.01;
+    if (m <= 12) return 1.02; if (m <= 18) return 1.03; return 1.05;
+  }
+  function ageFactor(disc, age, sex) {
+    var d = Math.max(0, age - 35);
+    return 1 + AGE_DECLINE[disc][sex] * d * 0.5;
+  }
+  function debounce(fn, ms) {
+    var t; return function() { clearTimeout(t); var a=arguments, c=this; t=setTimeout(function(){fn.apply(c,a);},ms); };
+  }
+
+  function mostRecentPastDate(dates) {
+    var today = new Date().toISOString().split('T')[0];
+    var past = dates.filter(function(d){ return d <= today; });
+    if (past.length === 0) return dates[dates.length-1];  // fallback to most recent (even if future)
+    return past[past.length-1];  // last past date = most recent past
+  }
+
+  function nextFutureDate(dates) {
+    var today = new Date().toISOString().split('T')[0];
+    var future = dates.filter(function(d){ return d >= today; });
+    if (future.length === 0) return dates[dates.length-1];
+    return future[0];
+  }
+
+  function escapeHtml(s) {
+    return s.replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; });
+  }
+
+  // ============ AUTOCOMPLETE ============
+  function setupAutocomplete(inputId, resultsId, metaId, badgePrefix, getDistanceFilter, onSelect) {
+    var input   = document.getElementById(inputId);
+    var results = document.getElementById(resultsId);
+    var meta    = document.getElementById(metaId);
+    var selected = null;
+
+    function render(q) {
+      if (!q) {
+        results.classList.remove('visible');
+        return;
+      }
+      if (!dbReady()) {
+        results.innerHTML = '<div class="race-loading">Loading race database…</div>';
+        results.classList.add('visible');
+        return;
+      }
+      var distance = getDistanceFilter ? getDistanceFilter() : null;
+      var candidates = RACES_DB.filter(function(r) {
+        if (distance && r.distance !== distance) return false;
+        var ql = q.toLowerCase();
+        return r.name.toLowerCase().indexOf(ql) !== -1
+            || r.city.toLowerCase().indexOf(ql) !== -1;
+      }).slice(0, 12);
+
+      if (candidates.length === 0) {
+        results.innerHTML = '<div class="race-loading">No matches. Use the "Enter it manually" link below.</div>';
+        results.classList.add('visible');
+        return;
+      }
+      results.innerHTML = candidates.map(function(r) {
+        return '<div class="race-result-item" data-id="'+r.id+'">'
+          + '<div class="rr-name">'+escapeHtml(r.name)+'</div>'
+          + '<div class="rr-meta">'+escapeHtml(r.city)+', '+escapeHtml(r.country)+' · '+r.next_dates[0]+' · '+r.course+' · '+r.temp+'</div>'
+          + '</div>';
+      }).join('');
+      results.classList.add('visible');
+
+      Array.prototype.forEach.call(results.querySelectorAll('.race-result-item'), function(el) {
+        el.addEventListener('click', function() {
+          var raceId = el.getAttribute('data-id');
+          var race = RACES_DB.find(function(r){ return r.id === raceId; });
+          selected = race;
+          input.value = race.name;
+          results.classList.remove('visible');
+          // Fill meta badges
+          if (badgePrefix === 'trm') {
+            document.getElementById('trm-distance').textContent = race.distance === 'half' ? 'IRONMAN 70.3' : 'FULL IRONMAN';
+            document.getElementById('trm-date').textContent     = race.next_dates[0];
+            document.getElementById('trm-location').textContent = race.city + ', ' + race.country;
+            document.getElementById('trm-course').textContent   = race.course;
+            document.getElementById('trm-temp').textContent     = race.temp;
+          } else {
+            document.getElementById('prm-date').textContent     = race.next_dates[0];
+            document.getElementById('prm-location').textContent = race.city + ', ' + race.country;
+            document.getElementById('prm-course').textContent   = race.course;
+            document.getElementById('prm-temp').textContent     = race.temp;
+          }
+          meta.style.display = 'flex';
+          if (onSelect) onSelect(race);
+          updateForm();
+        });
+      });
+    }
+
+    input.addEventListener('input', debounce(function() {
+      selected = null;
+      meta.style.display = 'none';
+      render(input.value);
+      if (onSelect) onSelect(null);
+      updateForm();
+    }, 150));
+
+    input.addEventListener('blur', function() {
+      setTimeout(function() { results.classList.remove('visible'); }, 200);
+    });
+
+    input.addEventListener('focus', function() {
+      if (input.value && !selected) render(input.value);
+    });
+
+    return {
+      getSelected: function() { return selected; },
+      clear: function() { selected = null; input.value = ''; meta.style.display = 'none'; }
+    };
+  }
+
+  // ============ STATE ============
+  var targetRaceAuto, priorRaceAuto;
   var form         = document.getElementById('screening-form');
   var submit       = document.getElementById('screen-submit');
   var tierDisplay  = document.getElementById('tier-display');
   var tierName     = document.getElementById('tier-name');
   var tierPrice    = document.getElementById('tier-price');
-  var dateInput    = document.getElementById('race-date');
-  var dateMsg      = document.getElementById('date-msg');
+  var verdictPanel = document.getElementById('verdict-panel');
 
-  // Race-gate: 28-56 days from today
+  // Wire autocompletes (prior-input enabling is now handled by updateForm,
+  // so both DB-selected and manually-entered targets unlock the prior section)
+  targetRaceAuto = setupAutocomplete(
+    'target-race-input', 'target-race-results', 'target-race-meta', 'trm',
+    null,
+    null
+  );
+  priorRaceAuto = setupAutocomplete(
+    'prior-race-input', 'prior-race-results', 'prior-race-meta', 'prm',
+    function() {
+      var t = getTargetRaceData().race;
+      return t ? t.distance : null;
+    },
+    null
+  );
+
+  // ============ MANUAL FALLBACK ============
+  var targetManualOpen = false;
+  var priorManualOpen  = false;
+
+  // Date window for manual target: 28-56 days from today (parity with live form)
   var today    = new Date();
   var minDate  = new Date(today.getTime() + 28 * 24 * 60 * 60 * 1000);
-  var maxDate  = new Date(today.getTime() + 84 * 24 * 60 * 60 * 1000);
-  dateInput.min = minDate.toISOString().split('T')[0];
-  dateInput.max = maxDate.toISOString().split('T')[0];
+  var maxDate  = new Date(today.getTime() + 56 * 24 * 60 * 60 * 1000);
+  var trmDateInput = document.getElementById('trm-date-in');
+  if (trmDateInput) {
+    trmDateInput.min = minDate.toISOString().split('T')[0];
+    trmDateInput.max = maxDate.toISOString().split('T')[0];
+  }
 
-  dateInput.addEventListener('change', function() {
-    var d = new Date(this.value);
-    dateMsg.classList.remove('error', 'ok');
-    if (d < minDate) {
-      dateMsg.textContent = 'Race must be at least 4 weeks out.';
-      dateMsg.classList.add('error');
-    } else if (d > maxDate) {
-      dateMsg.textContent = 'Race must be within 12 weeks.';
-      dateMsg.classList.add('error');
-    } else {
-      var weeks = Math.round((d - today) / (7 * 24 * 60 * 60 * 1000));
-      dateMsg.textContent = weeks + ' weeks out. Perfect window for the 4-week protocol.';
-      dateMsg.classList.add('ok');
-    }
+  function openTargetManual() {
+    targetManualOpen = true;
+    document.getElementById('target-manual-block').style.display = 'block';
+    document.getElementById('target-manual-toggle').style.display = 'none';
+    targetRaceAuto.clear();
+    document.getElementById('target-race-input').value = '';
+    document.getElementById('target-race-input').disabled = true;
+    document.getElementById('target-race-input').placeholder = 'Manual entry below — close to switch back';
     updateForm();
-  });
+  }
+  function closeTargetManual() {
+    targetManualOpen = false;
+    document.getElementById('target-manual-block').style.display = 'none';
+    document.getElementById('target-manual-toggle').style.display = 'inline-block';
+    document.getElementById('target-race-input').disabled = false;
+    document.getElementById('target-race-input').placeholder = 'Start typing — e.g. Mallorca, Kona, Nice...';
+    updateForm();
+  }
+  function openPriorManual() {
+    priorManualOpen = true;
+    document.getElementById('prior-manual-block').style.display = 'block';
+    document.getElementById('prior-manual-toggle').style.display = 'none';
+    priorRaceAuto.clear();
+    document.getElementById('prior-race-input').value = '';
+    document.getElementById('prior-race-input').disabled = true;
+    document.getElementById('prior-race-input').placeholder = 'Manual entry below — close to switch back';
+    updateForm();
+  }
+  function closePriorManual() {
+    priorManualOpen = false;
+    document.getElementById('prior-manual-block').style.display = 'none';
+    document.getElementById('prior-manual-toggle').style.display = 'inline-block';
+    document.getElementById('prior-race-input').disabled = false;
+    document.getElementById('prior-race-input').placeholder = 'Start typing — same distance as target race';
+    updateForm();
+  }
 
+  document.getElementById('target-manual-toggle').addEventListener('click', openTargetManual);
+  document.getElementById('target-manual-close').addEventListener('click', closeTargetManual);
+  document.getElementById('prior-manual-toggle').addEventListener('click', openPriorManual);
+  document.getElementById('prior-manual-close').addEventListener('click', closePriorManual);
+
+  // Build a synthetic race object from manual target inputs (or null if incomplete)
+  function readTargetManual() {
+    if (!targetManualOpen) return null;
+    var name     = document.getElementById('trm-name-in').value.trim();
+    var distance = (form.querySelector('input[name="trm-distance-in"]:checked') || {}).value;
+    var date     = document.getElementById('trm-date-in').value;
+    var course   = (form.querySelector('input[name="trm-course-in"]:checked') || {}).value;
+    var temp     = (form.querySelector('input[name="trm-temp-in"]:checked') || {}).value;
+    var alt      = parseInt(document.getElementById('trm-altitude-in').value, 10) || 0;
+    if (!name || !distance || !date || !course || !temp) return null;
+    // Date window validation
+    var d = new Date(date);
+    var msg = document.getElementById('target-manual-msg');
+    if (d < minDate || d > maxDate) {
+      if (msg) {
+        msg.textContent = 'Race date must be 4–8 weeks from today.';
+        msg.style.color = '#d33';
+      }
+      return null;
+    } else if (msg) {
+      msg.textContent = '';
+    }
+    return {
+      id:         'manual-target',
+      name:       name,
+      distance:   distance,
+      next_dates: [date],
+      city:       '(manual entry)',
+      country:    '',
+      course:     course,
+      temp:       temp,
+      alt:        alt,
+      _manual:    true
+    };
+  }
+
+  // Build a synthetic race from manual prior inputs; distance inherited from target.
+  function readPriorManual(targetDistance) {
+    if (!priorManualOpen || !targetDistance) return null;
+    var name   = document.getElementById('prm-name-in').value.trim();
+    var month  = document.getElementById('prm-month-in').value; // "YYYY-MM"
+    var course = (form.querySelector('input[name="prm-course-in"]:checked') || {}).value;
+    var temp   = (form.querySelector('input[name="prm-temp-in"]:checked') || {}).value;
+    var alt    = parseInt(document.getElementById('prm-altitude-in').value, 10) || 0;
+    if (!name || !month || !course || !temp) return null;
+    return {
+      id:         'manual-prior',
+      name:       name,
+      distance:   targetDistance,
+      next_dates: [month + '-15'],  // mid-month as canonical date
+      city:       '(manual entry)',
+      country:    '',
+      course:     course,
+      temp:       temp,
+      alt:        alt,
+      _manual:    true
+    };
+  }
+
+  // Unified getters — return { race, manual } from either DB selection or manual entry
+  function getTargetRaceData() {
+    var db = targetRaceAuto.getSelected();
+    if (db) return { race: db, manual: false };
+    var mn = readTargetManual();
+    if (mn) return { race: mn, manual: true };
+    return { race: null, manual: false };
+  }
+  function getPriorRaceData(targetDistance) {
+    var db = priorRaceAuto.getSelected();
+    if (db) return { race: db, manual: false };
+    var mn = readPriorManual(targetDistance);
+    if (mn) return { race: mn, manual: true };
+    return { race: null, manual: false };
+  }
+
+  // ============ ALGORITHM ============
+  function assess(s) {
+    var target = s.target;
+    var prior  = s.prior;
+
+    // Per-discipline projections
+    var altFactor = function(m) {
+      if (m < 1500) return 1.00; if (m < 2000) return 1.02;
+      if (m < 2500) return 1.04; if (m < 3000) return 1.06; return 1.07;
+    };
+    var courseKey = target.course + '-' + prior.course;
+    var tempDelta = TEMP_NUM[target.temp] - TEMP_NUM[prior.temp];
+
+    var bikePred = s.priorBike
+      * altFactor(target.alt)
+      * (COURSE_FACTOR_BIKE[courseKey] || 1.00)
+      * ageFactor('bike', s.age, s.sex)
+      * timeDecay(prior.next_dates[0]);
+
+    var runPred = s.priorRun
+      * (TEMP_DELTA_RUN[String(tempDelta)] || 1.00)
+      * altFactor(target.alt)
+      * (COURSE_FACTOR_RUN[courseKey] || 1.00)
+      * ageFactor('run', s.age, s.sex)
+      * timeDecay(prior.next_dates[0]);
+
+    var swim = SWIM_DEFAULTS[target.distance][s.sex];
+    var t1   = T1_DEFAULTS[target.distance];
+    var t2   = T2_DEFAULTS[target.distance];
+    var fueling = FUELING_SAVINGS[target.distance];
+
+    var central = swim + t1 + bikePred + t2 + runPred - fueling;
+    var sigma   = central * 0.04;
+    var z       = (s.desired - central) / sigma;
+    var likelihood = normalCDF(z);
+    var recommendedGoal = central + 0.5244 * sigma;
+
+    return {
+      central:           Math.round(central),
+      low:               Math.round(central - 2*sigma),
+      high:              Math.round(central + 2*sigma),
+      likelihoodPct:     Math.round(likelihood * 100),
+      recommendedGoal:   Math.round(recommendedGoal),
+      accepted:          likelihood >= 0.60
+    };
+  }
+
+  // ============ VERDICT RENDERING ============
+  function renderVerdict(result, desired, needsVerification) {
+    verdictPanel.style.display = 'block';
+    verdictPanel.classList.remove('pass', 'stretch', 'unrealistic');
+
+    document.getElementById('ve-central').textContent    = formatHMS(result.central);
+    document.getElementById('ve-range').textContent      = 'between ' + formatHMS(result.low) + ' and ' + formatHMS(result.high);
+    document.getElementById('ve-goal').textContent       = formatHMS(desired);
+    document.getElementById('ve-likelihood').textContent = result.likelihoodPct + '%';
+
+    var msgEl     = document.getElementById('ve-message');
+    var adjustBtn = document.getElementById('ve-adjust');
+    var delta     = desired - result.central;
+    var deltaMin  = Math.round(Math.abs(delta) / 60);
+
+    var verifyNote = needsVerification
+      ? ' Estimate based on Your manual race description — we verify race conditions within 24 hours of payment; full refund if records show a meaningfully different profile.'
+      : '';
+
+    if (result.likelihoodPct >= 60) {
+      verdictPanel.classList.add('pass');
+      msgEl.textContent = "You're in. Your goal is within our model's range — Sprint can help You nail it." + verifyNote;
+      adjustBtn.style.display = 'none';
+    } else if (result.likelihoodPct >= 30) {
+      verdictPanel.classList.add('stretch');
+      msgEl.textContent = "Your goal is " + deltaMin + " minutes faster than our model projects. That's a stretch — adjust to our recommended goal of " + formatHMS(result.recommendedGoal) + " (70% likelihood), or withdraw." + verifyNote;
+      adjustBtn.textContent = 'Adjust to ' + formatHMS(result.recommendedGoal);
+      adjustBtn.style.display = 'block';
+      adjustBtn.onclick = function() {
+        document.getElementById('desired-finish').value = formatHMS(result.recommendedGoal);
+        updateForm();
+      };
+    } else {
+      verdictPanel.classList.add('unrealistic');
+      msgEl.textContent = "Your goal is " + deltaMin + " minutes outside our model's range. Fueling alone can't deliver that. We can't accept this enrollment — adjust to " + formatHMS(result.recommendedGoal) + " or withdraw." + verifyNote;
+      adjustBtn.textContent = 'Adjust to ' + formatHMS(result.recommendedGoal);
+      adjustBtn.style.display = 'block';
+      adjustBtn.onclick = function() {
+        document.getElementById('desired-finish').value = formatHMS(result.recommendedGoal);
+        updateForm();
+      };
+    }
+  }
+
+  // ============ SUBMIT GATE ============
   function updateForm() {
-    var distance       = form.querySelector('input[name="distance"]:checked');
-    var hours          = form.querySelector('input[name="hours"]:checked');
-    var coach          = form.querySelector('input[name="coach"]:checked');
-    var date           = dateInput.value;
-    var nameField      = form.querySelector('input[name="name"]');
-    var emailField     = form.querySelector('input[name="email"]');
-    var name           = nameField  ? nameField.value.trim()  : '';
-    var email          = emailField ? emailField.value.trim() : '';
-    var emailValid     = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-    var medical        = document.getElementById('medical-check').checked;
-    var refundConsent  = document.getElementById('refund-consent').checked;
-    var terms          = document.getElementById('terms-check').checked;
+    var hours       = form.querySelector('input[name="hours"]:checked');
+    var coach       = form.querySelector('input[name="coach"]:checked');
+    var sex         = form.querySelector('input[name="sex"]:checked');
+    var name        = (document.getElementById('athlete-name')||{}).value || '';
+    var email       = (document.getElementById('athlete-email')||{}).value || '';
+    var age         = parseInt(document.getElementById('athlete-age').value, 10);
+    var desired     = parseHMS(document.getElementById('desired-finish').value);
+    var pTotal      = parseHMS(document.getElementById('prior-total').value);
+    var pBike       = parseHMS(document.getElementById('prior-bike').value);
+    var pRun        = parseHMS(document.getElementById('prior-run').value);
+    var medical     = document.getElementById('medical-check').checked;
+    var refund      = document.getElementById('refund-consent').checked;
+    var terms       = document.getElementById('terms-check').checked;
+    var emailValid  = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
-    // Coach gate
+    // Coach message
     var coachMsg = document.getElementById('coach-msg');
     var coachValid = false;
     if (coach) {
       coachMsg.classList.remove('error', 'ok');
       if (coach.value === 'no') {
-        coachMsg.textContent = 'Sprint requires an active coach or structured training plan. We build Your fueling protocol around Your existing training. Without a training plan, we cannot generate Your protocol.';
+        coachMsg.textContent = 'Sprint requires an active coach or structured training plan. Without one, we cannot generate Your protocol.';
         coachMsg.classList.add('error');
         coachValid = false;
       } else {
@@ -1458,62 +2027,131 @@ window.switchGal = function(tab, btn){
 
     // Tier display
     if (hours) {
-      var tier = TIERS[hours.value];
       tierDisplay.classList.add('visible');
-      tierName.textContent = tier.name;
-      tierPrice.textContent = tier.price;
+      tierName.textContent = TIERS[hours.value].name;
+      tierPrice.textContent = TIERS[hours.value].price;
     } else {
       tierDisplay.classList.remove('visible');
     }
 
-    // Date validation
-    var dateValid = false;
-    if (date) {
-      var d = new Date(date);
-      dateValid = d >= minDate && d <= maxDate;
+    // Resolve target + prior from either DB autocomplete or manual entry
+    var targetData = getTargetRaceData();
+    var target     = targetData.race;
+    var priorData  = getPriorRaceData(target ? target.distance : null);
+    var prior      = priorData.race;
+
+    // Prior-race section unlocks once target is set (DB or manual)
+    var priorInput  = document.getElementById('prior-race-input');
+    var priorToggle = document.getElementById('prior-manual-toggle');
+    if (target) {
+      if (!priorManualOpen) {
+        priorInput.disabled = false;
+        priorInput.placeholder = 'Start typing — same distance as target race';
+      }
+      priorToggle.disabled = false;
+    } else {
+      if (!priorManualOpen) {
+        priorInput.disabled = true;
+        priorInput.placeholder = 'Same distance. Select Your target race first.';
+        priorRaceAuto.clear();
+      }
+      priorToggle.disabled = true;
+      // Auto-close prior manual if target is cleared
+      if (priorManualOpen) {
+        closePriorManual();
+      }
     }
 
-    // Submit gate — all fields must be valid
-    var ready = name && emailValid && distance && hours && dateValid && coachValid && medical && refundConsent && terms;
+    var algoOK = false;
+    var result = null;
+
+    if (sex && age >= 18 && target && prior && desired && pTotal && pBike && pRun) {
+      // Sanity: bike+run must leave 240s for swim+transitions
+      if (pBike + pRun + 240 > pTotal) {
+        document.getElementById('ve-message').textContent = 'Your bike + run leaves less than 4 minutes for swim and transitions. Please re-check.';
+        verdictPanel.classList.remove('pass','stretch','unrealistic');
+        verdictPanel.classList.add('unrealistic');
+        verdictPanel.style.display = 'block';
+      } else {
+        result = assess({
+          target: target, prior: prior, sex: sex.value, age: age,
+          desired: desired, priorBike: pBike, priorRun: pRun
+        });
+        renderVerdict(result, desired, targetData.manual || priorData.manual);
+        algoOK = result.accepted;
+      }
+    } else {
+      verdictPanel.style.display = 'none';
+    }
+
+    var ready = name && emailValid && sex && age >= 18 && target && prior && desired && pTotal && pBike && pRun
+                && hours && coachValid && medical && refund && terms && algoOK;
     submit.disabled = !ready;
+
     if (ready) {
       submit.textContent = 'Pay ' + TIERS[hours.value].price + ' — Start My Sprint →';
     } else if (coach && coach.value === 'no') {
       submit.textContent = 'Coach or training plan required';
+    } else if (result && !result.accepted) {
+      submit.textContent = 'Adjust Your goal to enable checkout';
     } else if (!name || !emailValid) {
-      submit.textContent = 'Enter Your name + valid email to continue';
+      submit.textContent = 'Enter Your name + valid email';
+    } else if (!target || !prior) {
+      submit.textContent = 'Select Your race + last race';
+    } else if (!desired || !pTotal || !pBike || !pRun) {
+      submit.textContent = 'Fill in all time fields';
     } else {
-      submit.textContent = hours ? 'Complete all fields to continue' : 'Select Your tier to continue';
+      submit.textContent = 'Complete all fields to continue';
     }
   }
 
   form.addEventListener('change', updateForm);
   form.addEventListener('input',  updateForm);
 
+  // ============ SUBMIT — preserved Stripe + Rewardful + screen-capture logic ============
   form.addEventListener('submit', function(e) {
     e.preventDefault();
     var hours = form.querySelector('input[name="hours"]:checked');
     if (!hours) return;
 
-    var nameField  = form.querySelector('input[name="name"]');
-    var emailField = form.querySelector('input[name="email"]');
-    var distance   = form.querySelector('input[name="distance"]:checked');
-    var raceDate   = form.querySelector('#race-date');
-    var coach      = form.querySelector('input[name="coach"]:checked');
+    var targetData = getTargetRaceData();
+    var target     = targetData.race;
+    var priorData  = getPriorRaceData(target ? target.distance : null);
+    var prior      = priorData.race;
+    var sex        = (form.querySelector('input[name="sex"]:checked')||{}).value;
+    var coach      = (form.querySelector('input[name="coach"]:checked')||{}).value;
 
     var screenPayload = {
-      name:           nameField  ? nameField.value.trim()  : '',
-      email:          emailField ? emailField.value.trim() : '',
-      distance:       distance   ? distance.value          : '',
-      race_date:      raceDate   ? raceDate.value          : '',
-      hours:          hours.value,
-      coach:          coach      ? coach.value             : '',
-      result:         'pass',
-      referral:       (window.Rewardful && window.Rewardful.referral) || '',
-      submitted_at:   new Date().toISOString()
+      name:                document.getElementById('athlete-name').value.trim(),
+      email:               document.getElementById('athlete-email').value.trim(),
+      sex:                 sex,
+      age:                 parseInt(document.getElementById('athlete-age').value, 10),
+      target_race:         target ? target.id   : '',
+      target_race_name:    target ? target.name : '',
+      target_distance:     target ? target.distance : '',
+      target_date:         target ? target.next_dates[0] : '',
+      target_course:       target ? target.course : '',
+      target_temp:         target ? target.temp : '',
+      target_altitude:     target ? target.alt : 0,
+      target_race_manual:  !!targetData.manual,
+      desired_finish:      document.getElementById('desired-finish').value,
+      prior_race:          prior ? prior.id   : '',
+      prior_race_name:     prior ? prior.name : '',
+      prior_date:          prior ? prior.next_dates[0] : '',
+      prior_course:        prior ? prior.course : '',
+      prior_temp:          prior ? prior.temp : '',
+      prior_race_manual:   !!priorData.manual,
+      prior_total:         document.getElementById('prior-total').value,
+      prior_bike:          document.getElementById('prior-bike').value,
+      prior_run:           document.getElementById('prior-run').value,
+      hours:               hours.value,
+      coach:               coach,
+      result:              'pass',
+      needs_verification:  !!(targetData.manual || priorData.manual),
+      referral:            (window.Rewardful && window.Rewardful.referral) || '',
+      submitted_at:        new Date().toISOString()
     };
 
-    // Fire screen-capture endpoint (non-blocking)
     try {
       fetch('/api/screen-capture', {
         method:    'POST',
@@ -1533,19 +2171,6 @@ window.switchGal = function(tab, btn){
     if (typeof gtag === 'function') {
       gtag('event', 'sprint_checkout_redirect', { tier: hours.value, page: 'sprint' });
       gtag('event', 'sprint_screen_pass',       { tier: hours.value, has_email: screenPayload.email ? 1 : 0 });
-    }
-    if (typeof fbq === 'function') {
-      var _sprintValues = { low: 569, mid: 659, high: 899 };
-      var _sprintLabels = { low: '4-Week Sprint 70.3', mid: '4-Week Sprint Full Ironman', high: '4-Week Sprint Pro' };
-      var _sprintIds    = { low: 'sprint-703', mid: 'sprint-full', high: 'sprint-pro' };
-      fbq('track', 'InitiateCheckout', {
-        content_name: _sprintLabels[hours.value] || 'Sprint Protocol',
-        content_category: 'Service',
-        content_ids: [_sprintIds[hours.value] || 'sprint'],
-        value: _sprintValues[hours.value] || 569,
-        currency: 'USD',
-        num_items: 1
-      });
     }
     window.location.href = stripeUrl;
   });
@@ -1699,6 +2324,240 @@ document.querySelectorAll('a[href*="buy.stripe.com/4gM7sN"]').forEach(function(e
   .premium-modal-form > div[data-tf-live]{height:500px}
   .premium-modal-price{flex-direction:column;align-items:flex-start;gap:8px;text-align:left}
   .ppm-meta{text-align:left;max-width:none}
+}
+
+
+/* ════════════════════════════════════════════════════════════
+   Sprint screening form additions (autocomplete, verdict panel, manual fallback)
+   ════════════════════════════════════════════════════════════ */
+/* Race autocomplete */
+.race-search-row { position: relative; }
+.race-results {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: white;
+  border: 1px solid var(--ink-faint, #ddd);
+  border-radius: 6px;
+  max-height: 280px;
+  overflow-y: auto;
+  z-index: 100;
+  display: none;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+.race-results.visible { display: block; }
+.race-result-item {
+  padding: 12px 14px;
+  cursor: pointer;
+  border-bottom: 1px solid var(--ink-faint, #eee);
+  font-size: 14px;
+}
+.race-result-item:last-child { border-bottom: none; }
+.race-result-item:hover, .race-result-item.active {
+  background: var(--ink-faintest, #f5f5f5);
+}
+.race-result-item .rr-name { font-weight: 600; color: var(--ink); }
+.race-result-item .rr-meta { font-size: 12px; color: var(--ink-soft); margin-top: 2px; }
+
+.race-meta {
+  margin-top: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.meta-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  background: var(--ink-faintest, #f5f5f5);
+  border: 1px solid var(--ink-faint, #ddd);
+  border-radius: 12px;
+  font-size: 11px;
+  color: var(--ink-soft);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-weight: 600;
+}
+
+/* Splits grid */
+.splits-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+.splits-grid > div { display: flex; flex-direction: column; gap: 4px; }
+.split-label {
+  font-size: 11px;
+  color: var(--ink-soft);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-weight: 600;
+  text-align: center;
+}
+@media (max-width: 600px) {
+  .splits-grid { grid-template-columns: 1fr; }
+}
+
+/* Verdict panel */
+.verdict-panel {
+  margin: 20px 0;
+  padding: 20px 22px;
+  background: linear-gradient(180deg, #fafafa 0%, #f5f5f5 100%);
+  border: 1.5px solid var(--ink);
+  border-radius: 8px;
+}
+.verdict-panel.unrealistic { border-color: #d33; background: linear-gradient(180deg, #fff5f5 0%, #ffeeee 100%); }
+.verdict-panel.stretch { border-color: #e8a000; background: linear-gradient(180deg, #fffaf0 0%, #fff5e0 100%); }
+.verdict-panel.pass { border-color: #1a8f4e; background: linear-gradient(180deg, #f0faf4 0%, #e6f7ed 100%); }
+
+.ve-label {
+  margin: 0 0 14px;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-weight: 700;
+  color: var(--ink-soft);
+}
+.ve-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 6px 0;
+  font-size: 14px;
+  color: var(--ink-soft);
+}
+.ve-row strong { color: var(--ink); font-size: 16px; }
+.ve-likelihood strong { font-size: 22px; }
+.ve-range { font-size: 12px; color: var(--ink-soft); }
+.ve-message {
+  margin: 14px 0 0;
+  padding-top: 14px;
+  border-top: 1px solid rgba(0,0,0,0.08);
+  font-size: 13px;
+  color: var(--ink);
+  line-height: 1.55;
+}
+.ve-adjust {
+  margin-top: 12px;
+  padding: 10px 16px;
+  background: var(--ink);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  width: 100%;
+}
+.ve-adjust:hover { opacity: 0.9; }
+
+/* Date / coach message styles — preserved from live */
+.coach-msg { margin-top: 8px; font-size: 13px; }
+.coach-msg.error { color: #d33; }
+.coach-msg.ok { color: #1a8f4e; }
+
+/* Manual race fallback */
+.manual-toggle {
+  margin-top: 10px;
+  background: transparent;
+  border: none;
+  color: var(--ink-soft, #666);
+  font-size: 13px;
+  cursor: pointer;
+  padding: 0;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.manual-toggle:hover { color: var(--ink, #000); }
+.manual-toggle:disabled { opacity: 0.4; cursor: not-allowed; text-decoration: none; }
+
+.manual-block {
+  margin-top: 14px;
+  padding: 16px 18px;
+  background: #fafafa;
+  border: 1px dashed var(--ink-faint, #ccc);
+  border-radius: 8px;
+}
+.manual-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--ink-faint, #eee);
+}
+.manual-header strong { font-size: 14px; color: var(--ink, #000); }
+.manual-close {
+  background: transparent;
+  border: none;
+  color: var(--ink-soft, #666);
+  font-size: 12px;
+  cursor: pointer;
+  padding: 4px 8px;
+}
+.manual-close:hover { color: var(--ink, #000); }
+
+.manual-explain {
+  margin: 0 0 14px;
+  font-size: 12px;
+  color: var(--ink-soft, #666);
+  line-height: 1.5;
+}
+
+.manual-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+}
+.manual-field { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.manual-field.full { grid-column: 1 / -1; }
+.manual-field label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink, #000);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.opt-hint {
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: 0;
+  color: var(--ink-soft, #666);
+  font-size: 11px;
+}
+
+.radio-grid.anchored .radio-card {
+  padding: 10px 12px;
+  text-align: left;
+  min-height: 56px;
+}
+.radio-grid.anchored .radio-card span {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  align-items: flex-start;
+}
+.radio-grid.anchored .radio-card strong {
+  font-size: 13px;
+  color: var(--ink, #000);
+  font-weight: 700;
+}
+.radio-grid.anchored .radio-card small {
+  font-size: 11px;
+  color: var(--ink-soft, #666);
+  line-height: 1.35;
+}
+
+@media (max-width: 600px) {
+  .manual-grid { grid-template-columns: 1fr; }
+}
+
+/* Loading state for autocomplete */
+.race-loading {
+  padding: 10px 14px;
+  font-size: 13px;
+  color: var(--ink-soft, #666);
+  font-style: italic;
 }
 </style>
 
