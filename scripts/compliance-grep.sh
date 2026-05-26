@@ -61,8 +61,11 @@ for FILE in "${TARGETS[@]}"; do
       | grep -viE '(money-?back|satisfaction|outcome|process|refund|full)[- ]+guarantee\b' \
       | grep -viE '\b[0-9]+-day[- ]+(satisfaction[- ]+)?guarantee\b' \
       | grep -viE 'guarantee[- ](policy|seal|button|label|promise|number|body|inner)\b' \
-      | grep -viE 'no[t]?[- ]+a?[- ]*(clinical[- ])?guarantee' \
-      | grep -viE 'not[- ](clinical[- ])?guarantee' \
+      | grep -viE 'no[t]?[- ]+a?[- ]*(clinical|performance|medical)?[- ]?guarantee' \
+      | grep -viE 'not[- ](clinical|performance|medical)?[- ]?guarantee' \
+      | grep -viE 'is not a guarantee' \
+      | grep -viE 'is not a promise' \
+      | grep -viE 'not[- ]a[- ]promise' \
       | grep -viE "we[- ](can'?t|cannot)[- ]guarantee" \
       `# 3. CSS class definitions (lines containing CSS selector with guarantee, or CSS rule blocks) ` \
       | grep -viE '\.[a-z][a-z0-9_-]*guarantee[a-z0-9_-]*' \

@@ -125,18 +125,82 @@ bun test calculator.test.ts # Run calculator tests (4 passing)
 vercel dev                  # Full local dev with serverless routes
 ```
 
-## Deployment (post-cutover)
+## Canonical source + deployment — READ BEFORE TOUCHING /sprint, /, /audit
 
-**Always deploy via Vercel CLI, not GitHub auto-deploy.**
+### Canonical source path (the ONLY folder to deploy from)
 
-```bash
-git push origin main                # push to origin (history / collab)
-vercel --prod --yes --scope rik-athletica  # FORCE production deploy from local
-# wait for readyState: READY
-curl -I https://www.rikathletica.com/  # verify
+```
+/Users/bekzhou/Documents/Claude Code - Gstack/.claude/worktrees/confident-jones-80753d/
 ```
 
-Vercel webhook auto-deploy is unreliable on this project. Use CLI.
+**Other folders on this machine are stale and MUST NOT be used:**
+- `~/Downloads/RIK_Site_Revamp/site/` — outdated by months (May 2026 snapshot). Deploying from this folder will overwrite the design system. Confirmed broken on 2026-05-26 when a session built screening-form features against it and shipped a legacy-design site to production. **Do not use this folder.**
+- Other sibling worktrees under `.claude/worktrees/` — feature branches, not production source.
+
+Before editing any HTML, confirm you are in the canonical worktree by checking the path matches above.
+
+### Live site = Vercel project `rik-athletica-v2`
+
+- **Vercel project name:** `rik-athletica-v2`
+- **Vercel team scope:** `rik-athletica` (use `--scope rik-athletica` on every CLI call)
+- **Production domain:** `www.rikathletica.com`
+- **Project ID:** `prj_ytGbmxLdnHeBiBF3N2UhLyRd7Dku`
+- **Org ID:** `team_Jx9cKDWDIaUvE59BeofkHBb6`
+- `.vercel/project.json` in this worktree is correctly linked. Do not edit it.
+
+There is also a separate Vercel project called `rik-audit` — that is NOT the production site. Never deploy this site to `rik-audit`. If `vercel link` runs and asks which project, always pick `rik-athletica-v2`.
+
+### Deployment method (the path that actually works)
+
+Direct `vercel --prod` from a sandboxed Bash hangs mid-upload at ~20 MB into a ~40 MB upload (Vercel API socket disconnects). Confirmed 3+ failures on 2026-05-24 and 2026-05-26. Don't use that path. Use the branch-Preview → promote → alias pattern instead:
+
+```bash
+# Step 1 — push branch to origin
+git push origin HEAD                                                # Vercel auto-builds Preview from the push
+
+# Step 2 — wait ~30–60s, then find the new Preview
+bunx --bun vercel list --scope rik-athletica                        # latest row should be Preview · Ready · <branch-slug>
+
+# Step 3 — promote the Preview to Production target
+bunx --bun vercel promote <preview-url> --scope rik-athletica --yes # creates a new Production-target deployment
+
+# Step 4 — CRITICAL: update the www.rikathletica.com alias to point at the new deployment
+bunx --bun vercel alias set <preview-or-deployment-url> www.rikathletica.com --scope rik-athletica
+# Without this, www.rikathletica.com keeps serving the OLD content even though vercel list shows new Production-target deployments.
+
+# Step 5 — verify with cache-bust
+curl -sL "https://www.rikathletica.com/?cb=$(date +%s)" | grep '<title>'
+```
+
+To audit what the domain currently points to:
+
+```bash
+bunx --bun vercel alias ls --scope rik-athletica | grep rikathletica
+# The deployment URL on the left of the row is what's actually live, regardless of the alias age column.
+```
+
+### Sandbox node note
+
+`~/.local/bin/node` is a broken symlink to a deleted `/tmp/node-v22.15.0-darwin-arm64/`. `node` will not run directly from the Bash tool. `bunx --bun vercel` works because bun's runtime polyfills enough of node to host the Vercel CLI. Don't waste time trying to invoke `vercel` without the `bunx --bun` prefix.
+
+### Pre-flight before any deploy
+
+```bash
+# 1. Confirm you're in the canonical worktree
+pwd  # must show /Users/bekzhou/Documents/Claude Code - Gstack/.claude/worktrees/confident-jones-80753d
+
+# 2. Confirm the local sprint.html matches expected size for our latest design
+wc -c sprint.html  # ≥140 KB indicates the latest design + screening form is present
+
+# 3. Confirm .vercel/project.json points at rik-athletica-v2
+cat .vercel/project.json | grep projectName  # must show "rik-athletica-v2"
+```
+
+If any pre-flight fails, STOP and investigate. Do not deploy from a stale folder. Do not deploy to `rik-audit`.
+
+### GitHub auto-deploy
+
+CLAUDE.md previously said "Vercel webhook auto-deploy is unreliable on this project." That's only partially true — branch pushes DO trigger auto-Preview builds reliably, which is what the deploy pattern above depends on. What is unreliable is `main`-push → auto-Production-deploy; sometimes the alias doesn't update. Always run the manual `vercel alias set` step.
 
 ## Key conventions (UPDATED for revamp)
 
