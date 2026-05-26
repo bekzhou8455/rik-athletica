@@ -58,13 +58,7 @@ button{font-family:inherit}
 .wrap{max-width:var(--maxw);margin:0 auto}
 
 /* ─── NAV ─── */
-/* Founding 50 promo bar — persistent above nav */
-.promo-bar{position:fixed;top:0;left:0;right:0;z-index:40;background:var(--ink);color:rgba(255,255,255,.92);font-size:12px;font-weight:500;letter-spacing:.04em;text-align:center;padding:9px 24px;line-height:1.4;border-bottom:1px solid rgba(255,255,255,.08)}
-.promo-bar strong{color:#fff;font-weight:600}
-.promo-bar .pb-sep{display:inline-block;margin:0 10px;color:rgba(255,255,255,.4)}
-@media (max-width:720px){.promo-bar{font-size:11px;padding:7px 14px;letter-spacing:.02em}.promo-bar .pb-sep{margin:0 6px}.promo-bar .pb-mob-hide{display:none}}
-nav.site-nav{position:fixed;top:36px;left:0;right:0;z-index:30;background:transparent;border-bottom:1px solid rgba(255,255,255,.08);padding:22px 36px;display:flex;justify-content:space-between;align-items:center;color:#fff;transition:opacity .28s ease,transform .28s ease}
-@media (max-width:720px){nav.site-nav{top:32px}}
+nav.site-nav{position:fixed;top:0;left:0;right:0;z-index:30;background:transparent;border-bottom:1px solid rgba(255,255,255,.08);padding:22px 36px;display:flex;justify-content:space-between;align-items:center;color:#fff;transition:opacity .28s ease,transform .28s ease}
 nav.site-nav[data-state="hidden"]{opacity:0;pointer-events:none;transform:translateY(-6px)}
 .nav-mark{display:flex;align-items:center;gap:10px;font-weight:700;font-size:15px;letter-spacing:-.005em;color:#fff}
 .nav-mark img{height:26px;width:auto;filter:brightness(0) invert(1)}
@@ -75,8 +69,7 @@ nav.site-nav[data-state="hidden"]{opacity:0;pointer-events:none;transform:transl
 nav.site-nav .nav-toggle{color:#fff;display:none;background:none;border:none;cursor:pointer;padding:10px;min-width:44px;min-height:44px}
 nav.site-nav .cta .pill{background:#fff;color:var(--ink);border-color:#fff}
 nav.site-nav .cta .arrow{background:var(--ink);color:#fff;border-color:#fff}
-.nav-mobile{display:none;position:fixed;top:96px;left:0;right:0;bottom:0;background:var(--bg);z-index:25;padding:32px 20px;flex-direction:column}
-@media (max-width:720px){.nav-mobile{top:88px}}
+.nav-mobile{display:none;position:fixed;top:60px;left:0;right:0;bottom:0;background:var(--bg);z-index:25;padding:32px 20px;flex-direction:column}
 .nav-mobile.open{display:flex}
 .nav-mobile a{padding:18px 0;font-size:18px;font-weight:500;border-bottom:1px dashed var(--rule);color:var(--ink)}
 .nav-mobile a:last-of-type{border-bottom:0}
@@ -94,9 +87,9 @@ nav.site-nav .cta .arrow{background:var(--ink);color:#fff;border-color:#fff}
 .cta.lg .arrow{width:50px;height:50px;font-size:16px}
 
 /* ─── HERO ─── */
-.hero{position:relative;padding:96px 36px;border-bottom:1px solid var(--rule);isolation:isolate;overflow:hidden;min-height:100vh;display:flex;align-items:center;color:#fff;background-color:#0a0a0a;background-image:url(/assets/web/sprint-hero-poster.jpg);background-size:cover;background-position:center 35%}
-.hero-video{position:absolute;inset:0;z-index:0;width:100%;height:100%;object-fit:cover;object-position:center 35%;background:#0a0a0a}
-.hero::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;background:radial-gradient(ellipse 55% 70% at 20% 50%,rgba(0,0,0,.7) 0%,rgba(0,0,0,.36) 38%,rgba(0,0,0,.10) 70%,rgba(0,0,0,0) 85%),linear-gradient(98deg,rgba(0,0,0,.55) 0%,rgba(0,0,0,.22) 50%,rgba(0,0,0,0) 80%),linear-gradient(180deg,rgba(0,0,0,.18) 0%,rgba(0,0,0,0) 30%,rgba(0,0,0,.20) 100%)}
+.hero{position:relative;padding:96px 36px;border-bottom:1px solid var(--rule);isolation:isolate;overflow:hidden;min-height:100vh;display:flex;align-items:center;color:#fff;background-color:#0a0a0a;background-image:url(/assets/web/sprint-hero-poster.jpg);background-size:cover;background-position:center 45%}
+.hero-video{position:absolute;inset:0;z-index:0;width:100%;height:100%;object-fit:cover;object-position:center 45%;background:#0a0a0a;transform:scale(1.04);transition:transform .6s ease}
+.hero::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;background:radial-gradient(ellipse 60% 75% at 18% 50%,rgba(0,0,0,.78) 0%,rgba(0,0,0,.45) 40%,rgba(0,0,0,.18) 70%,rgba(0,0,0,.05) 88%),linear-gradient(98deg,rgba(0,0,0,.62) 0%,rgba(0,0,0,.28) 50%,rgba(0,0,0,0) 80%),linear-gradient(180deg,rgba(0,0,0,.28) 0%,rgba(0,0,0,.08) 25%,rgba(0,0,0,0) 50%,rgba(0,0,0,.35) 100%)}
 .hero > .wrap{position:relative;z-index:2;width:100%}
 .hero .hero-content{position:relative;max-width:min(640px,52%)}
 .hero .h1{font-family:var(--display);font-size:clamp(48px,7.5vw,104px);font-weight:700;line-height:.94;letter-spacing:-.02em;margin:0 0 22px;max-width:13ch;color:#fff}
@@ -536,18 +529,6 @@ src="https://www.facebook.com/tr?id=1931883264260254&ev=PageView&noscript=1"
 </head>
 <body id="top">
 
-<!-- ═══ FOUNDING 50 PROMO BAR ═══ -->
-<div class="promo-bar" role="region" aria-label="Limited time offer">
-  <strong>Founding 50</strong>
-  <span class="pb-sep">·</span>
-  <span>Bundle $83 <span style="text-decoration:line-through;color:rgba(255,255,255,.5);margin-left:4px">$119</span></span>
-  <span class="pb-sep">·</span>
-  <span class="pb-mob-hide">Free US shipping</span>
-  <span class="pb-sep pb-mob-hide">·</span>
-  <span>30-day money-back, no questions</span>
-</div>
-
-
 <!-- ═══ NAV ═══ -->
 <nav class="site-nav">
   <a href="/" class="nav-mark" aria-label="RIK Athletica home">
@@ -880,14 +861,14 @@ src="https://www.facebook.com/tr?id=1931883264260254&ev=PageView&noscript=1"
 <!-- ═══ §4b — CALENDAR: Apple-style bento card with hand-held iPhone render ═══ -->
 <section class="s" id="calendar">
   <!-- Headline outside the bento -->
-  <h2 class="cal-headline">Your Training Week. <em>With Fueling Mapped.</em></h2>
+  <h2 class="cal-headline">One Less Decision. <em>Every Session.</em></h2>
 
   <!-- Bento card: copy on left, hero render on right -->
   <div class="cal-bento">
     <div class="cal-bento-copy">
-      <span class="cal-eyebrow">In Your pocket</span>
-      <h3 class="cal-bento-title">Every Session. <em>Every Bottle. Every Bar.</em></h3>
-      <p class="cal-desc"><strong>Every session gets a fueling protocol.</strong> Pre-ride breakfast, in-ride carb schedule, post-run recovery — all mapped to Your calendar. No guessing. No aid-station math.</p>
+      <span class="cal-eyebrow">Delivered to Your calendar</span>
+      <h3 class="cal-bento-title">Every Session. <em>Already Decided.</em></h3>
+      <p class="cal-desc"><strong>The protocol is built. The products are shipped.</strong> Each long session arrives with its fueling already mapped — what to take, when to take it, how much. You don't guess at mile 60. You execute the plan.</p>
       <div class="cal-facts">
         <span class="cal-fact">
           <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
@@ -896,10 +877,6 @@ src="https://www.facebook.com/tr?id=1931883264260254&ev=PageView&noscript=1"
         <span class="cal-fact">
           <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.5.5 0 0 1-.96 0L9.24 2.18a.5.5 0 0 0-.96 0l-2.35 8.36A2 2 0 0 1 4 12H2"/></svg>
           Revised weekly
-        </span>
-        <span class="cal-fact">
-          <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2v7.527a2 2 0 0 1-.211.896L4.72 20.55a1 1 0 0 0 .9 1.45h12.76a1 1 0 0 0 .9-1.45l-5.069-10.127A2 2 0 0 1 14 9.527V2"/><path d="M8.5 2h7"/><path d="M7 16h10"/></svg>
-          CHO/sodium calibrated
         </span>
       </div>
     </div>
@@ -951,21 +928,21 @@ src="https://www.facebook.com/tr?id=1931883264260254&ev=PageView&noscript=1"
 </section>
 
 
-<!-- ═══ §6 — ANCHOR PRICING: Premium upsell strip (convenience framing) ═══ -->
+<!-- ═══ §6 — PREMIUM TIER: Convenience-tier upsell (modal trigger) ═══ -->
 <section class="s alt anchor-wrap" style="padding-top:48px;padding-bottom:48px">
   <div class="anchor-banner">
     <div class="anchor-body">
-      <span class="anchor-eyebrow">Founding Cohort · 10 seats</span>
-      <h3>Want It All Off Your Mind? <em>Premium Handles Everything.</em></h3>
-      <p>Protocol built. Products sourced. Race week handled. WhatsApp concierge with 2-hour response. Post-race debrief included. Sprint hands You the system — Premium hands it off entirely.</p>
+      <span class="anchor-eyebrow">Premium · By Invitation</span>
+      <h3>Want It Off Your Mind Entirely? <em>Premium Hands It Off.</em></h3>
+      <p>Sprint hands You a system. Premium hands the problem off. RD-reviewed race-day plan. Direct WhatsApp line, 7 days a week, race-week same-hour. Products shipped to Your hotel. Race-day intelligence report. Zero forms.</p>
     </div>
     <div class="anchor-price">
       <span class="anchor-price-num">$1,599</span>
-      <span class="anchor-price-meta">founding cohort</span>
-      <a href="/premium" class="cta sm" style="margin-top:12px" data-track="premium_upsell_sprint">
-        <span class="pill" style="background:#fff;color:var(--ink);border-color:#fff">Learn More</span>
+      <span class="anchor-price-meta">limited capacity</span>
+      <button type="button" class="cta sm" style="margin-top:12px;background:none;border:none;padding:0;font:inherit;cursor:pointer" data-premium-open data-track="premium_modal_open">
+        <span class="pill" style="background:#fff;color:var(--ink);border-color:#fff">Request a Call</span>
         <span class="arrow" style="background:var(--ink);color:#fff;border-color:#fff">↗</span>
-      </a>
+      </button>
     </div>
   </div>
 </section>
@@ -1684,6 +1661,126 @@ document.querySelectorAll('a[href*="buy.stripe.com/4gM7sN"]').forEach(function(e
   <span>Start My Sprint</span>
   <span class="float-arrow" aria-hidden="true">↗</span>
 </a>
+
+<!-- ═══ PREMIUM MODAL ═══ -->
+<style>
+.premium-modal{position:fixed;inset:0;z-index:1000;display:none;align-items:center;justify-content:center;padding:24px}
+.premium-modal.open{display:flex}
+.premium-modal-backdrop{position:absolute;inset:0;background:rgba(14,14,14,.78);backdrop-filter:blur(4px);cursor:pointer}
+.premium-modal-card{position:relative;background:var(--bg);max-width:680px;width:100%;max-height:90vh;border-radius:20px;box-shadow:0 30px 60px rgba(0,0,0,.4);overflow-y:auto;display:flex;flex-direction:column}
+.premium-modal-close{position:absolute;top:16px;right:16px;width:36px;height:36px;border-radius:999px;border:1px solid var(--rule);background:#fff;color:var(--ink);font-size:22px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .15s;z-index:2;padding:0}
+.premium-modal-close:hover{background:var(--bg-2)}
+.premium-modal-header{padding:44px 40px 24px;border-bottom:1px dashed var(--rule)}
+.premium-modal-tag{display:inline-block;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-soft);font-weight:600;padding:6px 12px;border:1px solid var(--rule);border-radius:999px;margin-bottom:18px}
+.premium-modal-header h2{font-family:var(--display);font-size:clamp(26px,4vw,34px);font-weight:700;line-height:1.08;letter-spacing:-.02em;color:var(--ink);margin:0 0 14px;max-width:18ch}
+.premium-modal-header h2 em{font-style:normal;color:var(--ink-soft);font-weight:700}
+.premium-modal-header p{font-size:14.5px;line-height:1.6;color:var(--ink-soft);margin:0;max-width:54ch}
+.premium-modal-body{padding:28px 40px}
+.premium-modal-section h3{font-family:var(--sans);font-size:11px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-soft);margin:0 0 16px}
+.premium-features{list-style:none;padding:0;margin:0 0 28px;display:flex;flex-direction:column;gap:11px}
+.premium-features li{font-size:14px;line-height:1.55;color:var(--ink-soft);padding-left:24px;position:relative}
+.premium-features li::before{content:"";position:absolute;left:0;top:7px;width:13px;height:7px;border-left:2px solid var(--ink);border-bottom:2px solid var(--ink);transform:rotate(-45deg)}
+.premium-features li strong{color:var(--ink);font-weight:600}
+.premium-modal-price{background:var(--ink);color:#fff;padding:20px 24px;border-radius:14px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.ppm-num{font-family:var(--display);font-size:32px;font-weight:700;letter-spacing:-.02em;line-height:1;color:#fff}
+.ppm-meta{font-size:12px;color:rgba(255,255,255,.65);letter-spacing:.04em;line-height:1.4;max-width:32ch;text-align:right}
+.premium-modal-form-head{padding:24px 40px 12px}
+.premium-modal-form-head h3{font-family:var(--display);font-size:18px;font-weight:700;color:var(--ink);margin:0 0 6px;letter-spacing:-.01em}
+.premium-modal-form-head p{font-size:13px;color:var(--ink-soft);line-height:1.5;margin:0}
+.premium-modal-form{padding:8px 40px 40px}
+.premium-modal-form > div[data-tf-live]{min-height:560px;border-radius:14px;overflow:hidden;border:1px solid var(--rule);background:#fff}
+@media (max-width:600px){
+  .premium-modal{padding:0}
+  .premium-modal-card{max-height:100vh;border-radius:0}
+  .premium-modal-header{padding:48px 24px 20px}
+  .premium-modal-body{padding:24px}
+  .premium-modal-form-head{padding:18px 24px 8px}
+  .premium-modal-form{padding:8px 24px 28px}
+  .premium-modal-price{flex-direction:column;align-items:flex-start;gap:8px;text-align:left}
+  .ppm-meta{text-align:left;max-width:none}
+}
+</style>
+
+<div class="premium-modal" id="premium-modal" role="dialog" aria-modal="true" aria-labelledby="premium-modal-title" aria-hidden="true">
+  <div class="premium-modal-backdrop" data-premium-close></div>
+  <div class="premium-modal-card">
+    <button type="button" class="premium-modal-close" data-premium-close aria-label="Close">&times;</button>
+    <div class="premium-modal-header">
+      <span class="premium-modal-tag">Premium · By Invitation</span>
+      <h2 id="premium-modal-title">One Call. <em>Then We Handle It.</em></h2>
+      <p>Sprint hands You a system to execute. Premium hands the problem off entirely. You don't fill forms, plan logistics, or worry about race-day variables. We do.</p>
+    </div>
+    <div class="premium-modal-body">
+      <div class="premium-modal-section">
+        <h3>What's Different from Pro Sprint</h3>
+        <ul class="premium-features">
+          <li><strong>30-min discovery call.</strong> No forms, ever.</li>
+          <li><strong>Direct WhatsApp line, 7 days a week.</strong> Race week: same-hour response.</li>
+          <li><strong>RD-reviewed race-day plan.</strong> Your race protocol gets independent review before race day.</li>
+          <li><strong>Race-day intelligence report.</strong> Track conditions, weather, historical race-day data vs Your numbers.</li>
+          <li><strong>Products shipped to Your home AND race hotel.</strong></li>
+          <li><strong>Gatorade GX sweat test kit</strong> for sodium calibration.</li>
+          <li><strong>One extra Bundle</strong> to share with a training partner.</li>
+          <li><strong>Travel-aware:</strong> altitude, climate, hotel kitchen, dietary needs.</li>
+          <li><strong>30-min post-race debrief</strong> + next-race planning call.</li>
+        </ul>
+      </div>
+      <div class="premium-modal-price">
+        <span class="ppm-num">$1,599</span>
+        <span class="ppm-meta">Limited capacity per cycle · invitation-only</span>
+      </div>
+    </div>
+    <div class="premium-modal-form-head">
+      <h3>Request a Premium Call</h3>
+      <p>Tell us about Your race + life. We'll reach out within 24 hours.</p>
+    </div>
+    <div class="premium-modal-form">
+      <div data-tf-live="oxapBsYq" data-tf-opacity="100" data-tf-iframe-props="title=Premium Inquiry" data-tf-transitive-search-params data-tf-medium="snippet"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {
+  var modal = document.getElementById('premium-modal');
+  if (!modal) return;
+  var openers = document.querySelectorAll('[data-premium-open]');
+  var closers = modal.querySelectorAll('[data-premium-close]');
+  var typeformLoaded = false;
+  var lastFocus = null;
+
+  function open(e) {
+    if (e) e.preventDefault();
+    lastFocus = document.activeElement;
+    modal.classList.add('open');
+    modal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+    if (typeof gtag === 'function') gtag('event', 'premium_modal_open', { page: 'sprint' });
+    if (window.RIK && typeof window.RIK.cta === 'function') window.RIK.cta('premium_modal_open');
+    if (typeof fbq === 'function') fbq('track', 'Lead', { content_name: 'Premium Inquiry', content_category: 'Premium', value: 1599.00, currency: 'USD' });
+    if (!typeformLoaded) {
+      var s = document.createElement('script');
+      s.src = '//embed.typeform.com/next/embed.js';
+      document.body.appendChild(s);
+      typeformLoaded = true;
+    }
+    var closeBtn = modal.querySelector('.premium-modal-close');
+    if (closeBtn) closeBtn.focus();
+  }
+  function close() {
+    modal.classList.remove('open');
+    modal.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+    if (lastFocus && typeof lastFocus.focus === 'function') lastFocus.focus();
+  }
+
+  openers.forEach(function(el) { el.addEventListener('click', open); });
+  closers.forEach(function(el) { el.addEventListener('click', close); });
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && modal.classList.contains('open')) close();
+  });
+})();
+</script>
 
 </body>
 </html>
