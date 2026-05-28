@@ -50,7 +50,6 @@ gtag('config', 'G-X7LJHZLR4K');
   --ink-dim:   #8A8780;
   --rule:      rgba(14,14,14,.18);
   --rule-soft: rgba(14,14,14,.10);
-  --warm-img:  linear-gradient(135deg,#7a4a2a,#c98b5a 50%,#3a2418);
   --sans:      "Outfit", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
   --display:   "Outfit", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
   --maxw:      1320px;
@@ -188,17 +187,6 @@ section.s.dark{background:var(--ink);color:#fff}
 .il-icon svg{width:22px;height:22px;stroke:currentColor;stroke-width:1.5;fill:none}
 .il-row strong{display:block;font-size:16px;font-weight:500;margin-bottom:6px;color:var(--ink);letter-spacing:-.005em}
 .il-row p{font-size:13.5px;color:var(--ink-soft);line-height:1.6;max-width:50ch}
-
-/* ─── Warm-amber atmospheric break ─── */
-section.warm-atmos{position:relative;padding:128px 36px;border-bottom:1px solid var(--rule);background:var(--warm-img);color:#fff;isolation:isolate;overflow:hidden}
-section.warm-atmos::before{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;background:radial-gradient(at 18% 22%, rgba(255,255,255,.08) 0%, transparent 55%), radial-gradient(at 82% 78%, rgba(0,0,0,.18) 0%, transparent 55%)}
-section.warm-atmos > .wrap{position:relative;z-index:1;max-width:var(--maxw);margin:0 auto}
-section.warm-atmos .atmos-eyebrow{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.7);font-weight:500;margin-bottom:24px;display:block}
-section.warm-atmos h2{font-family:var(--display);font-size:clamp(40px, 6.5vw, 96px);font-weight:700;line-height:.96;letter-spacing:-.02em;color:#fff;max-width:18ch;margin-bottom:32px}
-section.warm-atmos h2 em{font-style:normal;color:rgba(255,255,255,.55);font-weight:700}
-section.warm-atmos .atmos-meta{display:grid;grid-template-columns:repeat(3,1fr);gap:32px;border-top:1px dashed rgba(255,255,255,.32);padding-top:32px;margin-top:48px}
-section.warm-atmos .atmos-meta strong{display:block;font-size:32px;font-weight:700;letter-spacing:-.02em;color:#fff;line-height:1;font-variant-numeric:tabular-nums;margin-bottom:8px}
-section.warm-atmos .atmos-meta span{font-size:13px;color:rgba(255,255,255,.7);line-height:1.55}
 
 /* ─── Product display (NEW — fix #3) ─── */
 .product-display{max-width:var(--maxw);margin:0 auto;background:#fff;border:1px solid var(--rule-soft);border-radius:24px;overflow:hidden}
@@ -424,11 +412,10 @@ footer.legal .footer-disclaimer strong{color:rgba(255,255,255,.6);display:block;
   nav.site-nav{padding:14px 20px}
   .nav-links,.nav-cta-desktop{display:none}
   .nav-toggle{display:inline-flex !important;align-items:center;justify-content:center}
-  .hero,section.s,.closing,footer.legal,section.warm-atmos,section.refund-banner{padding-left:20px;padding-right:20px}
+  .hero,section.s,.closing,footer.legal,section.refund-banner{padding-left:20px;padding-right:20px}
   .hero{padding-top:88px;padding-bottom:48px;min-height:92vh;align-items:center}
   .hero .hero-content{max-width:100%}
   section.s{padding-top:64px;padding-bottom:64px}
-  section.warm-atmos{padding-top:80px;padding-bottom:80px}
   section.refund-banner{padding-top:64px;padding-bottom:64px}
   .closing{padding-top:96px;padding-bottom:96px;min-height:auto}
   .closing > .closing-row{grid-template-columns:1fr;align-items:flex-start;gap:32px}
@@ -450,11 +437,9 @@ footer.legal .footer-disclaimer strong{color:rgba(255,255,255,.6);display:block;
   .refund-stamp{flex-direction:column;align-items:flex-start;gap:14px}
   .refund-stamp-numwrap{align-items:flex-end;gap:12px}
   .cta-wall{grid-template-columns:1fr}
-  section.warm-atmos .atmos-meta{grid-template-columns:1fr;gap:24px}
 }
 @media (max-width:640px){
   section.s{padding:56px 20px}
-  section.warm-atmos{padding:64px 20px}
   section.refund-banner{padding:56px 20px}
   .closing{padding:80px 20px}
   .hero .h1{font-size:clamp(40px, 11vw, 56px);max-width:14ch;line-height:.96;letter-spacing:-.025em;margin:16px 0 18px}
@@ -473,9 +458,6 @@ footer.legal .footer-disclaimer strong{color:rgba(255,255,255,.6);display:block;
   .il-icon svg{width:18px;height:18px}
   .il-row strong{font-size:15px}
   .il-row p{font-size:13px}
-  section.warm-atmos h2{font-size:clamp(32px, 9vw, 48px);max-width:16ch;margin-bottom:24px}
-  section.warm-atmos .atmos-meta{padding-top:24px;margin-top:32px;gap:18px}
-  section.warm-atmos .atmos-meta strong{font-size:24px}
   /* Tabs: scrollable strip on small screens — prevents 3-tab text from being clipped */
   .pd-tabs{overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none}
   .pd-tabs::-webkit-scrollbar{display:none}
@@ -674,19 +656,7 @@ src="https://www.facebook.com/tr?id=1931883264260254&ev=PageView&noscript=1"
 </section>
 
 
-<!-- ═══ 02 — DATA BAND (lean stats — no header) ═══ -->
-<section class="warm-atmos">
-  <div class="wrap">
-    <div class="atmos-meta">
-      <div><strong>6</strong><span>Distinctive functional ingredients endurance gels skip (Citrulline · BCAAs · Beta-alanine · Glutamine · Carnitine · Taurine) — part of a 10-ingredient stack.</span></div>
-      <div><strong>20+</strong><span>Years of peer-reviewed data on this stack — in strength sports. Almost no endurance gel uses any of it.&dagger;</span></div>
-      <div><strong>1g</strong><span>L-Glutamine per Refuel. No mainstream gel includes this.&dagger;</span></div>
-    </div>
-  </div>
-</section>
-
-
-<!-- ═══ 03 — THE PRODUCTS (NEW MERGED — fix #3) ═══ -->
+<!-- ═══ 02 — THE PRODUCTS (renumbered from 03 after data-band removal) ═══ -->
 <section class="s" id="products">
   <div class="s-head">
     <div class="s-num">The products</div>
