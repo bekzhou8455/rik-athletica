@@ -1,0 +1,63 @@
+<!doctype html>
+<!--
+  Email: Bundle Welcome Sequence #2 — Day-5 Race Segmentation
+  Trigger: 5 days after STRIPE_CONVERSION_BUNDLE tag applied
+  Subject: Quick question — what race are You fueling for?
+  Tokens:
+    {{first_name}}        — Athlete first name
+    {{tag_703}}           — Kit "Apply Tag" URL for SEG_703
+    {{tag_full_im}}       — Kit "Apply Tag" URL for SEG_FULL_IM
+    {{tag_marathon}}      — Kit "Apply Tag" URL for SEG_MARATHON
+    {{tag_ultra}}         — Kit "Apply Tag" URL for SEG_ULTRA
+    {{tag_none}}          — Kit "Apply Tag" URL for SEG_NONE
+    {{wa_link}}           — wa.me link
+    {{unsubscribe}}       — Kit-managed unsubscribe
+    {{registered_address}} — RIK NY mailing address
+-->
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>What race? — RIK Athletica</title></head>
+<body style="margin:0;padding:0;background:#EEEDEA;font-family:'Outfit',-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif;color:#0E0E0E;-webkit-font-smoothing:antialiased;">
+<div style="display:none;max-height:0;overflow:hidden;">One tap — tell us what race You're fueling for. If You're 4–12 weeks out we may have something specific.</div>
+
+<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background:#EEEDEA;"><tr><td align="center" style="padding:32px 20px;">
+<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="600" style="max-width:600px;width:100%;background:#FFFFFF;border:1px solid rgba(14,14,14,.10);border-radius:18px;overflow:hidden;">
+
+  <tr><td style="padding:28px 36px;border-bottom:1px solid rgba(14,14,14,.10);">
+    <p style="margin:0;font-family:'Outfit',sans-serif;font-size:13px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:#0E0E0E;">RIK Athletica · Quick question</p>
+  </td></tr>
+
+  <tr><td style="padding:48px 36px 28px;">
+    <p style="margin:0 0 16px;font-size:11px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:#5A5853;">─── &nbsp;&nbsp;One tap&nbsp;&nbsp;───</p>
+    <h1 style="margin:0 0 18px;font-family:'Outfit',sans-serif;font-size:32px;font-weight:700;line-height:1.05;letter-spacing:-.02em;color:#0E0E0E;">What race are You <span style="color:#5A5853;font-weight:700;">fueling for?</span></h1>
+    <p style="margin:0 0 14px;font-size:15px;line-height:1.65;color:#5A5853;">{{first_name}} — Your Bundle should be in Your hands now. One quick tap below and we'll send race-specific resources Your way.</p>
+  </td></tr>
+
+  <tr><td style="padding:0 36px 36px;">
+    <p style="margin:0 0 18px;font-family:'Outfit',sans-serif;font-size:11px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:#5A5853;">Pick one</p>
+
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+      <tr><td style="padding:0 0 10px;"><a href="{{tag_703}}" style="display:block;padding:18px 22px;background:#FFFFFF;border:1px solid rgba(14,14,14,.18);border-radius:12px;font-family:'Outfit',sans-serif;font-size:15px;font-weight:600;color:#0E0E0E;text-decoration:none;letter-spacing:-.005em;">70.3 / Half Ironman &nbsp;<span style="color:#8A8780;font-weight:500;">→</span></a></td></tr>
+      <tr><td style="padding:0 0 10px;"><a href="{{tag_full_im}}" style="display:block;padding:18px 22px;background:#FFFFFF;border:1px solid rgba(14,14,14,.18);border-radius:12px;font-family:'Outfit',sans-serif;font-size:15px;font-weight:600;color:#0E0E0E;text-decoration:none;letter-spacing:-.005em;">Full Ironman &nbsp;<span style="color:#8A8780;font-weight:500;">→</span></a></td></tr>
+      <tr><td style="padding:0 0 10px;"><a href="{{tag_marathon}}" style="display:block;padding:18px 22px;background:#FFFFFF;border:1px solid rgba(14,14,14,.18);border-radius:12px;font-family:'Outfit',sans-serif;font-size:15px;font-weight:600;color:#0E0E0E;text-decoration:none;letter-spacing:-.005em;">Marathon &nbsp;<span style="color:#8A8780;font-weight:500;">→</span></a></td></tr>
+      <tr><td style="padding:0 0 10px;"><a href="{{tag_ultra}}" style="display:block;padding:18px 22px;background:#FFFFFF;border:1px solid rgba(14,14,14,.18);border-radius:12px;font-family:'Outfit',sans-serif;font-size:15px;font-weight:600;color:#0E0E0E;text-decoration:none;letter-spacing:-.005em;">Ultra / cycling event &nbsp;<span style="color:#8A8780;font-weight:500;">→</span></a></td></tr>
+      <tr><td><a href="{{tag_none}}" style="display:block;padding:18px 22px;background:#FFFFFF;border:1px solid rgba(14,14,14,.18);border-radius:12px;font-family:'Outfit',sans-serif;font-size:15px;font-weight:600;color:#0E0E0E;text-decoration:none;letter-spacing:-.005em;">Just training, no specific race &nbsp;<span style="color:#8A8780;font-weight:500;">→</span></a></td></tr>
+    </table>
+  </td></tr>
+
+  <tr><td style="padding:0 36px 32px;">
+    <p style="margin:0;font-size:13.5px;line-height:1.65;color:#5A5853;">If You're <strong style="color:#0E0E0E;font-weight:500;">4–12 weeks out from race day</strong> and racing 70.3, Full Ironman, or Marathon — You may be a fit for our <a href="https://www.rikathletica.com/sprint" style="color:#0E0E0E;text-decoration:none;border-bottom:1px solid rgba(14,14,14,.25);">4-Week Sprint protocol</a>. Calibrated fueling, weekly revisions. We'll send details if You tap one of the first three above.</p>
+  </td></tr>
+
+  <tr><td style="padding:0 36px 36px;">
+    <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="border-top:1px dashed rgba(14,14,14,.18);padding-top:24px;"><tr><td style="font-family:'Outfit',sans-serif;font-size:11px;line-height:1.65;color:#5A5853;letter-spacing:.04em;">
+      <p style="margin:0 0 12px;font-weight:500;color:#0E0E0E;">— RIK</p>
+      <p style="margin:0 0 14px;"><a href="mailto:Bek.Zhou@rikathletica.com" style="color:#0E0E0E;text-decoration:none;border-bottom:1px solid rgba(14,14,14,.25);">Bek.Zhou@rikathletica.com</a></p>
+      <p style="margin:0 0 8px;font-size:10px;color:#8A8780;letter-spacing:.06em;">Copyright &copy; 2026 Rik Athletic Nutrition Inc.</p>
+      <p style="margin:0 0 8px;font-size:10px;color:#8A8780;line-height:1.7;"><strong style="color:#5A5853;">&dagger;</strong> RIK Athletica products are dietary supplements. Statements have not been evaluated by the FDA. Not intended to diagnose, treat, cure, or prevent any disease.</p>
+      <p style="margin:0 0 8px;font-size:10px;color:#8A8780;line-height:1.6;">{{registered_address}}</p>
+      <p style="margin:0;font-size:10px;color:#8A8780;line-height:1.6;"><a href="{{unsubscribe}}" style="color:#8A8780;text-decoration:underline;">Unsubscribe</a></p>
+    </td></tr></table>
+  </td></tr>
+
+</table>
+</td></tr></table>
+</body></html>
