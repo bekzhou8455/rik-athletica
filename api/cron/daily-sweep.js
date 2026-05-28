@@ -16,7 +16,9 @@ import {
   markScreeningS2Sent,
   purgeOldScreenings,
 } from '../../lib/db.js';
-import { tagAuditNoConvert } from '../../lib/kit.js';
+// ESP migration 2026-05-28: Kit → Klaviyo.
+// import { tagAuditNoConvert } from '../../lib/kit.js';
+import { trackAuditNoConvert } from '../../lib/klaviyo.js';
 import {
   alertQueueReminder,
   alertDailySummary,
@@ -71,8 +73,8 @@ export default async function handler(req, res) {
     const noConvertRows = await markNoConvertCohort();
     summary.no_converts_marked = noConvertRows.length;
     for (const row of noConvertRows) {
-      await tagAuditNoConvert(row.email).catch(err =>
-        alertError({ where: 'cron/daily-sweep (kit.tagAuditNoConvert)', error: err, auditId: row.id }));
+      await trackAuditNoConvert(row.email, row.first_name || '').catch(err =>
+        alertError({ where: 'cron/daily-sweep (klaviyo.trackAuditNoConvert)', error: err, auditId: row.id }));
     }
   } catch (err) {
     console.error('[daily-sweep] noConvert sweep failed:', err);

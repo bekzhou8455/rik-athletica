@@ -13,7 +13,9 @@ import { runEngine } from '../../lib/routing.js';
 import { identifyPrimaryGap } from '../../lib/audit-gaps.js';
 import { draftBlocks, fallbackDrafts } from '../../lib/ai-drafter.js';
 import { insertAudit } from '../../lib/db.js';
-import { tagAuditSubmitted } from '../../lib/kit.js';
+// ESP migration 2026-05-28: Kit → Klaviyo.
+// import { tagAuditSubmitted } from '../../lib/kit.js';
+import { trackAuditSubmitted } from '../../lib/klaviyo.js';
 import { alertNewDraft, alertError, emailE0Confirmation } from '../../lib/email-alerts.js';
 
 const AnswersSchema = z.object({
@@ -119,11 +121,11 @@ export default async function handler(req, res) {
   // Side effects — MUST await on Vercel serverless or function exits before they complete.
   // Adds ~1-2s to response time but guarantees emails actually send.
   await Promise.allSettled([
-    tagAuditSubmitted(answers.email, answers.firstName, {
-      audit_id: row.id,
-      race_distance: answers.raceDistance ?? '',
+    trackAuditSubmitted(answers.email, answers.firstName, {
+      audit_id:         row.id,
+      race_distance:    answers.raceDistance ?? '',
       tier_recommended: engine.tier_recommendation?.tier ?? '',
-    }).catch(err => alertError({ where: 'api/audit/submit (kit.tagAuditSubmitted)', error: err, auditId: row.id })),
+    }).catch(err => alertError({ where: 'api/audit/submit (klaviyo.trackAuditSubmitted)', error: err, auditId: row.id })),
 
     emailE0Confirmation({ to: answers.email, firstName: answers.firstName })
       .catch(err => alertError({ where: 'api/audit/submit (E0 email)', error: err, auditId: row.id })),

@@ -18,7 +18,14 @@
 import crypto from 'crypto';
 import { sendMail, mailerReady } from './mailer.js';
 import { markScreeningPaidByEmail } from '../lib/db.js';
-import { addNurtureTag, removeNurtureTags } from '../lib/kit.js';
+// ESP migration 2026-05-28: Kit → Klaviyo. Kit functions kept commented for ~30d rollback safety.
+// import { addNurtureTag, removeNurtureTags } from '../lib/kit.js';
+import {
+  trackEvent,
+  trackBundlePurchase,
+  trackSprintPurchase,
+  trackPremiumPurchase,
+} from '../lib/klaviyo.js';
 
 // Disable Vercel's automatic body parsing — Stripe signature verification
 // requires the exact raw bytes, not a re-serialised JSON object.
@@ -109,11 +116,17 @@ export default async function handler(req, res) {
       const amountCents = session.amount_total || 0;
       const tierKey  = getTierKey(amountCents);
       const tierLabel = getTierLabel(amountCents);
-      const tagName  = `cart-recovery-${tierKey}`;
-      addNurtureTag(email, name.split(' ')[0] || '', tagName, {
-        tier_in_cart:       tierLabel,
-        tier_in_cart_price: String(Math.round(amountCents / 100)),
-      }).catch(err => console.error(`[stripe-webhook] cart-recovery tag failed: ${err.message}`));
+      // Klaviyo: track "Cart Abandoned" event. Cart-recovery flow listens for this metric.
+      trackEvent({
+        email,
+        firstName: name.split(' ')[0] || '',
+        metricName: 'Cart Abandoned',
+        properties: {
+          tier_in_cart:       tierLabel,
+          tier_in_cart_price: Math.round(amountCents / 100),
+          tier_key:           tierKey,
+        },
+      }).catch(err => console.error(`[stripe-webhook] Klaviyo cart-abandoned event failed: ${err.message}`));
     }
     return res.status(200).json({ ok: true });
   }
@@ -247,25 +260,27 @@ export default async function handler(req, res) {
     }
   }
 
-  // ─── 3. Kit kill switch — remove all nurture tags on purchase ───
-  // Exits the subscriber from any running nurture sequence (post-audit, cart-recovery, upsell).
-  if (customerEmail) {
-    removeNurtureTags(customerEmail, ALL_NURTURE_TAGS)
-      .catch(err => console.error('[stripe-webhook] nurture tag removal failed:', err.message));
-  }
+  // ─── 3. Nurture flow exit — now handled inside Klaviyo Flows ───
+  // Kit required explicit tag removal on purchase to exit nurture sequences.
+  // Klaviyo Flows have built-in "exit on event" rules — when "Bundle Purchase",
+  // "Sprint Purchase", or "Premium Purchase" event fires for a profile, any
+  // running nurture flow (cart-recovery, post-audit) auto-exits.
+  // Configure exit rules per flow in Klaviyo dashboard under each flow's settings.
 
-  // ─── 4. Conversion tag — drives RIK_Email_Sequences_v2.md ───
-  // Bundle purchase → STRIPE_CONVERSION_BUNDLE → triggers Sequence 1 (B1/B2/B3).
-  // Sprint/Premium → STRIPE_CONVERSION_SPRINT → exit signal for Sequence 1
-  // (and entry hook for future Sprint-side nurture if added).
+  // ─── 4. Klaviyo purchase event — triggers Bundle Welcome Flow / Sprint nurture / Premium ───
+  // Each tier fires its own Klaviyo metric. Flows in Klaviyo listen for these
+  // metrics by name and trigger the corresponding email sequence.
   if (customerEmail) {
     const tierKey = getTierKey(amountCents);
-    const conversionTag = tierKey === 'bundle'
-      ? 'STRIPE_CONVERSION_BUNDLE'
-      : 'STRIPE_CONVERSION_SPRINT';
-    addNurtureTag(customerEmail, customerName.split(' ')[0] || '', conversionTag, {
+    const klaviyoTracker = tierKey === 'bundle'  ? trackBundlePurchase
+                         : tierKey === 'premium' ? trackPremiumPurchase
+                         : trackSprintPurchase;
+    klaviyoTracker(customerEmail, customerName.split(' ')[0] || '', {
       purchase_date_short: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
-    }).catch(err => console.error(`[stripe-webhook] ${conversionTag} tag failed:`, err.message));
+      amount_usd:          Math.round(amountCents / 100),
+      stripe_session_id:   session.id,
+      tier_key:            tierKey,
+    }).catch(err => console.error(`[stripe-webhook] Klaviyo ${tierKey} purchase event failed:`, err.message));
   }
 
   // ─── 5. Mark Sprint screening as paid → suppresses S1 cart-abandonment ───

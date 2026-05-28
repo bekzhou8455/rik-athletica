@@ -11,7 +11,9 @@
 // 8. Send Bek alert (✉️ delivered)
 
 import { getAuditById, markDelivered, newSlug } from '../../lib/db.js';
-import { tagAuditDelivered, tierTagIdFor } from '../../lib/kit.js';
+// ESP migration 2026-05-28: Kit → Klaviyo. tierTagIdFor no longer needed (Klaviyo uses metrics + properties instead of tier-specific tags).
+// import { tagAuditDelivered, tierTagIdFor } from '../../lib/kit.js';
+import { trackAuditDelivered } from '../../lib/klaviyo.js';
 import { alertDelivered, alertError, emailAuditToAthlete } from '../../lib/email-alerts.js';
 
 function checkAdmin(req) {
@@ -74,15 +76,12 @@ export default async function handler(req, res) {
       tierLabel,
     }).catch(err => alertError({ where: 'api/audit/approve (athlete email)', error: err, auditId: id })),
 
-    tagAuditDelivered(row.email, row.first_name, {
-      tierTagId: tierTagIdFor(tierKey),
-      fields: {
-        audit_id: id,
-        audit_slug: slug,
-        audit_pdf_url: pdfUrl,
-        audit_tier: tierKey,
-      },
-    }).catch(err => alertError({ where: 'api/audit/approve (kit.tagAuditDelivered)', error: err, auditId: id })),
+    trackAuditDelivered(row.email, row.first_name, {
+      audit_id:      id,
+      audit_slug:    slug,
+      audit_pdf_url: pdfUrl,
+      audit_tier:    tierKey,
+    }).catch(err => alertError({ where: 'api/audit/approve (klaviyo.trackAuditDelivered)', error: err, auditId: id })),
 
     alertDelivered({ audit: row, tierLabel, slug })
       .catch(err => alertError({ where: 'api/audit/approve (alertDelivered)', error: err, auditId: id })),
