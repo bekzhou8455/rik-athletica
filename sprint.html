@@ -87,11 +87,11 @@ nav.site-nav .cta .arrow{background:var(--ink);color:#fff;border-color:#fff}
 .cta.lg .arrow{width:50px;height:50px;font-size:16px}
 
 /* ─── HERO ─── */
-.hero{position:relative;padding:96px 36px;border-bottom:1px solid var(--rule);isolation:isolate;overflow:hidden;min-height:100vh;display:flex;align-items:center;color:#fff;background-color:#0a0a0a;background-image:url(/assets/web/sprint-hero-poster.jpg);background-size:cover;background-position:center 45%}
+.hero{position:relative;padding:96px 36px;border-bottom:1px solid var(--rule);isolation:isolate;overflow:hidden;min-height:100svh;display:flex;align-items:center;color:#fff;background-color:#0a0a0a;background-image:url(/assets/web/sprint-hero-poster.jpg);background-size:cover;background-position:center 45%}
 .hero-video{position:absolute;inset:0;z-index:0;width:100%;height:100%;object-fit:cover;object-position:center 45%;background:#0a0a0a;transform:scale(1.04);transition:transform .6s ease}
 .hero::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;background:radial-gradient(ellipse 60% 75% at 18% 50%,rgba(0,0,0,.78) 0%,rgba(0,0,0,.45) 40%,rgba(0,0,0,.18) 70%,rgba(0,0,0,.05) 88%),linear-gradient(98deg,rgba(0,0,0,.62) 0%,rgba(0,0,0,.28) 50%,rgba(0,0,0,0) 80%),linear-gradient(180deg,rgba(0,0,0,.28) 0%,rgba(0,0,0,.08) 25%,rgba(0,0,0,0) 50%,rgba(0,0,0,.35) 100%)}
 .hero > .wrap{position:relative;z-index:2;width:100%}
-.hero .hero-content{position:relative;max-width:min(640px,52%)}
+.hero .hero-content{position:relative;max-width:min(600px,92%)}
 .hero .h1{font-family:var(--display);font-size:clamp(48px,7.5vw,104px);font-weight:700;line-height:.94;letter-spacing:-.02em;margin:0 0 22px;max-width:13ch;color:#fff}
 .hero .h1 em{font-style:normal;font-weight:700;color:rgba(255,255,255,.6)}
 .hero .lead{font-size:16px;line-height:1.55;margin-bottom:32px;color:#fff;max-width:50ch}
@@ -197,6 +197,7 @@ section.sprint-journey .s-num{color:rgba(255,255,255,.5)}
 .tier-matrix .price-row td{font-family:var(--display);font-size:24px;font-weight:700;color:var(--ink);letter-spacing:-.02em;padding:20px 16px;border-bottom:2px solid var(--ink)}
 .tier-matrix .price-row td:first-child{font-family:var(--sans);font-size:13.5px;font-weight:500}
 .tier-matrix .cta-row td{padding:20px 16px;border-bottom:0}
+.pricing-helper{text-align:center;font-size:14px;font-weight:600;color:var(--ink);margin-bottom:20px;letter-spacing:-.005em}
 
 /* ─── Anchor Pricing banner (Premium upsell — mid-length strip) ─── */
 .anchor-banner{max-width:var(--maxw);margin:0 auto;display:grid;grid-template-columns:1fr auto;gap:36px;align-items:center;padding:36px 48px;background:var(--ink);border-radius:18px;color:#fff}
@@ -329,6 +330,8 @@ section.coached-gate::after{content:"";position:absolute;inset:0;z-index:0;point
 .form-submit:hover:not(:disabled){background:#1a1a1a}
 .form-submit:disabled{opacity:.5;cursor:not-allowed}
 .form-disclaimer{font-size:12px;color:var(--ink-soft);text-align:center;margin-top:14px;line-height:1.5}
+.form-unlock-hint{margin-top:10px;text-align:center;font-size:12.5px;color:var(--ink-soft);line-height:1.45}
+.form-hint-redflag{font-size:12.5px;color:var(--ink-soft);border-left:2px solid var(--rule);padding-left:10px;line-height:1.5}
 
 /* ─── Auto-sign overlay ─── */
 .sign-overlay{display:none;position:fixed;inset:0;z-index:60;background:rgba(10,10,10,.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);align-items:center;justify-content:center}
@@ -565,19 +568,7 @@ src="https://www.facebook.com/tr?id=776806364952215&ev=PageView&noscript=1"
   <div class="wrap">
     <div class="hero-content">
       <h1 class="h1">Your Race. <em>Iterated Until It Fits.</em></h1>
-      <p class="lead">For coached triathletes racing in 4&ndash;8 weeks who are done guessing fueling. We build Your protocol, iterate weekly, and ship what the plan calls for.&dagger;</p>
-
-      <div class="hero-fornot">
-        <p class="fn-for"><span class="fn-key">For</span> Coached · Race in 28&ndash;56 days · Training 8&ndash;20+ hrs/week</p>
-        <p class="fn-not"><span class="fn-key">Not for</span> Self-coached or &gt;8 weeks out &mdash; start with the <a href="/audit">Audit</a> or <a href="/">Bundle</a></p>
-      </div>
-
-      <ul class="hero-chips" aria-label="What Sprint includes">
-        <li>Weekly revision loop · 4 weeks</li>
-        <li>Products shipped &mdash; not just RIK</li>
-        <li>Designed to reduce GI &amp; fueling mistakes&dagger;</li>
-        <li><a href="#refund-guarantee">Refund policy</a></li>
-      </ul>
+      <p class="lead">For coached triathletes racing in 4&ndash;8 weeks. We build your fueling protocol, ship every product, and iterate weekly&mdash;so you have the best shot at your target time.&dagger;</p>
 
       <div class="hero-cta">
         <a href="#eligibility" class="cta invert lg" data-track="sprint_cta_click">
@@ -585,30 +576,86 @@ src="https://www.facebook.com/tr?id=776806364952215&ev=PageView&noscript=1"
         </a>
         <a href="#pricing" class="hero-textlink" data-track="sprint_see_pricing">See pricing &mdash; from $569 &rarr;</a>
       </div>
+
+      <p class="hero-micro">Eligibility checks if we can support your target time&mdash;if not, we don&rsquo;t take you.</p>
+      <p class="hero-micro hero-micro-risk">If you don&rsquo;t qualify, checkout stays locked. If red flags appear after intake review, we cancel and refund. <a href="/terms" class="hero-micro-link">Terms apply.</a></p>
     </div>
   </div>
 </section>
 
 
-<!-- ═══ §1 extras — HERO pre-filter (FOR/NOT-FOR), proof chips, secondary link ═══ -->
+<!-- ═══ §1 extras — Hero v4 (editorial) + qualifier-strip styling ═══ -->
 <style>
-.hero-fornot{margin:2px 0 22px;display:flex;flex-direction:column;gap:7px}
-.hero-fornot p{font-size:14.5px;line-height:1.5;color:rgba(255,255,255,.92);margin:0;text-shadow:0 1px 3px rgba(0,0,0,.6)}
-.hero-fornot .fn-key{display:inline-block;min-width:58px;font-weight:700;letter-spacing:.01em;color:#fff}
-.hero-fornot .fn-not{color:rgba(255,255,255,.74)}
-.hero-fornot a{color:#fff;text-decoration:underline;text-underline-offset:2px}
-.hero-chips{list-style:none;display:flex;flex-wrap:wrap;gap:8px;margin:0 0 4px;padding:0}
-.hero-chips li{font-size:12px;line-height:1;padding:8px 13px;border-radius:999px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.30);color:#fff}
-.hero-chips li a{color:#fff;text-decoration:underline;text-underline-offset:2px}
-.hero-textlink{display:inline-flex;align-items:center;font-size:14px;font-weight:600;color:#fff;text-decoration:underline;text-underline-offset:3px;align-self:center;text-shadow:0 1px 3px rgba(0,0,0,.6)}
-.hero-textlink:hover{opacity:.82}
+/* Hero overlay — left-stronger gradient so copy feels printed on the image (ref: MyHealthPrac/Stridelog) */
+.hero::after{
+  content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:
+    linear-gradient(90deg, rgba(0,0,0,.78) 0%, rgba(0,0,0,.55) 28%, rgba(0,0,0,.20) 58%, rgba(0,0,0,0) 82%),
+    linear-gradient(180deg, rgba(0,0,0,.18) 0%, rgba(0,0,0,0) 30%, rgba(0,0,0,0) 70%, rgba(0,0,0,.28) 100%);
+}
+
+/* Hero content — editorial, anchored center-left, breathable spacing */
+.hero{min-height:100svh;display:flex;align-items:center}
+.hero .hero-content{max-width:min(620px,92%)}
+.hero .h1{margin:0 0 22px}
+.hero .lead{margin:0 0 30px;max-width:44ch;font-size:16px;line-height:1.55}
+.hero-cta{margin:0;display:flex;flex-wrap:wrap;align-items:center;gap:22px}
+.hero-textlink{display:inline-flex;align-items:center;font-size:14px;font-weight:600;color:#fff;text-decoration:underline;text-underline-offset:3px;text-shadow:0 1px 3px rgba(0,0,0,.6)}
+.hero-textlink:hover{opacity:.85}
+.hero-qualifier{margin:16px 0 0;display:inline-flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:12.5px;font-weight:500;letter-spacing:.04em;color:rgba(255,255,255,.78);text-shadow:0 1px 3px rgba(0,0,0,.55)}
+.hero-qualifier span{white-space:nowrap}
+.hero-qualifier i{font-style:normal;color:rgba(255,255,255,.4)}
+
+/* Hero micro-lines — gate explanation + risk reversal */
+.hero-micro{margin:16px 0 0;font-size:13.5px;line-height:1.55;color:rgba(255,255,255,.8);text-shadow:0 1px 3px rgba(0,0,0,.55);max-width:52ch}
+.hero-micro-risk{margin-top:8px;color:rgba(255,255,255,.62)}
+.hero-micro-link{color:rgba(255,255,255,.55);text-decoration:underline;text-underline-offset:2px}
+.hero-micro-link:hover{color:#fff}
+@media (max-width:900px){.hero-micro{font-size:12.5px}}
+
+/* Short-viewport breakpoint — tighten everything on shorter laptops */
+@media (min-height:0px) and (max-height:780px){
+  .hero{padding-top:64px;padding-bottom:48px}
+  .hero .h1{font-size:clamp(40px,5vw,68px);line-height:.98;margin-bottom:16px}
+  .hero .lead{margin-bottom:22px;font-size:15px}
+  .hero-cta{gap:18px}
+  .hero-qualifier{margin-top:14px;font-size:12px}
+}
 @media (max-width:900px){
   .hero .hero-content{max-width:100%}
-  .hero-fornot p{font-size:13.5px}
-  .hero-fornot .fn-key{min-width:0;margin-right:6px}
-  .hero-chips li{font-size:11.5px;padding:7px 11px}
+  .hero .lead{max-width:30ch;font-size:15px}
+  .hero-qualifier{font-size:11.5px;gap:8px}
+}
+
+/* QUALIFIER STRIP (§1.5) — calm info bar, not chips */
+.qual-strip{background:var(--bg);border-bottom:1px solid var(--rule-soft);padding:34px 36px}
+.qual-strip-inner{max-width:var(--maxw);margin:0 auto;display:grid;grid-template-columns:1fr auto;gap:18px 32px;align-items:start}
+.qual-strip .qs-row{font-size:14.5px;line-height:1.55;color:var(--ink-soft);margin:0;grid-column:1}
+.qual-strip .qs-not{margin-top:6px}
+.qual-strip .qs-key{display:inline-block;min-width:62px;font-family:var(--display);font-size:11px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--ink);vertical-align:1px;margin-right:14px}
+.qual-strip .qs-val{color:var(--ink-soft)}
+.qual-strip .qs-not .qs-val{color:var(--ink-dim)}
+.qual-strip .qs-val a{color:var(--ink);text-decoration:underline;text-underline-offset:2px}
+.qual-strip .qs-refund{grid-column:2;grid-row:1 / span 2;align-self:start;font-size:12px;color:var(--ink-dim);text-decoration:underline;text-underline-offset:2px;white-space:nowrap}
+.qual-strip .qs-refund:hover{color:var(--ink)}
+@media (max-width:900px){
+  .qual-strip{padding:24px 20px}
+  .qual-strip-inner{grid-template-columns:1fr;gap:8px}
+  .qual-strip .qs-refund{grid-row:auto;grid-column:1;justify-self:start;margin-top:8px}
+  .qual-strip .qs-key{min-width:0;display:block;margin-bottom:2px}
 }
 </style>
+
+
+<!-- ═══ §1.5 — QUALIFIER STRIP (FOR / NOT FOR, calm info bar) ═══ -->
+<section class="qual-strip" aria-label="Sprint eligibility at a glance">
+  <div class="qual-strip-inner">
+    <p class="qs-row"><span class="qs-key">For</span><span class="qs-val">Coached &middot; Race in 28&ndash;56 days &middot; 8&ndash;20+ hrs/week</span></p>
+    <p class="qs-row qs-not"><span class="qs-key">Not for</span><span class="qs-val">Self-coached &middot; &gt;8 weeks out &mdash; start with <a href="/audit">Audit</a> or <a href="/">Bundle</a></span></p>
+    <a href="#refund-guarantee" class="qs-refund">Refund policy</a>
+  </div>
+</section>
+
 
 
 <!-- ═══ §2.5 — THREE PILLARS (Personal · Iterated · Delivered) — editorial v2 ═══ -->
@@ -617,7 +664,7 @@ src="https://www.facebook.com/tr?id=776806364952215&ev=PageView&noscript=1"
     <div class="s-num">The thesis</div>
     <div>
       <h2 class="pillars-h2">Personal. Iterated. <em>Delivered.</em></h2>
-      <p class="pillars-sub">What every other fueling tool gets one of. Sprint does all three.</p>
+      <p class="pillars-sub">Personal protocol. Weekly iteration. Products delivered&mdash;so fueling execution matches your race goal.</p>
     </div>
   </div>
 
@@ -642,16 +689,16 @@ src="https://www.facebook.com/tr?id=776806364952215&ev=PageView&noscript=1"
 
 <style>
 /* Three Pillars editorial v2 — sand bg, white cards lift off, big JetBrains Mono numbers */
-.pillars-section{background:var(--bg-2);padding:120px 36px}
+.pillars-section{background:var(--bg-2);padding:72px 36px}
 .pillars-head{display:grid;grid-template-columns:240px 1fr;gap:48px;margin:0 auto 64px;max-width:var(--maxw);align-items:baseline}
 .pillars-head .s-num{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-soft);font-weight:500}
-.pillars-h2{font-family:var(--display);font-size:clamp(36px,5.5vw,72px);font-weight:700;line-height:.98;letter-spacing:-.02em;color:var(--ink);max-width:14ch;margin-bottom:18px}
+.pillars-h2{font-family:var(--display);font-size:clamp(28px,4vw,54px);font-weight:700;line-height:.98;letter-spacing:-.02em;color:var(--ink);max-width:14ch;margin-bottom:14px}
 .pillars-h2 em{font-style:normal;color:var(--ink-soft);font-weight:700}
 .pillars-sub{font-size:16px;line-height:1.6;color:var(--ink-soft);max-width:54ch}
 .pillars-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;max-width:var(--maxw);margin:0 auto}
-.pillar-card{background:#fff;border-radius:20px;padding:48px 40px 52px;position:relative;border:1px solid var(--rule-soft);transition:transform .25s ease,box-shadow .25s ease}
+.pillar-card{background:#fff;border-radius:20px;padding:32px 32px 36px;position:relative;border:1px solid var(--rule-soft);transition:transform .25s ease,box-shadow .25s ease}
 .pillar-card:hover{transform:translateY(-3px);box-shadow:0 12px 32px -12px rgba(14,14,14,.12)}
-.pillar-num{font-family:'JetBrains Mono','SF Mono',Menlo,monospace;font-size:64px;font-weight:300;letter-spacing:-.04em;line-height:1;color:var(--ink-soft);opacity:.45;display:block;margin-bottom:28px;font-variant-numeric:tabular-nums}
+.pillar-num{font-family:'JetBrains Mono','SF Mono',Menlo,monospace;font-size:48px;font-weight:300;letter-spacing:-.04em;line-height:1;color:var(--ink-soft);opacity:.45;display:block;margin-bottom:18px;font-variant-numeric:tabular-nums}
 .pillar-h3{font-family:var(--display);font-size:32px;font-weight:600;letter-spacing:-.02em;line-height:1.1;color:var(--ink);margin-bottom:18px}
 .pillar-body{font-size:16px;line-height:1.7;color:var(--ink-soft);max-width:32ch}
 @media (max-width:960px){
@@ -680,22 +727,22 @@ src="https://www.facebook.com/tr?id=776806364952215&ev=PageView&noscript=1"
     <li class="how-step">
       <span class="how-num">1</span>
       <div class="how-body">
-        <strong>Eligibility + checkout <span class="how-time">2 min</span></strong>
-        <p>Confirm You're a fit, see Your recommended tier, and check out securely.</p>
+        <strong>Eligibility <span class="how-time">2 min</span></strong>
+        <p>We check fit + your goal-time window. Checkout unlocks only if you qualify.</p>
       </div>
     </li>
     <li class="how-step">
       <span class="how-num">2</span>
       <div class="how-body">
-        <strong>Week 1&ndash;2 protocol + shipment <span class="how-time">Day 5</span></strong>
-        <p>Your personalised protocol, plus every product it calls for &mdash; shipped in one box.</p>
+        <strong>Week 1 ships <span class="how-time">Day 5</span></strong>
+        <p>Protocol built around your inputs + target time. Every product shipped in one box. You train on the protocol.</p>
       </div>
     </li>
     <li class="how-step">
       <span class="how-num">3</span>
       <div class="how-body">
-        <strong>Week 2 update &rarr; revised protocol + shipment <span class="how-time">Week 2</span></strong>
-        <p>We revise from Your training feedback, then ship Weeks 3&ndash;4 calibrated to Your body.</p>
+        <strong>Week 2 check-in &rarr; iterate <span class="how-time">Week 2</span></strong>
+        <p>We revise based on your training feedback&mdash;then Weeks 3&ndash;4 ship, calibrated to your body.</p>
       </div>
     </li>
   </ol>
@@ -818,59 +865,185 @@ src="https://www.facebook.com/tr?id=776806364952215&ev=PageView&noscript=1"
   <div class="s-head">
     <div class="s-num">What You get</div>
     <div>
-      <h2>Three Deliverables. <em>Built on Your Numbers.</em></h2>
-      <p>Every Sprint athlete gets a Week Grid, a Session Protocol, and a Weekly Iteration Loop &mdash; built around Your body, revised weekly. Tap any to expand.</p>
+      <h2>What You Get. <em>Built on Your Numbers.</em></h2>
+      <p>Five deliverables, built around Your body and revised weekly. Tap any card to open it.</p>
     </div>
   </div>
 
-  <div class="tiles">
+  <div class="cards-carousel" id="deliv-carousel">
+    <div class="cards-track" id="cardsTrack">
 
-    <details class="tile">
+    <!-- Card 01 — Week Grid -->
+    <details class="feat-card">
       <summary>
-        <span class="tile-row"><span class="tile-name">Week Grid</span><span class="tile-chev" aria-hidden="true">+</span></span>
-        <span class="tile-one">Your training week, with fueling decisions already made.</span>
+        <div class="fc-poster">
+          <img class="fc-poster-img" src="/assets/media/AL-DSC09848.jpg" alt="Athlete preparing fueling before a training session" loading="lazy">
+          <div class="fc-pills">
+            <span class="fc-pill"><b>75</b> g/hr bike</span>
+            <span class="fc-pill"><b>54</b> g/hr run</span>
+            <span class="fc-pill"><b>5/7</b> fueled</span>
+          </div>
+        </div>
+        <div class="fc-head">
+          <div class="fc-text">
+            <span class="fc-eyebrow">01 · The plan</span>
+            <h3 class="fc-title">Week Grid</h3>
+            <p class="fc-one">Your training week&mdash;fueling decisions already made.</p>
+          </div>
+          <span class="fc-plus" aria-hidden="true">+</span>
+        </div>
       </summary>
-      <div class="tile-more">
-        <p>Every session mapped with carb targets, product timing, and fluid goals &mdash; gut-training progression tracked across all 4 weeks. Updated each week from Your feedback.</p>
-        <ul class="tile-stats">
-          <li><strong>75 g/hr</strong><span>Bike carb target · Week 3 gut ramp</span></li>
-          <li><strong>54 g/hr</strong><span>Run carb target · adjusted for intensity</span></li>
-          <li><strong>5 / 7</strong><span>Sessions fueled · swims excluded</span></li>
+      <div class="fc-more">
+        <ul class="fc-bullets">
+          <li>Every session mapped with carb, sodium, and fluid targets</li>
+          <li>Gut-training progression tracked across all 4 weeks</li>
+          <li>Sized to Your tier's training load</li>
+          <li><b>Updates weekly</b> from Your session feedback</li>
+          <li><b>You</b> log how sessions went · <b>we</b> rebuild the grid</li>
         </ul>
       </div>
     </details>
 
-    <details class="tile">
+    <!-- Card 02 — Session Protocol -->
+    <details class="feat-card">
       <summary>
-        <span class="tile-row"><span class="tile-name">Session Protocol</span><span class="tile-chev" aria-hidden="true">+</span></span>
-        <span class="tile-one">Minute-by-minute guidance for key sessions + race day.</span>
+        <div class="fc-poster">
+          <img class="fc-poster-img" src="/assets/media/AL-DSC00447.jpg" alt="Athlete on a long ride executing a fueling protocol" loading="lazy">
+          <div class="fc-pills">
+            <span class="fc-pill"><b>T-25</b> pre</span>
+            <span class="fc-pill"><b>75</b> g/hr</span>
+            <span class="fc-pill"><b>350</b> mg/hr Na</span>
+          </div>
+        </div>
+        <div class="fc-head">
+          <div class="fc-text">
+            <span class="fc-eyebrow">02 · The execution</span>
+            <h3 class="fc-title">Session Protocol</h3>
+            <p class="fc-one">Exactly what to take, when&mdash;so execution is repeatable.</p>
+          </div>
+          <span class="fc-plus" aria-hidden="true">+</span>
+        </div>
       </summary>
-      <div class="tile-more">
-        <p>Pre-session priming, intra carb and sodium, recovery &mdash; every product placed at the right minute, built around Your gut tolerance and the session type.</p>
-        <ul class="tile-stats">
-          <li><strong>T-25 min</strong><span>1× Euphoria · 500ml water</span></li>
-          <li><strong>75 g/hr</strong><span>DM80 + Refuel intra</span></li>
-          <li><strong>350 mg/hr</strong><span>Sodium · FastChews / 30 min</span></li>
-          <li><strong>T+0 min</strong><span>1× Refuel post-session</span></li>
+      <div class="fc-more">
+        <ul class="fc-bullets">
+          <li>Pre-session priming, intra carb + sodium, recovery &mdash; timed to the minute</li>
+          <li>Built around Your gut tolerance and the session type</li>
+          <li>Includes a dedicated race-day protocol</li>
+          <li><b>Updates weekly</b> as Your tolerance ramps</li>
+          <li><b>You</b> report how it felt · <b>we</b> adjust timing + doses</li>
         </ul>
       </div>
     </details>
 
-    <details class="tile">
+    <!-- Card 03 — Performance Report -->
+    <details class="feat-card">
       <summary>
-        <span class="tile-row"><span class="tile-name">Weekly Iteration Loop</span><span class="tile-chev" aria-hidden="true">+</span></span>
-        <span class="tile-one">We revise based on what Your gut actually does in training.</span>
+        <div class="fc-poster fc-poster-live">
+          <img class="fc-poster-img fc-live-bg" src="/assets/media/AL-DSC00815.jpg" alt="Athlete crossing finish line — performance analysis" loading="lazy" style="object-position:center 48%">
+          <div class="fc-live-overlay"></div>
+          <div class="fc-live-content">
+            <span class="fc-live-kicker">Gap analysis</span>
+            <p class="fc-live-desc">Where You're losing time &mdash; quantified with before/after projections.</p>
+            <div class="fc-live-metrics">
+              <div class="fc-live-metric">
+                <div class="fc-live-mlabel">GI distress risk</div>
+                <div class="fc-live-mval">8&ndash;15<span>min</span></div>
+                <div class="fc-live-mbar"><i style="width:70%;background:#c0194a"></i></div>
+                <div class="fc-live-msub">Gut training may reduce by up to 47%*</div>
+              </div>
+              <div class="fc-live-metric">
+                <div class="fc-live-mlabel">CHO deficit</div>
+                <div class="fc-live-mval">10&ndash;18<span>min</span></div>
+                <div class="fc-live-mbar"><i style="width:55%"></i></div>
+                <div class="fc-live-msub">50g/hr &rarr; 80g/hr over 4 weeks*</div>
+              </div>
+              <div class="fc-live-metric">
+                <div class="fc-live-mlabel">Estimated total</div>
+                <div class="fc-live-mval">22&ndash;34<span>min</span></div>
+                <div class="fc-live-msub">Minutes recoverable*</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="fc-head">
+          <div class="fc-text">
+            <span class="fc-eyebrow">03 · The why</span>
+            <h3 class="fc-title">Performance Report</h3>
+            <p class="fc-one">Where fueling may cost you time&mdash;what we change next week.</p>
+          </div>
+          <span class="fc-plus" aria-hidden="true">+</span>
+        </div>
       </summary>
-      <div class="tile-more">
-        <p>After each week, You report how key sessions went &mdash; gut comfort, energy, and what You actually took. We revise carb targets, sodium, product mix, and timing for the next week, so the protocol converges on what Your body tolerates &mdash; not a textbook average.</p>
-        <ul class="tile-stats">
-          <li><strong>50 &rarr; 80 g/hr</strong><span>Gut ramp across 4 weeks</span></li>
-          <li><strong>Weekly</strong><span>Protocol revised from Your feedback</span></li>
-          <li><strong>2 shipments</strong><span>Second box calibrated to Week 1&ndash;2</span></li>
+      <div class="fc-more">
+        <ul class="fc-bullets">
+          <li>Gap analysis: where You lose minutes (GI / carbs / caffeine timing)</li>
+          <li>Before/after projections based on Your inputs</li>
+          <li>Updated weekly as the protocol iterates</li>
+          <li>Ranges from Costa (2017) and Jeukendrup (2017) &mdash; <a href="#sprint-disclaimer">not a performance guarantee</a></li>
+          <li style="font-size:12px;color:var(--ink-dim)">*Model-based estimate; individual variance is high. Not a performance guarantee.</li>
         </ul>
       </div>
     </details>
 
+    <!-- Card 04 — Calendar Sync -->
+    <details class="feat-card">
+      <summary>
+        <div class="fc-poster">
+          <img class="fc-poster-img" src="/assets/media/sprint-iphone-hero.jpg" alt="Hand holding an iPhone showing the RIK Athletica calendar with fueling mapped onto training sessions" loading="lazy">
+        </div>
+        <div class="fc-head">
+          <div class="fc-text">
+            <span class="fc-eyebrow">04 · Easy tracking</span>
+            <h3 class="fc-title">Calendar Sync</h3>
+            <p class="fc-one">Your coach's sessions mapped to your fueling plan&mdash;on your phone.</p>
+          </div>
+          <span class="fc-plus" aria-hidden="true">+</span>
+        </div>
+      </summary>
+      <div class="fc-more">
+        <ul class="fc-bullets">
+          <li>A calendar link that drops fueling onto each of Your coach's sessions</li>
+          <li>An updated protocol email every week</li>
+          <li>Timeline: eligibility (2 min) &rarr; Day 5 Training Box &rarr; Week 2 check-in + Replenish box</li>
+          <li><b>Updates weekly</b> &mdash; exact timing depends on Your race date</li>
+          <li><b>You</b> train · <b>we</b> keep the calendar current</li>
+        </ul>
+      </div>
+    </details>
+
+    <!-- Card 05 — Products Delivered (full-width) -->
+    <details class="feat-card">
+      <summary>
+        <div class="fc-poster fc-poster-zoom">
+          <img class="fc-poster-img" src="/assets/web/pack-bundle-front.jpg" alt="The RIK Athletica System Bundle box — 10x Euphoria, 20x Refuel" loading="lazy">
+        </div>
+        <div class="fc-head">
+          <div class="fc-text">
+            <span class="fc-eyebrow">05 · Logistics handled</span>
+            <h3 class="fc-title">Products Delivered</h3>
+            <p class="fc-one">We ship what the protocol calls for&mdash;no shopping, no scramble.</p>
+          </div>
+          <span class="fc-plus" aria-hidden="true">+</span>
+        </div>
+      </summary>
+      <div class="fc-more">
+        <ul class="fc-bullets">
+          <li>Two shipments: Training Box (Day 5) + Replenish box (Week 2)</li>
+          <li>RIK, Maurten, PF&amp;H, SaltStick &mdash; whatever the protocol needs</li>
+          <li>Race Pack optional add-on at checkout, ships ~10 days out</li>
+          <li><b>Restocks weekly</b>, calibrated to what Your body actually used</li>
+          <li><b>You</b> open the box · <b>we</b> handle sourcing + delivery</li>
+        </ul>
+      </div>
+    </details>
+
+  </div>
+    <div class="cards-controls">
+      <button class="cards-arrow prev" type="button" aria-label="Previous deliverable">&lsaquo;</button>
+      <div class="cards-dots" id="cardsDots" role="tablist" aria-label="Deliverable cards"></div>
+      <button class="cards-arrow next" type="button" aria-label="Next deliverable">&rsaquo;</button>
+    </div>
+    <p class="cards-swipe" id="cardsSwipe">Swipe for more &rarr;</p>
   </div>
 
   <div class="sec-cta">
@@ -879,79 +1052,72 @@ src="https://www.facebook.com/tr?id=776806364952215&ev=PageView&noscript=1"
 </section>
 
 <style>
-/* What you get — tiles + accordions */
-.tiles{max-width:880px;margin:0 auto;display:flex;flex-direction:column;border-top:1px solid var(--rule)}
-.tile{border-bottom:1px solid var(--rule)}
-.tile summary{list-style:none;cursor:pointer;display:flex;flex-direction:column;gap:5px;padding:26px 4px}
-.tile summary::-webkit-details-marker{display:none}
-.tile-row{display:flex;align-items:center;justify-content:space-between;gap:16px}
-.tile-name{font-family:var(--display);font-size:clamp(20px,2.6vw,26px);font-weight:600;letter-spacing:-.01em;color:var(--ink)}
-.tile-chev{font-family:var(--display);font-size:26px;font-weight:300;color:var(--ink-soft);transition:transform .25s ease;line-height:1;flex-shrink:0}
-.tile[open] .tile-chev{transform:rotate(45deg)}
-.tile-one{font-size:16px;color:var(--ink-soft);line-height:1.5;max-width:62ch}
-.tile-more{padding:0 4px 28px}
-.tile-more p{font-size:15px;line-height:1.65;color:var(--ink-soft);max-width:66ch;margin:0 0 18px}
-.tile-stats{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(168px,1fr));gap:12px}
-.tile-stats li{display:flex;flex-direction:column;gap:3px;padding:14px 16px;background:var(--bg-2);border-radius:14px}
-.tile-stats strong{font-family:var(--display);font-size:20px;font-weight:600;letter-spacing:-.01em;color:var(--ink);font-variant-numeric:tabular-nums}
-.tile-stats span{font-size:12.5px;line-height:1.4;color:var(--ink-soft)}
-/* Reusable centered section CTA (light sections) */
-.sec-cta{display:flex;justify-content:center;margin-top:48px}
-@media (max-width:640px){
-  .tile summary{padding:22px 2px}
-  .tile-one{font-size:15px}
-  .sec-cta{margin-top:36px}
-}
+/* What you get - Apple horizontal snap carousel */
+.cards-carousel{position:relative;max-width:100%;margin:0 auto}
+.cards-track{display:flex;gap:20px;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scroll-behavior:smooth;padding:4px 0 10px;scrollbar-width:none;padding-inline:max(24px,calc((100vw - var(--maxw))/2))}
+.cards-track::-webkit-scrollbar{display:none}
+.feat-card{flex:0 0 auto;width:min(74vw,720px);scroll-snap-align:start;position:relative;background:#fff;border:1px solid var(--rule-soft);border-radius:24px;overflow:hidden;transition:box-shadow .25s ease}
+.feat-card[open]{box-shadow:0 18px 44px -18px rgba(14,14,14,.20)}
+.feat-card summary{list-style:none;cursor:pointer;display:block}
+.feat-card summary::-webkit-details-marker{display:none}
+.fc-poster{position:relative;aspect-ratio:16/10;width:100%;overflow:hidden;background:var(--bg-2)}
+.fc-poster-img{width:100%;height:100%;object-fit:cover;display:block}
+.fc-poster-zoom .fc-poster-img{object-fit:cover;transform:scale(1.4);transform-origin:center 47%}
+.fc-pills{position:absolute;left:16px;bottom:16px;display:flex;flex-wrap:wrap;gap:8px;max-width:92%}
+.fc-pill{font-size:12.5px;color:#fff;background:rgba(14,14,14,.5);backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,.2);border-radius:999px;padding:7px 12px;line-height:1}
+.fc-pill b{font-weight:700;font-variant-numeric:tabular-nums}
+/* Card 03 poster — LIVE-site composition lifted verbatim */
+.fc-poster-live{aspect-ratio:16/10;position:relative}
+.fc-poster-live .fc-live-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.fc-poster-live .fc-live-overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.15) 0%,rgba(0,0,0,.55) 60%,rgba(0,0,0,.85) 100%)}
+.fc-poster-live .fc-live-content{position:relative;z-index:2;height:100%;display:flex;flex-direction:column;justify-content:flex-end;padding:24px}
+.fc-poster-live .fc-live-kicker{font-size:10.5px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.66);margin-bottom:8px}
+.fc-poster-live .fc-live-desc{font-size:13px;color:rgba(255,255,255,.78);line-height:1.5;max-width:46ch;margin:0 0 18px}
+.fc-poster-live .fc-live-metrics{display:flex;gap:10px;flex-wrap:wrap}
+.fc-poster-live .fc-live-metric{background:rgba(255,255,255,.10);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,.14);border-radius:14px;padding:14px 16px;min-width:148px;flex:1}
+.fc-poster-live .fc-live-mlabel{font-size:9.5px;font-weight:600;text-transform:uppercase;letter-spacing:.13em;color:rgba(255,255,255,.45);margin-bottom:6px}
+.fc-poster-live .fc-live-mval{font-size:22px;font-weight:500;color:#fff;letter-spacing:-.02em;font-variant-numeric:tabular-nums;line-height:1}
+.fc-poster-live .fc-live-mval span{font-size:12px;color:rgba(255,255,255,.45);margin-left:4px}
+.fc-poster-live .fc-live-msub{font-size:10.5px;color:rgba(255,255,255,.42);margin-top:5px;line-height:1.35}
+.fc-poster-live .fc-live-mbar{height:4px;background:rgba(255,255,255,.1);border-radius:2px;margin-top:8px;overflow:hidden}
+.fc-poster-live .fc-live-mbar i{display:block;height:100%;border-radius:2px;background:var(--bg-sand)}
+.fc-plus{position:absolute;top:16px;right:16px;z-index:3;width:42px;height:42px;border-radius:999px;border:0;display:flex;align-items:center;justify-content:center;font-family:var(--display);font-size:28px;font-weight:300;color:var(--ink);line-height:1;background:rgba(255,255,255,.92);backdrop-filter:blur(6px);box-shadow:0 2px 10px rgba(0,0,0,.18);transition:transform .25s ease}
+.feat-card[open] .fc-plus{transform:rotate(45deg)}
+.fc-head{display:block;padding:24px 26px 22px}
+.fc-eyebrow{font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-dim);display:block;margin-bottom:10px}
+.fc-title{font-family:var(--display);font-size:clamp(24px,2.4vw,32px);font-weight:600;letter-spacing:-.01em;color:var(--ink);line-height:1.06;margin:0 0 10px}
+.fc-one{font-size:16px;line-height:1.5;color:var(--ink-soft);margin:0;max-width:46ch}
+.fc-more{padding:0 26px 28px}
+.fc-bullets{list-style:none;margin:0;padding:18px 0 0;border-top:1px solid var(--rule-soft);display:flex;flex-direction:column;gap:12px}
+.fc-bullets li{position:relative;padding-left:24px;font-size:15px;line-height:1.5;color:var(--ink-soft)}
+.fc-bullets li::before{content:"";position:absolute;left:2px;top:8px;width:6px;height:6px;border-radius:50%;background:var(--ink)}
+.fc-bullets li b{color:var(--ink);font-weight:600}
+.fc-bullets li a{color:var(--ink);text-decoration:underline;text-underline-offset:2px}
+.cards-controls{display:flex;align-items:center;justify-content:center;gap:18px;margin-top:28px}
+.cards-arrow{width:44px;height:44px;border-radius:999px;border:1px solid var(--rule);background:#fff;color:var(--ink);font-size:22px;line-height:1;cursor:pointer;display:none;align-items:center;justify-content:center;transition:background .15s,opacity .15s}
+.cards-arrow:hover{background:var(--bg-2)}
+.cards-arrow:disabled{opacity:.3;cursor:default}
+.cards-dots{display:flex;gap:9px;align-items:center}
+.cards-dots button{width:8px;height:8px;border-radius:999px;border:0;background:var(--rule);cursor:pointer;padding:0;transition:width .2s,background .2s}
+.cards-dots button.active{width:24px;background:var(--ink)}
+.cards-swipe{text-align:center;font-size:12.5px;color:var(--ink-dim);margin:14px 0 0;letter-spacing:.02em;transition:opacity .4s}
+.cards-swipe.hide{opacity:0}
+.sec-cta{display:flex;justify-content:center;margin-top:40px}
+@media (min-width:901px){.cards-arrow{display:flex}.cards-swipe{display:none}}
+@media (max-width:900px){.feat-card{width:88vw}.cards-track{padding-inline:24px}.fc-poster{aspect-ratio:16/11}.fc-poster-live{aspect-ratio:16/12}.fc-poster-live .fc-live-content{padding:20px}.fc-poster-live .fc-live-metric{min-width:130px;padding:12px 14px}.fc-poster-live .fc-live-mval{font-size:20px}}
 </style>
 
 
-<!-- ═══ §4b — CALENDAR: Apple-style bento card with hand-held iPhone render ═══ -->
-<section class="s" id="calendar">
-  <!-- Headline outside the bento -->
-  <h2 class="cal-headline">What the Next 4 Weeks <em>Look Like.</em></h2>
-
-  <!-- Bento card: fulfillment timeline on left, product render on right -->
-  <div class="cal-bento">
-    <div class="cal-bento-copy">
-      <span class="cal-eyebrow">Fulfillment timeline</span>
-      <ol class="cal-timeline">
-        <li><span class="ct-when">2 min</span><span class="ct-what">Eligibility + checkout</span></li>
-        <li><span class="ct-when">Day 5</span><span class="ct-what">Week 1&ndash;2 protocol + Training Box ships</span></li>
-        <li><span class="ct-when">Week 2</span><span class="ct-what">Check-in &rarr; protocol revised</span></li>
-        <li><span class="ct-when">Week 2</span><span class="ct-what">Weeks 3&ndash;4 Replenish box ships</span></li>
-      </ol>
-      <p class="cal-note">Exact timing depends on Your race date.</p>
-    </div>
-    <div class="cal-render">
-      <picture>
-        <source media="(max-width:640px)" srcset="/assets/media/sprint-iphone-hero-mobile.jpg">
-        <img src="/assets/media/sprint-iphone-hero.jpg" alt="Hand holding an iPhone showing the RIK Athletica calendar with March 2026 training sessions and a detailed fueling protocol for a 6-hour Mendips ride" loading="lazy" width="1600" height="1600">
-      </picture>
-    </div>
-  </div>
-</section>
-
-
-<style>
-/* Calendar reframed as fulfillment timeline */
-.cal-timeline{list-style:none;margin:0 0 18px;padding:0;display:flex;flex-direction:column;gap:0}
-.cal-timeline li{display:flex;align-items:center;gap:16px;padding:14px 0;border-top:1px solid var(--rule-soft)}
-.cal-timeline li:first-child{border-top:0}
-.ct-when{flex-shrink:0;min-width:62px;font-family:var(--display);font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--ink-soft)}
-.ct-what{font-size:15.5px;font-weight:500;color:var(--ink);line-height:1.35}
-.cal-note{font-size:13px;color:var(--ink-soft);font-style:italic;margin:0}
-@media (max-width:640px){
-  .ct-when{min-width:54px;font-size:11px}
-  .ct-what{font-size:14.5px}
-}
-</style>
+<!-- ═══ §4b — CALENDAR section removed per v2 brief §6: the fulfillment timeline now
+     lives inside "What You Get" → Card 04 (Calendar Sync). ═══ -->
 
 
 <!-- ═══ §4c — WHY SPRINT EXISTS (outcome framing) ═══ -->
 <section class="s alt" id="why">
   <div class="why-wrap">
-    <h2 class="why-h2">Athletes Don't Buy Gels. <em>They Buy Outcomes.</em></h2>
-    <p class="why-body">You already invest in training, gear, and coaching. Fueling is where athletes lose minutes &mdash; GI distress, under-fueling, over-caffeinating, race-day improvisation. Sprint turns fueling into a tested protocol, not a race-day guess.</p>
+    <h2 class="why-h2">Athletes Don&rsquo;t Buy Gels. <em>They Buy Outcomes.</em></h2>
+    <p class="why-body">Sprint is fueling concierge: protocol + products + weekly iteration&mdash;so fueling execution doesn&rsquo;t waste your training block.</p>
+    <p class="why-concierge">We only take athletes we believe we can support.</p>
 
     <ul class="why-stats" aria-label="Estimated minutes recoverable">
       <li><span class="ws-num">8&ndash;15<small>min</small></span><span class="ws-lab">GI distress risk &mdash; gut training may reduce by up to 47%*</span></li>
@@ -976,6 +1142,7 @@ src="https://www.facebook.com/tr?id=776806364952215&ev=PageView&noscript=1"
 .ws-num small{font-size:14px;font-weight:500;color:var(--ink-soft);margin-left:4px}
 .ws-lab{font-size:13px;line-height:1.45;color:var(--ink-soft)}
 .why-cite{font-size:10.5px;line-height:1.5;color:var(--ink-dim);max-width:72ch;margin:0 auto;letter-spacing:.01em}
+.why-concierge{font-size:14px;font-style:italic;color:var(--ink-soft);margin:16px auto 0;text-align:center}
 @media (max-width:720px){
   .why-stats{grid-template-columns:1fr;gap:10px}
   .why-body{font-size:16px}
@@ -993,19 +1160,27 @@ src="https://www.facebook.com/tr?id=776806364952215&ev=PageView&noscript=1"
   <div class="faq-list">
     <details class="faq-item">
       <summary>Does this replace my coach?<span class="faq-chev" aria-hidden="true">+</span></summary>
-      <p>No &mdash; Sprint is coached-only. Your coach owns training. Sprint owns fueling execution and logistics: the protocol, the products, the weekly revisions.</p>
+      <p>No&mdash;coached-only. Coach owns training; Sprint owns fueling execution + logistics: the protocol, the products, the weekly revisions. We work alongside your coach, not instead of one.</p>
     </details>
     <details class="faq-item">
-      <summary>Do I have to use RIK gels?<span class="faq-chev" aria-hidden="true">+</span></summary>
-      <p>No. We recommend what fits the protocol &mdash; and that can include third-party products (Maurten, PF&amp;H, SaltStick) where appropriate. We ship what the plan calls for, not just RIK.</p>
+      <summary>Do I pay before I know I qualify?<span class="faq-chev" aria-hidden="true">+</span></summary>
+      <p>No. If you don&rsquo;t meet eligibility criteria, checkout stays disabled. You can&rsquo;t pay until the eligibility check confirms you&rsquo;re a fit.</p>
     </details>
     <details class="faq-item">
-      <summary>What if my gut can't handle it?<span class="faq-chev" aria-hidden="true">+</span></summary>
-      <p>That's exactly why Sprint iterates weekly. We start where Your gut is, then ramp based on Your training feedback &mdash; designed to build tolerance gradually rather than gambling on race day.</p>
+      <summary>How do you use my target time?<span class="faq-chev" aria-hidden="true">+</span></summary>
+      <p>We check whether your goal is realistic given your inputs and timeline. If the gap is too large, we&rsquo;ll tell you&mdash;and may ask you to adjust or recommend a different starting point. We don&rsquo;t promise you&rsquo;ll hit it; we build the best protocol to give you the best shot.</p>
     </details>
     <details class="faq-item">
-      <summary>Refund / risk?<span class="faq-chev" aria-hidden="true">+</span></summary>
-      <p>Complete the 4-week protocol as written, submit Your weekly check-ins, race, and if You didn't get the value You can request a full refund within 14 days. Full terms on the <a href="/terms">Terms</a> page.</p>
+      <summary>What if there are red flags in my intake?<span class="faq-chev" aria-hidden="true">+</span></summary>
+      <p>If Sprint isn&rsquo;t appropriate after intake review, we terminate enrollment and refund in full. No penalty, no questions. <a href="/terms">Terms apply.</a></p>
+    </details>
+    <details class="faq-item">
+      <summary>What if my gut can&rsquo;t handle it?<span class="faq-chev" aria-hidden="true">+</span></summary>
+      <p>That&rsquo;s exactly why Sprint iterates weekly. We start where your gut is, then ramp based on your training feedback&mdash;designed to build tolerance gradually rather than gambling on race day.</p>
+    </details>
+    <details class="faq-item">
+      <summary>Do I have to use RIK products?<span class="faq-chev" aria-hidden="true">+</span></summary>
+      <p>No. We ship what the protocol calls for&mdash;RIK and other brands (Maurten, PF&amp;H, SaltStick) as needed. The protocol drives the product selection, not the other way around.</p>
     </details>
   </div>
   <div class="sec-cta"><a href="#eligibility" class="cta" data-track="sprint_cta_faq"><span class="pill">Check eligibility (2 min)</span><span class="arrow">↗</span></a></div>
@@ -1034,6 +1209,7 @@ src="https://www.facebook.com/tr?id=776806364952215&ev=PageView&noscript=1"
     </div>
   </div>
 
+  <p class="pricing-helper">Pick by training load. Eligibility recommends the tier.</p>
   <div class="tier-matrix-wrap">
     <table class="tier-matrix">
       <thead>
@@ -1058,7 +1234,8 @@ src="https://www.facebook.com/tr?id=776806364952215&ev=PageView&noscript=1"
       </tbody>
     </table>
   </div>
-  <p style="text-align:center;font-size:12px;color:var(--ink-soft);margin-top:18px;max-width:62ch;margin-left:auto;margin-right:auto;line-height:1.6">All tiers: two shipments, Race Pack optional at checkout. 30 slots per cycle. RD-reviewed methodology.</p>
+  <p style="text-align:center;font-size:13px;font-weight:600;color:var(--ink);margin-top:18px;line-height:1.5">Takes ~2 min · Eligibility confirms fit and recommends Your tier.</p>
+  <p style="text-align:center;font-size:12px;color:var(--ink-soft);margin-top:8px;max-width:62ch;margin-left:auto;margin-right:auto;line-height:1.6">All tiers: two shipments, Race Pack optional at checkout. 30 slots per cycle. RD-reviewed methodology.</p>
 </section>
 
 
@@ -1138,7 +1315,8 @@ src="https://www.facebook.com/tr?id=776806364952215&ev=PageView&noscript=1"
     <div class="s-num">Eligibility · 2 min</div>
     <div>
       <h2>Eligibility Check. <em>Two Minutes.</em></h2>
-      <p>We gate Sprint because we'd rather refund early than take athletes we're unlikely to satisfy. Race date 28&ndash;56 days out; active coach or training plan required.</p>
+      <p class="elig-intro-gate">Takes ~2 minutes. Checkout unlocks only if you qualify.</p>
+      <p>We gate Sprint because we&rsquo;d rather refund early than take athletes we&rsquo;re unlikely to satisfy. Race date 28&ndash;56 days out; active coach or training plan required.</p>
       <ul class="elig-bullets">
         <li>Coached athletes only</li>
         <li>Race date 4&ndash;8 weeks out (28&ndash;56 days)</li>
@@ -1156,6 +1334,7 @@ src="https://www.facebook.com/tr?id=776806364952215&ev=PageView&noscript=1"
   .elig-bullets li{position:relative;padding-left:22px;font-size:14px;line-height:1.45;color:var(--ink-soft)}
   .elig-bullets li::before{content:"";position:absolute;left:0;top:5px;width:12px;height:12px;border-radius:50%;border:1.5px solid var(--ink)}
   .elig-value{margin-top:16px;font-size:14px;font-weight:600;color:var(--ink)}
+  .elig-intro-gate{font-size:15px;font-weight:600;color:var(--ink);margin-bottom:10px}
   .form-progress{display:flex;flex-wrap:wrap;gap:8px;max-width:760px;margin:0 auto 22px;padding:0}
   .fp-step{font-size:11.5px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--ink-dim);padding:7px 13px;border-radius:999px;background:var(--bg-2)}
   .fp-step.done{color:#fff;background:var(--ink)}
@@ -1267,7 +1446,7 @@ src="https://www.facebook.com/tr?id=776806364952215&ev=PageView&noscript=1"
     <div class="form-row">
       <label class="form-label" for="desired-finish">Your desired finish time</label>
       <input type="text" id="desired-finish" pattern="[0-9]{1,2}:[0-9]{2}:[0-9]{2}" required class="text-input" placeholder="HH:MM:SS — e.g. 4:30:00">
-      <p class="form-hint">Be honest. We tell You in 30 seconds if it's realistic.</p>
+      <p class="form-hint">We&rsquo;ll tell you if it&rsquo;s realistic&mdash;and what we recommend.</p>
     </div>
 
     <!-- NEW: Prior race autocomplete -->
@@ -1443,7 +1622,10 @@ src="https://www.facebook.com/tr?id=776806364952215&ev=PageView&noscript=1"
       </div>
     </div>
 
-    <!-- Refund/termination consent (UNCHANGED — verbatim) -->
+    <!-- Refund/termination consent -->
+    <div class="form-row">
+      <p class="form-hint form-hint-redflag">If any red flags appear after intake review, we&rsquo;ll cancel and refund. <a href="/terms" style="color:var(--ink);text-decoration:underline">Terms.</a></p>
+    </div>
     <div class="form-row">
       <div class="consent-card">
         <label>
@@ -1472,7 +1654,8 @@ src="https://www.facebook.com/tr?id=776806364952215&ev=PageView&noscript=1"
     <button type="submit" id="screen-submit" class="form-submit" disabled>
       Complete all fields to continue
     </button>
-    <p class="form-disclaimer">Secure checkout via Stripe. Full refund if You complete the protocol and don't get the value.</p>
+    <p class="form-unlock-hint" id="formUnlockHint">Complete the eligibility steps to unlock checkout.</p>
+    <p class="form-disclaimer">Secure checkout via Stripe. Full refund if you complete the protocol and don&rsquo;t get the value.</p>
   </form>
 </section>
 
@@ -2272,7 +2455,7 @@ window.switchGal = function(tab, btn){
     submit.disabled = !ready;
 
     if (ready) {
-      submit.textContent = 'Pay ' + TIERS[hours.value].price + ' — Start protocol →';
+      submit.textContent = 'Continue to checkout — ' + TIERS[hours.value].price + ' →';
     } else if (coach && coach.value === 'no') {
       submit.textContent = 'Coach or training plan required';
     } else if (result && !result.accepted) {
@@ -2824,5 +3007,40 @@ document.querySelectorAll('a[href*="buy.stripe.com/4gM7sN"]').forEach(function(e
 })();
 </script>
 
+<script>
+(function(){
+  var track=document.getElementById('cardsTrack');
+  var dotsWrap=document.getElementById('cardsDots');
+  var swipe=document.getElementById('cardsSwipe');
+  if(!track||!dotsWrap)return;
+  var cards=[].slice.call(track.querySelectorAll('.feat-card'));
+  var prev=document.querySelector('.cards-arrow.prev');
+  var next=document.querySelector('.cards-arrow.next');
+  function base(){return cards.length?cards[0].offsetLeft:0;}
+  function go(i){track.scrollTo({left:cards[i].offsetLeft-base(),behavior:'smooth'});}
+  cards.forEach(function(c,i){
+    var b=document.createElement('button');b.type='button';b.setAttribute('aria-label','Card '+(i+1));
+    if(i===0)b.className='active';
+    b.addEventListener('click',function(){go(i);});
+    dotsWrap.appendChild(b);
+  });
+  var dots=[].slice.call(dotsWrap.children);
+  function current(){var center=track.scrollLeft+track.clientWidth/2,cur=0,bd=1e9;
+    cards.forEach(function(c,i){var cc=c.offsetLeft-base()+c.offsetWidth/2;var d=Math.abs(cc-center);if(d<bd){bd=d;cur=i;}});return cur;}
+  var raf;
+  function update(){var cur=current();
+    dots.forEach(function(d,i){d.classList.toggle('active',i===cur);});
+    if(prev)prev.disabled=track.scrollLeft<=2;
+    if(next)next.disabled=track.scrollLeft+track.clientWidth>=track.scrollWidth-2;}
+  track.addEventListener('scroll',function(){if(raf)cancelAnimationFrame(raf);raf=requestAnimationFrame(update);
+    if(swipe&&!swipe.classList.contains('hide'))swipe.classList.add('hide');});
+  if(prev)prev.addEventListener('click',function(){go(Math.max(0,current()-1));});
+  if(next)next.addEventListener('click',function(){go(Math.min(cards.length-1,current()+1));});
+  cards.forEach(function(c){c.addEventListener('toggle',function(){
+    if(c.open){cards.forEach(function(o){if(o!==c)o.open=false;});
+      setTimeout(function(){track.scrollTo({left:c.offsetLeft-base(),behavior:'smooth'});update();},40);}});});
+  update();
+})();
+</script>
 </body>
 </html>
