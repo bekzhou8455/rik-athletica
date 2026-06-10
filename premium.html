@@ -537,7 +537,7 @@ section.refund-near-cta::before{content:"";position:absolute;inset:0;z-index:0;b
       <div class="hero-cta">
         <a href="#reserve" class="cta invert lg" data-track="premium_reserve_click"><span class="pill">Reserve Your Slot — $1,599</span><span class="arrow">↗</span></a>
       </div>
-      <p class="hero-trust">10 athletes · Founder-delivered · RD-reviewed · 30-day refund honored</p>
+      <p class="hero-trust">10 athletes · Founder-delivered · RD-reviewed · Full refund before Week 3</p>
     </div>
   </div>
 </section>
@@ -833,7 +833,7 @@ section.refund-near-cta::before{content:"";position:absolute;inset:0;z-index:0;b
       <div class="consent-card">
         <label>
           <input type="checkbox" id="premium-refund-consent" required>
-          <span class="consent-text">I understand the <strong>refund policy:</strong> if I complete the 4-week protocol as written, race, and don't get the value, I can request a full $1,599 refund within 14 days post-race — conditional on having submitted every weekly check-in. Refunds outside this window are not honored.</span>
+          <span class="consent-text">I understand the <strong>refund policy:</strong> I can request a full $1,599 refund any time before my Week 3 (Replenish) shipment, for any reason. After the Week 3 shipment, the fee is non-refundable.</span>
         </label>
       </div>
     </div>
@@ -855,7 +855,7 @@ section.refund-near-cta::before{content:"";position:absolute;inset:0;z-index:0;b
     </div>
 
     <!-- Submit / Stripe link — Founding Cohort Premium $1,599 -->
-    <a href="https://buy.stripe.com/00waEZ1C68ww2yG0087Re06" id="premium-reserve-btn" class="form-submit" data-rewardful data-track="premium_reserve_click" aria-disabled="true" rel="noopener">
+    <a href="https://buy.stripe.com/00waEZ1C68ww2yG0087Re06" id="premium-reserve-btn" class="form-submit" data-track="premium_reserve_click" aria-disabled="true" rel="noopener">
       Complete the form to unlock checkout
     </a>
     <p class="form-disclaimer">Secure checkout via Stripe. Founding Cohort: 10 slots, single payment, founder-delivered.</p>
@@ -863,13 +863,13 @@ section.refund-near-cta::before{content:"";position:absolute;inset:0;z-index:0;b
 </section>
 
 
-<!-- ═══ REFUND POLICY (verbatim from sprint memo v2 + 2026-05-09 round-2 #5: clean stamp redesign) ═══ -->
+<!-- ═══ REFUND POLICY ═══ -->
 <section class="refund-near-cta" id="refund-policy">
   <div class="rn-card">
     <div class="rn-stamp">
       <span class="rn-stamp-eyebrow">Full refund</span>
       <span class="rn-stamp-num">$1,599</span>
-      <span class="rn-stamp-sub">If You complete the protocol and don't get the value.</span>
+      <span class="rn-stamp-sub">Before Your Week 3 shipment. Any reason.</span>
       <span class="rn-stamp-tag">
         <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5L10 17.5L19 7.5"/></svg>
         Refund honored
@@ -877,12 +877,12 @@ section.refund-near-cta::before{content:"";position:absolute;inset:0;z-index:0;b
     </div>
     <div class="rn-body">
       <span class="rn-eyebrow">The deal we make with You</span>
-      <h3>Complete the 4 Weeks. <em>Race. We Carry the Risk.</em></h3>
-      <p>Complete the 4-week protocol as written, race, and within <strong>14 days</strong> request a refund if You didn't get the value. Refund honored — <strong>full $1,599</strong> — if all weekly check-ins were submitted. We carry the risk so You can race.</p>
+      <h3>Not Working Out? <em>Full Refund. No Conditions.</em></h3>
+      <p>Request a refund any time before Your Week 3 (Replenish) shipment, for any reason. Full refund &mdash; <strong>$1,599</strong>. No hoops, no check-in requirements. We carry the risk so You can race.</p>
       <div class="rn-meta">
         <span><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5L10 17.5L19 7.5"/></svg> Full $1,599 returned</span>
-        <span><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5L10 17.5L19 7.5"/></svg> 14-day post-race window</span>
-        <span><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5L10 17.5L19 7.5"/></svg> Conditional on completed check-ins</span>
+        <span><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5L10 17.5L19 7.5"/></svg> Before Week 3 shipment</span>
+        <span><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5L10 17.5L19 7.5"/></svg> Any reason, no questions</span>
       </div>
     </div>
   </div>
@@ -1071,7 +1071,7 @@ function toggleMobileNav(){var nav=document.getElementById('nav-mobile');var btn
 
 <script>
 /* ─── PREMIUM TRACKING ─────────────────────────────────────────────
-   Page view → click intent → checkout begin → Rewardful affiliate
+   Page view → click intent → checkout begin → Tolt referral
    GA4 enhanced ecommerce items array attached to begin_checkout so
    the funnel reads as a real $1,599 purchase intent in Reports.
    Stripe webhook (api/stripe-webhook.js) closes the loop with the
@@ -1136,8 +1136,7 @@ function toggleMobileNav(){var nav=document.getElementById('nav-mobile');var btn
 })();
 </script>
 
-<script>(function(w,r){w._rwq=r;w[r]=w[r]||function(){(w[r].q=w[r].q||[]).push(arguments)}})(window,'rewardful');</script>
-<script async src='https://r.wdfl.co/rw.js' data-rewardful='73b07c'></script>
+<script async src="https://files.tlt-cdn.com/tlt.js" data-tolt="pk_SdQtGgTaBx4hN9FZY1CC1JAp"></script>
 
 <script defer src="/assets/rik-analytics.js"></script>
 
