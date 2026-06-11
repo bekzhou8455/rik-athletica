@@ -1,5 +1,5 @@
 /**
- * GET /api/dashboard/data
+ * GET /api/dashboard/data (v2 — fresh OAuth credentials)
  * Unified data endpoint for the RIK tracking dashboard.
  * Pulls from Stripe API + GA4 Data API, returns JSON.
  *
