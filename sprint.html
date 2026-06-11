@@ -425,10 +425,15 @@ footer.legal .footer-disclaimer strong{color:rgba(255,255,255,.6);display:block;
   section.s{padding:56px 20px}
   section.sprint-journey{padding:56px 20px}
   section.rd-trust{padding:48px 20px}
-  .hero .h1{font-size:clamp(40px,11vw,56px);max-width:14ch;line-height:.96;letter-spacing:-.025em;margin:16px 0 18px}
-  .hero .h1,.hero .lead{text-shadow:0 1px 0 rgba(0,0,0,.55),0 2px 8px rgba(0,0,0,.4),0 6px 20px rgba(0,0,0,.22);max-width:min(72%,280px)}
-  .hero .hero-cta{flex-direction:column;align-items:stretch;gap:12px;max-width:min(82%,320px)}
-  .hero .lead{font-size:14.5px;margin-bottom:24px}
+  /* A. Hero: compress + full-width CTA + trust badge */
+  .hero{min-height:auto;padding-top:80px;padding-bottom:40px}
+  .hero .h1{font-size:clamp(36px,10vw,48px);max-width:14ch;line-height:.96;letter-spacing:-.025em;margin:0 0 14px}
+  .hero .h1,.hero .lead{text-shadow:0 1px 0 rgba(0,0,0,.55),0 2px 8px rgba(0,0,0,.4),0 6px 20px rgba(0,0,0,.22);max-width:min(82%,320px)}
+  .hero .lead{font-size:14px;margin-bottom:20px;line-height:1.5;max-width:min(82%,320px)}
+  .hero .hero-cta{flex-direction:column;align-items:stretch;gap:10px;max-width:100%}
+  .hero .hero-cta .cta{width:100%;justify-content:center}
+  .hero .hero-textlink{justify-content:center;font-size:13px}
+  .hero-micro{display:none}
   .stats-row{flex-wrap:wrap}
   .stat-cell{width:50%;border-bottom:1px solid rgba(255,255,255,.08)}
   .stat-num{font-size:20px}
@@ -579,6 +584,11 @@ src="https://www.facebook.com/tr?id=776806364952215&ev=PageView&noscript=1"
 
       <p class="hero-micro">We only take athletes we believe we can support.</p>
       <p class="hero-micro hero-micro-risk">No qualify = checkout stays locked. Red flags after intake = we cancel + refund. <a href="/terms" class="hero-micro-link">Terms.</a></p>
+      <p class="hero-trust-badge">Checkout unlocks only if you qualify · Refund if we cancel <a href="/terms" class="hero-micro-link">(Terms)</a></p>
+      <details class="hero-gate-expand">
+        <summary>Why we gate + refunds →</summary>
+        <p>We only take athletes we believe we can support. No qualify = checkout stays locked. Red flags after intake = we cancel + full refund. <a href="/terms" class="hero-micro-link">Full terms.</a></p>
+      </details>
     </div>
   </div>
 </section>
@@ -611,6 +621,14 @@ src="https://www.facebook.com/tr?id=776806364952215&ev=PageView&noscript=1"
 .hero-micro-risk{margin-top:8px;color:rgba(255,255,255,.62)}
 .hero-micro-link{color:rgba(255,255,255,.55);text-decoration:underline;text-underline-offset:2px}
 .hero-micro-link:hover{color:#fff}
+/* Trust badge — single-line mobile replacement for hero-micro stack */
+.hero-trust-badge{display:none;margin:14px 0 0;font-size:12px;line-height:1.5;color:rgba(255,255,255,.7);text-shadow:0 1px 3px rgba(0,0,0,.55)}
+.hero-trust-badge .hero-micro-link{font-size:inherit}
+@media (max-width:640px){
+  .hero-trust-badge{display:block}
+  .hero{min-height:auto !important;align-items:flex-end}
+  .hero-micro{display:none !important}
+}
 @media (max-width:900px){.hero-micro{font-size:12.5px}}
 
 /* Short-viewport breakpoint — tighten everything on shorter laptops */
@@ -644,6 +662,10 @@ src="https://www.facebook.com/tr?id=776806364952215&ev=PageView&noscript=1"
   .qual-strip .qs-refund{grid-row:auto;grid-column:1;justify-self:start;margin-top:8px}
   .qual-strip .qs-key{min-width:0;display:block;margin-bottom:2px}
 }
+/* F. Mobile: move refund link out of qual-strip — it lives in FAQ */
+@media (max-width:640px){
+  .qual-strip .qs-refund{display:none}
+}
 </style>
 
 
@@ -653,6 +675,7 @@ src="https://www.facebook.com/tr?id=776806364952215&ev=PageView&noscript=1"
     <p class="qs-row"><span class="qs-key">For</span><span class="qs-val">Coached &middot; Race in 28&ndash;56 days &middot; 8&ndash;20+ hrs/week</span></p>
     <p class="qs-row qs-not"><span class="qs-key">Not for</span><span class="qs-val">Self-coached &middot; &gt;8 weeks out &mdash; start with <a href="/audit">Audit</a> or <a href="/">Bundle</a></span></p>
     <a href="#faq" class="qs-refund">Refund policy</a>
+    <a href="#start" class="qs-jump">Jump to Eligibility ↓</a>
   </div>
 </section>
 
@@ -709,6 +732,15 @@ src="https://www.facebook.com/tr?id=776806364952215&ev=PageView&noscript=1"
   .pillar-num{font-size:52px;margin-bottom:20px}
   .pillar-h3{font-size:26px;margin-bottom:14px}
   .pillar-body{font-size:15.5px}
+}
+/* B. Mobile: compress pillars to tight block — title + one line, hide cards */
+@media (max-width:640px){
+  .pillars-section{padding:40px 20px 36px}
+  .pillars-head{margin-bottom:0}
+  .pillars-head .s-num{display:none}
+  .pillars-h2{font-size:clamp(24px,7vw,32px);margin-bottom:8px}
+  .pillars-sub{font-size:14px}
+  .pillars-grid{display:none}
 }
 </style>
 
@@ -1238,7 +1270,11 @@ src="https://www.facebook.com/tr?id=776806364952215&ev=PageView&noscript=1"
       </tbody>
     </table>
   </div>
-  <p style="text-align:center;font-size:13px;font-weight:600;color:var(--ink);margin-top:18px;line-height:1.5">Takes ~2 min · Eligibility confirms fit and recommends Your tier.</p>
+  <div class="pricing-single-cta">
+    <a href="#eligibility" class="cta" data-track="sprint_cta_pricing"><span class="pill">Check eligibility (2 min)</span><span class="arrow">↗</span></a>
+    <p class="pricing-single-helper">Takes ~2 min · Eligibility confirms fit and recommends Your tier</p>
+  </div>
+  <p class="pricing-desktop-helper" style="text-align:center;font-size:13px;font-weight:600;color:var(--ink);margin-top:18px;line-height:1.5">Takes ~2 min · Eligibility confirms fit and recommends Your tier.</p>
   <p style="text-align:center;font-size:12px;color:var(--ink-soft);margin-top:8px;max-width:62ch;margin-left:auto;margin-right:auto;line-height:1.6">All tiers: two shipments, Race Pack optional at checkout. 30 slots per cycle. RD-reviewed methodology.</p>
 </section>
 
@@ -1724,6 +1760,47 @@ src="https://www.facebook.com/tr?id=776806364952215&ev=PageView&noscript=1"
 .final-alt a{color:#fff;text-decoration:underline;text-underline-offset:2px}
 </style>
 
+
+<style>
+/* ─── Mobile conversion polish v2 (A-F) ─── */
+.hero-gate-expand{display:none;margin:10px 0 0}
+.hero-gate-expand summary{font-size:12px;color:rgba(255,255,255,.55);cursor:pointer;list-style:none;text-decoration:underline;text-underline-offset:2px}
+.hero-gate-expand summary::-webkit-details-marker{display:none}
+.hero-gate-expand p{margin:8px 0 0;font-size:12px;line-height:1.5;color:rgba(255,255,255,.6)}
+.qs-jump{display:none}
+.pricing-single-cta{display:none}
+
+@media (max-width:640px){
+  /* A2: Show expandable gate/refund */
+  .hero-gate-expand{display:block}
+
+  /* B: Lightweight proof strip — smaller heading, tighter section */
+  .pillars-section{padding:28px 20px 24px !important}
+  .pillars-h2{font-size:18px !important;font-weight:600;letter-spacing:-.005em;margin-bottom:4px !important}
+  .pillars-sub{font-size:13px !important;line-height:1.45}
+
+  /* C1: Wider peek for carousel (78vw ≈ 22% next-card visible) */
+  .feat-card{width:78vw !important}
+
+  /* C3: Bigger, darker dots */
+  .cards-dots button{width:10px;height:10px;background:rgba(14,14,14,.32)}
+  .cards-dots button.active{width:28px;background:var(--ink)}
+  .cards-swipe{font-size:13px;color:var(--ink-soft);font-weight:500}
+
+  /* D: Remove duplicate CTAs — keep hero, Three Steps, sticky only */
+  .sec-cta{display:none !important}
+  section.final-cta{display:none !important}
+
+  /* E: Jump to Eligibility in qual-strip */
+  .qs-jump{display:block;grid-column:1;font-size:13px;font-weight:600;color:var(--ink);text-decoration:underline;text-underline-offset:3px;margin-top:6px}
+
+  /* F: Hide per-tier CTAs, show single CTA below table */
+  .tier-matrix .cta-row{display:none}
+  .pricing-single-cta{display:flex;flex-direction:column;align-items:center;gap:8px;margin-top:24px}
+  .pricing-single-helper{font-size:12px;color:var(--ink-soft);text-align:center;line-height:1.5}
+  .pricing-desktop-helper{display:none}
+}
+</style>
 
 <!-- ═══ §9 — FOOTER ═══ -->
 <footer class="legal">
