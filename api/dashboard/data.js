@@ -28,18 +28,13 @@ function isAuthed(req) {
 
 // ─── GA4 OAuth token refresh ───
 async function getGa4AccessToken() {
-  const cid = process.env.GA4_OAUTH_CLIENT_ID || '';
-  const csec = process.env.GA4_OAUTH_CLIENT_SECRET || '';
-  const rtok = process.env.GA4_OAUTH_REFRESH_TOKEN || '';
-  console.log(`[dashboard] GA4 auth debug: client_id=${cid.slice(0,12)}... secret=${csec.slice(0,4)}...${csec.slice(-4)} refresh=${rtok.slice(0,8)}...${rtok.slice(-4)} lengths=${cid.length}/${csec.length}/${rtok.length}`);
-
   const res = await fetch('https://oauth2.googleapis.com/token', {
     method: 'POST',
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     body: new URLSearchParams({
-      client_id: cid,
-      client_secret: csec,
-      refresh_token: rtok,
+      client_id: process.env.GA4_OAUTH_CLIENT_ID,
+      client_secret: process.env.GA4_OAUTH_CLIENT_SECRET,
+      refresh_token: process.env.GA4_OAUTH_REFRESH_TOKEN,
       grant_type: 'refresh_token',
     }),
   });
