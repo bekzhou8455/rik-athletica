@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>RIK — Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --sand: #f6f5f4;
+  --off-black: #0a0a0a;
+  --green: #2D5A3D;
+  --green-light: #4ade80;
+  --muted: #888;
+  --border: rgba(10,10,10,.08);
+  --border-strong: rgba(10,10,10,.16);
+  --white: #fff;
+  --danger: #e53e3e;
+  --warning: #b7791f;
+  --sans: 'Plus Jakarta Sans', -apple-system, system-ui, sans-serif;
+  --mono: 'JetBrains Mono', ui-monospace, monospace;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:var(--sans); background:var(--sand); color:var(--off-black); }
+
+/* ─── Login ─── */
+.login-wrap { display:flex; align-items:center; justify-content:center; min-height:100vh; padding:24px; }
+.login-box { background:var(--white); border:1px solid var(--border-strong); border-radius:16px; padding:48px 40px; max-width:380px; width:100%; text-align:center; }
+.login-box h1 { font-size:20px; font-weight:600; letter-spacing:-.02em; margin-bottom:8px; }
+.login-box p { font-size:13px; color:var(--muted); margin-bottom:24px; }
+.login-box input { width:100%; padding:12px 16px; border:1px solid var(--border-strong); border-radius:10px; font-family:var(--mono); font-size:14px; outline:none; margin-bottom:12px; }
+.login-box input:focus { border-color:var(--green); }
+.login-box button { width:100%; padding:12px; background:var(--off-black); color:var(--white); border:none; border-radius:10px; font-family:var(--sans); font-size:14px; font-weight:500; cursor:pointer; }
+.login-box button:hover { background:#1a1a1a; }
+.login-error { color:var(--danger); font-size:12px; margin-top:8px; display:none; }
+
+/* ─── Dashboard ─── */
+.dash { display:none; max-width:1200px; margin:0 auto; padding:24px 20px 80px; }
+.dash.active { display:block; }
+.dash-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:28px; flex-wrap:wrap; gap:12px; }
+.dash-header h1 { font-size:22px; font-weight:700; letter-spacing:-.02em; }
+.dash-controls { display:flex; gap:8px; align-items:center; }
+.dash-controls select, .dash-controls input[type="date"] { padding:8px 12px; border:1px solid var(--border-strong); border-radius:8px; font-family:var(--sans); font-size:13px; background:var(--white); }
+.dash-controls button { padding:8px 16px; background:var(--green); color:var(--white); border:none; border-radius:8px; font-size:13px; font-weight:500; cursor:pointer; font-family:var(--sans); }
+
+/* ─── Cards ─── */
+.metric-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:14px; margin-bottom:28px; }
+.metric-card { background:var(--white); border:1px solid var(--border); border-radius:14px; padding:20px; }
+.metric-card .label { font-size:11px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); margin-bottom:6px; }
+.metric-card .value { font-size:28px; font-weight:700; letter-spacing:-.02em; font-family:var(--mono); }
+.metric-card .sub { font-size:12px; color:var(--muted); margin-top:4px; }
+
+/* ─── Sections ─── */
+.section { background:var(--white); border:1px solid var(--border); border-radius:14px; padding:24px; margin-bottom:20px; }
+.section h2 { font-size:15px; font-weight:600; letter-spacing:-.01em; margin-bottom:16px; }
+.section h2 .badge { display:inline-block; font-size:10px; font-weight:600; letter-spacing:.08em; text-transform:uppercase; background:var(--green); color:var(--white); padding:3px 8px; border-radius:6px; margin-left:8px; vertical-align:middle; }
+
+/* ─── Tables ─── */
+table { width:100%; border-collapse:collapse; font-size:13px; }
+th { text-align:left; font-weight:600; font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); padding:8px 12px; border-bottom:1px solid var(--border-strong); }
+td { padding:10px 12px; border-bottom:1px solid var(--border); }
+tr:last-child td { border-bottom:none; }
+.mono { font-family:var(--mono); font-size:12px; }
+.text-green { color:var(--green); font-weight:600; }
+.text-muted { color:var(--muted); }
+.text-right { text-align:right; }
+
+/* ─── Funnel ─── */
+.funnel { display:flex; flex-direction:column; gap:6px; }
+.funnel-step { display:flex; align-items:center; gap:12px; }
+.funnel-bar-wrap { flex:1; background:rgba(45,90,61,.08); border-radius:6px; height:28px; position:relative; overflow:hidden; }
+.funnel-bar { height:100%; background:var(--green); border-radius:6px; transition:width .6s ease; min-width:2px; }
+.funnel-label { font-size:12px; font-weight:500; min-width:160px; }
+.funnel-count { font-size:12px; font-family:var(--mono); min-width:60px; text-align:right; }
+.funnel-pct { font-size:11px; color:var(--muted); min-width:48px; text-align:right; }
+
+/* ─── Ad Spend ─── */
+.spend-row { display:flex; gap:12px; align-items:center; margin-bottom:12px; }
+.spend-row label { font-size:12px; font-weight:500; min-width:100px; }
+.spend-row input { flex:1; max-width:140px; padding:8px 12px; border:1px solid var(--border-strong); border-radius:8px; font-family:var(--mono); font-size:13px; }
+.spend-row .result { font-size:13px; font-family:var(--mono); font-weight:600; }
+
+/* ─── Loading ─── */
+.loading { text-align:center; padding:48px; color:var(--muted); font-size:14px; }
+.loading::after { content:''; display:inline-block; width:16px; height:16px; border:2px solid var(--border-strong); border-top-color:var(--green); border-radius:50%; animation:spin .6s linear infinite; margin-left:8px; vertical-align:middle; }
+@keyframes spin { to { transform:rotate(360deg); } }
+
+/* ─── Responsive ─── */
+@media(max-width:640px) {
+  .metric-grid { grid-template-columns:1fr 1fr; }
+  .funnel-label { min-width:100px; font-size:11px; }
+  .dash-header { flex-direction:column; align-items:flex-start; }
+}
+</style>
+</head>
+<body>
+
+<!-- Login -->
+<div class="login-wrap" id="loginWrap">
+  <div class="login-box">
+    <h1>RIK Dashboard</h1>
+    <p>Internal tracking — password required.</p>
+    <form id="loginForm">
+      <input type="password" id="loginPw" placeholder="Password" autocomplete="off" autofocus>
+      <button type="submit">Enter</button>
+    </form>
+    <p class="login-error" id="loginError">Wrong password. Try again.</p>
+  </div>
+</div>
+
+<!-- Dashboard -->
+<div class="dash" id="dashWrap">
+  <div class="dash-header">
+    <h1>RIK — Sprint Tracking</h1>
+    <div class="dash-controls">
+      <select id="rangePicker">
+        <option value="7">Last 7 days</option>
+        <option value="14" selected>Last 14 days</option>
+        <option value="30">Last 30 days</option>
+        <option value="custom">Custom</option>
+      </select>
+      <input type="date" id="startDate" style="display:none">
+      <input type="date" id="endDate" style="display:none">
+      <button id="refreshBtn">Refresh</button>
+    </div>
+  </div>
+
+  <!-- Top metrics -->
+  <div class="metric-grid" id="metricGrid">
+    <div class="metric-card"><div class="label">Revenue</div><div class="value" id="mRevenue">—</div><div class="sub" id="mRevenueCount"></div></div>
+    <div class="metric-card"><div class="label">Purchases</div><div class="value" id="mPurchases">—</div><div class="sub" id="mPurchasesSub"></div></div>
+    <div class="metric-card"><div class="label">Sprint Visitors</div><div class="value" id="mVisitors">—</div><div class="sub" id="mVisitorsSub"></div></div>
+    <div class="metric-card"><div class="label">Conversion Rate</div><div class="value" id="mConversion">—</div><div class="sub">purchases / visitors</div></div>
+    <div class="metric-card"><div class="label">Cart Abandons</div><div class="value" id="mAbandons">—</div><div class="sub">expired checkout sessions</div></div>
+    <div class="metric-card"><div class="label">ROAS</div><div class="value" id="mRoas">—</div><div class="sub" id="mRoasSub">enter ad spend below</div></div>
+  </div>
+
+  <!-- Funnel -->
+  <div class="section">
+    <h2>Sprint Funnel <span class="badge">GA4</span></h2>
+    <div class="funnel" id="funnelChart">
+      <p class="text-muted" style="font-size:13px;">Loading…</p>
+    </div>
+  </div>
+
+  <!-- Revenue by Tier -->
+  <div class="section">
+    <h2>Revenue by Tier <span class="badge">Stripe</span></h2>
+    <table id="tierTable">
+      <thead><tr><th>Tier</th><th class="text-right">Count</th><th class="text-right">Revenue</th><th class="text-right">Avg</th></tr></thead>
+      <tbody id="tierBody"><tr><td colspan="4" class="text-muted">Loading…</td></tr></tbody>
+    </table>
+  </div>
+
+  <!-- Traffic Sources -->
+  <div class="section">
+    <h2>Traffic Sources <span class="badge">GA4</span></h2>
+    <table id="sourceTable">
+      <thead><tr><th>Source / Medium</th><th class="text-right">Sessions</th><th class="text-right">Users</th></tr></thead>
+      <tbody id="sourceBody"><tr><td colspan="3" class="text-muted">Loading…</td></tr></tbody>
+    </table>
+  </div>
+
+  <!-- Revenue by Channel -->
+  <div class="section">
+    <h2>Revenue by Channel <span class="badge">Stripe</span></h2>
+    <table>
+      <thead><tr><th>UTM Source</th><th class="text-right">Purchases</th><th class="text-right">Revenue</th></tr></thead>
+      <tbody id="channelBody"><tr><td colspan="3" class="text-muted">Loading…</td></tr></tbody>
+    </table>
+  </div>
+
+  <!-- Ad Spend + ROAS -->
+  <div class="section">
+    <h2>Ad Spend &amp; ROAS</h2>
+    <div class="spend-row">
+      <label>Ad spend (USD)</label>
+      <input type="number" id="adSpend" placeholder="0.00" step="0.01" min="0">
+      <div class="result" id="roasResult">—</div>
+    </div>
+    <p style="font-size:11px;color:var(--muted);">Enter total ad spend for the selected period. ROAS = revenue / spend.</p>
+  </div>
+
+  <!-- Recent Purchases -->
+  <div class="section">
+    <h2>Recent Purchases <span class="badge">Stripe</span></h2>
+    <div style="overflow-x:auto;">
+      <table>
+        <thead><tr><th>Date</th><th>Name</th><th>Email</th><th>Tier</th><th>Source</th><th class="text-right">Amount</th></tr></thead>
+        <tbody id="recentBody"><tr><td colspan="6" class="text-muted">Loading…</td></tr></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Errors -->
+  <div class="section" id="errorSection" style="display:none;border-color:var(--danger);">
+    <h2 style="color:var(--danger);">Data Errors</h2>
+    <ul id="errorList" style="font-size:13px;color:var(--danger);padding-left:20px;"></ul>
+  </div>
+</div>
+
+<script>
+(function() {
+  var loginWrap = document.getElementById('loginWrap');
+  var dashWrap  = document.getElementById('dashWrap');
+  var loginForm = document.getElementById('loginForm');
+  var loginPw   = document.getElementById('loginPw');
+  var loginErr  = document.getElementById('loginError');
+
+  // ─── Login ───
+  loginForm.addEventListener('submit', function(e) {
+    e.preventDefault();
+    fetch('/api/dashboard/data', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ password: loginPw.value }),
+      credentials: 'same-origin',
+    })
+    .then(function(r) {
+      if (r.ok) {
+        loginWrap.style.display = 'none';
+        dashWrap.classList.add('active');
+        loadData();
+      } else {
+        loginErr.style.display = 'block';
+        loginPw.value = '';
+        loginPw.focus();
+      }
+    });
+  });
+
+  // Check if already authed
+  fetch('/api/dashboard/data?start=2099-01-01&end=2099-01-01', { credentials: 'same-origin' })
+    .then(function(r) {
+      if (r.ok) {
+        loginWrap.style.display = 'none';
+        dashWrap.classList.add('active');
+        loadData();
+      }
+    });
+
+  // ─── Date range ───
+  var rangePicker = document.getElementById('rangePicker');
+  var startInput  = document.getElementById('startDate');
+  var endInput    = document.getElementById('endDate');
+
+  rangePicker.addEventListener('change', function() {
+    var custom = this.value === 'custom';
+    startInput.style.display = custom ? 'inline-block' : 'none';
+    endInput.style.display   = custom ? 'inline-block' : 'none';
+    if (!custom) loadData();
+  });
+
+  document.getElementById('refreshBtn').addEventListener('click', loadData);
+
+  function getDateRange() {
+    if (rangePicker.value === 'custom') {
+      return { start: startInput.value, end: endInput.value };
+    }
+    var days = parseInt(rangePicker.value, 10);
+    var end = new Date();
+    var start = new Date(end.getTime() - days * 86400000);
+    return {
+      start: start.toISOString().slice(0, 10),
+      end: end.toISOString().slice(0, 10),
+    };
+  }
+
+  // ─── Load data ───
+  function loadData() {
+    var range = getDateRange();
+    if (!range.start || !range.end) return;
+
+    fetch('/api/dashboard/data?start=' + range.start + '&end=' + range.end, { credentials: 'same-origin' })
+      .then(function(r) { return r.json(); })
+      .then(render)
+      .catch(function(err) {
+        console.error('Dashboard fetch error:', err);
+      });
+  }
+
+  // ─── Render ───
+  function render(data) {
+    var stripe = data.stripe || {};
+    var ga4    = data.ga4 || {};
+    var errors = data.errors || [];
+
+    // Top metrics
+    var rev = stripe.revenue_cents || 0;
+    document.getElementById('mRevenue').textContent = '$' + (rev / 100).toLocaleString();
+    document.getElementById('mRevenueCount').textContent = (stripe.completed || 0) + ' transactions';
+
+    document.getElementById('mPurchases').textContent = stripe.completed || 0;
+    document.getElementById('mPurchasesSub').textContent = (stripe.expired || 0) + ' abandoned';
+
+    var visitors = (ga4.funnel && ga4.funnel.sprint_page_view) || (ga4.funnel && ga4.funnel.page_view) || 0;
+    document.getElementById('mVisitors').textContent = visitors.toLocaleString();
+
+    var convRate = visitors > 0 ? ((stripe.completed || 0) / visitors * 100).toFixed(1) + '%' : '—';
+    document.getElementById('mConversion').textContent = convRate;
+
+    document.getElementById('mAbandons').textContent = stripe.expired || 0;
+
+    // Funnel
+    renderFunnel(ga4.funnel || {}, stripe);
+
+    // Tier table
+    renderTierTable(stripe.by_tier || {});
+
+    // Traffic sources
+    renderSourceTable(ga4.sources || []);
+
+    // Revenue by channel
+    renderChannelTable(stripe.by_source || {});
+
+    // Recent purchases
+    renderRecent(stripe.recent || []);
+
+    // ROAS
+    updateRoas(rev);
+
+    // Errors
+    if (errors.length > 0) {
+      document.getElementById('errorSection').style.display = 'block';
+      document.getElementById('errorList').innerHTML = errors.map(function(e) { return '<li>' + e + '</li>'; }).join('');
+    } else {
+      document.getElementById('errorSection').style.display = 'none';
+    }
+  }
+
+  function renderFunnel(funnel, stripe) {
+    var steps = [
+      { key: 'sprint_page_view',          label: 'Page views' },
+      { key: 'sprint_cta_click',          label: 'CTA clicks' },
+      { key: 'eligibility_started',       label: 'Eligibility started' },
+      { key: 'eligibility_submitted',     label: 'Eligibility submitted' },
+      { key: 'sprint_checkout_redirect',  label: 'Checkout initiated' },
+      { key: '_purchases',                label: 'Purchased', value: stripe.completed || 0 },
+    ];
+
+    var max = 0;
+    steps.forEach(function(s) {
+      s.value = s.value !== undefined ? s.value : (funnel[s.key] || 0);
+      if (s.value > max) max = s.value;
+    });
+
+    var top = steps[0].value || 1;
+    var html = steps.map(function(s) {
+      var pct = max > 0 ? (s.value / max * 100) : 0;
+      var dropPct = top > 0 ? (s.value / top * 100).toFixed(0) + '%' : '—';
+      return '<div class="funnel-step">' +
+        '<div class="funnel-label">' + s.label + '</div>' +
+        '<div class="funnel-bar-wrap"><div class="funnel-bar" style="width:' + pct + '%"></div></div>' +
+        '<div class="funnel-count">' + s.value.toLocaleString() + '</div>' +
+        '<div class="funnel-pct">' + dropPct + '</div>' +
+      '</div>';
+    }).join('');
+
+    document.getElementById('funnelChart').innerHTML = html;
+  }
+
+  function renderTierTable(byTier) {
+    var rows = Object.keys(byTier).map(function(t) {
+      var d = byTier[t];
+      var avg = d.count > 0 ? '$' + Math.round(d.revenue / d.count / 100) : '—';
+      return '<tr><td>' + t + '</td><td class="text-right mono">' + d.count + '</td><td class="text-right mono text-green">$' + (d.revenue / 100).toLocaleString() + '</td><td class="text-right mono">' + avg + '</td></tr>';
+    });
+    document.getElementById('tierBody').innerHTML = rows.length > 0 ? rows.join('') : '<tr><td colspan="4" class="text-muted">No data</td></tr>';
+  }
+
+  function renderSourceTable(sources) {
+    var rows = sources.slice(0, 15).map(function(s) {
+      return '<tr><td>' + s.source + ' / ' + s.medium + '</td><td class="text-right mono">' + s.sessions + '</td><td class="text-right mono">' + s.users + '</td></tr>';
+    });
+    document.getElementById('sourceBody').innerHTML = rows.length > 0 ? rows.join('') : '<tr><td colspan="3" class="text-muted">No data</td></tr>';
+  }
+
+  function renderChannelTable(bySource) {
+    var rows = Object.keys(bySource).sort(function(a, b) { return bySource[b].revenue - bySource[a].revenue; }).map(function(s) {
+      var d = bySource[s];
+      return '<tr><td>' + s + '</td><td class="text-right mono">' + d.count + '</td><td class="text-right mono text-green">$' + (d.revenue / 100).toLocaleString() + '</td></tr>';
+    });
+    document.getElementById('channelBody').innerHTML = rows.length > 0 ? rows.join('') : '<tr><td colspan="3" class="text-muted">No data yet — UTM tracking activates after deploy</td></tr>';
+  }
+
+  function renderRecent(recent) {
+    var rows = recent.map(function(s) {
+      var date = new Date(s.created).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+      var src = s.utm_source || '—';
+      return '<tr><td class="mono">' + date + '</td><td>' + (s.name || '—') + '</td><td class="mono" style="font-size:11px;">' + s.email + '</td><td>' + s.tier + '</td><td>' + src + '</td><td class="text-right mono text-green">$' + (s.amount / 100) + '</td></tr>';
+    });
+    document.getElementById('recentBody').innerHTML = rows.length > 0 ? rows.join('') : '<tr><td colspan="6" class="text-muted">No purchases in this period</td></tr>';
+  }
+
+  // ─── ROAS calculator ───
+  var adSpendInput = document.getElementById('adSpend');
+  var currentRevenue = 0;
+
+  function updateRoas(rev) {
+    currentRevenue = rev || currentRevenue;
+    var spend = parseFloat(adSpendInput.value) || 0;
+    var roas = spend > 0 ? (currentRevenue / 100 / spend).toFixed(1) + 'x' : '—';
+    document.getElementById('mRoas').textContent = roas;
+    document.getElementById('roasResult').textContent = spend > 0 ? 'ROAS: ' + roas : '—';
+    document.getElementById('mRoasSub').textContent = spend > 0 ? '$' + spend + ' spent' : 'enter ad spend below';
+  }
+
+  adSpendInput.addEventListener('input', function() { updateRoas(); });
+})();
+</script>
+</body>
+</html>

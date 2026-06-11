@@ -1993,10 +1993,28 @@ window.switchGal = function(tab, btn){
 </script>
 
 
-<!-- ═══ SCREENING FORM LOGIC (preserved verbatim from iter-3, only msg classes updated) ═══ -->
+<!-- ═══ UTM CAPTURE — first-touch persistence ═══ -->
 <script>
 (function() {
-  // ============ STRIPE / TIERS (preserved from live) ============
+  var UTM_KEY = 'rik_utm';
+  var params = new URLSearchParams(window.location.search);
+  var utmFields = ['utm_source','utm_medium','utm_campaign','utm_content','utm_term'];
+  var hasUtm = utmFields.some(function(f) { return params.has(f); });
+  if (hasUtm && !sessionStorage.getItem(UTM_KEY)) {
+    var obj = {};
+    utmFields.forEach(function(f) { if (params.get(f)) obj[f] = params.get(f); });
+    sessionStorage.setItem(UTM_KEY, JSON.stringify(obj));
+  }
+  window.RIK_UTM = function() {
+    try { return JSON.parse(sessionStorage.getItem(UTM_KEY)) || {}; } catch(e) { return {}; }
+  };
+})();
+</script>
+
+<!-- ═══ SCREENING FORM LOGIC ═══ -->
+<script>
+(function() {
+  // ============ STRIPE / TIERS ============
   var STRIPE_LINKS = {
     low:  'https://buy.stripe.com/7sY9AVdkOdQQ3CKbIQ7Re02',
     mid:  'https://buy.stripe.com/7sY28tfsW2887T07sA7Re03',
@@ -2193,6 +2211,15 @@ window.switchGal = function(tab, btn){
   var tierName     = document.getElementById('tier-name');
   var tierPrice    = document.getElementById('tier-price');
   var verdictPanel = document.getElementById('verdict-panel');
+
+  // ─── Eligibility funnel events ───
+  var eligStarted = false;
+  form.addEventListener('change', function() {
+    if (!eligStarted) {
+      eligStarted = true;
+      if (typeof gtag === 'function') gtag('event', 'eligibility_started', { page: 'sprint' });
+    }
+  }, { once: false });
 
   // Wire autocompletes (prior-input enabling is now handled by updateForm,
   // so both DB-selected and manually-entered targets unlock the prior section)
@@ -2599,6 +2626,10 @@ window.switchGal = function(tab, btn){
       submitted_at:        new Date().toISOString()
     };
 
+    if (typeof gtag === 'function') {
+      gtag('event', 'eligibility_submitted', { tier: hours.value, page: 'sprint' });
+    }
+
     try {
       fetch('/api/screen-capture', {
         method:    'POST',
@@ -2608,18 +2639,57 @@ window.switchGal = function(tab, btn){
       });
     } catch (err) { /* fail open */ }
 
-    var stripeUrl = STRIPE_LINKS[hours.value];
-    if (window.Rewardful && window.Rewardful.referral) {
-      stripeUrl += (stripeUrl.indexOf('?') === -1 ? '?' : '&') + 'client_reference_id=' + window.Rewardful.referral;
-    }
-    if (screenPayload.email) {
-      stripeUrl += (stripeUrl.indexOf('?') === -1 ? '?' : '&') + 'prefilled_email=' + encodeURIComponent(screenPayload.email);
-    }
-    if (typeof gtag === 'function') {
-      gtag('event', 'sprint_checkout_redirect', { tier: hours.value, page: 'sprint' });
-      gtag('event', 'sprint_screen_pass',       { tier: hours.value, has_email: screenPayload.email ? 1 : 0 });
-    }
-    window.location.href = stripeUrl;
+    // Checkout Sessions API with UTM metadata
+    var utm = (typeof window.RIK_UTM === 'function') ? window.RIK_UTM() : {};
+    var checkoutBody = {
+      tier: hours.value,
+      email: screenPayload.email || '',
+      name: screenPayload.name || '',
+      utm_source:   utm.utm_source   || '',
+      utm_medium:   utm.utm_medium   || '',
+      utm_campaign: utm.utm_campaign || '',
+      utm_content:  utm.utm_content  || '',
+      utm_term:     utm.utm_term     || '',
+      referral:     (window.tolt_referral) || '',
+    };
+
+    submit.disabled = true;
+    submit.textContent = 'Connecting to Stripe…';
+
+    fetch('/api/create-checkout', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(checkoutBody),
+    })
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      if (data.url) {
+        if (typeof gtag === 'function') {
+          gtag('event', 'sprint_checkout_redirect', { tier: hours.value, page: 'sprint' });
+          gtag('event', 'sprint_screen_pass', { tier: hours.value, has_email: screenPayload.email ? 1 : 0 });
+        }
+        if (typeof fbq === 'function') {
+          var tierInfo = TIERS[hours.value] || {};
+          fbq('track', 'InitiateCheckout', { content_name: tierInfo.name || 'Sprint', value: parseInt((tierInfo.price||'').replace(/\D/g,''),10) || 0, currency: 'USD' });
+        }
+        window.location.href = data.url;
+      } else {
+        // Fallback to Payment Link if API fails
+        var stripeUrl = STRIPE_LINKS[hours.value];
+        if (screenPayload.email) {
+          stripeUrl += (stripeUrl.indexOf('?') === -1 ? '?' : '&') + 'prefilled_email=' + encodeURIComponent(screenPayload.email);
+        }
+        window.location.href = stripeUrl;
+      }
+    })
+    .catch(function() {
+      // Fallback to Payment Link on network error
+      var stripeUrl = STRIPE_LINKS[hours.value];
+      if (screenPayload.email) {
+        stripeUrl += (stripeUrl.indexOf('?') === -1 ? '?' : '&') + 'prefilled_email=' + encodeURIComponent(screenPayload.email);
+      }
+      window.location.href = stripeUrl;
+    });
   });
 })();
 </script>
