@@ -1,5 +1,5 @@
 /**
- * GET /api/dashboard/data (v2 — fresh OAuth credentials)
+ * GET /api/dashboard/data
  * Unified data endpoint for the RIK tracking dashboard.
  * Pulls from Stripe API + GA4 Data API, returns JSON.
  *
@@ -145,12 +145,14 @@ async function queryGa4(accessToken, propertyId, { startDate, endDate }) {
 function parseGa4Response(batchResponse) {
   const reports = batchResponse.reports || [];
 
-  // Report 0: funnel events
+  // Report 0: funnel events (users + event counts)
   const funnel = {};
+  const funnelEvents = {};
   if (reports[0]?.rows) {
     for (const row of reports[0].rows) {
       const eventName = row.dimensionValues[0].value;
-      funnel[eventName] = parseInt(row.metricValues[2]?.value || '0', 10);
+      funnel[eventName] = parseInt(row.metricValues[1]?.value || '0', 10);
+      funnelEvents[eventName] = parseInt(row.metricValues[2]?.value || '0', 10);
     }
   }
 
@@ -179,7 +181,7 @@ function parseGa4Response(batchResponse) {
     }
   }
 
-  return { funnel, sources, daily };
+  return { funnel, funnelEvents, sources, daily };
 }
 
 // ─── Stripe data ───

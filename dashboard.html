@@ -296,15 +296,17 @@ tr:last-child td { border-bottom:none; }
     document.getElementById('mPurchasesSub').textContent = (stripe.expired || 0) + ' abandoned';
 
     var visitors = (ga4.funnel && ga4.funnel.sprint_page_view) || (ga4.funnel && ga4.funnel.page_view) || 0;
+    var visitorEvents = (ga4.funnelEvents && ga4.funnelEvents.sprint_page_view) || 0;
     document.getElementById('mVisitors').textContent = visitors.toLocaleString();
+    document.getElementById('mVisitorsSub').textContent = visitorEvents > visitors ? visitorEvents + ' page views' : '';
 
     var convRate = visitors > 0 ? ((stripe.completed || 0) / visitors * 100).toFixed(1) + '%' : '—';
     document.getElementById('mConversion').textContent = convRate;
 
     document.getElementById('mAbandons').textContent = stripe.expired || 0;
 
-    // Funnel
-    renderFunnel(ga4.funnel || {}, stripe);
+    // Funnel (users, with event counts as context)
+    renderFunnel(ga4.funnel || {}, ga4.funnelEvents || {}, stripe);
 
     // Tier table
     renderTierTable(stripe.by_tier || {});
@@ -330,31 +332,36 @@ tr:last-child td { border-bottom:none; }
     }
   }
 
-  function renderFunnel(funnel, stripe) {
+  function renderFunnel(funnel, funnelEvents, stripe) {
     var steps = [
-      { key: 'sprint_page_view',          label: 'Page views' },
-      { key: 'sprint_cta_click',          label: 'CTA clicks' },
-      { key: 'eligibility_started',       label: 'Eligibility started' },
-      { key: 'eligibility_submitted',     label: 'Eligibility submitted' },
-      { key: 'sprint_checkout_redirect',  label: 'Checkout initiated' },
+      { key: 'sprint_page_view',          label: 'Viewed /sprint' },
+      { key: 'sprint_cta_click',          label: 'Clicked a CTA' },
+      { key: 'eligibility_started',       label: 'Started eligibility' },
+      { key: 'eligibility_submitted',     label: 'Submitted eligibility' },
+      { key: 'sprint_checkout_redirect',  label: 'Reached checkout' },
       { key: '_purchases',                label: 'Purchased', value: stripe.completed || 0 },
     ];
 
     var max = 0;
     steps.forEach(function(s) {
       s.value = s.value !== undefined ? s.value : (funnel[s.key] || 0);
+      s.events = (s.key !== '_purchases') ? (funnelEvents[s.key] || 0) : (stripe.completed || 0);
       if (s.value > max) max = s.value;
     });
 
     var top = steps[0].value || 1;
-    var html = steps.map(function(s) {
+    var prev = top;
+    var html = steps.map(function(s, i) {
       var pct = max > 0 ? (s.value / max * 100) : 0;
-      var dropPct = top > 0 ? (s.value / top * 100).toFixed(0) + '%' : '—';
+      var ofTop = top > 0 ? (s.value / top * 100).toFixed(0) + '%' : '—';
+      var dropoff = (i > 0 && prev > 0 && s.value < prev) ? ' <span style="color:var(--danger);font-size:10px;">−' + (prev - s.value) + '</span>' : '';
+      prev = s.value;
+      var eventsNote = (s.events !== s.value && s.events > 0) ? ' <span style="color:var(--muted);font-size:10px;">(' + s.events + ' times)</span>' : '';
       return '<div class="funnel-step">' +
         '<div class="funnel-label">' + s.label + '</div>' +
         '<div class="funnel-bar-wrap"><div class="funnel-bar" style="width:' + pct + '%"></div></div>' +
-        '<div class="funnel-count">' + s.value.toLocaleString() + '</div>' +
-        '<div class="funnel-pct">' + dropPct + '</div>' +
+        '<div class="funnel-count">' + s.value.toLocaleString() + ' <span style="font-size:10px;color:var(--muted);">people</span>' + eventsNote + dropoff + '</div>' +
+        '<div class="funnel-pct">' + ofTop + '</div>' +
       '</div>';
     }).join('');
 
