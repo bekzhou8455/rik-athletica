@@ -2214,12 +2214,12 @@ window.switchGal = function(tab, btn){
 
   // ─── Eligibility funnel events ───
   var eligStarted = false;
-  form.addEventListener('change', function() {
+  form.addEventListener('input', function() {
     if (!eligStarted) {
       eligStarted = true;
       if (typeof gtag === 'function') gtag('event', 'eligibility_started', { page: 'sprint' });
     }
-  }, { once: false });
+  });
 
   // Wire autocompletes (prior-input enabling is now handled by updateForm,
   // so both DB-selected and manually-entered targets unlock the prior section)
