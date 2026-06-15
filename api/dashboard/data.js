@@ -119,6 +119,28 @@ async function queryGa4(accessToken, propertyId, { startDate, endDate }) {
         },
         orderBys: [{ dimension: { dimensionName: 'date' } }],
       },
+      {
+        dateRanges: [{ startDate, endDate }],
+        metrics: [
+          { name: 'sessions' },
+          { name: 'totalUsers' },
+        ],
+        dimensions: [
+          { name: 'sessionCampaignName' },
+          { name: 'sessionManualAdContent' },
+        ],
+        dimensionFilter: {
+          filter: {
+            fieldName: 'pagePath',
+            stringFilter: {
+              matchType: 'BEGINS_WITH',
+              value: '/sprint',
+            },
+          },
+        },
+        orderBys: [{ metric: { metricName: 'sessions' }, desc: true }],
+        limit: 30,
+      },
     ],
   };
 
@@ -181,7 +203,23 @@ function parseGa4Response(batchResponse) {
     }
   }
 
-  return { funnel, funnelEvents, sources, daily };
+  // Report 3: campaign/content breakdown (ad creative attribution)
+  const creatives = [];
+  if (reports[3]?.rows) {
+    for (const row of reports[3].rows) {
+      const campaign = row.dimensionValues[0].value;
+      const content = row.dimensionValues[1].value;
+      if (campaign === '(not set)' && content === '(not set)') continue;
+      creatives.push({
+        campaign,
+        content,
+        sessions: parseInt(row.metricValues[0].value, 10),
+        users: parseInt(row.metricValues[1].value, 10),
+      });
+    }
+  }
+
+  return { funnel, funnelEvents, sources, daily, creatives };
 }
 
 // ─── Stripe data ───
@@ -230,6 +268,22 @@ async function getStripeData(stripe, { startDate, endDate }) {
     bySource[src].revenue += s.amount_total || 0;
   }
 
+  const byCreative = {};
+  for (const s of [...completed, ...expired]) {
+    const content = s.metadata?.utm_content;
+    if (!content) continue;
+    const campaign = s.metadata?.utm_campaign || '(none)';
+    const key = campaign + '||' + content;
+    byCreative[key] = byCreative[key] || { campaign, content, purchases: 0, revenue: 0, checkouts: 0, abandoned: 0 };
+    byCreative[key].checkouts++;
+    if (s.payment_status === 'paid') {
+      byCreative[key].purchases++;
+      byCreative[key].revenue += s.amount_total || 0;
+    } else {
+      byCreative[key].abandoned++;
+    }
+  }
+
   const byDay = {};
   for (const s of completed) {
     const day = new Date(s.created * 1000).toISOString().slice(0, 10);
@@ -245,6 +299,7 @@ async function getStripeData(stripe, { startDate, endDate }) {
     revenue_cents: revenue,
     by_tier: byTier,
     by_source: bySource,
+    by_creative: Object.values(byCreative),
     by_day: byDay,
     recent: completed.slice(0, 10).map(s => ({
       id: s.id,
@@ -255,6 +310,7 @@ async function getStripeData(stripe, { startDate, endDate }) {
       utm_source: s.metadata?.utm_source || '',
       utm_medium: s.metadata?.utm_medium || '',
       utm_campaign: s.metadata?.utm_campaign || '',
+      utm_content: s.metadata?.utm_content || '',
       created: new Date(s.created * 1000).toISOString(),
     })),
   };

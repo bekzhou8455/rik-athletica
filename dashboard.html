@@ -172,6 +172,18 @@ tr:last-child td { border-bottom:none; }
     </table>
   </div>
 
+  <!-- Creative Performance (A/B Testing) -->
+  <div class="section">
+    <h2>Creative Performance <span class="badge">GA4 + Stripe</span></h2>
+    <p style="font-size:11px;color:var(--muted);margin-bottom:12px;">Each row = one utm_content value (ad creative). Use Meta dynamic param <code style="font-size:10px;">{{ad.name}}</code> for automatic tagging.</p>
+    <div style="overflow-x:auto;">
+      <table>
+        <thead><tr><th>Campaign</th><th>Creative</th><th class="text-right">Visitors</th><th class="text-right">Checkouts</th><th class="text-right">Purchased</th><th class="text-right">Revenue</th><th class="text-right">Conv %</th></tr></thead>
+        <tbody id="creativeBody"><tr><td colspan="7" class="text-muted">Loading…</td></tr></tbody>
+      </table>
+    </div>
+  </div>
+
   <!-- Ad Spend + ROAS -->
   <div class="section">
     <h2>Ad Spend &amp; ROAS</h2>
@@ -188,8 +200,8 @@ tr:last-child td { border-bottom:none; }
     <h2>Recent Purchases <span class="badge">Stripe</span></h2>
     <div style="overflow-x:auto;">
       <table>
-        <thead><tr><th>Date</th><th>Name</th><th>Email</th><th>Tier</th><th>Source</th><th class="text-right">Amount</th></tr></thead>
-        <tbody id="recentBody"><tr><td colspan="6" class="text-muted">Loading…</td></tr></tbody>
+        <thead><tr><th>Date</th><th>Name</th><th>Email</th><th>Tier</th><th>Source</th><th>Campaign</th><th>Creative</th><th class="text-right">Amount</th></tr></thead>
+        <tbody id="recentBody"><tr><td colspan="8" class="text-muted">Loading…</td></tr></tbody>
       </table>
     </div>
   </div>
@@ -317,6 +329,9 @@ tr:last-child td { border-bottom:none; }
     // Revenue by channel
     renderChannelTable(stripe.by_source || {});
 
+    // Creative performance (A/B)
+    renderCreativeTable(ga4.creatives || [], stripe.by_creative || []);
+
     // Recent purchases
     renderRecent(stripe.recent || []);
 
@@ -392,13 +407,36 @@ tr:last-child td { border-bottom:none; }
     document.getElementById('channelBody').innerHTML = rows.length > 0 ? rows.join('') : '<tr><td colspan="3" class="text-muted">No data yet — UTM tracking activates after deploy</td></tr>';
   }
 
+  function renderCreativeTable(ga4Creatives, stripeCreatives) {
+    var merged = {};
+    (ga4Creatives || []).forEach(function(c) {
+      var key = (c.campaign || '(none)') + '||' + (c.content || '(none)');
+      merged[key] = merged[key] || { campaign: c.campaign, content: c.content, visitors: 0, checkouts: 0, purchases: 0, revenue: 0 };
+      merged[key].visitors = c.users;
+    });
+    (stripeCreatives || []).forEach(function(c) {
+      var key = (c.campaign || '(none)') + '||' + (c.content || '(none)');
+      merged[key] = merged[key] || { campaign: c.campaign, content: c.content, visitors: 0, checkouts: 0, purchases: 0, revenue: 0 };
+      merged[key].checkouts = c.checkouts;
+      merged[key].purchases = c.purchases;
+      merged[key].revenue = c.revenue;
+    });
+    var rows = Object.values(merged).sort(function(a, b) { return b.visitors - a.visitors; }).map(function(c) {
+      var conv = c.visitors > 0 ? (c.purchases / c.visitors * 100).toFixed(1) + '%' : '—';
+      return '<tr><td style="font-size:11px;">' + (c.campaign || '—') + '</td><td style="font-size:11px;">' + (c.content || '—') + '</td><td class="text-right mono">' + c.visitors + '</td><td class="text-right mono">' + c.checkouts + '</td><td class="text-right mono">' + c.purchases + '</td><td class="text-right mono text-green">$' + (c.revenue / 100).toLocaleString() + '</td><td class="text-right mono">' + conv + '</td></tr>';
+    });
+    document.getElementById('creativeBody').innerHTML = rows.length > 0 ? rows.join('') : '<tr><td colspan="7" class="text-muted">No ad creative data yet — UTM content tracking activates with first Meta ad click</td></tr>';
+  }
+
   function renderRecent(recent) {
     var rows = recent.map(function(s) {
       var date = new Date(s.created).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
       var src = s.utm_source || '—';
-      return '<tr><td class="mono">' + date + '</td><td>' + (s.name || '—') + '</td><td class="mono" style="font-size:11px;">' + s.email + '</td><td>' + s.tier + '</td><td>' + src + '</td><td class="text-right mono text-green">$' + (s.amount / 100) + '</td></tr>';
+      var camp = s.utm_campaign || '—';
+      var creative = s.utm_content || '—';
+      return '<tr><td class="mono">' + date + '</td><td>' + (s.name || '—') + '</td><td class="mono" style="font-size:11px;">' + s.email + '</td><td>' + s.tier + '</td><td>' + src + '</td><td style="font-size:11px;">' + camp + '</td><td style="font-size:11px;">' + creative + '</td><td class="text-right mono text-green">$' + (s.amount / 100) + '</td></tr>';
     });
-    document.getElementById('recentBody').innerHTML = rows.length > 0 ? rows.join('') : '<tr><td colspan="6" class="text-muted">No purchases in this period</td></tr>';
+    document.getElementById('recentBody').innerHTML = rows.length > 0 ? rows.join('') : '<tr><td colspan="8" class="text-muted">No purchases in this period</td></tr>';
   }
 
   // ─── ROAS calculator ───
