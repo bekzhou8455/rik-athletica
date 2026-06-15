@@ -174,14 +174,9 @@ tr:last-child td { border-bottom:none; }
 
   <!-- Creative Performance (A/B Testing) -->
   <div class="section">
-    <h2>Creative Performance <span class="badge">GA4 + Stripe</span></h2>
-    <p style="font-size:11px;color:var(--muted);margin-bottom:12px;">Each row = one utm_content value (ad creative). Use Meta dynamic param <code style="font-size:10px;">{{ad.name}}</code> for automatic tagging.</p>
-    <div style="overflow-x:auto;">
-      <table>
-        <thead><tr><th>Campaign</th><th>Creative</th><th class="text-right">Visitors</th><th class="text-right">Checkouts</th><th class="text-right">Purchased</th><th class="text-right">Revenue</th><th class="text-right">Conv %</th></tr></thead>
-        <tbody id="creativeBody"><tr><td colspan="7" class="text-muted">Loading…</td></tr></tbody>
-      </table>
-    </div>
+    <h2>Creative Attribution <span class="badge">GA4 + Stripe</span></h2>
+    <p style="font-size:11px;color:var(--muted);margin-bottom:12px;">Per-creative funnel. Each ad creative (utm_content) gets its own pipeline. Use Meta <code style="font-size:10px;">{{ad.name}}</code> for automatic tagging.</p>
+    <div id="creativeContainer"><p class="text-muted" style="font-size:13px;">Loading…</p></div>
   </div>
 
   <!-- Ad Spend + ROAS -->
@@ -330,7 +325,7 @@ tr:last-child td { border-bottom:none; }
     renderChannelTable(stripe.by_source || {});
 
     // Creative performance (A/B)
-    renderCreativeTable(ga4.creatives || [], stripe.by_creative || []);
+    renderCreativeTable(ga4.creativeFunnels || {}, stripe.by_creative || []);
 
     // Recent purchases
     renderRecent(stripe.recent || []);
@@ -407,25 +402,76 @@ tr:last-child td { border-bottom:none; }
     document.getElementById('channelBody').innerHTML = rows.length > 0 ? rows.join('') : '<tr><td colspan="3" class="text-muted">No data yet — UTM tracking activates after deploy</td></tr>';
   }
 
-  function renderCreativeTable(ga4Creatives, stripeCreatives) {
-    var merged = {};
-    (ga4Creatives || []).forEach(function(c) {
-      var key = (c.campaign || '(none)') + '||' + (c.content || '(none)');
-      merged[key] = merged[key] || { campaign: c.campaign, content: c.content, visitors: 0, checkouts: 0, purchases: 0, revenue: 0 };
-      merged[key].visitors = c.users;
-    });
+  function renderCreativeTable(creativeFunnels, stripeCreatives) {
+    var stripeByContent = {};
     (stripeCreatives || []).forEach(function(c) {
-      var key = (c.campaign || '(none)') + '||' + (c.content || '(none)');
-      merged[key] = merged[key] || { campaign: c.campaign, content: c.content, visitors: 0, checkouts: 0, purchases: 0, revenue: 0 };
-      merged[key].checkouts = c.checkouts;
-      merged[key].purchases = c.purchases;
-      merged[key].revenue = c.revenue;
+      stripeByContent[c.content] = c;
     });
-    var rows = Object.values(merged).sort(function(a, b) { return b.visitors - a.visitors; }).map(function(c) {
-      var conv = c.visitors > 0 ? (c.purchases / c.visitors * 100).toFixed(1) + '%' : '—';
-      return '<tr><td style="font-size:11px;">' + (c.campaign || '—') + '</td><td style="font-size:11px;">' + (c.content || '—') + '</td><td class="text-right mono">' + c.visitors + '</td><td class="text-right mono">' + c.checkouts + '</td><td class="text-right mono">' + c.purchases + '</td><td class="text-right mono text-green">$' + (c.revenue / 100).toLocaleString() + '</td><td class="text-right mono">' + conv + '</td></tr>';
-    });
-    document.getElementById('creativeBody').innerHTML = rows.length > 0 ? rows.join('') : '<tr><td colspan="7" class="text-muted">No ad creative data yet — UTM content tracking activates with first Meta ad click</td></tr>';
+
+    var funnelSteps = [
+      { key: 'sprint_page_view', label: 'Viewed /sprint' },
+      { key: 'sprint_cta_click', label: 'Clicked CTA' },
+      { key: 'eligibility_started', label: 'Started eligibility' },
+      { key: 'eligibility_submitted', label: 'Submitted eligibility' },
+      { key: 'sprint_checkout_redirect', label: 'Reached checkout' },
+    ];
+
+    var contentKeys = Object.keys(creativeFunnels || {});
+    if (contentKeys.length === 0 && Object.keys(stripeByContent).length === 0) {
+      document.getElementById('creativeContainer').innerHTML = '<p class="text-muted" style="font-size:13px;">No ad creative data yet — attribution activates with first Meta ad click carrying utm_content.</p>';
+      return;
+    }
+
+    // Merge keys from both sources
+    var allKeys = {};
+    contentKeys.forEach(function(k) { allKeys[k] = true; });
+    Object.keys(stripeByContent).forEach(function(k) { allKeys[k] = true; });
+
+    var html = Object.keys(allKeys).map(function(content) {
+      var ga4 = creativeFunnels[content] || {};
+      var stripe = stripeByContent[content] || {};
+      var top = ga4[funnelSteps[0].key] || ga4['page_view'] || 1;
+
+      var stepsHtml = funnelSteps.map(function(step) {
+        var val = ga4[step.key] || 0;
+        var pct = top > 0 ? (val / top * 100) : 0;
+        var ofTop = top > 0 ? (val / top * 100).toFixed(0) + '%' : '—';
+        return '<div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">' +
+          '<div style="width:130px;font-size:11px;color:var(--muted);text-align:right;flex-shrink:0;">' + step.label + '</div>' +
+          '<div style="flex:1;height:18px;background:rgba(0,0,0,0.04);border-radius:4px;overflow:hidden;">' +
+            '<div style="height:100%;width:' + pct + '%;background:var(--green);border-radius:4px;min-width:' + (val > 0 ? '2px' : '0') + ';"></div>' +
+          '</div>' +
+          '<div class="mono" style="width:60px;font-size:11px;text-align:right;">' + val + ' <span style="color:var(--muted);font-size:9px;">' + ofTop + '</span></div>' +
+        '</div>';
+      }).join('');
+
+      // Add Stripe purchase row
+      var purchases = stripe.purchases || 0;
+      var revenue = stripe.revenue || 0;
+      var purchasePct = top > 0 ? (purchases / top * 100) : 0;
+      var purchaseOfTop = top > 0 ? (purchases / top * 100).toFixed(0) + '%' : '—';
+      stepsHtml += '<div style="display:flex;align-items:center;gap:8px;margin-bottom:0;">' +
+        '<div style="width:130px;font-size:11px;color:var(--muted);text-align:right;flex-shrink:0;">Purchased</div>' +
+        '<div style="flex:1;height:18px;background:rgba(0,0,0,0.04);border-radius:4px;overflow:hidden;">' +
+          '<div style="height:100%;width:' + purchasePct + '%;background:var(--green);border-radius:4px;min-width:' + (purchases > 0 ? '2px' : '0') + ';"></div>' +
+        '</div>' +
+        '<div class="mono" style="width:60px;font-size:11px;text-align:right;">' + purchases + ' <span style="color:var(--muted);font-size:9px;">' + purchaseOfTop + '</span></div>' +
+      '</div>';
+
+      var revLine = revenue > 0 ? ' &middot; <span class="text-green">$' + (revenue / 100).toLocaleString() + '</span>' : '';
+      var abandoned = stripe.abandoned || 0;
+      var abandonLine = abandoned > 0 ? ' &middot; <span style="color:var(--danger);font-size:11px;">' + abandoned + ' abandoned</span>' : '';
+
+      return '<div style="background:#fff;border:1px solid rgba(0,0,0,0.08);border-radius:10px;padding:16px 20px;margin-bottom:12px;">' +
+        '<div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px;">' +
+          '<div style="font-weight:600;font-size:13px;letter-spacing:-0.01em;">' + content + '</div>' +
+          '<div style="font-size:11px;color:var(--muted);">' + (ga4[funnelSteps[0].key] || 0) + ' visitors' + revLine + abandonLine + '</div>' +
+        '</div>' +
+        stepsHtml +
+      '</div>';
+    }).join('');
+
+    document.getElementById('creativeContainer').innerHTML = html;
   }
 
   function renderRecent(recent) {

@@ -122,24 +122,29 @@ async function queryGa4(accessToken, propertyId, { startDate, endDate }) {
       {
         dateRanges: [{ startDate, endDate }],
         metrics: [
-          { name: 'sessions' },
           { name: 'totalUsers' },
         ],
         dimensions: [
-          { name: 'sessionCampaignName' },
           { name: 'sessionManualAdContent' },
+          { name: 'eventName' },
         ],
         dimensionFilter: {
           filter: {
-            fieldName: 'pagePath',
-            stringFilter: {
-              matchType: 'BEGINS_WITH',
-              value: '/sprint',
+            fieldName: 'eventName',
+            inListFilter: {
+              values: [
+                'sprint_page_view',
+                'sprint_cta_click',
+                'eligibility_started',
+                'eligibility_submitted',
+                'sprint_checkout_redirect',
+                'page_view',
+              ],
             },
           },
         },
-        orderBys: [{ metric: { metricName: 'sessions' }, desc: true }],
-        limit: 30,
+        orderBys: [{ metric: { metricName: 'totalUsers' }, desc: true }],
+        limit: 100,
       },
     ],
   };
@@ -203,23 +208,20 @@ function parseGa4Response(batchResponse) {
     }
   }
 
-  // Report 3: campaign/content breakdown (ad creative attribution)
-  const creatives = [];
+  // Report 3: per-creative funnel events
+  const creativeFunnels = {};
   if (reports[3]?.rows) {
     for (const row of reports[3].rows) {
-      const campaign = row.dimensionValues[0].value;
-      const content = row.dimensionValues[1].value;
-      if (campaign === '(not set)' && content === '(not set)') continue;
-      creatives.push({
-        campaign,
-        content,
-        sessions: parseInt(row.metricValues[0].value, 10),
-        users: parseInt(row.metricValues[1].value, 10),
-      });
+      const content = row.dimensionValues[0].value;
+      if (content === '(not set)') continue;
+      const eventName = row.dimensionValues[1].value;
+      const users = parseInt(row.metricValues[0]?.value || '0', 10);
+      if (!creativeFunnels[content]) creativeFunnels[content] = {};
+      creativeFunnels[content][eventName] = users;
     }
   }
 
-  return { funnel, funnelEvents, sources, daily, creatives };
+  return { funnel, funnelEvents, sources, daily, creativeFunnels };
 }
 
 // ─── Stripe data ───
