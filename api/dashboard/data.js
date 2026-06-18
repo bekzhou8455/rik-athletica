@@ -46,6 +46,89 @@ async function getGa4AccessToken() {
   return data.access_token;
 }
 
+// ─── GA4 Demographics query ───
+async function queryGa4Demographics(accessToken, propertyId, { startDate, endDate }) {
+  const body = {
+    requests: [
+      {
+        dateRanges: [{ startDate, endDate }],
+        metrics: [{ name: 'totalUsers' }, { name: 'sessions' }],
+        dimensions: [{ name: 'deviceCategory' }],
+        dimensionFilter: { filter: { fieldName: 'pagePath', stringFilter: { matchType: 'BEGINS_WITH', value: '/sprint' } } },
+        orderBys: [{ metric: { metricName: 'totalUsers' }, desc: true }],
+      },
+      {
+        dateRanges: [{ startDate, endDate }],
+        metrics: [{ name: 'totalUsers' }, { name: 'sessions' }],
+        dimensions: [{ name: 'country' }],
+        dimensionFilter: { filter: { fieldName: 'pagePath', stringFilter: { matchType: 'BEGINS_WITH', value: '/sprint' } } },
+        orderBys: [{ metric: { metricName: 'totalUsers' }, desc: true }],
+        limit: 20,
+      },
+      {
+        dateRanges: [{ startDate, endDate }],
+        metrics: [{ name: 'totalUsers' }, { name: 'sessions' }],
+        dimensions: [{ name: 'city' }],
+        dimensionFilter: { filter: { fieldName: 'pagePath', stringFilter: { matchType: 'BEGINS_WITH', value: '/sprint' } } },
+        orderBys: [{ metric: { metricName: 'totalUsers' }, desc: true }],
+        limit: 20,
+      },
+      {
+        dateRanges: [{ startDate, endDate }],
+        metrics: [{ name: 'totalUsers' }, { name: 'sessions' }],
+        dimensions: [{ name: 'operatingSystem' }],
+        dimensionFilter: { filter: { fieldName: 'pagePath', stringFilter: { matchType: 'BEGINS_WITH', value: '/sprint' } } },
+        orderBys: [{ metric: { metricName: 'totalUsers' }, desc: true }],
+      },
+      {
+        dateRanges: [{ startDate, endDate }],
+        metrics: [{ name: 'totalUsers' }, { name: 'sessions' }],
+        dimensions: [{ name: 'language' }],
+        dimensionFilter: { filter: { fieldName: 'pagePath', stringFilter: { matchType: 'BEGINS_WITH', value: '/sprint' } } },
+        orderBys: [{ metric: { metricName: 'totalUsers' }, desc: true }],
+        limit: 10,
+      },
+    ],
+  };
+
+  const res = await fetch(
+    `https://analyticsdata.googleapis.com/v1beta/properties/${propertyId}:batchRunReports`,
+    {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(body),
+    }
+  );
+
+  if (!res.ok) {
+    const text = await res.text();
+    throw new Error(`GA4 demographics query failed: ${res.status} ${text}`);
+  }
+
+  const data = await res.json();
+  const reports = data.reports || [];
+
+  function parseReport(report) {
+    if (!report?.rows) return [];
+    return report.rows.map(row => ({
+      dimension: row.dimensionValues[0].value,
+      users: parseInt(row.metricValues[0]?.value || '0', 10),
+      sessions: parseInt(row.metricValues[1]?.value || '0', 10),
+    }));
+  }
+
+  return {
+    device: parseReport(reports[0]),
+    country: parseReport(reports[1]),
+    city: parseReport(reports[2]),
+    os: parseReport(reports[3]),
+    language: parseReport(reports[4]),
+  };
+}
+
 // ─── GA4 Data API query ───
 async function queryGa4(accessToken, propertyId, { startDate, endDate }) {
   const body = {
@@ -375,6 +458,10 @@ export default async function handler(req, res) {
       const accessToken = await getGa4AccessToken();
       const batchResponse = await queryGa4(accessToken, process.env.GA4_PROPERTY_ID, { startDate, endDate });
       result.ga4 = parseGa4Response(batchResponse);
+
+      if (req.query.demo === '1') {
+        result.demographics = await queryGa4Demographics(accessToken, process.env.GA4_PROPERTY_ID, { startDate, endDate });
+      }
     } catch (err) {
       console.error('[dashboard] GA4 error:', err.message);
       result.errors.push(`GA4: ${err.message}`);
